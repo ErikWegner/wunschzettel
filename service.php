@@ -16,7 +16,7 @@ function ensure_valid_id() {
   return $ws_id;
 }
 
-function read_file($filename, $include_status = FALSE) {
+function read_file($filename) {
   // Init with emtpy string
   $nBezeichnung = "";
   $nKategorie = "";
@@ -51,11 +51,8 @@ function read_file($filename, $include_status = FALSE) {
       "BuyUrl" => $nKaufen,
       "PriceFrom" => $nPreisVon,
       "PriceTo" => $nPreisBis,
+      "Status" => $nStatus
     );
-  
-  if ($include_status) {
-    $result["Status"] = $nStatus;
-  }
   
   return $result;    
 }
@@ -90,11 +87,14 @@ function listitems() {
   $verz=opendir ('.');
   while ($filename = readdir ($verz)) {
     if (substr($filename, 0, 2) == "ws") {
-      $w[] = read_file($filename, FALSE);
+      $item = read_file($filename, FALSE);
+      $item["id"] = substr($filename, 2);
+      unset($item["Status"]);
+      $w[] = $item;
     }
   }
   
-  print json_encode($w);
+  print json_encode(array("data" => $w));
 }
 
 /**
