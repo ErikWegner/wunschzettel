@@ -4,9 +4,11 @@ import { Router } from '@angular/router-deprecated';
 import { Wunschzetteleintrag } from './wunschzetteleintrag';
 import { Category }            from './category';
 import { WunschzettelService } from './ws.service';
+import { WunschlisteComponent }  from './wunschliste.component';
 
 @Component({
   selector: 'my-categories',
+  directives: [WunschlisteComponent],
   templateUrl: 'app/category.component.html',
   styleUrls: ['app/category.component.css']
 })
