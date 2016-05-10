@@ -14,6 +14,7 @@ import { WunschlisteComponent }  from './wunschliste.component';
 })
 export class CategoryComponent implements OnInit {
   categories: Category[] = [];
+  selectedCategory: Category;
   errorMessage: string;
 
   constructor(
@@ -22,6 +23,7 @@ export class CategoryComponent implements OnInit {
   }
   
   ngOnInit() {
+    this.selectedCategory = Category.allItemsCategory();
     this.service.getItems()
     .subscribe(
       items => this.categories = this.extractCategories(items),
@@ -44,4 +46,6 @@ export class CategoryComponent implements OnInit {
     });
     return r;
   }
+  
+    onSelect(category: Category) { this.selectedCategory = category; }
 }
