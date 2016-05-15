@@ -1,6 +1,5 @@
 <h2 *ngIf="category">Wunschliste {{ category.name }}</h2>
-<ul class="wunschliste">
-  <li *ngFor="let wunsch of (items | matchCategory:category)">
-    {{wunsch.Title}}: {{wunsch.id}}
-  </li>
-</ul>
+
+<div *ngFor="let wunsch of (items | matchCategory:category)" class="wunschliste">
+  <my-wunschzetteleintrag [wunsch]="wunsch"></my-wunschzetteleintrag>
+</div>

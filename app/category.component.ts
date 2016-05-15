@@ -9,8 +9,7 @@ import { WunschlisteComponent }  from './wunschliste.component';
 @Component({
   selector: 'my-categories',
   directives: [WunschlisteComponent],
-  templateUrl: 'app/category.component.html',
-  styleUrls: ['app/category.component.css']
+  templateUrl: 'app/category.component.html'
 })
 export class CategoryComponent implements OnInit {
   categories: Category[] = [];

@@ -5,10 +5,13 @@ import { Wunschzetteleintrag } from './wunschzetteleintrag';
 import { Category }            from './category';
 import { WunschzettelService } from './ws.service';
 import { MatchCategoryPipe }   from './category-filter.pipe';
+import { WunschzetteleintragComponent } from './wunschzetteleintrag.component';
 
 @Component({
   selector: 'my-wunschliste',
+  directives: [WunschzetteleintragComponent],
   pipes: [MatchCategoryPipe],
+  styleUrls: ['app/wunschliste.component.css'],
   templateUrl: 'app/wunschliste.component.html'
 })
 export class WunschlisteComponent implements OnInit {
