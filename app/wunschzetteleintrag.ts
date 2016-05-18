@@ -7,5 +7,4 @@ export class Wunschzetteleintrag {
   BuyUrl: string;
   PriceFrom: string;
   PriceTo: string;
-  Status: boolean;
 }

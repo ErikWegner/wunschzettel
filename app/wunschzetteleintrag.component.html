@@ -5,16 +5,19 @@
     <p>{{ wunsch.Description }}</p>
   </div>
   <div class="mdl-card__actions mdl-card--border">
-    <button class="mdl-button mdl-js-button">
+    <button class="mdl-button mdl-js-button" (click)="onShowStatus()" [disabled]="!statusButtonActive">
       Reservierungsstatus
     </button>
+    <span *ngIf="errorText" class="error">
+      {{ errorText }}
+    </span>
     <!-- Primary-colored flat button -->
-    <button class="mdl-button mdl-js-button mdl-button--primary">
-      Button
+    <button *ngIf="statusIsVisible && wunschStatus" class="mdl-button mdl-js-button mdl-button--primary">
+      Reservieren
     </button>
     <!-- Accent-colored flat button -->
-    <button class="mdl-button mdl-js-button mdl-button--accent">
-      Button
+    <button *ngIf="statusIsVisible && !wunschStatus" class="mdl-button mdl-js-button mdl-button--accent">
+      Reservierung löschen
     </button>
   </div>
 </div>

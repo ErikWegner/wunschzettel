@@ -103,7 +103,7 @@ function listitems() {
 function status() {
   $ws_id = ensure_valid_id();
   $dat = read_file("ws" . $ws_id, TRUE);
-  print json_encode($dat["Status"]);
+  print json_encode(array("data" => array("status" => $dat["Status"])));
 }
 
 /**
