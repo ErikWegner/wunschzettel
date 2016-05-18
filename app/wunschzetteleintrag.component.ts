@@ -12,7 +12,7 @@ export class WunschzetteleintragComponent {
   @Input() wunsch: Wunschzetteleintrag
   statusIsVisible = false
   statusButtonActive = true;
-  wunschStatus = false; // unknown
+  wunschStatus = false; // actually: unknown
   errorText = "";
   
   constructor(

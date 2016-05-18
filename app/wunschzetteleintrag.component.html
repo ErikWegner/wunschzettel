@@ -11,12 +11,15 @@
     <span *ngIf="errorText" class="error">
       {{ errorText }}
     </span>
+    <span *ngIf="statusIsVisible" class="rstatus">
+      {{ wunschStatus ? "Reserviert" : "Nicht reserviert" }}
+    </span>
     <!-- Primary-colored flat button -->
-    <button *ngIf="statusIsVisible && wunschStatus" class="mdl-button mdl-js-button mdl-button--primary">
+    <button *ngIf="statusIsVisible && !wunschStatus" class="mdl-button mdl-js-button mdl-button--primary">
       Reservieren
     </button>
     <!-- Accent-colored flat button -->
-    <button *ngIf="statusIsVisible && !wunschStatus" class="mdl-button mdl-js-button mdl-button--accent">
+    <button *ngIf="statusIsVisible && wunschStatus" class="mdl-button mdl-js-button mdl-button--accent">
       Reservierung löschen
     </button>
   </div>

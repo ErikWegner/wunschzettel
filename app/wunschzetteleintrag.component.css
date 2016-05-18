@@ -9,3 +9,7 @@
 .error {
   color: #600;
 }
+.rstatus {
+  margin-left: 20px;
+  margin-right: 20px;
+}

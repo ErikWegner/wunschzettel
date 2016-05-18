@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Router } from '@angular/router-deprecated';
 
 import { Wunschzetteleintrag } from './wunschzetteleintrag';
@@ -6,10 +6,11 @@ import { Category }            from './category';
 import { WunschzettelService } from './ws.service';
 import { MatchCategoryPipe }   from './category-filter.pipe';
 import { WunschzetteleintragComponent } from './wunschzetteleintrag.component';
+import { ReservierungsdialogComponent } from './reservierungsdialog.component';
 
 @Component({
   selector: 'my-wunschliste',
-  directives: [WunschzetteleintragComponent],
+  directives: [WunschzetteleintragComponent, ReservierungsdialogComponent],
   pipes: [MatchCategoryPipe],
   styleUrls: ['app/wunschliste.component.css'],
   templateUrl: 'app/wunschliste.component.html'
@@ -17,6 +18,9 @@ import { WunschzetteleintragComponent } from './wunschzetteleintrag.component';
 export class WunschlisteComponent implements OnInit {
   items: Wunschzetteleintrag[]
   @Input() category: Category
+  hasDialog = false
+  dialogWunsch: Wunschzetteleintrag = null
+  @ViewChild(ReservierungsdialogComponent) reservierungsdialog:ReservierungsdialogComponent
   
   constructor(
     private router: Router,
@@ -30,5 +34,10 @@ export class WunschlisteComponent implements OnInit {
     .subscribe(
       items => this.items = items
     );
+  }
+  
+   ngAfterViewInit() {
+    // child is set
+    this.reservierungsdialog.show();
   }
 }
