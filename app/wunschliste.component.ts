@@ -20,24 +20,27 @@ export class WunschlisteComponent implements OnInit {
   @Input() category: Category
   hasDialog = false
   dialogWunsch: Wunschzetteleintrag = null
-  @ViewChild(ReservierungsdialogComponent) reservierungsdialog:ReservierungsdialogComponent
-  
+  @ViewChild(ReservierungsdialogComponent) reservierungsdialog: ReservierungsdialogComponent
+
   constructor(
     private router: Router,
     private service: WunschzettelService) {
-      this.items = [];
-      this.category = Category.allItemsCategory();
+    this.items = [];
+    this.category = Category.allItemsCategory();
   }
-  
+
   ngOnInit() {
     this.service.getItems()
-    .subscribe(
+      .subscribe(
       items => this.items = items
-    );
+      );
   }
-  
-   ngAfterViewInit() {
-    // child is set
-    this.reservierungsdialog.show();
+
+  onReservierung(wunsch: Wunschzetteleintrag) {
+    this.reservierungsdialog.show(wunsch, true);
+  }
+
+  onLoescheReservierung(wunsch: Wunschzetteleintrag) {
+    this.reservierungsdialog.show(wunsch, false);
   }
 }
