@@ -4,12 +4,24 @@
     <p>
       {{wunsch.Title}}
     </p>
-    <p>
-      Captcha
+    <p *ngIf="dialogStatus == dialogStatusEnum.Captcha">
+      {{ captchaText }}: <input [(ngModel)]="captchaResult" placeholder="Zahl" maxlength="1">
     </p>
+    <p *ngIf="dialogStatus == dialogStatusEnum.Submitting">
+      ... wird übertragen ...
+    </p>
+    <p *ngIf="dialogStatus == dialogStatusEnum.Error" class="serviceerror">
+      {{ errorText }}
+    </p>
+    <p *ngIf="dialogStatus == dialogStatusEnum.Fail" class="servicefail">
+      Fehlgeschlagen: {{ resultText }}
+    </p>    
+    <p *ngIf="dialogStatus == dialogStatusEnum.Success" class="serviceok">
+      Ok: {{ resultText }}
+    </p>    
   </div>
   <div class="mdl-dialog__actions mdl-dialog__actions--full-width">
+    <button type="button" class="mdl-button" [disabled]="!captchaResult || dialogStatus != dialogStatusEnum.Captcha" (click)="onSubmit()">{{neuerWunschStatus ? "Reservieren" : "Reservierung löschen"}}</button>
     <button type="button" class="mdl-button close" (click)="onClose()">Schließen</button>
-    <button type="button" class="mdl-button">{{neuerWunschStatus ? "Reservieren" : "Reservierung löschen"}}</button>
   </div>
 </dialog>

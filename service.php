@@ -110,18 +110,74 @@ function status() {
  *  Set item status to $targetstate
  */
 function set_reserved($targetstate) {
+  if (check_captcha() == FALSE) {
+    print json_encode(
+      array("data" => array(
+        "success" => FALSE,
+        "message" => "Captcha falsch"
+      )));
+    return;
+  }
   $ws_id = ensure_valid_id();
   $dat = read_file("ws" . $ws_id, TRUE);
   if ($dat["Status"] == $targetstate) {
-    die("Blocked");
+    print json_encode(
+      array("data" => array(
+        "success" => FALSE,
+        "message" => $targetstate ? "Eintrag bereits reserviert" : "Eintrag war nicht mehr reserviert."
+      )));
+    return;
   }
   
   $dat["Status"] = $targetstate;
   write_file("ws" . $ws_id, $dat);
   
-  print("OK");
+  print json_encode(
+      array("data" => array(
+        "success" => TRUE,
+        "message" => $targetstate ? "Eintrag wurde reserviert" : "Reservierung wurde gelöscht"
+      )));
 }
 
+/**
+ *  Create a captcha task.
+ *  Save the result to the session,
+ *  return the task. 
+ */
+function prepare_captcha() {
+  $source = array(
+    0 => 'null',
+    1 => 'eins',
+    2 => 'zwei',
+    3 => 'drei',
+    4 => 'vier',
+    5 => 'fünf',
+    6 => 'sechs',
+    7 => 'sieben',
+    8 => 'acht',
+    9 => 'neun'
+  );
+  session_start();
+  $i = rand(0, count($source) - 1);
+  $_SESSION['SPAMGUARD_CODE'] = $i;
+  print json_encode(array("data" => array("captchatext" => $source[$i])));
+}
+
+/**
+ *  Check the submitted captcha value.
+ *  Clears the captcha from the session.
+ *  Returns TRUE, if captcha matches.
+ */
+function check_captcha() {
+  $captcha = isset($_GET['captcha']) ? $_GET['captcha'] : "";
+  if ($captcha == "") {
+    return FALSE;
+  }
+  session_start();
+  $result = $_SESSION['SPAMGUARD_CODE'] == $captcha;
+  $_SESSION['SPAMGUARD_CODE'] = "";
+  return $result;
+}
 
 $action = isset($_GET['action']) ? $_GET['action'] : "";
 switch ($action) {
@@ -129,5 +185,6 @@ switch ($action) {
   case 'status' : status(); break;
   case 'reserve' : set_reserved(TRUE); break;
   case 'clear' : set_reserved(FALSE); break;
+  case 'captcha' : prepare_captcha(); break;
   default: help(); break;
 }
