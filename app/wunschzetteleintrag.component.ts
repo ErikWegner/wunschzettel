@@ -36,6 +36,8 @@ export class WunschzetteleintragComponent {
   }
 
   reservierung(newStatus: boolean) {
+    this.statusButtonActive = true;
+    this.statusIsVisible = false;
     if (newStatus === false) {
       this.onLoescheReservierung.emit(this.wunsch);
     } else {
