@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { Router } from '@angular/router-deprecated';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { RouteParams } from '@angular/router-deprecated';
 
 import { Wunschzetteleintrag } from './wunschzetteleintrag';
 import { Category }            from './category';
@@ -17,19 +17,20 @@ import { ReservierungsdialogComponent } from './reservierungsdialog.component';
 })
 export class WunschlisteComponent implements OnInit {
   items: Wunschzetteleintrag[]
-  @Input() category: Category
+  category: Category
   hasDialog = false
   dialogWunsch: Wunschzetteleintrag = null
   @ViewChild(ReservierungsdialogComponent) reservierungsdialog: ReservierungsdialogComponent
 
   constructor(
-    private router: Router,
+    private routeParams: RouteParams,
     private service: WunschzettelService) {
     this.items = [];
     this.category = Category.allItemsCategory();
   }
 
   ngOnInit() {
+    this.category.filter = this.routeParams.get('category') || this.category.filter;
     this.service.getItems()
       .subscribe(
       items => this.items = items

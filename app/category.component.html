@@ -1,6 +1,0 @@
-<h2>Kategorien</h2>
-<button *ngFor="let category of categories" (click)="onSelect(category)" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
-  {{category.name}}
-</button>
-
-<my-wunschliste [category]="selectedCategory"></my-wunschliste>
