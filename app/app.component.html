@@ -6,7 +6,6 @@
       <div class="mdl-layout-spacer"></div>
       <nav class="mdl-navigation">
         <a *ngFor="let category of categories" class="mdl-navigation__link" [routerLink]="['Wunschliste', {category: category.filter}]">{{category.name}}</a>
-        <a class="mdl-navigation__link" [routerLink]="['Heroes']">Heroes</a>
       </nav>
     </div>
   </header>
@@ -14,7 +13,6 @@
     <span class="mdl-layout__title">{{title}}</span>
     <nav class="mdl-navigation">
       <a *ngFor="let category of categories" class="mdl-navigation__link" [routerLink]="['Wunschliste', {category: category.filter}]">{{category.name}}</a>
-      <a class="mdl-navigation__link" [routerLink]="['Heroes']">Heroes</a>
     </nav>
   </div>
   <main class="mdl-layout__content">

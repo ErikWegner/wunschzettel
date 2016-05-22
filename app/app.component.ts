@@ -2,13 +2,10 @@ import { Component, ElementRef, AfterViewInit }       from '@angular/core';
 import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from '@angular/router-deprecated';
 import { HTTP_PROVIDERS }    from '@angular/http';
 
-import { Wunschzetteleintrag } from './wunschzetteleintrag';
-import { Category }            from './category';
-import { HeroService }         from './hero.service';
-import { WunschzettelService }         from './ws.service';
-import { HeroesComponent }     from './heroes.component';
-import { WunschlisteComponent }  from './wunschliste.component';
-import { HeroDetailComponent } from './hero-detail.component';
+import { Wunschzetteleintrag }  from './wunschzetteleintrag';
+import { Category }             from './category';
+import { WunschzettelService }  from './ws.service';
+import { WunschlisteComponent } from './wunschliste.component';
 
 /* Material Design component handler interface */
 interface IComponentHandler {
@@ -26,8 +23,7 @@ declare var componentHandler: IComponentHandler;
   providers: [
     ROUTER_PROVIDERS,
     HTTP_PROVIDERS,
-    WunschzettelService,
-    HeroService
+    WunschzettelService
   ]
 })
 @RouteConfig([
@@ -37,16 +33,6 @@ declare var componentHandler: IComponentHandler;
     component: WunschlisteComponent,
     useAsDefault: true,
     data: { category: Category.allItemsCategory().filter }
-  },
-  {
-    path: '/detail/:id',
-    name: 'HeroDetail',
-    component: HeroDetailComponent
-  },
-  {
-    path: '/heroes',
-    name: 'Heroes',
-    component: HeroesComponent
   }
 ])
 export class AppComponent implements AfterViewInit {
