@@ -1,0 +1,23 @@
+<div class="mdl-layout mdl-js-layout">
+  <header class="mdl-layout__header">
+    <div class="mdl-layout-icon"></div>
+    <div class="mdl-layout__header-row">
+      <span class="mdl-layout__title">{{title}}</span>
+      <div class="mdl-layout-spacer"></div>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link" [routerLink]="['Categories']">Kategorien</a>
+        <a class="mdl-navigation__link" [routerLink]="['Heroes']">Heroes</a>
+      </nav>
+    </div>
+  </header>
+  <div class="mdl-layout__drawer">
+    <span class="mdl-layout__title">{{title}}</span>
+    <nav class="mdl-navigation">
+      <a class="mdl-navigation__link" [routerLink]="['Categories']">Kategorien</a>
+      <a class="mdl-navigation__link" [routerLink]="['Heroes']">Heroes</a>
+    </nav>
+  </div>
+  <main class="mdl-layout__content">
+    <router-outlet></router-outlet>
+  </main>
+</div>
