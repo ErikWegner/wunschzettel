@@ -59,32 +59,17 @@ export class AppComponent implements AfterViewInit {
   constructor(
     private el: ElementRef,
     private service: WunschzettelService
-  ) {
-  }
+  ) { }
+
   ngOnInit() {
     this.selectedCategory = Category.allItemsCategory();
     this.service.getItems()
       .subscribe(
-      items => this.categories = this.extractCategories(items),
+      items => this.categories = this.service.extractCategories(items),
       error => this.errorMessage = <any>error
       );
   }
 
-  extractCategories(items: Wunschzetteleintrag[]): Category[] {
-    var r: Category[] = [];
-    r.push(Category.allItemsCategory());
-    items.forEach(item => {
-      var itemCategory = new Category(item.Category);
-      var isNewCategory = true;
-      r.forEach(category => {
-        isNewCategory = isNewCategory && category.equals(itemCategory) == false;
-      });
-      if (isNewCategory) {
-        r.push(itemCategory);
-      }
-    });
-    return r;
-  }
   ngAfterViewInit() {
     if (!AppComponent.isInitialized) {
       AppComponent.isInitialized = true;

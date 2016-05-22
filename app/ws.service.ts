@@ -2,6 +2,7 @@ import { Injectable }     from '@angular/core';
 import { Http, Response } from '@angular/http';
 
 import { Wunschzetteleintrag } from './wunschzetteleintrag';
+import { Category }            from './category';
 import { Observable }          from 'rxjs/Observable';
 
 export interface IStatusResponse {
@@ -19,14 +20,46 @@ export interface IReserveResponse {
 
 @Injectable()
 export class WunschzettelService {
-  constructor(private http: Http) { }
   private serviceUrl = 'service.php';  // URL to web api
   
+  private _items: Observable<Wunschzetteleintrag[]>
+  private _categories: Category[]
+
+  constructor(private http: Http) {
+  }
+
   /** Get a list of all available items */
   getItems(): Observable<Wunschzetteleintrag[]> {
-    return this.http.get(this.serviceUrl + "?action=list")
-      .map(this.extractData)
-      .catch(this.handleError);
+    if (!this._items) {
+      this._items = this.http.get(this.serviceUrl + "?action=list")
+        .map(this.extractData)
+        .catch(this.handleError)
+        .publishReplay(1)
+        .refCount();
+    }
+
+    return this._items;
+  }
+
+  /** Get a list of categories */
+  extractCategories(items: Wunschzetteleintrag[]): Category[] {
+    if (!this._categories) {
+      var r: Category[] = [];
+      r.push(Category.allItemsCategory());
+      items.forEach(item => {
+        var itemCategory = new Category(item.Category);
+        var isNewCategory = true;
+        r.forEach(category => {
+          isNewCategory = isNewCategory && category.equals(itemCategory) == false;
+        });
+        if (isNewCategory) {
+          r.push(itemCategory);
+        }
+      });
+      this._categories = r;
+    }
+
+    return this._categories
   }
   
   /** Get the reservation status for an item */

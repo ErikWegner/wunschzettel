@@ -30,11 +30,13 @@ export class WunschlisteComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.category.filter = this.routeParams.get('category') || this.category.filter;
+    var routeparam = this.routeParams.get('category') || this.category.filter;
     this.service.getItems()
       .subscribe(
-      items => this.items = items
-      );
+      items => {
+        this.items = items;
+        this.category = this.service.extractCategories(items).find(c => c.filter == routeparam)
+      });
   }
 
   onReservierung(wunsch: Wunschzetteleintrag) {
