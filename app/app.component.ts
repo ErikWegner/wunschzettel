@@ -10,7 +10,7 @@ import { WunschlisteComponent } from './wunschliste.component';
 /* Material Design component handler interface */
 interface IComponentHandler {
   /** For dynamic elements, call this function */
-  upgradeElement(el: HTMLElement)
+  upgradeElement(el: HTMLElement): void
 }
 declare var componentHandler: IComponentHandler;
 

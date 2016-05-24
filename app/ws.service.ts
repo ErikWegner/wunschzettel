@@ -50,7 +50,7 @@ export class WunschzettelService {
         var itemCategory = new Category(item.Category);
         var isNewCategory = true;
         r.forEach(category => {
-          isNewCategory = isNewCategory && category.equals(itemCategory) == false;
+          isNewCategory = isNewCategory && category.equals(itemCategory) === false;
         });
         if (isNewCategory) {
           r.push(itemCategory);

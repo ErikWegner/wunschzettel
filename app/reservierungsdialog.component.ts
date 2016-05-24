@@ -5,11 +5,11 @@ import { WunschzettelService, IReserveResponse } from './ws.service';
 import { Wunschzetteleintrag } from './wunschzetteleintrag';
 
 interface IDialogInterface {
-  showModal()
-  close()
+  showModal(): void
+  close(): void
 }
 interface IDialogPolyfill {
-  registerDialog(dialog: IDialogInterface)
+  registerDialog(dialog: IDialogInterface): void
 }
 declare var dialogPolyfill: IDialogPolyfill
 
@@ -82,7 +82,7 @@ export class ReservierungsdialogComponent {
   onSubmit() {
     this.dialogStatus = ReservierungsdialogStatus.Submitting
     var o: Observable<IReserveResponse>;
-    if (this.neuerWunschStatus == false) {
+    if (this.neuerWunschStatus === false) {
       o = this.service.clearReservation(this.wunsch.id, this.captchaResult);
     } else {
       o = this.service.reserveItem(this.wunsch.id, this.captchaResult);
