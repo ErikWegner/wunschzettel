@@ -4,3 +4,6 @@ app/**/*.js
 app/**/*.js.map
 bower_components
 ws*
+npm-debug.log
+src/**/*.js
+src/**/*.js.map
