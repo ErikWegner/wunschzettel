@@ -1,16 +1,21 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { RouteParams } from '@angular/router-deprecated';
 
-import { Wunschzetteleintrag } from './wunschzetteleintrag';
-import { Category }            from './category';
-import { WunschzettelService } from './ws.service';
-import { MatchCategoryPipe }   from './category-filter.pipe';
-import { WunschzetteleintragComponent } from './wunschzetteleintrag.component';
-import { ReservierungsdialogComponent } from './reservierungsdialog.component';
+import { Wunschzetteleintrag }              from './wunschzetteleintrag';
+import { Category }                         from './category';
+import { WunschzettelService }              from './ws.service';
+import { MatchCategoryPipe }                from './category-filter.pipe';
+import { WunschzetteleintragComponent }     from './wunschzetteleintrag.component';
+import { ReservierungsdialogComponent }     from './reservierungsdialog.component';
+import { WunschzetteleintragFormComponent } from './wunschzetteleintrag-form.component';
 
 @Component({
   selector: 'my-wunschliste',
-  directives: [WunschzetteleintragComponent, ReservierungsdialogComponent],
+  directives: [
+    WunschzetteleintragComponent,
+    WunschzetteleintragFormComponent,
+    ReservierungsdialogComponent
+  ],
   pipes: [MatchCategoryPipe],
   styleUrls: ['app/wunschliste.component.css'],
   templateUrl: 'app/wunschliste.component.html'

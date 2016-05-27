@@ -4,14 +4,7 @@ import { Observable }          from 'rxjs/Observable';
 import { WunschzettelService, IReserveResponse } from './ws.service';
 import { Wunschzetteleintrag } from './wunschzetteleintrag';
 
-interface IDialogInterface {
-  showModal(): void
-  close(): void
-}
-interface IDialogPolyfill {
-  registerDialog(dialog: IDialogInterface): void
-}
-declare var dialogPolyfill: IDialogPolyfill
+/// <reference path="custom-typings.d.ts" />
 
 enum ReservierungsdialogStatus {
   Loading,

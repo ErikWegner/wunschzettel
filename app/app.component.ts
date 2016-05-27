@@ -7,13 +7,6 @@ import { Category }             from './category';
 import { WunschzettelService }  from './ws.service';
 import { WunschlisteComponent } from './wunschliste.component';
 
-/* Material Design component handler interface */
-interface IComponentHandler {
-  /** For dynamic elements, call this function */
-  upgradeElement(el: HTMLElement): void
-}
-declare var componentHandler: IComponentHandler;
-
 @Component({
   selector: 'my-app',
   templateUrl: 'app/app.component.html',
