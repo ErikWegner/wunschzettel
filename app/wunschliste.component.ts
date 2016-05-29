@@ -7,13 +7,11 @@ import { WunschzettelService }              from './ws.service';
 import { MatchCategoryPipe }                from './category-filter.pipe';
 import { WunschzetteleintragComponent }     from './wunschzetteleintrag.component';
 import { ReservierungsdialogComponent }     from './reservierungsdialog.component';
-import { WunschzetteleintragFormComponent } from './wunschzetteleintrag-form.component';
 
 @Component({
   selector: 'my-wunschliste',
   directives: [
     WunschzetteleintragComponent,
-    WunschzetteleintragFormComponent,
     ReservierungsdialogComponent
   ],
   pipes: [MatchCategoryPipe],

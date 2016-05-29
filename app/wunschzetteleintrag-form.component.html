@@ -1,20 +1,23 @@
-<dialog #dialog class="mdl-dialog">
-  <h4 class="mdl-dialog__title">Eintrag</h4>
-  <div class="mdl-dialog__content">
+<div>
+  <form (ngSubmit)="onSubmit()" #wzeForm="ngForm">
+    <h2>{{ model.id == 0 ? "Neuer Eintrag" : "Eintrag bearbeiten" }}</h2>
 
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-      <input class="mdl-textfield__input" type="text" id="wzetitel">
+      <input class="mdl-textfield__input" type="text" id="wzetitel" [(ngModel)]="model.Title" required>
       <label class="mdl-textfield__label" for="wzetitel">Titel</label>
     </div>
 
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-      <textarea class="mdl-textfield__input" type="text" rows="3" id="wzebeschreibung"></textarea>
+      <textarea class="mdl-textfield__input" type="text" rows="3" id="wzebeschreibung" [(ngModel)]="model.Description"></textarea>
       <label class="mdl-textfield__label" for="wzebeschreibung">Beschreibung</label>
     </div>
 
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-      <input class="mdl-textfield__input" type="text" id="wzekategorie">
+      <input class="mdl-textfield__input" type="text" id="wzekategorie" [(ngModel)]="model.Category" required>
       <label class="mdl-textfield__label" for="wzekategorie">Kategorie</label>
     </div>
-  </div>
-</dialog>
+    
+    <button type="submit" class="mdl-button" [disabled]="!wzeForm.form.valid">Submit</button>
+    <a class="mdl-button close" [routerLink]="['Wunschliste']">Schließen</a>
+  </form>
+</div>

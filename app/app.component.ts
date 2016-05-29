@@ -6,6 +6,7 @@ import { Wunschzetteleintrag }  from './wunschzetteleintrag';
 import { Category }             from './category';
 import { WunschzettelService }  from './ws.service';
 import { WunschlisteComponent } from './wunschliste.component';
+import { WunschzetteleintragFormComponent } from './wunschzetteleintrag-form.component';
 
 @Component({
   selector: 'my-app',
@@ -26,6 +27,11 @@ import { WunschlisteComponent } from './wunschliste.component';
     component: WunschlisteComponent,
     useAsDefault: true,
     data: { category: Category.allItemsCategory().filter }
+  }
+  ,{
+    path: '/neu',
+    name: 'NeuerEintrag',
+    component: WunschzetteleintragFormComponent
   }
 ])
 export class AppComponent implements AfterViewInit {

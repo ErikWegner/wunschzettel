@@ -1,5 +1,6 @@
 import { Component,ViewChild, ElementRef }  from '@angular/core';
 import { NgForm }                           from '@angular/common';
+import { Router, ROUTER_DIRECTIVES }        from '@angular/router-deprecated';
 
 import { Wunschzetteleintrag }              from './wunschzetteleintrag';
 
@@ -7,30 +8,21 @@ import { Wunschzetteleintrag }              from './wunschzetteleintrag';
 
 @Component({
   selector: 'wunschzetteleintrag-form',
+  directives: [ROUTER_DIRECTIVES],
+  styleUrls: ['app/wunschzetteleintrag-form.component.css'],
   templateUrl: 'app/wunschzetteleintrag-form.component.html'
 })
 export class WunschzetteleintragFormComponent {
   @ViewChild('dialog') dialogRef: ElementRef;
-  dialog: IDialogInterface
   model = new Wunschzetteleintrag();
   submitted = false;
-  
-  constructor(private el:ElementRef) {
+  constructor(
+    private router: Router,
+    private el:ElementRef) {
     }
   
   ngAfterViewInit() {
-    // child is set, prepare polyfill
     componentHandler.upgradeElements(this.el.nativeElement);
-    this.dialog = this.dialogRef.nativeElement;
-    
-    if (!this.dialog.showModal) {
-      dialogPolyfill.registerDialog(this.dialog);
-    }
-    
-    this.dialog.showModal();
   }
-  
-  onSubmit() { this.submitted = true; }
-  // TODO: Remove this when we're done
-  get diagnostic() { return JSON.stringify(this.model); }
+  onSubmit() { this.submitted = true; }  
 }

@@ -1,5 +1,3 @@
-<wunschzetteleintrag-form></wunschzetteleintrag-form>
-
 <h2 *ngIf="category">Wunschliste {{ category.name }}</h2>
 
 <div *ngFor="let wunsch of (items | matchCategory:category)" class="wunschliste">
