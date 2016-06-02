@@ -1,23 +1,27 @@
-<div>
-  <form (ngSubmit)="onSubmit()" #wzeForm="ngForm">
-    <h2>{{ model.id == 0 ? "Neuer Eintrag" : "Eintrag bearbeiten" }}</h2>
-
-    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-      <input class="mdl-textfield__input" type="text" id="wzetitel" [(ngModel)]="model.Title" required>
-      <label class="mdl-textfield__label" for="wzetitel">Titel</label>
+<form (ngSubmit)="onSubmit()" #wzeForm="ngForm">
+  <div class="mdl-card mdl-shadow--4dp">
+    <div class="mdl-card__title">
+      <h2 class="mdl-card__title-text">{{ model.id == 0 ? "Neuer Eintrag" : "Eintrag bearbeiten" }}</h2>
     </div>
+    <div class="mdl-card__supporting-text">
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="text" id="wzetitel" [(ngModel)]="model.Title" required>
+        <label class="mdl-textfield__label" for="wzetitel">Titel</label>
+      </div>
 
-    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-      <textarea class="mdl-textfield__input" type="text" rows="3" id="wzebeschreibung" [(ngModel)]="model.Description"></textarea>
-      <label class="mdl-textfield__label" for="wzebeschreibung">Beschreibung</label>
-    </div>
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <textarea class="mdl-textfield__input" type="text" rows="3" id="wzebeschreibung" [(ngModel)]="model.Description"></textarea>
+        <label class="mdl-textfield__label" for="wzebeschreibung">Beschreibung</label>
+      </div>
 
-    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-      <input class="mdl-textfield__input" type="text" id="wzekategorie" [(ngModel)]="model.Category" required>
-      <label class="mdl-textfield__label" for="wzekategorie">Kategorie</label>
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="text" id="wzekategorie" [(ngModel)]="model.Category" required>
+        <label class="mdl-textfield__label" for="wzekategorie">Kategorie</label>
+      </div>
     </div>
-    
-    <button type="submit" class="mdl-button" [disabled]="!wzeForm.form.valid">Submit</button>
-    <a class="mdl-button close" [routerLink]="['Wunschliste']">Schließen</a>
-  </form>
-</div>
+    <div class="mdl-card__actions">
+      <button type="submit" class="mdl-button" [disabled]="!wzeForm.form.valid">Submit</button>
+      <a class="mdl-button close" [routerLink]="['Wunschliste']">Schließen</a>
+    </div>
+  </div>
+</form>
