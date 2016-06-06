@@ -16,6 +16,14 @@ function ensure_valid_id() {
   return $ws_id;
 }
 
+function findefreieId() {
+  $dnzaehler = 1;
+  while (file_exists("ws".$dnzaehler)) {
+    $dnzaehler++;
+  }
+  return $dnzaehler;
+}
+
 function read_file($filename) {
   // Init with emtpy string
   $nBezeichnung = "";
@@ -168,8 +176,8 @@ function prepare_captcha() {
  *  Clears the captcha from the session.
  *  Returns TRUE, if captcha matches.
  */
-function check_captcha() {
-  $captcha = isset($_GET['captcha']) ? $_GET['captcha'] : "";
+function check_captcha($captcha = "") {
+  $captcha = getRequestVariable('captcha', $captcha);
   if ($captcha == "") {
     return FALSE;
   }
@@ -179,12 +187,57 @@ function check_captcha() {
   return $result;
 }
 
-$action = isset($_GET['action']) ? $_GET['action'] : "";
-switch ($action) {
-  case 'list' : listitems(); break;
-  case 'status' : status(); break;
-  case 'reserve' : set_reserved(TRUE); break;
-  case 'clear' : set_reserved(FALSE); break;
-  case 'captcha' : prepare_captcha(); break;
-  default: help(); break;
+function additem($data) {
+  if (!isset($data["captcha"]) || check_captcha($data["captcha"]) === FALSE) {
+    print json_encode(
+      array("data" => array(
+        "success" => FALSE,
+        "message" => "Captcha falsch"
+      )));
+    return;
+  }
+  $ws_id = findefreieId();
+  $dat = $data["item"];
+  write_file("ws" . $ws_id, $dat);
+  print json_encode(
+    array("data" => array(
+      "success" => TRUE,
+      "message" => "Eintrag angelegt",
+      "id" => $ws_id
+    )));
+}
+
+/** Try to etract a parameter from the post or get request */
+function getRequestVariable($varname, $defaultvalue = NULL) {
+  if (strtoupper($_SERVER['REQUEST_METHOD']) === 'GET') {
+    if (isset($_GET[$varname])) {
+      return $_GET[$varname];
+    }
+  }
+  
+  return $defaultvalue;
+}
+
+/** Entry point for code */
+
+if (strtoupper($_SERVER['REQUEST_METHOD']) === 'POST') {
+  $rawdata = file_get_contents('php://input');
+  $json = $rawdata;
+  $data = json_decode($json, TRUE);
+  // POST-Request
+  $action = isset($data['action']) ? $data['action'] : '';
+  switch ($action) {
+    case 'add' : additem($data); break;
+  }
+} else {
+  // GET-Request
+  $action = isset($_GET['action']) ? $_GET['action'] : "";
+  switch ($action) {
+    case 'list' : listitems(); break;
+    case 'status' : status(); break;
+    case 'reserve' : set_reserved(TRUE); break;
+    case 'clear' : set_reserved(FALSE); break;
+    case 'captcha' : prepare_captcha(); break;
+    default: help(); break;
+  }
 }
