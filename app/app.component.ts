@@ -44,15 +44,16 @@ export class AppComponent implements AfterViewInit {
   constructor(
     private el: ElementRef,
     private service: WunschzettelService
-  ) { }
+  ) { 
+    
+  }
 
   ngOnInit() {
     this.selectedCategory = Category.allItemsCategory();
-    this.service.getItems()
-      .subscribe(
-      items => this.categories = this.service.extractCategories(items),
-      error => this.errorMessage = <any>error
-      );
+    this.service.categories$.subscribe(categories => {
+      this.categories = categories;
+    });
+    this.service.getItems();
   }
 
   ngAfterViewInit() {
@@ -61,4 +62,9 @@ export class AppComponent implements AfterViewInit {
       componentHandler.upgradeElement(this.el.nativeElement.children[0]);
     }
   }
+  
+  private onItemAdded(item: Wunschzetteleintrag): void {
+        
+    }
+
 }

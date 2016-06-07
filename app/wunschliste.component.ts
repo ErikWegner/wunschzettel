@@ -34,7 +34,7 @@ export class WunschlisteComponent implements OnInit {
 
   ngOnInit() {
     var routeparam = this.routeParams.get('category') || this.category.filter;
-    this.service.getItems()
+    this.service.items$
       .subscribe(
       items => {
         this.items = items;

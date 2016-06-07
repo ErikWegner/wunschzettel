@@ -1,10 +1,13 @@
-import { Injectable }     from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Headers, RequestOptions } from '@angular/http';
 
 import { Wunschzetteleintrag } from './wunschzetteleintrag';
 import { Category }            from './category';
 import { Observable }          from 'rxjs/Observable';
+import { Observer } from 'rxjs/Observer';
+
+import 'rxjs/add/operator/share';
 
 /** Result for getItemStatus */
 export interface IStatusResponse {
@@ -38,20 +41,50 @@ export class WunschzettelService {
   private _items: Observable<Wunschzetteleintrag[]>
   private _categories: Category[]
 
+  //https://coryrylan.com/blog/angular-2-observable-data-services
+  public categories$: Observable<Category[]>
+  public items$: Observable<Wunschzetteleintrag[]>
+
+  private _categoriesObserver: Observer<Category[]>
+  private _itemsObserver: Observer<Wunschzetteleintrag[]>
+
+  private _data: {
+    items: Wunschzetteleintrag[]
+  }
+
   constructor(private http: Http) {
+    this._data = { items: null };
+    // init the observables for all consumers
+    this.categories$ = new Observable((observer: any) => this._categoriesObserver = observer).share();
+    this.items$ = new Observable((observer: any) => this._itemsObserver = observer).publishReplay(1).refCount();
+
+    // register a consumer for the items to update the categories
+    this.items$.subscribe(items => {
+      var oldCategories = JSON.stringify(this._categories);
+      this._categories = null;
+      this.extractCategories(items);
+      if (JSON.stringify(this._categories) != oldCategories) {
+        this._categoriesObserver.next(this._categories);
+      }
+    });
   }
 
   /** Get a list of all available items */
-  getItems(): Observable<Wunschzetteleintrag[]> {
-    if (!this._items) {
-      this._items = this.http.get(this.serviceUrl + "?action=list")
+  getItems() {
+    if (!this._data.items) {
+      this._data.items = []; // prevend to call the service twice 
+
+      var response = this.http.get(this.serviceUrl + "?action=list")
         .map(this.extractData)
         .catch(this.handleError)
-        .publishReplay(1)
-        .refCount();
+      response.subscribe(
+        items => {
+          this._data.items = items;
+          this.publishItems();
+        },
+        error => { }
+      );
     }
-
-    return this._items;
   }
 
   /** Get a list of categories */
@@ -105,17 +138,33 @@ export class WunschzettelService {
 
   /** Add a new item */
   addItem(item: Wunschzetteleintrag, captchatext: string): Observable<ICRUDResponse> {
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    let options = new RequestOptions({ headers: headers });
-    return this.http.post(
-      this.serviceUrl,
-      JSON.stringify({
-        'action': 'add',
-        'captcha': captchatext,
-        'item': item
-      }), options)
-      .map(this.extractData)
-      .catch(this.handleError);
+    return Observable.create(
+      (observer: any) => {
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+        var request: Observable<ICRUDResponse> = this.http.post(
+          this.serviceUrl,
+          JSON.stringify({
+            'action': 'add',
+            'captcha': captchatext,
+            'item': item
+          }), options)
+          .map(this.extractData)
+          .catch(this.handleError);
+
+        request.subscribe(
+          response => {
+            if (response.success) {
+              item.id = response.id;
+              this._data.items.push(item);
+              this.publishItems();
+            }
+            
+            observer.next(response);
+          }
+        );
+      }
+    );
   }
 
   private extractData(res: Response) {
@@ -131,5 +180,9 @@ export class WunschzettelService {
     let errMsg = error.message || 'Server error';
     console.error(errMsg); // log to console instead
     return Observable.throw(errMsg);
+  }
+
+  private publishItems() {
+    this._itemsObserver.next(this._data.items);
   }
 }

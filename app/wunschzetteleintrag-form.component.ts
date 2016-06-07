@@ -64,17 +64,13 @@ export class WunschzetteleintragFormComponent {
   
   onSubmit() {
     this.formularStatus = Formularstatus.Submitting;
-    this.service
-      .addItem(this.model, this.captchaResult)
-      .subscribe(
-        result => {
-          console.log(result);
-        },
-        error => {
-          this.handleError(error)
-          this.formularStatus = Formularstatus.Edit;
+    this.service.addItem(this.model, this.captchaResult).subscribe(
+      response => {
+        if (response.success) {
+          this.router.navigate(['Wunschliste', {category: this.model.Category}]);
         }
-      );
+      }
+    )
   }
 
   private handleError(error: any) {
