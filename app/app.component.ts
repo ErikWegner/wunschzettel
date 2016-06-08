@@ -27,8 +27,11 @@ import { WunschzetteleintragFormComponent } from './wunschzetteleintrag-form.com
     component: WunschlisteComponent,
     useAsDefault: true,
     data: { category: Category.allItemsCategory().filter }
-  }
-  ,{
+  }, {
+    path: '/wunschliste/bearbeiten/:id',
+    name: 'WunschBearbeiten',
+    component: WunschzetteleintragFormComponent,
+  }, {
     path: '/neu',
     name: 'NeuerEintrag',
     component: WunschzetteleintragFormComponent
@@ -44,8 +47,8 @@ export class AppComponent implements AfterViewInit {
   constructor(
     private el: ElementRef,
     private service: WunschzettelService
-  ) { 
-    
+  ) {
+
   }
 
   ngOnInit() {
@@ -62,9 +65,9 @@ export class AppComponent implements AfterViewInit {
       componentHandler.upgradeElement(this.el.nativeElement.children[0]);
     }
   }
-  
+
   private onItemAdded(item: Wunschzetteleintrag): void {
-        
-    }
+
+  }
 
 }

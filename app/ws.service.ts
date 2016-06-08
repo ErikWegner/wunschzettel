@@ -34,6 +34,12 @@ export interface ICRUDResponse extends ISuccessAndMessageResponse {
   id?: number
 }
 
+enum CRUDAction {
+  Create,
+  Update,
+  Delete
+}
+
 @Injectable()
 export class WunschzettelService {
   private serviceUrl = 'service.php';  // URL to web api
@@ -138,6 +144,14 @@ export class WunschzettelService {
 
   /** Add a new item */
   addItem(item: Wunschzetteleintrag, captchatext: string): Observable<ICRUDResponse> {
+    return this.sendItem(CRUDAction.Create, item, captchatext);
+  }
+  /** Update an existing item */
+  updateItem(item: Wunschzetteleintrag, captchatext: string): Observable<ICRUDResponse> {
+    return this.sendItem(CRUDAction.Update, item, captchatext);
+  }
+
+  private sendItem(action: CRUDAction, item: Wunschzetteleintrag, captchatext: string): Observable<ICRUDResponse> {
     return Observable.create(
       (observer: any) => {
         let headers = new Headers({ 'Content-Type': 'application/json' });
@@ -145,7 +159,7 @@ export class WunschzettelService {
         var request: Observable<ICRUDResponse> = this.http.post(
           this.serviceUrl,
           JSON.stringify({
-            'action': 'add',
+            'action': action == CRUDAction.Create ? 'add' : action == CRUDAction.Update ? 'update' : 'fail',
             'captcha': captchatext,
             'item': item
           }), options)
@@ -155,13 +169,33 @@ export class WunschzettelService {
         request.subscribe(
           response => {
             if (response.success) {
-              item.id = response.id;
-              this._data.items.push(item);
+              if (action == CRUDAction.Create) {
+                item.id = response.id;
+                this._data.items.push(item);
+              }
+
+              if (action == CRUDAction.Update) {
+                var olditem = this._data.items.find(i => i.id == item.id);
+                if (item) {
+                  for(var key in item) {
+                    olditem[key] = item[key];
+                  }
+                }
+              }
+
               this.publishItems();
             }
-            
+
             observer.next(response);
           }
+          , error => {
+              var err: ICRUDResponse = {
+                success: false,
+                message: error,
+                id: 0
+              };
+              observer.next(err)
+            }
         );
       }
     );

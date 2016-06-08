@@ -5,7 +5,7 @@
       {{wunsch.Title}}
     </p>
     <p *ngIf="dialogStatus == dialogStatusEnum.Captcha">
-      {{ captchaText }}: <input [(ngModel)]="captchaResult" placeholder="Zahl" maxlength="1">
+      {{ captchaText }}: <input [(ngModel)]="captchaResult" placeholder="Zahl" maxlength="1" autocomplete="off">
     </p>
     <p *ngIf="dialogStatus == dialogStatusEnum.Submitting">
       ... wird übertragen ...

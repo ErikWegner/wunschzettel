@@ -6,8 +6,8 @@ function help() {
   print json_encode(array("action"=> array("list", "reserve", "clear", "add", "update")));
 }
 
-function ensure_valid_id() {
-  $ws_id = isset($_GET['id']) ? $_GET['id'] : 0;
+function ensure_valid_id($data = NULL) {
+  $ws_id = getRequestVariable('id', $data);
   if (is_numeric($ws_id) == false || $ws_id < 1 || file_exists("ws" . $ws_id) !== TRUE) {
     header('HTTP/1.1 500 Internal Server Error');
     die();
@@ -176,9 +176,9 @@ function prepare_captcha() {
  *  Clears the captcha from the session.
  *  Returns TRUE, if captcha matches.
  */
-function check_captcha($captcha = "") {
-  $captcha = getRequestVariable('captcha', $captcha);
-  if ($captcha == "") {
+function check_captcha($data = NULL) {
+  $captcha = getRequestVariable('captcha', $data);
+  if ($captcha === "" || $captcha === NULL) {
     return FALSE;
   }
   session_start();
@@ -188,7 +188,7 @@ function check_captcha($captcha = "") {
 }
 
 function additem($data) {
-  if (!isset($data["captcha"]) || check_captcha($data["captcha"]) === FALSE) {
+  if (check_captcha($data) === FALSE) {
     print json_encode(
       array("data" => array(
         "success" => FALSE,
@@ -207,15 +207,44 @@ function additem($data) {
     )));
 }
 
+function updateitem($data) {
+  
+  if (check_captcha($data) === FALSE) {
+    print json_encode(
+      array("data" => array(
+        "success" => FALSE,
+        "message" => "Captcha falsch"
+      )));
+    return;
+  }
+  
+  $ws_id = ensure_valid_id($data['item']);
+  
+  $newdat = $data["item"];
+  $dat = read_file("ws" . $ws_id, TRUE);
+
+  write_file("ws" . $ws_id, $newdat + $dat);
+  print json_encode(
+    array("data" => array(
+      "success" => TRUE,
+      "message" => "Eintrag angelegt",
+      "id" => $ws_id
+    )));
+}
+
 /** Try to etract a parameter from the post or get request */
-function getRequestVariable($varname, $defaultvalue = NULL) {
+function getRequestVariable($varname, $data = NULL) {
   if (strtoupper($_SERVER['REQUEST_METHOD']) === 'GET') {
     if (isset($_GET[$varname])) {
       return $_GET[$varname];
     }
   }
   
-  return $defaultvalue;
+  if (is_array($data) && isset($data[$varname])) {
+    return $data[$varname];
+  }
+
+  return NULL;
 }
 
 /** Entry point for code */
@@ -228,6 +257,7 @@ if (strtoupper($_SERVER['REQUEST_METHOD']) === 'POST') {
   $action = isset($data['action']) ? $data['action'] : '';
   switch ($action) {
     case 'add' : additem($data); break;
+    case 'update': updateitem($data); break;
   }
 } else {
   // GET-Request

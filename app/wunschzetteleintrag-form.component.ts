@@ -1,8 +1,9 @@
-import { Component, ViewChild, ElementRef }  from '@angular/core';
-import { NgForm }                           from '@angular/common';
-import { Router, ROUTER_DIRECTIVES }        from '@angular/router-deprecated';
+import { Component, ViewChild, ElementRef, AfterViewInit, OnInit }  from '@angular/core';
+import { NgForm } from '@angular/common';
+import { RouteParams, Router, ROUTER_DIRECTIVES } from '@angular/router-deprecated';
+import { Observable } from 'rxjs/Observable';
 
-import { WunschzettelService, IReserveResponse } from './ws.service';
+import { WunschzettelService, IReserveResponse, ICRUDResponse } from './ws.service';
 import { Wunschzetteleintrag }              from './wunschzetteleintrag';
 
 enum Formularstatus {
@@ -22,7 +23,7 @@ enum Formularstatus {
   styleUrls: ['app/wunschzetteleintrag-form.component.css'],
   templateUrl: 'app/wunschzetteleintrag-form.component.html'
 })
-export class WunschzetteleintragFormComponent {
+export class WunschzetteleintragFormComponent implements AfterViewInit, OnInit {
   public formularStatusEnum = Formularstatus
   @ViewChild('dialog') dialogRef: ElementRef;
   model = new Wunschzetteleintrag();
@@ -36,15 +37,37 @@ export class WunschzetteleintragFormComponent {
   constructor(
     private service: WunschzettelService,
     private router: Router,
+    private routeParams: RouteParams,
     private el: ElementRef) {
-      this.errorText = "bl";
+      
+  }
+
+  ngOnInit() {
+    let id = +this.routeParams.get('id');
+    if (id > 0) {
+      this.service.items$.subscribe(
+        items => {
+          var item = items.find(i => i.id == id);
+          if (!item) {
+            this.router.navigate(['Wunschliste']);
+            return;
+          }
+
+          this.model = JSON.parse(JSON.stringify(item));
+        }, error => this.handleError(error)
+      );
+
+      this.service.getItems()
+    }
   }
 
   ngAfterViewInit() {
-     
     // Material design
     componentHandler.upgradeElements(this.el.nativeElement);
-
+    this.initCaptcha();
+  }
+   
+  initCaptcha() { 
     // Retrieve data
     this.service.getCaptcha().subscribe(
       // Data has arrived
@@ -64,17 +87,33 @@ export class WunschzetteleintragFormComponent {
   
   onSubmit() {
     this.formularStatus = Formularstatus.Submitting;
-    this.service.addItem(this.model, this.captchaResult).subscribe(
+
+    var o: Observable<ICRUDResponse>;
+    if (this.model.id > 0) {
+      o = this.service.updateItem(this.model, this.captchaResult);
+    } else {
+      o = this.service.addItem(this.model, this.captchaResult);
+    }
+
+    o.subscribe(
       response => {
         if (response.success) {
           this.router.navigate(['Wunschliste', {category: this.model.Category}]);
+          return;
         }
+        
+        this.errorText = response.message;
+        this.formularStatus = Formularstatus.InitLoading;
+        this.initCaptcha();
       }
     )
   }
 
   private handleError(error: any) {
-    this.errorText = <any>error
+    debugger;
+    this.errorText = error
+    this.formularStatus = Formularstatus.InitLoading;
+    this.initCaptcha();
   }
 
 }
