@@ -48,5 +48,17 @@
       <button type="submit" class="mdl-button" [disabled]="formularStatus!=formularStatusEnum.Edit">Speichern</button>
       <a class="mdl-button close" [routerLink]="['Wunschliste']">Schließen</a>
     </div>
+    <div class="mdl-card__menu" *ngIf="model.id > 0">
+      <button id="demo-menu-lower-right" type="button"
+              class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">more_vert</i>
+      </button>
+
+      <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+          for="demo-menu-lower-right">
+        <li class="mdl-menu__item" [routerLink]="['Wunschliste']">Schließen</li>
+        <li class="mdl-menu__item" (click)="onPrepareErase()">Löschen</li>
+      </ul>
+  </div>
   </div>
 </form>

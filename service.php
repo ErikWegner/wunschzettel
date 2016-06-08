@@ -208,7 +208,6 @@ function additem($data) {
 }
 
 function updateitem($data) {
-  
   if (check_captcha($data) === FALSE) {
     print json_encode(
       array("data" => array(
@@ -219,15 +218,43 @@ function updateitem($data) {
   }
   
   $ws_id = ensure_valid_id($data['item']);
-  
   $newdat = $data["item"];
   $dat = read_file("ws" . $ws_id, TRUE);
-
   write_file("ws" . $ws_id, $newdat + $dat);
+
   print json_encode(
     array("data" => array(
       "success" => TRUE,
-      "message" => "Eintrag angelegt",
+      "message" => "Eintrag aktualisiert",
+      "id" => $ws_id
+    )));
+}
+
+function deleteitem($data) {
+  if (check_captcha($data) === FALSE) {
+    print json_encode(
+      array("data" => array(
+        "success" => FALSE,
+        "message" => "Captcha falsch"
+      )));
+    return;
+  }
+
+  $ws_id = ensure_valid_id($data);
+  if (unlink("ws" . $ws_id)) {
+    print json_encode(
+      array("data" => array(
+        "success" => TRUE,
+        "message" => "Eintrag gelöscht",
+        "id" => $ws_id
+      )));
+    return;
+  }
+
+  print json_encode(
+    array("data" => array(
+      "success" => FALSE,
+      "message" => "Serverfehler",
       "id" => $ws_id
     )));
 }
@@ -258,6 +285,7 @@ if (strtoupper($_SERVER['REQUEST_METHOD']) === 'POST') {
   switch ($action) {
     case 'add' : additem($data); break;
     case 'update': updateitem($data); break;
+    case 'delete': deleteitem($data); break;
   }
 } else {
   // GET-Request

@@ -151,6 +151,43 @@ export class WunschzettelService {
     return this.sendItem(CRUDAction.Update, item, captchatext);
   }
 
+  removeItem(id: number, captchatext: string): Observable<ICRUDResponse> {
+    return Observable.create(
+      (observer: any) => {
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+        var request: Observable<ICRUDResponse> = this.http.post(
+          this.serviceUrl,
+          JSON.stringify({
+            'action': 'delete',
+            'captcha': captchatext,
+            'id': id
+          }), options)
+          .map(this.extractData)
+          .catch(this.handleError);
+
+        request.subscribe(
+          response => {
+            if (response.success) {
+              this._data.items = this._data.items.filter(i => i.id != id);
+              this.publishItems();
+            }
+
+            observer.next(response);
+          }
+          , error => {
+            var err: ICRUDResponse = {
+              success: false,
+              message: error,
+              id: 0
+            };
+            observer.next(err)
+          }
+        );
+      }
+    );
+  }
+
   private sendItem(action: CRUDAction, item: Wunschzetteleintrag, captchatext: string): Observable<ICRUDResponse> {
     return Observable.create(
       (observer: any) => {
@@ -177,7 +214,7 @@ export class WunschzettelService {
               if (action == CRUDAction.Update) {
                 var olditem = this._data.items.find(i => i.id == item.id);
                 if (item) {
-                  for(var key in item) {
+                  for (var key in item) {
                     olditem[key] = item[key];
                   }
                 }
@@ -189,13 +226,13 @@ export class WunschzettelService {
             observer.next(response);
           }
           , error => {
-              var err: ICRUDResponse = {
-                success: false,
-                message: error,
-                id: 0
-              };
-              observer.next(err)
-            }
+            var err: ICRUDResponse = {
+              success: false,
+              message: error,
+              id: 0
+            };
+            observer.next(err)
+          }
         );
       }
     );

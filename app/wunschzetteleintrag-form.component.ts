@@ -14,7 +14,9 @@ enum Formularstatus {
   // Formular abgesendet, warten
   Submitting,
   // Ein Fehler ist aufgetreten
-  Error
+  Error,
+  // Der Eintrag soll gelöscht werden
+  PrepareErase
 }
 
 @Component({
@@ -39,7 +41,7 @@ export class WunschzetteleintragFormComponent implements AfterViewInit, OnInit {
     private router: Router,
     private routeParams: RouteParams,
     private el: ElementRef) {
-      
+
   }
 
   ngOnInit() {
@@ -66,8 +68,8 @@ export class WunschzetteleintragFormComponent implements AfterViewInit, OnInit {
     componentHandler.upgradeElements(this.el.nativeElement);
     this.initCaptcha();
   }
-   
-  initCaptcha() { 
+
+  initCaptcha() {
     // Retrieve data
     this.service.getCaptcha().subscribe(
       // Data has arrived
@@ -84,24 +86,27 @@ export class WunschzetteleintragFormComponent implements AfterViewInit, OnInit {
     this.captchaText = ""
     this.captchaResult = ""
   }
-  
+
   onSubmit() {
     this.formularStatus = Formularstatus.Submitting;
-
+    var toastText: string;
     var o: Observable<ICRUDResponse>;
     if (this.model.id > 0) {
       o = this.service.updateItem(this.model, this.captchaResult);
+      toastText = "Eintrag aktualisiert";
     } else {
       o = this.service.addItem(this.model, this.captchaResult);
+      toastText = "Eintrag angelegt";
     }
 
     o.subscribe(
       response => {
         if (response.success) {
-          this.router.navigate(['Wunschliste', {category: this.model.Category}]);
+          this.toastMessage(toastText);
+          this.router.navigate(['Wunschliste', { category: this.model.Category }]);
           return;
         }
-        
+
         this.errorText = response.message;
         this.formularStatus = Formularstatus.InitLoading;
         this.initCaptcha();
@@ -116,4 +121,32 @@ export class WunschzetteleintragFormComponent implements AfterViewInit, OnInit {
     this.initCaptcha();
   }
 
+  onPrepareErase() {
+    this.formularStatus = Formularstatus.PrepareErase;
+    var eraseCaptchaText = prompt("Zum Bestätigen des Löschens: " + this.captchaText);
+    if (eraseCaptchaText) {
+      this.service.removeItem(this.model.id, eraseCaptchaText).subscribe(
+        response => {
+          if (response.success) {
+            this.toastMessage('Eintrag gelöscht');
+            this.router.navigate(['Wunschliste']);
+            return;
+          }
+
+          this.errorText = response.message;
+          this.formularStatus = Formularstatus.InitLoading;
+          this.initCaptcha();
+        }
+      );
+    }
+  }
+
+  private toastMessage(message: string) {
+    var notification = document.querySelector('.mdl-js-snackbar');
+    (<any>notification).MaterialSnackbar.showSnackbar(
+      {
+        message: message
+      }
+    );
+  }
 }
