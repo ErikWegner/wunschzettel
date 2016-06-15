@@ -1,7 +1,0 @@
-<h2 *ngIf="category">Wunschliste {{ category.name }}</h2>
-
-<div *ngFor="let wunsch of (items | matchCategory:category)" class="wunschliste">
-  <my-wunschzetteleintrag [wunsch]="wunsch" (onReservierung)="onReservierung($event)" (onLoescheReservierung)="onLoescheReservierung($event)"></my-wunschzetteleintrag>
-</div>
-
-<my-wunschreservierungsdialog></my-wunschreservierungsdialog>

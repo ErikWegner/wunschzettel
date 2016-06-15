@@ -2,19 +2,28 @@
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
-    "moduleResolution": "node",
-    "sourceMap": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "removeComments": false,
-    "noImplicitAny": true,
-    "suppressImplicitAnyIndexErrors": true
+    "sourceMap": true,
+    "noEmitHelpers": true
   },
   "exclude": [
-    "node_modules",
-    "typings/browser.d.ts",
-    "typings/browser",
-    "typings/main",
-    "typings/main.d.ts"
-  ]
+    "./node_modules",
+    "./typings/main.d.ts",
+    "./typings/main"
+  ],
+  "filesGlob": [
+    "./src/app/**/*.ts",
+    "./src/platform/**/*.ts",
+    "!./node_modules/**",
+    "./src/custom-typings.d.ts",
+    "./typings/index.d.ts"
+  ],
+  "awesomeTypescriptLoaderOptions": {
+    "resolveGlobs": true,
+    "forkChecker": true
+  },
+  "compileOnSave": false,
+  "buildOnSave": false,
+  "atom": { "rewriteTsconfig": false }
 }
