@@ -1,10 +1,10 @@
 // App
 export * from './app.component';
-export * from './app.service';
+export * from './service';
 
-import { AppState } from './app.service';
+import { WunschzettelService } from './service';
 
 // Application wide providers
 export const APP_PROVIDERS = [
-  AppState
+  WunschzettelService
 ];

@@ -1,12 +1,16 @@
 /*
  * Angular 2 decorators and services
  */
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, ElementRef, AfterViewInit } from '@angular/core';
 import { RouteConfig, Router } from '@angular/router-deprecated';
 
-import { AppState } from './app.service';
-import { Home } from './home';
 import { RouterActive } from './router-active';
+import { WunschlisteComponent } from './wunschliste';
+import { WunschzettelService }  from './service';
+import { WunschzetteleintragComponent } from './wunschzetteleintrag';
+import { WunschzetteleintragFormComponent } from './wunschzetteleintragform';
+import { ReservierungsdialogComponent } from './reservierungsdialog';
+import { Category } from './common';
 
 /*
  * App Component
@@ -14,64 +18,69 @@ import { RouterActive } from './router-active';
  */
 @Component({
   selector: 'app',
-  pipes: [ ],
-  providers: [ ],
-  directives: [ RouterActive ],
+  pipes: [],
+  providers: [WunschzettelService],
+  directives: [RouterActive],
   encapsulation: ViewEncapsulation.None,
   styles: [
-    require('./app.css')
+    require('./app.css'),
+    require('../../bower_components/dialog-polyfill/dialog-polyfill.css'),
+    require('../../bower_components/material-design-lite/material.min.css'),
   ],
-  template: `
-    <span router-active>
-      <button [routerLink]=" ['Index'] ">
-        Index
-      </button>
-    </span>
-    <span router-active>
-      <button [routerLink]=" ['Home'] ">
-        Home
-      </button>
-    </span>
-    <span router-active>
-      <button [routerLink]=" ['About'] ">
-        About
-      </button>
-    </span>
-
-    <main>
-      <router-outlet></router-outlet>
-    </main>
-
-    <pre class="app-state">this.appState.state = {{ appState.state | json }}</pre>
-  `
+  template: require('./app.component.html'),
 })
 @RouteConfig([
-  { path: '/',      name: 'Index', component: Home, useAsDefault: true },
-  { path: '/home',  name: 'Home',  component: Home },
+  {
+    path: '/wunschliste',
+    name: 'Wunschliste',
+    component: WunschlisteComponent,
+    useAsDefault: true,
+    data: { category: Category.allItemsCategory().filter }
+  }, {
+    path: '/wunschliste/details/:id',
+    name: 'WunschDetail',
+    component: WunschzetteleintragComponent,
+  }, {
+    path: '/wunschliste/bearbeiten/:id',
+    name: 'WunschBearbeiten',
+    component: WunschzetteleintragFormComponent,
+  }, {
+    path: '/wunschliste/reservierung/:id/:zielzustand',
+    name: 'WunschReservieren',
+    component: ReservierungsdialogComponent,
+  }, {
+    path: '/neu',
+    name: 'NeuerEintrag',
+    component: WunschzetteleintragFormComponent
+  },
   // Async load a component using Webpack's require with es6-promise-loader and webpack `require`
   { path: '/about', name: 'About', loader: () => require('es6-promise!./about')('About') }
 ])
-export class App {
-  angularclassLogo = 'assets/img/angularclass-avatar.png';
-  loading = false;
-  name = 'Angular 2 Webpack Starter';
-  url = 'https://twitter.com/AngularClass';
-
+export class App implements AfterViewInit {
+  static isInitialized = false;
+  categories: Category[] = [];
+  selectedCategory: Category;
+  title = "Wunschzettel";
+  
   constructor(
-    public appState: AppState) {
+    private el: ElementRef,
+    private service: WunschzettelService
+  ) {
 
   }
 
   ngOnInit() {
-    console.log('Initial App State', this.appState.state);
+    this.selectedCategory = Category.allItemsCategory();
+    this.service.categories$.subscribe(categories => {
+      this.categories = categories;
+    });
+    this.service.getItems();
   }
 
+  ngAfterViewInit() {
+    if (!App.isInitialized) {
+      App.isInitialized = true;
+      componentHandler.upgradeElement(this.el.nativeElement.children[0]);
+    }
+  }
 }
-
-/*
- * Please review the https://github.com/AngularClass/angular2-examples/ repo for
- * more angular app examples that you may copy/paste
- * (The examples may not be updated as quickly. Please open an issue on github for us to update it)
- * For help or questions please contact us at @AngularClass on twitter
- * or our chat on Slack at https://AngularClass.com/slack-join
- */

@@ -14,6 +14,13 @@ import '@angular/router-deprecated';
 // RxJS
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/publishReplay';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/throw';
+
+// Material design
+require('style!../bower_components/material-design-lite/material.min.css');
+require('script!../bower_components/material-design-lite/material.min.js');
 
 if ('production' === ENV) {
   // Production

@@ -1,0 +1,64 @@
+<form (ngSubmit)="onSubmit()" #wzeForm="ngForm">
+  <div class="mdl-card mdl-shadow--4dp formcard">
+    <div class="mdl-card__title">
+      <h2 class="mdl-card__title-text">{{ model.id == 0 ? "Neuer Eintrag" : "Eintrag bearbeiten" }}</h2>
+    </div>
+    <div class="mdl-card__supporting-text">
+      <!-- Titel -->
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="text" id="wzetitel" [(ngModel)]="model.Title" required>
+        <label class="mdl-textfield__label" for="wzetitel">Titel</label>
+      </div>
+
+      <!-- Beschreibung -->
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <textarea class="mdl-textfield__input" type="text" rows="3" id="wzebeschreibung" [(ngModel)]="model.Description"></textarea>
+        <label class="mdl-textfield__label" for="wzebeschreibung">Beschreibung</label>
+      </div>
+      
+      <!-- Kategorie -->
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="text" id="wzekategorie" [(ngModel)]="model.Category" required>
+        <label class="mdl-textfield__label" for="wzekategorie">Kategorie</label>
+      </div>
+      
+      <!-- Bild-Url -->
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="text" id="wzeimageurl" [(ngModel)]="model.ImgageUrl">
+        <label class="mdl-textfield__label" for="wzeimageurl">Bild-Adresse</label>
+      </div>
+      
+      <!-- Kauf-Url -->
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="text" id="wzebuyurl" [(ngModel)]="model.BuyUrl">
+        <label class="mdl-textfield__label" for="wzebuyurl">Kauf-Adresse</label>
+      </div>
+      
+      <!-- Captcha -->
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="text" id="wzecaptcha" [(ngModel)]="captchaResult" maxlength="1" required autocomplete="off">
+        <label class="mdl-textfield__label" for="wzecaptcha">{{ captchaText }}</label>
+      </div>
+      
+      <p *ngIf="errorText" class="serviceerror">{{ errorText }}</p>
+        
+      
+    </div>
+    <div class="mdl-card__actions">
+      <button type="submit" class="mdl-button" [disabled]="formularStatus!=formularStatusEnum.Edit">Speichern</button>
+      <a class="mdl-button close" [routerLink]="['Wunschliste']">Schließen</a>
+    </div>
+    <div class="mdl-card__menu" *ngIf="model.id > 0">
+      <button id="demo-menu-lower-right" type="button"
+              class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">more_vert</i>
+      </button>
+
+      <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+          for="demo-menu-lower-right">
+        <li class="mdl-menu__item" [routerLink]="['Wunschliste']">Schließen</li>
+        <li class="mdl-menu__item" (click)="onPrepareErase()">Löschen</li>
+      </ul>
+  </div>
+  </div>
+</form>

@@ -1,0 +1,29 @@
+<div class="card-wide mdl-card mdl-shadow--4dp">
+  <div class="mdl-card__supporting-text">
+    <img *ngIf="wunsch.ImgageUrl" [src]="wunsch.ImgageUrl" class="wunschbild" />
+    <h3>{{ wunsch.Title }}</h3>
+    <p>{{ wunsch.Description }}</p>
+    <a [routerLink]="['WunschBearbeiten', { id: wunsch.id }]" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored editbutton">
+      <i class="material-icons">edit</i>
+    </a>
+  </div>
+  <div class="mdl-card__actions mdl-card--border">
+    <button class="mdl-button mdl-js-button" (click)="onShowStatus()" [disabled]="!statusButtonActive">
+      Reservierungsstatus
+    </button>
+    <span *ngIf="errorText" class="error">
+      {{ errorText }}
+    </span>
+    <span *ngIf="statusIsVisible" class="rstatus">
+      {{ wunschStatus ? "Reserviert" : "Nicht reserviert" }}
+    </span>
+    <!-- Primary-colored flat button -->
+    <button *ngIf="statusIsVisible && !wunschStatus" class="mdl-button mdl-js-button mdl-button--primary" [routerLink]="['WunschReservieren', {id: wunsch.id, zielzustand:'setzen' }]">
+      Reservieren
+    </button>
+    <!-- Accent-colored flat button -->
+    <button *ngIf="statusIsVisible && wunschStatus" class="mdl-button mdl-js-button mdl-button--accent" [routerLink]="['WunschReservieren', {id: wunsch.id, zielzustand:'loeschen' }]">
+      Reservierung löschen
+    </button>
+  </div>
+</div>

@@ -17,8 +17,8 @@ const ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin
  * Webpack Constants
  */
 const METADATA = {
-  title: 'Angular2 Webpack Starter by @gdi2290 from @AngularClass',
-  baseUrl: '/'
+  title: 'Wunschzettel',
+  baseUrl: '/wunschzettelstarter/dist/'
 };
 
 /*
@@ -229,7 +229,11 @@ module.exports = {
     new CopyWebpackPlugin([{
       from: 'src/assets',
       to: 'assets'
-    }]),
+    }
+    , {from : 'src/.htaccess', to: '.'}
+    , {from : 'src/service.php', to: '.'}
+    , {from : 'src/ws', to: '.'}
+    ]),
 
     /*
      * Plugin: HtmlWebpackPlugin

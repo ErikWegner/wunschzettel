@@ -16,6 +16,17 @@ const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const WebpackMd5Hash = require('webpack-md5-hash');
 
+
+/**
+ * Webpack Plugins
+ */
+const ProvidePlugin = require('webpack/lib/ProvidePlugin');
+const DefinePlugin = require('webpack/lib/DefinePlugin');
+const DedupePlugin = require('webpack/lib/optimize/DedupePlugin');
+const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
+const CompressionPlugin = require('compression-webpack-plugin');
+const WebpackMd5Hash = require('webpack-md5-hash');
+
 /**
  * Webpack Constants
  */
@@ -44,7 +55,21 @@ module.exports = webpackMerge(commonConfig, {
    * See: http://webpack.github.io/docs/configuration.html#devtool
    * See: https://github.com/webpack/docs/wiki/build-performance#sourcemaps
    */
-  devtool: 'source-map',
+
+  /**
+   * Switch loaders to debug mode.
+   *
+   * See: http://webpack.github.io/docs/configuration.html#debug
+   */
+  debug: false,
+
+  /**
+   * Developer tool to enhance debugging
+   *
+   * See: http://webpack.github.io/docs/configuration.html#devtool
+   * See: https://github.com/webpack/docs/wiki/build-performance#sourcemaps
+   */
+  devtool: 'hidden-source-map',
 
   /**
    * Options affecting the output of the compilation.

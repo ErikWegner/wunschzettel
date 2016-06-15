@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, AfterViewInit } from '@angular/core';
 
 /*
  * We're loading this component asynchronously
@@ -6,51 +6,43 @@ import { Component } from '@angular/core';
  * see https://github.com/gdi2290/es6-promise-loader for more info
  */
 
-console.log('`About` component loaded asynchronously');
-
 @Component({
   selector: 'about',
   styles: [`
+  .formcard {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+}
   `],
   template: `
-    <h1>About</h1>
-    <div>
-      For hot module reloading run
-      <pre>npm run start:hmr</pre>
-    </div>
-    <div>
-      <h3>
-        patrick@AngularClass.com
-      </h3>
-    </div>
+<div class="mdl-card mdl-shadow--4dp formcard">
+  <div class="mdl-card__title">
+    <h2 class="mdl-card__title-text">Wunschzettel</h2>
+  </div>
+  <div class="mdl-card__supporting-text">
+    <p>
+      Version 2.0
+    </p>
+    <p>
+      powered by<br><img src="//ewus.de/img/logo2013.png" alt="EWUS" style="width:64px;height:64px;">
+    </p>
+  </div>
+  <div class="mdl-card__actions">
+    <a class="mdl-button close" [routerLink]="['Wunschliste']">Schließen</a>
+  </div>
+</div>
   `
 })
-export class About {
-  constructor() {
+export class About implements AfterViewInit {
+  constructor(
+    private el: ElementRef
+  ) {
 
   }
 
-  ngOnInit() {
-    console.log('hello `About` component');
-    // static data that is bundled
-    // var mockData = require('assets/mock-data/mock-data.json');
-    // console.log('mockData', mockData);
-    // if you're working with mock data you can also use http.get('assets/mock-data/mock-data.json')
-    // this.asyncDataWithWebpack();
+  ngAfterViewInit() {
+    // Material design
+    componentHandler.upgradeElements(this.el.nativeElement);
   }
-  asyncDataWithWebpack() {
-    // you can also async load mock data with 'es6-promise-loader'
-    // you would do this if you don't want the mock-data bundled
-    // remember that 'es6-promise-loader' is a promise
-    // var asyncMockDataPromiseFactory = require('es6-promise!assets/mock-data/mock-data.json');
-    // setTimeout(() => {
-    //
-    //   let asyncDataPromise = asyncMockDataPromiseFactory();
-    //   asyncDataPromise.then(json => {
-    //     console.log('async mockData', json);
-    //   });
-    //
-    // });
-  }
-
 }
