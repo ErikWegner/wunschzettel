@@ -22,7 +22,7 @@ import { Component, ElementRef, AfterViewInit } from '@angular/core';
   </div>
   <div class="mdl-card__supporting-text">
     <p>
-      Version 2.0
+      Version 22
     </p>
     <p>
       powered by<br><img src="//ewus.de/img/logo2013.png" alt="EWUS" style="width:64px;height:64px;">
