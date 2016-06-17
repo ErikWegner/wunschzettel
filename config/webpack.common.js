@@ -18,7 +18,7 @@ const ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin
  */
 const METADATA = {
   title: 'Wunschzettel',
-  baseUrl: '/wunschzettelstarter/dist/'
+  baseUrl: '/wunschzettel/dist/'
 };
 
 /*
