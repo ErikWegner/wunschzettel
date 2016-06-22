@@ -2,7 +2,7 @@
   <div class="mdl-card__supporting-text">
     <img *ngIf="wunsch.ImgageUrl" [src]="wunsch.ImgageUrl" class="wunschbild" />
     <h3>{{ wunsch.Title }}</h3>
-    <p>{{ wunsch.Description }}</p>
+    <p [innerHTML]="wunsch.Description"></p>
     <a [routerLink]="['WunschBearbeiten', { id: wunsch.id }]" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored editbutton">
       <i class="material-icons">edit</i>
     </a>

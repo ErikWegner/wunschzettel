@@ -4,11 +4,15 @@ import { RouteParams, Router, ROUTER_DIRECTIVES } from '@angular/router-deprecat
 import { Wunschzetteleintrag, Category } from '../common';
 import { WunschzettelService } from '../service';
 import { MatchCategoryPipe } from './category-filter.pipe';
+import { SummaryPipe } from './summary.pipe';
 
 @Component({
   selector: 'my-wunschliste',
   directives: [ROUTER_DIRECTIVES],
-  pipes: [MatchCategoryPipe],
+  pipes: [
+    MatchCategoryPipe,
+    SummaryPipe
+  ],
   styles: [require('./wunschliste.component.css')],
   template: require('./wunschliste.component.html')
 })

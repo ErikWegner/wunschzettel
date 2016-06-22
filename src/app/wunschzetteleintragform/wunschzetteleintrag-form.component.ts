@@ -56,6 +56,7 @@ export class WunschzetteleintragFormComponent implements AfterViewInit, OnInit {
           }
 
           this.model = JSON.parse(JSON.stringify(item));
+          this.model.Description = this.model.Description.replace(/<br>/g, "\n");
         }, error => this.handleError(error)
       );
 
