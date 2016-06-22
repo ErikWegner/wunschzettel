@@ -78,13 +78,13 @@ function write_file($filename, $wsdata) {
   ); 
   $fp = fopen($filename, "w");
   fputs($fp, "Bezeichnung=" . $data["Title"] . "\n");
-  fputs($fp, "beschreibung=" . str_replace("\r", "", str_replace("\n","<br>",$data["Description"])) . "\n");
+  fputs($fp, "Beschreibung=" . str_replace("\r", "", str_replace("\n","<br>",$data["Description"])) . "\n");
   fputs($fp, "Kategorie=" . $data["Category"] . "\n");
-  fputs($fp, "bild=" . $data["ImgageUrl"] . "\n");
-  fputs($fp, "einkaufen=" . $data["BuyUrl"] . "\n");
-  fputs($fp, "preisvon=" . $data["PriceFrom"] . "\n");
-  fputs($fp, "peisbis=" . $data["PriceTo"] . "\n");
-  fputs($fp, "reserviert" . "=" . ($data["Status"] ? "ja" : "nein" ) . "\n");
+  fputs($fp, "Bild=" . $data["ImgageUrl"] . "\n");
+  fputs($fp, "Einkaufen=" . $data["BuyUrl"] . "\n");
+  fputs($fp, "PreisVon=" . $data["PriceFrom"] . "\n");
+  fputs($fp, "PeisBis=" . $data["PriceTo"] . "\n");
+  fputs($fp, "Reserviert" . "=" . ($data["Status"] ? "ja" : "nein" ) . "\n");
   fclose($fp);
 }
 /**
