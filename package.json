@@ -30,7 +30,7 @@
     "preclean:start": "npm run clean",
     "clean:start": "npm start",
     "deploy" : "nice npm run build:prod && rm ../wzneu/main.* ../wzneu/1.* && rsync -rtv dist/ ../wzneu/",
-    "bundle" : "pushd ../wzneu/ ; tar cjvf ../wunschzettel/wunschzettel.tar.bz2 *js *js.gz assets index.html service.php .htaccess ; popd",
+    "bundle" : "pushd ../wzneu/ ; tar cjvf ../wunschzettel/wunschzettel.tar.bz2 *js *js.gz assets index.html service.php ; popd",
     "prebundle" : "npm run deploy",
     "watch": "npm run watch:dev",
     "watch:dev": "npm run build:dev -- --watch",

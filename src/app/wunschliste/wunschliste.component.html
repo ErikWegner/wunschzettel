@@ -6,7 +6,7 @@
       <span class="mdl-list__item-primary-content" [routerLink]="['WunschDetail', { id: wunsch.id }]">
           <i class="material-icons mdl-list__item-avatar">chevron_right</i>
           <span>{{ wunsch.Title }}</span>
-          <span class="mdl-list__item-text-body" [innerHTML]>
+          <span class="mdl-list__item-text-body">
             {{ wunsch.Description | summary }}
           </span>
         </span>
