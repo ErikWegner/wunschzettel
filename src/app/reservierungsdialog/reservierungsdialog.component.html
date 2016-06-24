@@ -22,6 +22,6 @@
   </div>
   <div class="mdl-dialog__actions mdl-dialog__actions--full-width">
     <button type="button" class="mdl-button" [disabled]="!captchaResult || dialogStatus != dialogStatusEnum.Captcha" (click)="onSubmit()">{{neuerWunschStatus ? "Reservieren" : "Reservierung löschen"}}</button>
-    <button type="button" class="mdl-button close" [routerLink]="['WunschDetail', { id: wunsch.id }]">Zurück</button>
+    <a class="mdl-button close" [routerLink]="['/wunschliste/details', wunsch.id ]">Zurück</a>
   </div>
 </div>

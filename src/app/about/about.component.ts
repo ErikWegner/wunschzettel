@@ -22,14 +22,14 @@ import { Component, ElementRef, AfterViewInit } from '@angular/core';
   </div>
   <div class="mdl-card__supporting-text">
     <p>
-      Version 22
+      Version 23
     </p>
     <p>
       powered by<br><img src="//ewus.de/img/logo2013.png" alt="EWUS" style="width:64px;height:64px;">
     </p>
   </div>
   <div class="mdl-card__actions">
-    <a class="mdl-button close" [routerLink]="['Wunschliste']">Schließen</a>
+    <a class="mdl-button close" [routerLink]="['/wunschliste']">Schließen</a>
   </div>
 </div>
   `

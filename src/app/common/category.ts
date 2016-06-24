@@ -11,7 +11,7 @@ export class Category {
   
   static allItemsCategory() : Category {
     var c = new Category("Alle Einträge");
-    c.filter = "";
+    c.filter = "*";
     return c;
   }
 }

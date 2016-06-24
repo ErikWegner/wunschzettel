@@ -7,7 +7,7 @@ import { Wunschzetteleintrag, Category } from '../common';
 })
 export class MatchCategoryPipe implements PipeTransform {
   transform(allItems:Wunschzetteleintrag[], selectedCategory: Category) {
-    if (!selectedCategory || selectedCategory.filter === "") {
+    if (!selectedCategory || selectedCategory.filter === Category.allItemsCategory().filter) {
       return allItems;
     }
     

@@ -4,3 +4,8 @@ html, body{
 }
 
 .material-icons.md-light { color: rgba(255, 255, 255, 1); }
+
+.mdl-layout__title a {
+  color: #fff;
+  text-decoration: none;
+}

@@ -9,3 +9,7 @@ li {
   margin-right: auto;
   margin-top: 20px;
 }
+
+.mdl-list__item-primary-content a {
+  text-decoration: none;
+}

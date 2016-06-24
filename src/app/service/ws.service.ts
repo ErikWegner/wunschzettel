@@ -1,7 +1,8 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Http, Response, ResponseOptions } from '@angular/http';
 import { Headers, RequestOptions } from '@angular/http';
-import {Location} from '@angular/common';
+import { Location } from '@angular/common';
+import { MockBackend } from '@angular/http/testing';
 
 import { Wunschzetteleintrag, Category } from '../common';
 import { Observable }          from 'rxjs/Observable';
@@ -39,7 +40,6 @@ enum CRUDAction {
   Update,
   Delete
 }
-
 @Injectable()
 export class WunschzettelService {
   private serviceUrl = 'service.php';  // URL to web api
@@ -60,14 +60,15 @@ export class WunschzettelService {
 
   constructor(
     private http: Http,
+    private backend: MockBackend,
     private location: Location
   ) {
     //this.serviceUrl = location.prepareExternalUrl(this.serviceUrl);
     //console.log(this.serviceUrl);
     this._data = { items: null };
     // init the observables for all consumers
-    this.categories$ = new Observable((observer: any) => this._categoriesObserver = observer).share();
-    this.items$ = new Observable((observer: any) => this._itemsObserver = observer).publishReplay(1).refCount();
+    this.categories$ = new Observable<Category[]>((observer: any) => this._categoriesObserver = observer).share();
+    this.items$ = new Observable<Wunschzetteleintrag[]>((observer: any) => this._itemsObserver = observer).publishReplay(1).refCount();
 
     // register a consumer for the items to update the categories
     this.items$.subscribe(items => {
@@ -78,6 +79,8 @@ export class WunschzettelService {
         this._categoriesObserver.next(this._categories);
       }
     });
+
+    this.setupDevelopment();
   }
 
   /** Get a list of all available items */
@@ -261,5 +264,77 @@ export class WunschzettelService {
 
   private publishItems() {
     this._itemsObserver.next(this._data.items);
+  }
+
+  private setupDevelopment() {
+    if (ENV === "development") {
+      console.log("Using mock backend");
+      let serviceRegex = /^service.php\?action=([a-z]+)&id=(\d+)$/i;
+
+      var backendItems = [
+        new Wunschzetteleintrag(1, "Item 1", "Desc", "C1"),
+        new Wunschzetteleintrag(2, "Item 2", "Desc Desc", "C2"),
+        new Wunschzetteleintrag(3, "Item 3", "Desc Desc Desc", "C1"),
+      ]
+      var backendStatus = {
+        "id1": true,
+        "id2": false,
+        "id3": false
+      }
+
+      var captcha = "4";
+      this.backend.connections.subscribe(c => {
+        var res = new ResponseOptions();
+        res.body = {};
+        res.status = 200;
+
+        console.log(c.request.method + ": " + c.request.url);
+
+        if (c.request.url === 'service.php?action=list' && c.request.method === 0) {
+          res.body = { data: backendItems };
+        }
+
+        if (c.request.url === 'service.php?action=captcha' && c.request.method === 0) {
+          res.body = { data: { captchatext: 'vier' } };
+        }
+
+        // Test for actions with an id
+        let matches = c.request.url.match(serviceRegex);
+        if (matches && c.request.method === 0) {
+          let action = matches[1];
+          let id = matches[2];
+          let item = backendItems.find(i => i.id == id);
+          if (action === "status") {
+            res.body = { data: { status: backendStatus["id" + id] || false } };
+          }
+        }
+
+        if (c.request.url === 'service.php' && c.request.method === 1) {
+          let body = JSON.parse(c.request._body);
+          console.log(body);
+          if (body["action"] === "add" && body["captcha"] === captcha) {
+            var lastid = 0;
+            backendItems.forEach(w => lastid = Math.max(lastid, w.id + 1));
+            body["item"].id = lastid;
+            backendItems.push(body["item"]);
+
+            res.body = {
+              data: {
+                success: true,
+                message: "Eintrag angelegt",
+                id: lastid
+              }
+            }
+          }
+        }
+
+
+
+
+
+        c.mockRespond(new Response(res));
+
+      });
+    }
   }
 }

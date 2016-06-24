@@ -6,37 +6,37 @@
     <div class="mdl-card__supporting-text">
       <!-- Titel -->
       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input class="mdl-textfield__input" type="text" id="wzetitel" [(ngModel)]="model.Title" required>
+        <input class="mdl-textfield__input" type="text" id="wzetitel" name="wzetitel" [(ngModel)]="model.Title" required>
         <label class="mdl-textfield__label" for="wzetitel">Titel</label>
       </div>
 
       <!-- Beschreibung -->
       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <textarea class="mdl-textfield__input" type="text" rows="8" id="wzebeschreibung" [(ngModel)]="model.Description"></textarea>
+        <textarea class="mdl-textfield__input" type="text" rows="8" id="wzebeschreibung" name="wzebeschreibung" [(ngModel)]="model.Description"></textarea>
         <label class="mdl-textfield__label" for="wzebeschreibung">Beschreibung</label>
       </div>
       
       <!-- Kategorie -->
       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input class="mdl-textfield__input" type="text" id="wzekategorie" [(ngModel)]="model.Category" required>
+        <input class="mdl-textfield__input" type="text" id="wzekategorie" name="wzekategorie" [(ngModel)]="model.Category" required>
         <label class="mdl-textfield__label" for="wzekategorie">Kategorie</label>
       </div>
       
       <!-- Bild-Url -->
       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input class="mdl-textfield__input" type="text" id="wzeimageurl" [(ngModel)]="model.ImgageUrl">
+        <input class="mdl-textfield__input" type="text" id="wzeimageurl" name="wzeimageurl" [(ngModel)]="model.ImgageUrl">
         <label class="mdl-textfield__label" for="wzeimageurl">Bild-Adresse</label>
       </div>
       
       <!-- Kauf-Url -->
       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input class="mdl-textfield__input" type="text" id="wzebuyurl" [(ngModel)]="model.BuyUrl">
+        <input class="mdl-textfield__input" type="text" id="wzebuyurl" name="wzebuyurl" [(ngModel)]="model.BuyUrl">
         <label class="mdl-textfield__label" for="wzebuyurl">Kauf-Adresse</label>
       </div>
       
       <!-- Captcha -->
       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input class="mdl-textfield__input" type="text" id="wzecaptcha" [(ngModel)]="captchaResult" maxlength="1" required autocomplete="off">
+        <input class="mdl-textfield__input" type="text" id="wzecaptcha" name="wzecaptcha" [(ngModel)]="captchaResult" maxlength="1" required autocomplete="off">
         <label class="mdl-textfield__label" for="wzecaptcha">{{ captchaText }}</label>
       </div>
       
@@ -46,7 +46,7 @@
     </div>
     <div class="mdl-card__actions">
       <button type="submit" class="mdl-button" [disabled]="formularStatus!=formularStatusEnum.Edit">Speichern</button>
-      <a class="mdl-button close" [routerLink]="['Wunschliste']">Schließen</a>
+      <a class="mdl-button close" [routerLink]="['/wunschliste']">Schließen</a>
     </div>
     <div class="mdl-card__menu" *ngIf="model.id > 0">
       <button id="demo-menu-lower-right" type="button"
@@ -56,7 +56,7 @@
 
       <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
           for="demo-menu-lower-right">
-        <li class="mdl-menu__item" [routerLink]="['Wunschliste']">Schließen</li>
+        <li class="mdl-menu__item"><a [routerLink]="['/wunschliste']">Schließen</a></li>
         <li class="mdl-menu__item" (click)="onPrepareErase()">Löschen</li>
       </ul>
   </div>

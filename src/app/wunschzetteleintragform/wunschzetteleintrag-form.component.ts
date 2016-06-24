@@ -1,6 +1,6 @@
-import { Component, ViewChild, ElementRef, AfterViewInit, OnInit }  from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit, OnInit, OnDestroy }  from '@angular/core';
 import { NgForm } from '@angular/common';
-import { RouteParams, Router, ROUTER_DIRECTIVES } from '@angular/router-deprecated';
+import { Router, ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 
 import { WunschzettelService, IReserveResponse, ICRUDResponse } from '../service';
@@ -22,10 +22,10 @@ enum Formularstatus {
 @Component({
   selector: 'wunschzetteleintrag-form',
   directives: [ROUTER_DIRECTIVES],
-  styles: [require('./wunschzetteleintrag-form.component.css')],
-  template: require('./wunschzetteleintrag-form.component.html')
+  styleUrls: ['./wunschzetteleintrag-form.component.css'],
+  templateUrl: './wunschzetteleintrag-form.component.html'
 })
-export class WunschzetteleintragFormComponent implements AfterViewInit, OnInit {
+export class WunschzetteleintragFormComponent implements AfterViewInit, OnInit, OnDestroy {
   public formularStatusEnum = Formularstatus
   @ViewChild('dialog') dialogRef: ElementRef;
   model = new Wunschzetteleintrag();
@@ -35,42 +35,52 @@ export class WunschzetteleintragFormComponent implements AfterViewInit, OnInit {
   formularStatus: Formularstatus = Formularstatus.InitLoading
   errorText = "" // if something goes wrong during service calls
   resultText = "" // response from service
+  private sub: any;
 
   constructor(
     private service: WunschzettelService,
+    private route: ActivatedRoute,
     private router: Router,
-    private routeParams: RouteParams,
     private el: ElementRef) {
 
   }
 
   ngOnInit() {
-    let id = +this.routeParams.get('id');
-    if (id > 0) {
-      this.service.items$.subscribe(
-        items => {
-          var item = items.find(i => i.id == id);
-          if (!item) {
-            this.router.navigate(['Wunschliste']);
-            return;
-          }
+    this.sub = this.route.params.subscribe(params => {
+      let id = +params['id'];
+      if (id > 0) {
+        this.service.items$.subscribe(
+          items => {
+            var item = items.find(i => i.id == id);
+            if (!item) {
+              this.router.navigate(['/wunschliste']);
+              return;
+            }
 
-          this.model = JSON.parse(JSON.stringify(item));
-          this.model.Description = this.model.Description.replace(/<br>/g, "\n");
-        }, error => this.handleError(error)
-      );
+            this.model = JSON.parse(JSON.stringify(item));
+            this.model.Description = this.model.Description.replace(/<br>/g, "\n");
+          }, error => this.handleError(error)
+        );
 
-      this.service.getItems()
-    }
+        this.service.getItems()
+      }
+    })
+    this.initCaptcha();
   }
 
   ngAfterViewInit() {
     // Material design
     componentHandler.upgradeElements(this.el.nativeElement);
-    this.initCaptcha();
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 
   initCaptcha() {
+    this.captchaText = ""
+    this.captchaResult = ""
+
     // Retrieve data
     this.service.getCaptcha().subscribe(
       // Data has arrived
@@ -83,9 +93,6 @@ export class WunschzetteleintragFormComponent implements AfterViewInit, OnInit {
       // An error has occured
       error => this.handleError(error)
     )
-
-    this.captchaText = ""
-    this.captchaResult = ""
   }
 
   onSubmit() {
@@ -104,7 +111,7 @@ export class WunschzetteleintragFormComponent implements AfterViewInit, OnInit {
       response => {
         if (response.success) {
           this.toastMessage(toastText);
-          this.router.navigate(['Wunschliste', { category: this.model.Category }]);
+          this.router.navigate(['/wunschliste'], { queryParams: { category: this.model.Category } });
           return;
         }
 
@@ -116,7 +123,6 @@ export class WunschzetteleintragFormComponent implements AfterViewInit, OnInit {
   }
 
   private handleError(error: any) {
-    debugger;
     this.errorText = error
     this.formularStatus = Formularstatus.InitLoading;
     this.initCaptcha();
@@ -130,7 +136,7 @@ export class WunschzetteleintragFormComponent implements AfterViewInit, OnInit {
         response => {
           if (response.success) {
             this.toastMessage('Eintrag gelöscht');
-            this.router.navigate(['Wunschliste']);
+            this.router.navigate(['/wunschliste']);
             return;
           }
 

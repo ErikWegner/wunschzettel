@@ -1,5 +1,5 @@
-import { Component, ElementRef, AfterViewInit, OnInit } from '@angular/core';
-import { RouteParams, Router, ROUTER_DIRECTIVES } from '@angular/router-deprecated';
+import { Component, ElementRef, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
+import { Router, ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 
 import { WunschzettelService } from '../service';
 import { Wunschzetteleintrag } from '../common';
@@ -10,41 +10,49 @@ import { Wunschzetteleintrag } from '../common';
   styles: [require('./wunschzetteleintrag.component.css')],
   template: require('./wunschzetteleintrag.component.html')
 })
-export class WunschzetteleintragComponent implements AfterViewInit, OnInit {
+export class WunschzetteleintragComponent implements AfterViewInit, OnInit, OnDestroy {
   private wunsch = new Wunschzetteleintrag()
   statusIsVisible = false
   statusButtonActive = true;
   wunschStatus = false; // actually: unknown
   errorText = "";
+  private sub: any;
 
   constructor(
-    private routeParams: RouteParams,
+    private route: ActivatedRoute,
     private router: Router,
     private el: ElementRef,
     private service: WunschzettelService) {
   }
 
   ngOnInit() {
-    let id = +this.routeParams.get('id');
-    if (id > 0) {
-      this.service.items$.subscribe(
-        items => {
-          var item = items.find(i => i.id == id);
-          if (!item) {
-            this.router.navigate(['Wunschliste']);
-            return;
-          }
+    this.sub = this.route.params.subscribe(params => {
+      this.statusIsVisible = false;
+      let id = +params['id'];
+      if (id > 0) {
+        this.service.items$.subscribe(
+          items => {
+            var item = items.find(i => i.id == id);
+            if (!item) {
+              this.router.navigate(['Wunschliste']);
+              return;
+            }
 
-          this.wunsch = item;
-        }, error => this.handleError(error)
-      );
+            this.wunsch = item;
+          }, error => this.handleError(error)
+        );
 
-      this.service.getItems()
-    }
+        this.service.getItems()
+      }
+    })
   }
 
   ngAfterViewInit() {
     componentHandler.upgradeElements(this.el.nativeElement.children[0]);
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 
   onShowStatus() {

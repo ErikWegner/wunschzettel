@@ -1,6 +1,6 @@
-import { Component, Input, OnInit, AfterViewInit, ElementRef } from '@angular/core';
+import { Component, Input, OnInit, AfterViewInit, ElementRef, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { RouteParams, Router, ROUTER_DIRECTIVES } from '@angular/router-deprecated';
+import { Router, ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 
 import { WunschzettelService, IReserveResponse } from '../service';
 import { Wunschzetteleintrag } from '../common';
@@ -20,7 +20,7 @@ enum ReservierungsdialogStatus {
   styles: [require('./reservierungsdialog.component.css')],
   template: require('./reservierungsdialog.component.html')
 })
-export class ReservierungsdialogComponent implements AfterViewInit, OnInit {
+export class ReservierungsdialogComponent implements AfterViewInit, OnInit, OnDestroy {
   public dialogStatusEnum = ReservierungsdialogStatus
   wunsch: Wunschzetteleintrag = new Wunschzetteleintrag()
   neuerWunschStatus = false; // actually: unknown
@@ -29,9 +29,10 @@ export class ReservierungsdialogComponent implements AfterViewInit, OnInit {
   dialogStatus: ReservierungsdialogStatus = ReservierungsdialogStatus.Captcha
   errorText = "" // if something goes wrong during service calls
   resultText = "" // response from service
+  private sub: any;
 
   constructor(
-    private routeParams: RouteParams,
+    private route: ActivatedRoute,
     private router: Router,
     private el: ElementRef,
     private service: WunschzettelService
@@ -45,42 +46,49 @@ export class ReservierungsdialogComponent implements AfterViewInit, OnInit {
     // Defaults
     this.captchaText = ""
     this.captchaResult = ""
-    this.neuerWunschStatus = this.routeParams.get('zielzustand') == 'setzen';
 
-    let id = +this.routeParams.get('id');
-    if (id > 0) {
-      this.service.items$.subscribe(
-        items => {
-          var item = items.find(i => i.id == id);
-          if (!item) {
-            this.router.navigate(['Wunschliste']);
-            return;
-          }
+    this.sub = this.route.params.subscribe(params => {
+      this.neuerWunschStatus = params['zielzustand'] == 'setzen';
 
-          this.wunsch = item;
+      let id = +params['id'];
+      if (id > 0) {
+        this.service.items$.subscribe(
+          items => {
+            var item = items.find(i => i.id == id);
+            if (!item) {
+              this.router.navigate(['/wunschliste']);
+              return;
+            }
 
-          // Retrieve data
-          this.service.getCaptcha().subscribe(
-            // Data has arrived
-            captchadata => {
-              // Show captcha in dialog
-              this.captchaText = captchadata.captchatext
-              // Finally activate dialog
-              this.dialogStatus = ReservierungsdialogStatus.Captcha
-            },
-            // An error has occured
-            error => this.handleError(error)
-          )
+            this.wunsch = item;
 
-        }, error => this.handleError(error)
-      );
+            // Retrieve data
+            this.service.getCaptcha().subscribe(
+              // Data has arrived
+              captchadata => {
+                // Show captcha in dialog
+                this.captchaText = captchadata.captchatext
+                // Finally activate dialog
+                this.dialogStatus = ReservierungsdialogStatus.Captcha
+              },
+              // An error has occured
+              error => this.handleError(error)
+            )
 
-      this.service.getItems()
-    }
+          }, error => this.handleError(error)
+        );
+
+        this.service.getItems()
+      }
+    });
   }
 
   ngAfterViewInit() {
     componentHandler.upgradeElements(this.el.nativeElement.children[0]);
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 
   onSubmit() {

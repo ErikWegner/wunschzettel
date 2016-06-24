@@ -3,7 +3,7 @@
     <img *ngIf="wunsch.ImgageUrl" [src]="wunsch.ImgageUrl" class="wunschbild" />
     <h3>{{ wunsch.Title }}</h3>
     <p [innerHTML]="wunsch.Description"></p>
-    <a [routerLink]="['WunschBearbeiten', { id: wunsch.id }]" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored editbutton">
+    <a [routerLink]="['/wunschliste/bearbeiten', { id: wunsch.id }]" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored editbutton">
       <i class="material-icons">edit</i>
     </a>
   </div>
@@ -18,12 +18,12 @@
       {{ wunschStatus ? "Reserviert" : "Nicht reserviert" }}
     </span>
     <!-- Primary-colored flat button -->
-    <button *ngIf="statusIsVisible && !wunschStatus" class="mdl-button mdl-js-button mdl-button--primary" [routerLink]="['WunschReservieren', {id: wunsch.id, zielzustand:'setzen' }]">
+    <a *ngIf="statusIsVisible && !wunschStatus" class="mdl-button mdl-js-button mdl-button--primary" [routerLink]="['/wunschliste/reservierung', {id: wunsch.id, zielzustand:'setzen' }]">
       Reservieren
-    </button>
+    </a>
     <!-- Accent-colored flat button -->
-    <button *ngIf="statusIsVisible && wunschStatus" class="mdl-button mdl-js-button mdl-button--accent" [routerLink]="['WunschReservieren', {id: wunsch.id, zielzustand:'loeschen' }]">
+    <a *ngIf="statusIsVisible && wunschStatus" class="mdl-button mdl-js-button mdl-button--accent" [routerLink]="['/wunschliste/reservierung', {id: wunsch.id, zielzustand:'loeschen' }]">
       Reservierung löschen
-    </button>
+    </a>
   </div>
 </div>
