@@ -19,5 +19,5 @@ describe('About', () => {
     About
   ]);
 
-  
+
 });

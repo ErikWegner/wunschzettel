@@ -6,16 +6,18 @@ import { Observer } from 'rxjs/Observer';
 
 @Injectable()
 export class TestMockWunschzettelService {
-  public ItemsCount = 0;
-  public categories$: Observable<Category[]>
-  
-  private _categoriesObserver: Observer<Category[]>
+  public itemsCount = 0;
+  public categories$: Observable<Category[]>;
+
+  private _categoriesObserver: Observer<Category[]>;
 
   constructor() {
-    this.categories$ = new Observable<Category[]>((observer: any) => this._categoriesObserver = observer).share();
+    this.categories$ = new Observable<Category[]>(
+      (observer: any) => this._categoriesObserver = observer
+    ).share();
   }
 
   getItems() {
-    this.ItemsCount++;
+    this.itemsCount++;
   }
 }

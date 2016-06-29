@@ -27,7 +27,7 @@ export class App implements OnInit, AfterViewInit {
   static isInitialized = false;
   categories: Category[] = [];
   selectedCategory: Category;
-  title = "Wunschzettel";
+  title = 'Wunschzettel';
 
   constructor(
     private el: ElementRef,

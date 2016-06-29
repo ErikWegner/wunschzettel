@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, AfterViewInit, OnInit, OnDestroy }  from '@angular/core';
+import { Component, ElementRef, AfterViewInit, OnInit, OnDestroy }  from '@angular/core';
 import { NgForm } from '@angular/common';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
@@ -26,15 +26,14 @@ enum Formularstatus {
   templateUrl: './wunschzetteleintrag-form.component.html'
 })
 export class WunschzetteleintragFormComponent implements AfterViewInit, OnInit, OnDestroy {
-  public formularStatusEnum = Formularstatus
-  @ViewChild('dialog') dialogRef: ElementRef;
-  model = new Wunschzetteleintrag();
-  submitted = false;
-  captchaText: string
-  captchaResult: string = "" // input from user
-  formularStatus: Formularstatus = Formularstatus.InitLoading
-  errorText = "" // if something goes wrong during service calls
-  resultText = "" // response from service
+  public formularStatusEnum = Formularstatus;
+  private model = new Wunschzetteleintrag();
+  private submitted = false;
+  private captchaText: string;
+  private captchaResult: string = ''; // input from user
+  private formularStatus: Formularstatus = Formularstatus.InitLoading;
+  private errorText = ''; // if something goes wrong during service calls
+  private resultText = ''; // response from service
   private sub: any;
 
   constructor(
@@ -51,20 +50,20 @@ export class WunschzetteleintragFormComponent implements AfterViewInit, OnInit, 
       if (id > 0) {
         this.service.items$.subscribe(
           items => {
-            var item = items.find(i => i.id == id);
+            let item = items.find(i => i.id === id);
             if (!item) {
               this.router.navigate(['/wunschliste']);
               return;
             }
 
             this.model = JSON.parse(JSON.stringify(item));
-            this.model.Description = this.model.Description.replace(/<br>/g, "\n");
+            this.model.Description = this.model.Description.replace(/<br>/g, '\n');
           }, error => this.handleError(error)
         );
 
-        this.service.getItems()
+        this.service.getItems();
       }
-    })
+    });
     this.initCaptcha();
   }
 
@@ -78,40 +77,43 @@ export class WunschzetteleintragFormComponent implements AfterViewInit, OnInit, 
   }
 
   initCaptcha() {
-    this.captchaText = ""
-    this.captchaResult = ""
+    this.captchaText = '';
+    this.captchaResult = '';
 
     // Retrieve data
     this.service.getCaptcha().subscribe(
       // Data has arrived
       captchadata => {
         // Show captcha in form
-        this.captchaText = "Bitte als Ziffer eingeben: " + captchadata.captchatext
+        this.captchaText = 'Bitte als Ziffer eingeben: ' + captchadata.captchatext;
         // Finally activate form elements
-        this.formularStatus = Formularstatus.Edit
+        this.formularStatus = Formularstatus.Edit;
       },
       // An error has occured
       error => this.handleError(error)
-    )
+    );
   }
 
   onSubmit() {
     this.formularStatus = Formularstatus.Submitting;
-    var toastText: string;
-    var o: Observable<ICRUDResponse>;
+    let toastText: string;
+    let o: Observable<ICRUDResponse>;
     if (this.model.id > 0) {
       o = this.service.updateItem(this.model, this.captchaResult);
-      toastText = "Eintrag aktualisiert";
+      toastText = 'Eintrag aktualisiert';
     } else {
       o = this.service.addItem(this.model, this.captchaResult);
-      toastText = "Eintrag angelegt";
+      toastText = 'Eintrag angelegt';
     }
 
     o.subscribe(
       response => {
         if (response.success) {
           this.toastMessage(toastText);
-          this.router.navigate(['/wunschliste'], { queryParams: { category: this.model.Category } });
+          this.router.navigate(
+            ['/wunschliste'],
+            { queryParams: { category: this.model.Category } }
+          );
           return;
         }
 
@@ -119,18 +121,12 @@ export class WunschzetteleintragFormComponent implements AfterViewInit, OnInit, 
         this.formularStatus = Formularstatus.InitLoading;
         this.initCaptcha();
       }
-    )
-  }
-
-  private handleError(error: any) {
-    this.errorText = error
-    this.formularStatus = Formularstatus.InitLoading;
-    this.initCaptcha();
+    );
   }
 
   onPrepareErase() {
     this.formularStatus = Formularstatus.PrepareErase;
-    var eraseCaptchaText = prompt("Zum Bestätigen des Löschens: " + this.captchaText);
+    let eraseCaptchaText = prompt('Zum Bestätigen des Löschens: ' + this.captchaText);
     if (eraseCaptchaText) {
       this.service.removeItem(this.model.id, eraseCaptchaText).subscribe(
         response => {
@@ -148,8 +144,14 @@ export class WunschzetteleintragFormComponent implements AfterViewInit, OnInit, 
     }
   }
 
+  private handleError(error: any) {
+    this.errorText = error;
+    this.formularStatus = Formularstatus.InitLoading;
+    this.initCaptcha();
+  }
+
   private toastMessage(message: string) {
-    var notification = document.querySelector('.mdl-js-snackbar');
+    let notification = document.querySelector('.mdl-js-snackbar');
     (<any>notification).MaterialSnackbar.showSnackbar(
       {
         message: message

@@ -28,8 +28,8 @@ describe('App', () => {
     inject(
       [WunschzettelService, ElementRef, App],
       (exService: TestMockWunschzettelService, e: TestMockElementRef, app: App) => {
-        expect(exService.ItemsCount).toBe(0);
+        expect(exService.itemsCount).toBe(0);
         app.ngOnInit();
-        expect(exService.ItemsCount).toBe(1);
+        expect(exService.itemsCount).toBe(1);
       }));
 });

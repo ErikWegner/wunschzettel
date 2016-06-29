@@ -25,7 +25,8 @@ import { Component, ElementRef, AfterViewInit } from '@angular/core';
       Version 23
     </p>
     <p>
-      powered by<br><img src="//ewus.de/img/logo2013.png" alt="EWUS" style="width:64px;height:64px;">
+      powered by<br>
+      <img src="//ewus.de/img/logo2013.png" alt="EWUS" style="width:64px;height:64px;">
     </p>
   </div>
   <div class="mdl-card__actions">

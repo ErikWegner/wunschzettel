@@ -17,10 +17,10 @@ import { SummaryPipe } from './summary.pipe';
   template: require('./wunschliste.component.html')
 })
 export class WunschlisteComponent implements OnInit, OnDestroy {
-  items: Wunschzetteleintrag[]
-  category: Category
-  hasDialog = false
-  dialogWunsch: Wunschzetteleintrag = null
+  items: Wunschzetteleintrag[];
+  category: Category;
+  hasDialog = false;
+  dialogWunsch: Wunschzetteleintrag = null;
   private sub: any;
 
   constructor(
@@ -33,14 +33,15 @@ export class WunschlisteComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
-        var routeparam = params['category'] || this.category.filter;
-        this.service.items$
-          .subscribe(
-          items => {
-            this.items = items;
-            this.category = this.service.extractCategories(items).find(c => c.filter == routeparam)
-          });
-      });
+      let routeparam = params['category'] || this.category.filter;
+      this.service.items$
+        .subscribe(
+        items => {
+          this.items = items;
+          this.category = this.service.extractCategories(items)
+            .find(c => c.filter === routeparam);
+        });
+    });
   }
 
   ngOnDestroy() {

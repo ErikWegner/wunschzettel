@@ -11,11 +11,11 @@ import { Wunschzetteleintrag } from '../common';
   template: require('./wunschzetteleintrag.component.html')
 })
 export class WunschzetteleintragComponent implements AfterViewInit, OnInit, OnDestroy {
-  private wunsch = new Wunschzetteleintrag()
-  statusIsVisible = false
-  statusButtonActive = true;
-  wunschStatus = false; // actually: unknown
-  errorText = "";
+  private wunsch = new Wunschzetteleintrag();
+  private statusIsVisible = false;
+  private statusButtonActive = true;
+  private wunschStatus = false; // actually: unknown
+  private errorText = '';
   private sub: any;
 
   constructor(
@@ -32,7 +32,7 @@ export class WunschzetteleintragComponent implements AfterViewInit, OnInit, OnDe
       if (id > 0) {
         this.service.items$.subscribe(
           items => {
-            var item = items.find(i => i.id == id);
+            let item = items.find(i => i.id === id);
             if (!item) {
               this.router.navigate(['Wunschliste']);
               return;
@@ -42,9 +42,9 @@ export class WunschzetteleintragComponent implements AfterViewInit, OnInit, OnDe
           }, error => this.handleError(error)
         );
 
-        this.service.getItems()
+        this.service.getItems();
       }
-    })
+    });
   }
 
   ngAfterViewInit() {
@@ -70,7 +70,6 @@ export class WunschzetteleintragComponent implements AfterViewInit, OnInit, OnDe
   }
 
   private handleError(error: any) {
-    debugger;
-    this.errorText = error
+    this.errorText = error;
   }
 }
