@@ -1,6 +1,7 @@
 // App
 export * from './app.component';
 export * from './service';
+export * from './app.routes';
 
 import { WunschzettelService } from './service';
 import { MockBackend } from '@angular/http/testing';

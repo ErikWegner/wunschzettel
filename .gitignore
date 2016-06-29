@@ -9,3 +9,4 @@ src/**/*.js.map
 src/ws/*
 dist/*
 wunschzettel.tar.bz2
+coverage/*
