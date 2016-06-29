@@ -1,11 +1,11 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Http, Response, ResponseOptions } from '@angular/http';
 import { Headers, RequestOptions } from '@angular/http';
 import { Location } from '@angular/common';
 import { MockBackend } from '@angular/http/testing';
 
 import { Wunschzetteleintrag, Category } from '../common';
-import { Observable }          from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 
 import 'rxjs/add/operator/share';

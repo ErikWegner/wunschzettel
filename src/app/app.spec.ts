@@ -1,4 +1,8 @@
 import {
+  provide,
+  ElementRef
+} from '@angular/core';
+import {
   beforeEachProviders,
   inject,
   injectAsync,
@@ -7,17 +11,25 @@ import {
 
 // Load the implementations that should be tested
 import { App } from './app.component';
-import { AppState } from './app.service';
+
+import { WunschzettelService }  from './service';
+import { TestMockElementRef, TestMockWunschzettelService } from './testmocks';
 
 describe('App', () => {
   // provide our implementations or mocks to the dependency injector
   beforeEachProviders(() => [
-    AppState,
+    provide(WunschzettelService, { useClass: TestMockWunschzettelService }),
+    provide(ElementRef, { useClass: TestMockElementRef }),
     App
   ]);
 
-  it('should have a url', inject([ App ], (app) => {
-    expect(app.url).toEqual('https://twitter.com/AngularClass');
-  }));
-
+  it(
+    'should query items from service OnInit',
+    inject(
+      [WunschzettelService, ElementRef, App],
+      (exService: TestMockWunschzettelService, e: TestMockElementRef, app: App) => {
+        expect(exService.ItemsCount).toBe(0);
+        app.ngOnInit();
+        expect(exService.ItemsCount).toBe(1);
+      }));
 });

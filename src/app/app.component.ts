@@ -1,7 +1,7 @@
 /*
  * Angular 2 decorators and services
  */
-import { Component, ViewEncapsulation, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, ViewEncapsulation, ElementRef, AfterViewInit, OnInit } from '@angular/core';
 
 import { WunschlisteComponent } from './wunschliste';
 import { WunschzettelService }  from './service';
@@ -23,7 +23,7 @@ import { Category } from './common';
   ],
   templateUrl: './app.component.html',
 })
-export class App implements AfterViewInit {
+export class App implements OnInit, AfterViewInit {
   static isInitialized = false;
   categories: Category[] = [];
   selectedCategory: Category;

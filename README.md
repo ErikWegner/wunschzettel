@@ -4,9 +4,15 @@ Verwalte deine Wünsche für jeden Anlass. Gäste können Einträge reservieren,
 
 Demo: https://ewus.de/wdemo/
 
+
 # Entwicklung
 
+
+## Vorbereitung
+    npm install --global karma-cli
     npm install
+
+## Ausführung
     npm run watch:prod
     npm run deploy
     npm run bundle

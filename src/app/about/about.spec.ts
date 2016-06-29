@@ -1,5 +1,5 @@
 import { TestComponentBuilder } from '@angular/compiler/testing';
-import { Component } from '@angular/core';
+import { provide, Component, ElementRef } from '@angular/core';
 import {
   beforeEachProviders,
   describe,
@@ -10,19 +10,14 @@ import {
 
 // Load the implementations that should be tested
 import { About } from './about.component';
+import { TestMockElementRef } from '../testmocks';
 
 describe('About', () => {
   // provide our implementations or mocks to the dependency injector
   beforeEachProviders(() => [
+    provide(ElementRef, { useClass: TestMockElementRef }),
     About
   ]);
 
-  it('should log ngOnInit', inject([ About ], (about) => {
-    spyOn(console, 'log');
-    expect(console.log).not.toHaveBeenCalled();
-
-    about.ngOnInit();
-    expect(console.log).toHaveBeenCalled();
-  }));
-
+  
 });
