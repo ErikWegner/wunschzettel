@@ -2,6 +2,7 @@ import { Component, ElementRef, AfterViewInit, OnInit, OnDestroy }  from '@angul
 import { NgForm } from '@angular/common';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
+import { TimerWrapper } from '@angular/core/src/facade/async';
 
 import { WunschzettelService, IReserveResponse, ICRUDResponse } from '../service';
 import { Wunschzetteleintrag } from '../common';
@@ -70,6 +71,14 @@ export class WunschzetteleintragFormComponent implements AfterViewInit, OnInit, 
   ngAfterViewInit() {
     // Material design
     componentHandler.upgradeElements(this.el.nativeElement);
+    let divs = this.el.nativeElement.querySelectorAll('.mdl-textfield');
+    TimerWrapper.setTimeout(function () {
+      for (let i = 0, l = divs.length; i < l; i++) {
+        if (divs[i].MaterialTextfield) {
+          divs[i].MaterialTextfield.checkDirty();
+        }
+      }
+    }, 1);
   }
 
   ngOnDestroy() {

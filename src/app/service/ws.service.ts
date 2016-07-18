@@ -349,6 +349,7 @@ export class WunschzettelService {
           }
         }
 
+        res.body = JSON.parse(JSON.stringify(res.body));
         c.mockRespond(new Response(res));
       });
     }

@@ -2,10 +2,10 @@ import { WebpackAsyncRoute } from '@angularclass/webpack-toolkit';
 import { RouterConfig } from '@angular/router';
 import { NoContent } from './no-content';
 
+import { About } from './about';
 import { WunschlisteComponent } from './wunschliste';
 import { WunschzettelService }  from './service';
 import { WunschzetteleintragComponent } from './wunschzetteleintrag';
-import { WunschzetteleintragFormComponent } from './wunschzetteleintragform';
 import { ReservierungsdialogComponent } from './reservierungsdialog';
 import { Category } from './common';
 
@@ -22,13 +22,13 @@ export const routes: RouterConfig = [
     component: WunschzetteleintragComponent,
   }, {
     path: 'wunschliste/bearbeiten',
-    component: WunschzetteleintragFormComponent,
+    component: 'WunschzetteleintragFormComponent',
   }, {
     path: 'wunschliste/reservierung',
     component: ReservierungsdialogComponent,
   }, {
     path: 'neu',
-    component: WunschzetteleintragFormComponent
+    component: 'WunschzetteleintragFormComponent'
   },
   // make sure you match the component type string to the require in asyncRoutes
   { path: 'about', component: 'About' },
@@ -45,12 +45,14 @@ export const asyncRoutes: AsyncRoutes = {
   // we have to use the alternative syntax for es6-promise-loader to grab the routes
   'About': require('es6-promise-loader!./about'),
   /*'Detail': require('es6-promise-loader!./+detail'),*/
+  'WunschzetteleintragFormComponent': require('es6-promise-loader!./wunschzetteleintragform')
 };
 
 
 // Optimizations for initial loads
 // An array of callbacks to be invoked after bootstrap to prefetch async routes
 export const prefetchRouteCallbacks: Array<IdleCallbacks> = [
+  //asyncRoutes['WunschzetteleintragFormComponent'],
   asyncRoutes['About'],
   /*asyncRoutes['Detail'],*/
    // es6-promise-loader returns a function

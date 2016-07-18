@@ -9,3 +9,8 @@ html, body{
   color: #fff;
   text-decoration: none;
 }
+
+.mdl-menu__item a {
+  color: rgba(0,0,0,.87);
+  text-decoration: none;
+}

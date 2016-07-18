@@ -18,7 +18,7 @@ import { Component, ElementRef, AfterViewInit } from '@angular/core';
   template: `
 <div class="mdl-card mdl-shadow--4dp formcard">
   <div class="mdl-card__title">
-    <h2 class="mdl-card__title-text">Wunschzettel</h2>
+    <h1 class="mdl-card__title-text">Wunschzettel</h1>
   </div>
   <div class="mdl-card__supporting-text">
     <p>
