@@ -31,7 +31,7 @@
     Loading...<div id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate">
   </app>
 
-  <% if (webpackConfig.metadata.isDevServer) { %>
+  <% if (webpackConfig.metadata.isDevServer && webpackConfig.metadata.HMR !== true) { %>
   <!-- Webpack Dev Server reload -->
   <script src="/webpack-dev-server.js"></script>
   <% } %>
