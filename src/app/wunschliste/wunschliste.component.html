@@ -2,13 +2,13 @@
   <h2 *ngIf="category">Wunschliste {{ category.name }}</h2>
 
   <ul class='mdl-list'>
-    <li *ngFor="let wunsch of (items | matchCategory:category)" class="mdl-list__item mdl-list__item--three-line">
+    <li *ngFor="let wunsch of (items | myMatchCategory:category)" class="mdl-list__item mdl-list__item--three-line">
       <span class="mdl-list__item-primary-content">
         <a [routerLink]="['/wunschliste/details', wunsch.id ]">
           <i class="material-icons mdl-list__item-avatar">chevron_right</i>
           <span>{{ wunsch.Title }}</span>
           <span class="mdl-list__item-text-body">
-            {{ wunsch.Description | summary }}
+            {{ wunsch.Description | mySummary }}
           </span>
         </a>
       </span>

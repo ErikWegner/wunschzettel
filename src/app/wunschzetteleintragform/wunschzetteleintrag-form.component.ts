@@ -1,8 +1,6 @@
-import { Component, ElementRef, AfterViewInit, OnInit, OnDestroy }  from '@angular/core';
-import { NgForm } from '@angular/common';
-import { Router, ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
+import { Component, ElementRef, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { TimerWrapper } from '@angular/core/src/facade/async';
 
 import { WunschzettelService, IReserveResponse, ICRUDResponse } from '../service';
 import { Wunschzetteleintrag } from '../common';
@@ -22,18 +20,17 @@ enum Formularstatus {
 
 @Component({
   selector: 'wunschzetteleintrag-form',
-  directives: [ROUTER_DIRECTIVES],
   styleUrls: ['./wunschzetteleintrag-form.component.css'],
   templateUrl: './wunschzetteleintrag-form.component.html'
 })
 export class WunschzetteleintragFormComponent implements AfterViewInit, OnInit, OnDestroy {
   public formularStatusEnum = Formularstatus;
-  private model = new Wunschzetteleintrag();
+  public model = new Wunschzetteleintrag();
+  public captchaText: string;
+  public captchaResult: string = ''; // input from user
+  public formularStatus: Formularstatus = Formularstatus.InitLoading;
+  public errorText = ''; // if something goes wrong during service calls
   private submitted = false;
-  private captchaText: string;
-  private captchaResult: string = ''; // input from user
-  private formularStatus: Formularstatus = Formularstatus.InitLoading;
-  private errorText = ''; // if something goes wrong during service calls
   private resultText = ''; // response from service
   private sub: any;
 
@@ -45,13 +42,13 @@ export class WunschzetteleintragFormComponent implements AfterViewInit, OnInit, 
 
   }
 
-  ngOnInit() {
-    this.sub = this.route.params.subscribe(params => {
+  public ngOnInit() {
+    this.sub = this.route.params.subscribe((params) => {
       let id = +params['id'];
       if (id > 0) {
         this.service.items$.subscribe(
-          items => {
-            let item = items.find(i => i.id === id);
+          (items) => {
+            let item = items.find((i) => i.id === id);
             if (!item) {
               this.router.navigate(['/wunschliste']);
               return;
@@ -59,7 +56,7 @@ export class WunschzetteleintragFormComponent implements AfterViewInit, OnInit, 
 
             this.model = JSON.parse(JSON.stringify(item));
             this.model.Description = this.model.Description.replace(/<br>/g, '\n');
-          }, error => this.handleError(error)
+          }, (error) => this.handleError(error)
         );
 
         this.service.getItems();
@@ -68,11 +65,11 @@ export class WunschzetteleintragFormComponent implements AfterViewInit, OnInit, 
     this.initCaptcha();
   }
 
-  ngAfterViewInit() {
+  public ngAfterViewInit() {
     // Material design
     componentHandler.upgradeElements(this.el.nativeElement);
     let divs = this.el.nativeElement.querySelectorAll('.mdl-textfield');
-    TimerWrapper.setTimeout(function () {
+    setTimeout(() => {
       for (let i = 0, l = divs.length; i < l; i++) {
         if (divs[i].MaterialTextfield) {
           divs[i].MaterialTextfield.checkDirty();
@@ -81,29 +78,29 @@ export class WunschzetteleintragFormComponent implements AfterViewInit, OnInit, 
     }, 1);
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy() {
     this.sub.unsubscribe();
   }
 
-  initCaptcha() {
+  public initCaptcha() {
     this.captchaText = '';
     this.captchaResult = '';
 
     // Retrieve data
     this.service.getCaptcha().subscribe(
       // Data has arrived
-      captchadata => {
+      (captchadata) => {
         // Show captcha in form
         this.captchaText = 'Bitte als Ziffer eingeben: ' + captchadata.captchatext;
         // Finally activate form elements
         this.formularStatus = Formularstatus.Edit;
       },
       // An error has occured
-      error => this.handleError(error)
+      (error) => this.handleError(error)
     );
   }
 
-  onSubmit() {
+  public onSubmit() {
     this.formularStatus = Formularstatus.Submitting;
     let toastText: string;
     let o: Observable<ICRUDResponse>;
@@ -116,7 +113,7 @@ export class WunschzetteleintragFormComponent implements AfterViewInit, OnInit, 
     }
 
     o.subscribe(
-      response => {
+      (response) => {
         if (response.success) {
           this.toastMessage(toastText);
           this.router.navigate(
@@ -133,12 +130,12 @@ export class WunschzetteleintragFormComponent implements AfterViewInit, OnInit, 
     );
   }
 
-  onPrepareErase() {
+  public onPrepareErase() {
     this.formularStatus = Formularstatus.PrepareErase;
     let eraseCaptchaText = prompt('Zum Bestätigen des Löschens: ' + this.captchaText);
     if (eraseCaptchaText) {
       this.service.removeItem(this.model.id, eraseCaptchaText).subscribe(
-        response => {
+        (response) => {
           if (response.success) {
             this.toastMessage('Eintrag gelöscht');
             this.router.navigate(['/wunschliste']);
@@ -163,7 +160,7 @@ export class WunschzetteleintragFormComponent implements AfterViewInit, OnInit, 
     let notification = document.querySelector('.mdl-js-snackbar');
     (<any>notification).MaterialSnackbar.showSnackbar(
       {
-        message: message
+        message
       }
     );
   }

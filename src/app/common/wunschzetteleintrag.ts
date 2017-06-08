@@ -1,13 +1,13 @@
 /* tslint:disable:variable-name */
 export class Wunschzetteleintrag {
-  id: number = 0;
-  Title: string = '';
-  Description: string = '';
-  Category: string = '';
-  ImgageUrl: string = '';
-  BuyUrl: string = '';
-  PriceFrom: string = '';
-  PriceTo: string = '';
+  public id: number = 0;
+  public Title: string = '';
+  public Description: string = '';
+  public Category: string = '';
+  public ImgageUrl: string = '';
+  public BuyUrl: string = '';
+  public PriceFrom: string = '';
+  public PriceTo: string = '';
 
   constructor(
     id: number = 0,

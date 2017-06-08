@@ -1,10 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'summary'
+  name: 'mySummary'
 })
 export class SummaryPipe implements PipeTransform {
-  transform(text: string) {
+  public transform(text: string) {
     let i = text.indexOf('<br');
     if (i > -1) {
       return text.substring(0, i);

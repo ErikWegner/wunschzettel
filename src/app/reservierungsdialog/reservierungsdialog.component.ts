@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, AfterViewInit, ElementRef, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Router, ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { WunschzettelService, IReserveResponse } from '../service';
 import { Wunschzetteleintrag } from '../common';
@@ -16,19 +16,18 @@ enum ReservierungsdialogStatus {
 
 @Component({
   selector: 'my-wunschreservierungsdialog',
-  directives: [ROUTER_DIRECTIVES],
-  styles: [require('./reservierungsdialog.component.css')],
-  template: require('./reservierungsdialog.component.html')
+  styleUrls: ['./reservierungsdialog.component.css'],
+  templateUrl: './reservierungsdialog.component.html'
 })
 export class ReservierungsdialogComponent implements AfterViewInit, OnInit, OnDestroy {
   public dialogStatusEnum = ReservierungsdialogStatus;
-  wunsch: Wunschzetteleintrag = new Wunschzetteleintrag();
-  neuerWunschStatus = false; // actually: unknown
-  captchaText = '...';
-  captchaResult: string = ''; // input from user
-  dialogStatus: ReservierungsdialogStatus = ReservierungsdialogStatus.Captcha;
-  errorText = ''; // if something goes wrong during service calls
-  resultText = ''; // response from service
+  public wunsch: Wunschzetteleintrag = new Wunschzetteleintrag();
+  public neuerWunschStatus = false; // actually: unknown
+  public captchaText = '...';
+  public captchaResult: string = ''; // input from user
+  public dialogStatus: ReservierungsdialogStatus = ReservierungsdialogStatus.Captcha;
+  public errorText = ''; // if something goes wrong during service calls
+  public resultText = ''; // response from service
   private sub: any;
 
   constructor(
@@ -39,7 +38,7 @@ export class ReservierungsdialogComponent implements AfterViewInit, OnInit, OnDe
   ) {
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     // Some data is required, set status
     this.dialogStatus = ReservierungsdialogStatus.Loading;
 
@@ -47,14 +46,14 @@ export class ReservierungsdialogComponent implements AfterViewInit, OnInit, OnDe
     this.captchaText = '';
     this.captchaResult = '';
 
-    this.sub = this.route.params.subscribe(params => {
+    this.sub = this.route.params.subscribe((params) => {
       this.neuerWunschStatus = params['zielzustand'] === 'setzen';
 
       let id = +params['id'];
       if (id > 0) {
         this.service.items$.subscribe(
-          items => {
-            let item = items.find(i => i.id === id);
+          (items) => {
+            let item = items.find((i) => i.id === id);
             if (!item) {
               this.router.navigate(['/wunschliste']);
               return;
@@ -65,17 +64,17 @@ export class ReservierungsdialogComponent implements AfterViewInit, OnInit, OnDe
             // Retrieve data
             this.service.getCaptcha().subscribe(
               // Data has arrived
-              captchadata => {
+              (captchadata) => {
                 // Show captcha in dialog
                 this.captchaText = captchadata.captchatext;
                 // Finally activate dialog
                 this.dialogStatus = ReservierungsdialogStatus.Captcha;
               },
               // An error has occured
-              error => this.handleError(error)
+              (error) => this.handleError(error)
             );
 
-          }, error => this.handleError(error)
+          }, (error) => this.handleError(error)
         );
 
         this.service.getItems();
@@ -83,15 +82,15 @@ export class ReservierungsdialogComponent implements AfterViewInit, OnInit, OnDe
     });
   }
 
-  ngAfterViewInit() {
+  public ngAfterViewInit() {
     componentHandler.upgradeElements(this.el.nativeElement.children[0]);
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy() {
     this.sub.unsubscribe();
   }
 
-  onSubmit() {
+  public onSubmit() {
     this.dialogStatus = ReservierungsdialogStatus.Submitting;
     let o: Observable<IReserveResponse>;
     if (this.neuerWunschStatus === false) {
@@ -101,13 +100,13 @@ export class ReservierungsdialogComponent implements AfterViewInit, OnInit, OnDe
     }
 
     o.subscribe(
-      result => {
+      (result) => {
         this.dialogStatus = result.success
           ? ReservierungsdialogStatus.Success
           : ReservierungsdialogStatus.Fail;
         this.resultText = result.message;
       },
-      error => this.handleError(error)
+      (error) => this.handleError(error)
     );
   }
 

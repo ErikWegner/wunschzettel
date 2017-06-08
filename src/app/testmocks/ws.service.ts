@@ -17,7 +17,7 @@ export class TestMockWunschzettelService {
     ).share();
   }
 
-  getItems() {
+  public getItems() {
     this.itemsCount++;
   }
 }

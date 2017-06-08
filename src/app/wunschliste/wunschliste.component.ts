@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { Router, ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { Wunschzetteleintrag, Category } from '../common';
 import { WunschzettelService } from '../service';
@@ -8,19 +8,14 @@ import { SummaryPipe } from './summary.pipe';
 
 @Component({
   selector: 'my-wunschliste',
-  directives: [ROUTER_DIRECTIVES],
-  pipes: [
-    MatchCategoryPipe,
-    SummaryPipe
-  ],
-  styles: [require('./wunschliste.component.css')],
-  template: require('./wunschliste.component.html')
+  styleUrls: ['./wunschliste.component.css'],
+  templateUrl: './wunschliste.component.html'
 })
 export class WunschlisteComponent implements OnInit, OnDestroy {
-  items: Wunschzetteleintrag[];
-  category: Category;
-  hasDialog = false;
-  dialogWunsch: Wunschzetteleintrag = null;
+  public items: Wunschzetteleintrag[];
+  public category: Category;
+  private hasDialog = false;
+  private dialogWunsch: Wunschzetteleintrag = null;
   private sub: any;
 
   constructor(
@@ -31,20 +26,20 @@ export class WunschlisteComponent implements OnInit, OnDestroy {
     this.category = Category.allItemsCategory();
   }
 
-  ngOnInit() {
-    this.sub = this.route.params.subscribe(params => {
+  public ngOnInit() {
+    this.sub = this.route.params.subscribe((params) => {
       let routeparam = params['category'] || this.category.filter;
       this.service.items$
         .subscribe(
-        items => {
+        (items) => {
           this.items = items;
           this.category = this.service.extractCategories(items)
-            .find(c => c.filter === routeparam);
+            .find((c) => c.filter === routeparam);
         });
     });
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy() {
     this.sub.unsubscribe();
   }
 }

@@ -1,16 +1,26 @@
-/*
+/**
  * Angular 2 decorators and services
  */
-import { Component, ViewEncapsulation, ElementRef, AfterViewInit, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewEncapsulation,
+  AfterViewInit,
+  ElementRef
+} from '@angular/core';
+import { AppState } from './app.service';
 
+// Material design
+import 'style-loader!material-design-lite/dist/material.min.css';
+import 'material-design-lite/dist/material.min.js';
 import { WunschlisteComponent } from './wunschliste';
-import { WunschzettelService }  from './service';
+import { WunschzettelService } from './service';
 import { WunschzetteleintragComponent } from './wunschzetteleintrag';
 import { WunschzetteleintragFormComponent } from './wunschzetteleintragform';
 import { ReservierungsdialogComponent } from './reservierungsdialog';
 import { Category } from './common';
 
-/*
+/**
  * App Component
  * Top Level Component
  */
@@ -19,15 +29,15 @@ import { Category } from './common';
   providers: [WunschzettelService],
   encapsulation: ViewEncapsulation.None,
   styleUrls: [
-    './app.style.css'
+    './app.component.css'
   ],
   templateUrl: './app.component.html',
 })
-export class App implements OnInit, AfterViewInit {
-  static isInitialized = false;
-  categories: Category[] = [];
-  selectedCategory: Category;
-  title = 'Wunschzettel';
+export class AppComponent implements OnInit, AfterViewInit {
+  private static isInitialized = false;
+  public categories: Category[] = [];
+  public title = 'Wunschzettel';
+  private selectedCategory: Category;
 
   constructor(
     private el: ElementRef,
@@ -36,17 +46,17 @@ export class App implements OnInit, AfterViewInit {
 
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.selectedCategory = Category.allItemsCategory();
-    this.service.categories$.subscribe(categories => {
+    this.service.categories$.subscribe((categories) => {
       this.categories = categories;
     });
     this.service.getItems();
   }
 
-  ngAfterViewInit() {
-    if (!App.isInitialized) {
-      App.isInitialized = true;
+  public ngAfterViewInit() {
+    if (!AppComponent.isInitialized) {
+      AppComponent.isInitialized = true;
       componentHandler.upgradeElement(this.el.nativeElement.children[0]);
     }
   }

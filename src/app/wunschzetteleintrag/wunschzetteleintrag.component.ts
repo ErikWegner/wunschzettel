@@ -1,21 +1,20 @@
 import { Component, ElementRef, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
-import { Router, ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { WunschzettelService } from '../service';
 import { Wunschzetteleintrag } from '../common';
 
 @Component({
   selector: 'my-wunschzetteleintrag',
-  directives: [ROUTER_DIRECTIVES],
-  styles: [require('./wunschzetteleintrag.component.css')],
-  template: require('./wunschzetteleintrag.component.html')
+  styleUrls: ['./wunschzetteleintrag.component.css'],
+  templateUrl: './wunschzetteleintrag.component.html'
 })
 export class WunschzetteleintragComponent implements AfterViewInit, OnInit, OnDestroy {
-  private wunsch = new Wunschzetteleintrag();
-  private statusIsVisible = false;
-  private statusButtonActive = true;
-  private wunschStatus = false; // actually: unknown
-  private errorText = '';
+  public wunsch = new Wunschzetteleintrag();
+  public statusIsVisible = false;
+  public statusButtonActive = true;
+  public wunschStatus = false; // actually: unknown
+  public errorText = '';
   private sub: any;
 
   constructor(
@@ -25,21 +24,21 @@ export class WunschzetteleintragComponent implements AfterViewInit, OnInit, OnDe
     private service: WunschzettelService) {
   }
 
-  ngOnInit() {
-    this.sub = this.route.params.subscribe(params => {
+  public ngOnInit() {
+    this.sub = this.route.params.subscribe((params) => {
       this.statusIsVisible = false;
       let id = +params['id'];
       if (id > 0) {
         this.service.items$.subscribe(
-          items => {
-            let item = items.find(i => i.id === id);
+          (items) => {
+            let item = items.find((i) => i.id === id);
             if (!item) {
-              this.router.navigate(['Wunschliste']);
+              this.router.navigate(['/wunschliste']);
               return;
             }
 
             this.wunsch = item;
-          }, error => this.handleError(error)
+          }, (error) => this.handleError(error)
         );
 
         this.service.getItems();
@@ -47,25 +46,25 @@ export class WunschzetteleintragComponent implements AfterViewInit, OnInit, OnDe
     });
   }
 
-  ngAfterViewInit() {
+  public ngAfterViewInit() {
     componentHandler.upgradeElements(this.el.nativeElement.children[0]);
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy() {
     this.sub.unsubscribe();
   }
 
-  onShowStatus() {
+  public onShowStatus() {
     this.statusButtonActive = false;
     this.statusIsVisible = false;
 
     this.service.getItemStatus(this.wunsch.id).subscribe(
-      result => {
+      (result) => {
         this.wunschStatus = result.status;
         this.statusButtonActive = true;
         this.statusIsVisible = true;
       },
-      error => this.errorText = <any>error
+      (error) => this.errorText = <any>error
     );
   }
 

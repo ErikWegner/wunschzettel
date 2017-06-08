@@ -9,15 +9,16 @@ npm install @types/lodash
  * If you can't find the type definition in the registry we can make an ambient/global definition in
  * this file for now. For example
 
-declare module "my-module" {
+declare module 'my-module' {
  export function doesSomething(value: string): string;
 }
 
  * If you are using a CommonJS module that is using module.exports then you will have to write your
  * types using export = yourObjectOrFunction with a namespace above it
- * notice how we have to create a namespace that is equal to the function we're assigning the export to
+ * notice how we have to create a namespace that is equal to the function we're
+ * assigning the export to
 
-declare module "jwt-decode" {
+declare module 'jwt-decode' {
   function jwtDecode(token: string): any;
   namespace jwtDecode {}
   export = jwtDecode;
@@ -42,16 +43,35 @@ import * as _ from 'lodash'
  *
  */
 
+declare var componentHandler: any;
+
 // support NodeJS modules without type definitions
-declare module "*";
+declare module '*';
+
+/*
+// for legacy tslint etc to understand rename 'modern-lru' with your package
+// then comment out `declare module '*';`. For each new module copy/paste
+// this method of creating an `any` module type definition
+declare module 'modern-lru' {
+  let x: any;
+  export = x;
+}
+*/
 
 // Extra variables that live on Global that will be replaced by webpack DefinePlugin
 declare var ENV: string;
 declare var HMR: boolean;
+declare var System: SystemJS;
+
+interface SystemJS {
+  import: (path?: string) => Promise<any>;
+}
 
 interface GlobalEnvironment {
-  ENV;
-  HMR;
+  ENV: string;
+  HMR: boolean;
+  SystemJS: SystemJS;
+  System: SystemJS;
 }
 
 interface Es6PromiseLoader {
@@ -65,9 +85,8 @@ type AsyncRoutes = {
   [component: string]: Es6PromiseLoader |
                                Function |
                 FactoryEs6PromiseLoader |
-                         FactoryPromise
+                         FactoryPromise ;
 };
-
 
 type IdleCallbacks = Es6PromiseLoader |
                              Function |
@@ -79,7 +98,7 @@ interface WebpackModule {
     data?: any,
     idle: any,
     accept(dependencies?: string | string[], callback?: (updatedDependencies?: any) => void): void;
-    decline(dependencies?: string | string[]): void;
+    decline(deps?: any | string | string[]): void;
     dispose(callback?: (data?: any) => void): void;
     addDisposeHandler(callback?: (data?: any) => void): void;
     removeDisposeHandler(callback?: (data?: any) => void): void;
@@ -89,7 +108,6 @@ interface WebpackModule {
     removeStatusHandler(callback?: (status?: string) => void): void;
   };
 }
-
 
 interface WebpackRequire {
     (id: string): any;
@@ -105,7 +123,6 @@ interface WebpackContext extends WebpackRequire {
 interface ErrorStackTraceLimit {
   stackTraceLimit: number;
 }
-
 
 // Extend typings
 interface NodeRequire extends WebpackRequire {}

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Optional } from '@angular/core';
 import { Http, Response, ResponseOptions } from '@angular/http';
 import { Headers, RequestOptions } from '@angular/http';
 import { Location } from '@angular/common';
@@ -9,6 +9,9 @@ import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 
 import 'rxjs/add/operator/share';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/publishReplay';
 
 /** Result for getItemStatus */
 export interface IStatusResponse {
@@ -58,7 +61,7 @@ export class WunschzettelService {
 
   constructor(
     private http: Http,
-    private backend: MockBackend,
+    @Optional() private backend: MockBackend,
     private location: Location
   ) {
     // https://coryrylan.com/blog/angular-2-observable-data-services
@@ -72,7 +75,7 @@ export class WunschzettelService {
     ).publishReplay(1).refCount();
 
     // register a consumer for the items to update the categories
-    this.items$.subscribe(items => {
+    this.items$.subscribe((items) => {
       let oldCategories = JSON.stringify(this._categories);
       this._categories = null;
       this.extractCategories(items);
@@ -85,32 +88,32 @@ export class WunschzettelService {
   }
 
   /** Get a list of all available items */
-  getItems() {
+  public getItems() {
     if (!this._data.items) {
-      this._data.items = []; // prevend to call the service twice 
+      this._data.items = []; // prevend to call the service twice
 
       let response = this.http.get(this.serviceUrl + '?action=list')
         .map(this.extractData)
         .catch(this.handleError);
       response.subscribe(
-        items => {
+        (items) => {
           this._data.items = items || [];
+          this._data.items.forEach((item) => item.id = parseInt(item.id + ""));
           this.publishItems();
-        },
-        error => { }
+        }
       );
     }
   }
 
   /** Get a list of categories */
-  extractCategories(items: Wunschzetteleintrag[]): Category[] {
+  public extractCategories(items: Wunschzetteleintrag[]): Category[] {
     if (!this._categories) {
       let r: Category[] = [];
       r.push(Category.allItemsCategory());
-      items.forEach(item => {
+      items.forEach((item) => {
         let itemCategory = new Category(item.Category);
         let isNewCategory = true;
-        r.forEach(category => {
+        r.forEach((category) => {
           isNewCategory = isNewCategory && category.equals(itemCategory) === false;
         });
         if (isNewCategory) {
@@ -124,21 +127,21 @@ export class WunschzettelService {
   }
 
   /** Get the reservation status for an item */
-  getItemStatus(id: number): Observable<IStatusResponse> {
+  public getItemStatus(id: number): Observable<IStatusResponse> {
     return this.http.get(this.serviceUrl + '?action=status&id=' + id)
       .map(this.extractData)
       .catch(this.handleError);
   }
 
   /** Get the captcha data for the next request */
-  getCaptcha(): Observable<ICaptchaResponse> {
+  public getCaptcha(): Observable<ICaptchaResponse> {
     return this.http.get(this.serviceUrl + '?action=captcha')
       .map(this.extractData)
       .catch(this.handleError);
   }
 
   /** Set status to reserved */
-  reserveItem(id: number, captcha: string): Observable<IReserveResponse> {
+  public reserveItem(id: number, captcha: string): Observable<IReserveResponse> {
     return this.http.get(
       this.serviceUrl
       + '?action=reserve&id='
@@ -150,7 +153,7 @@ export class WunschzettelService {
   }
 
   /** Set status to unreserved */
-  clearReservation(id: number, captcha: string): Observable<IReserveResponse> {
+  public clearReservation(id: number, captcha: string): Observable<IReserveResponse> {
     return this.http.get(
       this.serviceUrl
       + '?action=clear&id='
@@ -162,39 +165,39 @@ export class WunschzettelService {
   }
 
   /** Add a new item */
-  addItem(item: Wunschzetteleintrag, captchatext: string): Observable<ICRUDResponse> {
+  public addItem(item: Wunschzetteleintrag, captchatext: string): Observable<ICRUDResponse> {
     return this.sendItem(CRUDAction.Create, item, captchatext);
   }
   /** Update an existing item */
-  updateItem(item: Wunschzetteleintrag, captchatext: string): Observable<ICRUDResponse> {
+  public updateItem(item: Wunschzetteleintrag, captchatext: string): Observable<ICRUDResponse> {
     return this.sendItem(CRUDAction.Update, item, captchatext);
   }
 
-  removeItem(id: number, captchatext: string): Observable<ICRUDResponse> {
+  public removeItem(id: number, captchatext: string): Observable<ICRUDResponse> {
     return Observable.create(
       (observer: any) => {
         let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers });
+        let options = new RequestOptions({ headers });
         let request: Observable<ICRUDResponse> = this.http.post(
           this.serviceUrl,
           JSON.stringify({
-            'action': 'delete',
-            'captcha': captchatext,
-            'id': id
+            action: 'delete',
+            captcha: captchatext,
+            id
           }), options)
           .map(this.extractData)
           .catch(this.handleError);
 
         request.subscribe(
-          response => {
+          (response) => {
             if (response.success) {
-              this._data.items = this._data.items.filter(i => i.id !== id);
+              this._data.items = this._data.items.filter((i) => i.id !== id);
               this.publishItems();
             }
 
             observer.next(response);
           }
-          , error => {
+          , (error) => {
             let err: ICRUDResponse = {
               success: false,
               message: error,
@@ -215,23 +218,23 @@ export class WunschzettelService {
     return Observable.create(
       (observer: any) => {
         let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers });
+        let options = new RequestOptions({ headers });
         let request: Observable<ICRUDResponse> = this.http.post(
           this.serviceUrl,
           JSON.stringify({
-            'action': action === CRUDAction.Create
+            action: action === CRUDAction.Create
               ? 'add'
               : action === CRUDAction.Update
                 ? 'update'
                 : 'fail',
-            'captcha': captchatext,
-            'item': item
+            captcha: captchatext,
+            item
           }), options)
           .map(this.extractData)
           .catch(this.handleError);
 
         request.subscribe(
-          response => {
+          (response) => {
             if (response.success) {
               item.Description = item.Description.replace(/\r/g, '').replace(/\n/g, '<br>');
               if (action === CRUDAction.Create) {
@@ -240,7 +243,7 @@ export class WunschzettelService {
               }
 
               if (action === CRUDAction.Update) {
-                let olditem = this._data.items.find(i => i.id === item.id);
+                let olditem = this._data.items.find((i) => i.id === item.id);
                 if (item) {
                   for (let key in item) {
                     if (item.hasOwnProperty(key)) {
@@ -255,7 +258,7 @@ export class WunschzettelService {
 
             observer.next(response);
           }
-          , error => {
+          , (error) => {
             let err: ICRUDResponse = {
               success: false,
               message: error,
@@ -304,7 +307,7 @@ export class WunschzettelService {
       };
 
       let captcha = '4';
-      this.backend.connections.subscribe(c => {
+      this.backend.connections.subscribe((c) => {
         let res = new ResponseOptions();
         res.body = {};
         res.status = 200;
@@ -324,7 +327,7 @@ export class WunschzettelService {
         if (matches && c.request.method === 0) {
           let action = matches[1];
           let id = matches[2];
-          let item = backendItems.find(i => i.id === id);
+          let item = backendItems.find((i) => i.id === id);
           if (action === 'status') {
             res.body = { data: { status: backendStatus['id' + id] || false } };
           }
@@ -335,7 +338,7 @@ export class WunschzettelService {
           console.log(body);
           if (body['action'] === 'add' && body['captcha'] === captcha) {
             let lastid = 0;
-            backendItems.forEach(w => lastid = Math.max(lastid, w.id + 1));
+            backendItems.forEach((w) => lastid = Math.max(lastid, w.id + 1));
             body['item'].id = lastid;
             backendItems.push(body['item']);
 
