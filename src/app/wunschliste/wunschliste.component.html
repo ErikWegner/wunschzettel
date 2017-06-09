@@ -1,4 +1,4 @@
-<div class="center960">
+<div class="center960" *ngIf="uiStatus == 'loaded'">
   <h2 *ngIf="category">Wunschliste {{ category.name }}</h2>
 
   <ul class='mdl-list'>
@@ -14,4 +14,15 @@
       </span>
     </li>
   </ul>
+</div>
+<div class="spinner" *ngIf="uiStatus == 'loading'">
+  <div class="rect1"></div>
+  <div class="rect2"></div>
+  <div class="rect3"></div>
+  <div class="rect4"></div>
+  <div class="rect5"></div>
+</div>
+<div class="error" *ngIf="uiStatus == 'error'">
+  Ein Fehler ist aufgetreten. Bitte die Seite neu laden.<br>
+  {{ errorText }}
 </div>

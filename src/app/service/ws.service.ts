@@ -5,7 +5,7 @@ import { Location } from '@angular/common';
 import { MockBackend } from '@angular/http/testing';
 
 import { Wunschzetteleintrag, Category } from '../common';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs/Rx';
 import { Observer } from 'rxjs/Observer';
 
 import 'rxjs/add/operator/share';
@@ -52,7 +52,6 @@ export class WunschzettelService {
   private _categoriesObserver: Observer<Category[]>;
   private _itemsObserver: Observer<Wunschzetteleintrag[]>;
   private _categories: Category[];
-  private _items: Observable<Wunschzetteleintrag[]>;
   private serviceUrl = 'service.php';  // URL to web api
 
   private _data: {
@@ -82,6 +81,8 @@ export class WunschzettelService {
       if (JSON.stringify(this._categories) !== oldCategories) {
         this._categoriesObserver.next(this._categories);
       }
+    }, (error) => {
+      // do nothing here, needed for other subscribers to receive the error, too
     });
 
     this.setupDevelopment();
@@ -100,6 +101,8 @@ export class WunschzettelService {
           this._data.items = items || [];
           this._data.items.forEach((item) => item.id = parseInt(item.id + ""));
           this.publishItems();
+        }, (error) => {
+          this.sendError(error);
         }
       );
     }
@@ -286,6 +289,10 @@ export class WunschzettelService {
     return Observable.throw(errMsg);
   }
 
+  private sendError(error: any) {
+    this._itemsObserver.error(error);
+  }
+
   private publishItems() {
     this._itemsObserver.next(this._data.items);
   }
@@ -326,7 +333,7 @@ export class WunschzettelService {
         let matches = c.request.url.match(serviceRegex);
         if (matches && c.request.method === 0) {
           let action = matches[1];
-          let id = matches[2];
+          let id = parseInt(matches[2]);
           let item = backendItems.find((i) => i.id === id);
           if (action === 'status') {
             res.body = { data: { status: backendStatus['id' + id] || false } };
@@ -353,7 +360,15 @@ export class WunschzettelService {
         }
 
         res.body = JSON.parse(JSON.stringify(res.body));
-        c.mockRespond(new Response(res));
+        // setTimeout(() => {
+        //   c.mockRespond(new Response(new ResponseOptions({
+        //     status: 404,
+        //     statusText: 'URL not Found',
+        //   })));
+        // }, 800);
+        setTimeout(() => {
+          c.mockRespond(new Response(res));
+        }, 800);
       });
     }
   }

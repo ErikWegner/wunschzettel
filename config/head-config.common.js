@@ -41,7 +41,7 @@ module.exports = {
     { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/assets/icon/favicon-16x16.png' },
 
     /** <link> tags for a fonts **/
-    { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' },
+    { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons', '=href': false },
 
     /**
      * <link> tags for a Web App Manifest
