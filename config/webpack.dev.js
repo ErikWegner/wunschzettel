@@ -54,13 +54,14 @@ module.exports = function (options) {
      * See: http://webpack.github.io/docs/configuration.html#output
      */
     output: {
+      publicPath: '/wdemo/',
 
       /**
        * The output directory as absolute path (required).
        *
        * See: http://webpack.github.io/docs/configuration.html#output-path
        */
-      path: helpers.root('dist'),
+      path: helpers.root('dist/wdemo'),
 
       /**
        * Specifies the name of each output file on disk.

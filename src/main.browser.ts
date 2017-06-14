@@ -1,3 +1,7 @@
+// Material design
+import 'style-loader!material-design-lite/dist/material.min.css';
+import 'material-design-lite/dist/material.min.js';
+
 /**
  * Angular bootstrapping
  */

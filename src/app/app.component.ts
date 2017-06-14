@@ -10,9 +10,6 @@ import {
 } from '@angular/core';
 import { AppState } from './app.service';
 
-// Material design
-import 'style-loader!material-design-lite/dist/material.min.css';
-import 'material-design-lite/dist/material.min.js';
 import { WunschlisteComponent } from './wunschliste';
 import { WunschzettelService } from './service';
 import { WunschzetteleintragComponent } from './wunschzetteleintrag';
