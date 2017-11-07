@@ -13,9 +13,8 @@ Demo: https://ewus.de/wdemo/
     npm install
 
 ## Ausführung
-    npm run watch:prod
-    npm run deploy
-    npm run bundle
+    npm run server:dev
+    npm run build:aot
 
 # Installation
 

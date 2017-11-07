@@ -305,8 +305,12 @@ export class WunschzettelService {
       let backendItems = [
         new Wunschzetteleintrag(1, 'Item 1', 'Desc', 'C1'),
         new Wunschzetteleintrag(2, 'Item 2', 'Desc Desc', 'C2'),
-        new Wunschzetteleintrag(3, 'Item 3', 'Desc Desc Desc', 'C1'),
+        new Wunschzetteleintrag(3, 'Item 3', 'Desc Desc Desc '.repeat(200), 'C1'),
+        new Wunschzetteleintrag(4, 'Item 4', 'Desc Desc Desc no image', 'C1'),
       ];
+      backendItems[0].ImgageUrl = '/wdemo/assets/pic.png';
+      backendItems[1].ImgageUrl = '/wdemo/assets/picw.png';
+      backendItems[2].ImgageUrl = '/wdemo/assets/pich.png';
       let backendStatus = {
         'id1': true,
         'id2': false,

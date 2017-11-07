@@ -5,7 +5,8 @@
     <li *ngFor="let wunsch of (items | myMatchCategory:category)" class="mdl-list__item mdl-list__item--three-line">
       <span class="mdl-list__item-primary-content">
         <a [routerLink]="['/wunschliste/details', wunsch.id ]">
-          <i class="material-icons mdl-list__item-avatar">chevron_right</i>
+          <i class="material-icons mdl-list__item-avatar noImage" *ngIf="!wunsch.ImgageUrl">chevron_right</i>
+          <img class="previewImage" [src]="wunsch.ImgageUrl" *ngIf="wunsch.ImgageUrl">
           <span>{{ wunsch.Title }}</span>
           <span class="mdl-list__item-text-body">
             {{ wunsch.Description | mySummary }}

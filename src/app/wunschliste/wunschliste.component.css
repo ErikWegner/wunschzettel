@@ -10,6 +10,18 @@ li {
   margin-top: 20px;
 }
 
+.previewImage {
+  height: 72px;
+  width: 72px;
+  float: left;
+  margin-right: 5px;
+  object-fit: cover;
+}
+
+.noImage {
+  margin-left: 20px;
+}
+
 .mdl-list__item-primary-content a {
   text-decoration: none;
 }
