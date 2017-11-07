@@ -309,6 +309,7 @@ export class WunschzettelService {
         new Wunschzetteleintrag(4, 'Item 4', 'Desc Desc Desc no image', 'C1'),
       ];
       backendItems[0].ImgageUrl = '/wdemo/assets/pic.png';
+      backendItems[0].BuyUrl = 'http://ewus.de/wz-shop/';
       backendItems[1].ImgageUrl = '/wdemo/assets/picw.png';
       backendItems[2].ImgageUrl = '/wdemo/assets/pich.png';
       let backendStatus = {

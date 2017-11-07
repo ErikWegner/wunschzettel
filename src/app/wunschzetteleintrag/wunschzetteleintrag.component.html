@@ -3,6 +3,7 @@
     <img *ngIf="wunsch.ImgageUrl" [src]="wunsch.ImgageUrl" class="wunschbild" />
     <h3>{{ wunsch.Title }}</h3>
     <p [innerHTML]="wunsch.Description"></p>
+    <p *ngIf="wunsch.BuyUrl">Kauf-Adresse: <a href="{{wunsch.BuyUrl}}" target="_blank">{{wunsch.BuyUrl}}</a></p>
     <a [routerLink]="['/wunschliste/bearbeiten', { id: wunsch.id }]" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored editbutton">
       <i class="material-icons">edit</i>
     </a>
