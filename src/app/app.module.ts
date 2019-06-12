@@ -9,6 +9,7 @@ import { ItemsListComponent } from './items-list/items-list.component';
 import { ItemViewComponent } from './item-view/item-view.component';
 import { ItemEditComponent } from './item-edit/item-edit.component';
 import { ItemDeleteComponent } from './item-delete/item-delete.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ItemDeleteComponent } from './item-delete/item-delete.component';
     ItemsListComponent,
     ItemViewComponent,
     ItemEditComponent,
-    ItemDeleteComponent
+    ItemDeleteComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
