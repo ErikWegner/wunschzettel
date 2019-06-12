@@ -10,6 +10,8 @@ import { ItemViewComponent } from './item-view/item-view.component';
 import { ItemEditComponent } from './item-edit/item-edit.component';
 import { ItemDeleteComponent } from './item-delete/item-delete.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CustomMaterialModule } from './custom-material/custom-material.module';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    CustomMaterialModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
