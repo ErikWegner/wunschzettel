@@ -1,19 +1,15 @@
-import { Component, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'about',
-  styleUrls: ['./about.component.css'],
-  templateUrl: './about.component.html'
+  selector: 'app-about',
+  templateUrl: './about.component.html',
+  styleUrls: ['./about.component.css']
 })
-export class AboutComponent implements AfterViewInit {
-  constructor(
-    private el: ElementRef
-  ) {
+export class AboutComponent implements OnInit {
 
+  constructor() { }
+
+  ngOnInit() {
   }
 
-  public ngAfterViewInit() {
-    // Material design
-    componentHandler.upgradeElements(this.el.nativeElement);
-  }
 }
