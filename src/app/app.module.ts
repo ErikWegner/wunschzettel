@@ -12,6 +12,8 @@ import { ItemDeleteComponent } from './item-delete/item-delete.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CustomMaterialModule } from './custom-material/custom-material.module';
+import { LoaderComponent } from './internal/loader/loader.component';
+import { MessageComponent } from './internal/message/message.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import { CustomMaterialModule } from './custom-material/custom-material.module';
     ItemViewComponent,
     ItemEditComponent,
     ItemDeleteComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    LoaderComponent,
+    MessageComponent
   ],
   imports: [
     BrowserModule,

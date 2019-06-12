@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { DomainService } from '../domain.service';
+import { Category } from '../domain';
 
 @Component({
   selector: 'app-categories-list',
@@ -7,9 +9,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CategoriesListComponent implements OnInit {
 
-  constructor() { }
+  isLoading = true;
+  categories: Category[];
+
+  constructor(
+    private dataservice: DomainService
+  ) { }
 
   ngOnInit() {
+    this.dataservice.getCategories().subscribe(
+      {
+        next: (result) => {
+         this.categories = result.data;
+        },
+        error: (e) => { },
+        complete: () => {
+          this.isLoading = false;
+        }
+      }
+    );
   }
 
 }

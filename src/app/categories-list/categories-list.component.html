@@ -1,3 +1,9 @@
-<p>
-  categories-list works!
-</p>
+<div>
+  <app-loader *ngIf="isLoading"></app-loader>
+  <div class="empty" *ngIf="categories && categories.length == 0">Noch keine Einträge in diesem Wunschzettel</div>
+  <div *ngIf="categories && categories.length > 0">
+    <ul>
+      <li *ngFor="let category of categories">{{ JSON.stringify(category) }}</li>
+    </ul>
+  </div>
+</div>
