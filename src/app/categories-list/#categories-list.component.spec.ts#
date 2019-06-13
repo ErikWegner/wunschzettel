@@ -9,7 +9,9 @@ describe('CategoriesListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-	declarations: [ CategoriesListComponent, TestAppLoaderComponent ]
+	declarations: [
+	    CategoriesListComponent,
+	    TestAppLoaderComponent ]
     })
     .compileComponents();
   }));

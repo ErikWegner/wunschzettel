@@ -2,6 +2,6 @@ import { Result } from './result';
 
 describe('Result', () => {
   it('should create an instance', () => {
-    expect(new Result()).toBeTruthy();
+    expect(new Result(null)).toBeTruthy();
   });
 });

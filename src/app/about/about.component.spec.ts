@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AboutComponent } from './about.component';
+import { MatCard } from '@angular/material/card';
 
 describe('AboutComponent', () => {
   let component: AboutComponent;

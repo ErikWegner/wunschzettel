@@ -1,0 +1,1 @@
+export { TestAppLoaderComponent } from './apploader';
