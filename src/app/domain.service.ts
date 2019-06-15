@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { tap, map, filter } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Result, Category, Item } from './domain';
 import { BackendService } from './backend.service';
 
@@ -24,7 +24,7 @@ export class DomainService {
       .pipe(map(items => this.filterByCategory(items, category)));
   }
 
-  private filterByCategory(items: Result<Item[]>, category: Category): any {
+  private filterByCategory(items: Result<Item[]>, category: Category) {
     return new Result(items.data.filter(item => item.Category === category.value));
   }
 

@@ -74,6 +74,6 @@ describe('CategoriesListComponent', () => {
       .queryAll(By.directive(RouterLinkDirectiveStub));
     const routerLinks = linkDes.map(de => de.injector.get(RouterLinkDirectiveStub));
     expect(routerLinks.length).toBe(3);
-    expect(routerLinks.map(r => r.linkParams)).toEqual(categories.map(c => '/categories/' + c.value));
+    expect(routerLinks.map(r => r.linkParams)).toEqual(categories.map(c => '[\'/categories\', category.value]'));
   });
 });
