@@ -20,6 +20,11 @@ export class ItemBuilder {
     return this;
   }
 
+  public id(id: number) {
+    this.idValue = id;
+    return this;
+  }
+
   public build() {
     const i = new Item();
 

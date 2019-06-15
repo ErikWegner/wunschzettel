@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 
 import { DomainService } from '../domain.service';
 import { Category, Item, Result } from '../domain';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-items-list',

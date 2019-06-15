@@ -4,11 +4,13 @@ import { AboutComponent } from './about/about.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { CategoriesListComponent } from './categories-list/categories-list.component';
 import { ItemsListComponent } from './items-list/items-list.component';
+import { ItemViewComponent } from './item-view/item-view.component';
 
 const routes: Routes = [
   { path: 'about', component: AboutComponent },
   { path: 'categories', component: CategoriesListComponent },
   { path: 'categories/:category', component: ItemsListComponent },
+  { path: 'items/:id', component: ItemViewComponent },
 
   { path: '', redirectTo: '/categories', pathMatch: 'full'},
   { path: '**', component: PageNotFoundComponent }
