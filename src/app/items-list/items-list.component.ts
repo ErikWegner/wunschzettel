@@ -12,7 +12,8 @@ import { Observable } from 'rxjs';
 })
 export class ItemsListComponent implements OnInit {
 
-  items$: Observable<Result<Item[]>>;
+  isLoading = true;
+  items: Item[];
 
   constructor(
     private route: ActivatedRoute,
@@ -22,7 +23,15 @@ export class ItemsListComponent implements OnInit {
   ngOnInit() {
     const categoryName = this.route.snapshot.paramMap.get('category');
     const category = new Category(categoryName);
-    this.service.getItemsByCategory(category);
+    this.service.getItemsByCategory(category).subscribe({
+      next: (result) => {
+        this.items = result.data;
+      },
+      error: (e) => { },
+      complete: () => {
+        this.isLoading = false;
+      }
+    });
   }
 
 }

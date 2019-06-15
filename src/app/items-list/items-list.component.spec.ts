@@ -2,9 +2,10 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { cold, getTestScheduler, initTestScheduler, resetTestScheduler } from 'jasmine-marbles';
 
 import { ItemsListComponent } from './items-list.component';
-import { ActivatedRouteStub, ActivatedRoute, TestRandom, ItemBuilder, ListBuilder } from 'testing';
+import { ActivatedRouteStub, ActivatedRoute, TestRandom, ItemBuilder, ListBuilder, RouterLinkDirectiveStub } from 'testing';
 import { DomainService } from '../domain.service';
 import { Result, Category } from '../domain';
+import { By } from '@angular/platform-browser';
 
 describe('ItemsListComponent', () => {
   let component: ItemsListComponent;
@@ -22,13 +23,13 @@ describe('ItemsListComponent', () => {
     initTestScheduler();
     activatedRoute = new ActivatedRouteStub();
     TestBed.configureTestingModule({
-      declarations: [ ItemsListComponent ],
+      declarations: [ItemsListComponent, RouterLinkDirectiveStub],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRoute },
         { provide: DomainService, useValue: domainService }
       ]
     })
-    .compileComponents();
+      .compileComponents();
     domainServiceStub = TestBed.get(DomainService);
   }));
 
@@ -42,20 +43,30 @@ describe('ItemsListComponent', () => {
   });
 
   it('should create', () => {
+    domainServiceStub.getItemsByCategory.and.returnValue(cold('--x|', { x: new Result([]) }));
     fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 
-  it('should get items by category', () => {
-    // Arrange
+  function prepareView() {
     const category = TestRandom.randomString(8) + ' ' + TestRandom.randomString(4);
     const items = ListBuilder.with(
       () => ItemBuilder.with().category(category).build()
     ).items(TestRandom.r(40, 20)).build();
     activatedRoute.setParamMap({ category });
     domainServiceStub.getItemsByCategory.and.returnValue(
-      cold('--x|', {x: new Result(items)})
+      cold('--x|', { x: new Result(items) })
     );
+    return {
+      category,
+      items
+    };
+  }
+
+  it('should get items by category', () => {
+    // Arrange
+    const viewData = prepareView();
+    const category = viewData.category;
 
     // Act
     fixture.detectChanges();
@@ -64,5 +75,23 @@ describe('ItemsListComponent', () => {
 
     // Assert
     expect(domainServiceStub.getItemsByCategory).toHaveBeenCalledWith(new Category(category));
+  });
+
+  it('should display list of items', () => {
+    // Arrange
+    const viewData = prepareView();
+    const items = viewData.items;
+
+    // Act
+    fixture.detectChanges();
+    getTestScheduler().flush(); // flush the observables
+    fixture.detectChanges();
+
+    // Assert
+    const linkDes = fixture.debugElement
+      .queryAll(By.directive(RouterLinkDirectiveStub));
+    const routerLinks = linkDes.map(de => de.injector.get(RouterLinkDirectiveStub));
+    expect(routerLinks.length).toBe(items.length);
+    routerLinks.forEach(l => expect(l.linkParams).toEqual('[\'/items\', item.id]'));
   });
 });
