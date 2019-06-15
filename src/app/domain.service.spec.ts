@@ -9,12 +9,12 @@ describe('DomainService', () => {
   let nextCallback: jasmine.Spy;
   let completeCallback: jasmine.Spy;
   let fakeBackend: jasmine.SpyObj<BackendService>;
-  const backend = jasmine.createSpyObj(
-    'BackendService',
-    ['getItems']
-  );
-
   beforeEach(() => {
+    const backend = jasmine.createSpyObj(
+      'BackendService',
+      ['getItems']
+    );
+
     initTestScheduler();
     nextCallback = jasmine.createSpy('nextCallback');
     completeCallback = jasmine.createSpy('completeCallback');

@@ -3,7 +3,7 @@
   <div class="empty" *ngIf="categories && categories.length == 0">Noch keine Einträge in diesem Wunschzettel</div>
   <div *ngIf="categories && categories.length > 0">
     <ul>
-      <li *ngFor="let category of categories">{{ JSON.stringify(category) }}</li>
+      <li *ngFor="let category of categories"><a routerLink="/categories/{{category}}">{{ category }}</a></li>
     </ul>
   </div>
 </div>
