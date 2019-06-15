@@ -1,3 +1,4 @@
 export class Item {
-    public Category: string;
+  public id: number;
+  public category: string;
 }

@@ -90,6 +90,31 @@ describe('DomainService', () => {
     expect(nextCallback).toHaveBeenCalledTimes(1);
     expect(completeCallback).toHaveBeenCalledTimes(1);
     const resultItems: Result<Item[]> = nextCallback.calls.first().args[0];
-    expect(resultItems.data.every(item => item.Category === categories[0])).toBeTruthy();
+    resultItems.data.every(item => expect(item.category).toBe(categories[0]));
+  });
+
+  it('can load an item', () => {
+    // Arrange
+    const items = ListBuilder.with(() => ItemBuilder.default()).items(TestRandom.r(40, 20)).build();
+    const index = Math.floor(items.length * 0.8);
+    const id = items[index].id;
+    fakeBackend.getItems.and.returnValue(cold('--x|', { x: new Result(items) }));
+    const service: DomainService = TestBed.get(DomainService);
+
+    // Act
+    service.getItem(id).subscribe(
+      nextCallback,
+      fail,
+      () => {
+        completeCallback();
+      }
+    );
+    getTestScheduler().flush(); // flush the observables
+
+    // Assert
+    expect(nextCallback).toHaveBeenCalledTimes(1);
+    expect(completeCallback).toHaveBeenCalledTimes(1);
+    const resultItems: Result<Item> = nextCallback.calls.first().args[0];
+    expect(resultItems.data).toBe(items[index]);
   });
 });

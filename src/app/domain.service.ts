@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, first } from 'rxjs/operators';
 import { Result, Category, Item } from './domain';
 import { BackendService } from './backend.service';
 
@@ -24,14 +24,24 @@ export class DomainService {
       .pipe(map(items => this.filterByCategory(items, category)));
   }
 
+  public getItem(id: number) {
+    return this.loadItems()
+    .pipe(map(items => this.filterById(items, id)));
+  }
+
+  private filterById(items: Result<Item[]>, id: number) {
+    const item = items.data.find(i => i.id === id);
+    return new Result(item);
+  }
+
   private filterByCategory(items: Result<Item[]>, category: Category) {
-    return new Result(items.data.filter(item => item.Category === category.value));
+    return new Result(items.data.filter(item => item.category === category.value));
   }
 
   private extractCategories(result: Result<Item[]>) {
     const dict: { [c: string]: boolean } = {};
     const categories = result.data
-      .map(i => i.Category)
+      .map(i => i.category)
       .filter(c => {
         return dict.hasOwnProperty(c) ? false : dict[c] = true;
       })

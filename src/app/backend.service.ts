@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Result, Item } from './domain';
+import { ItemBuilder } from 'testing';
 
 @Injectable({
   providedIn: 'root'
@@ -8,15 +9,9 @@ import { Result, Item } from './domain';
 export class BackendService {
 
   private mockdata: Item[] = [
-    {
-      Category: 'Buch'
-    },
-    {
-      Category: 'Spiel'
-    },
-    {
-      Category: 'Buch'
-    },
+    ItemBuilder.with().category('Buch').build(),
+    ItemBuilder.with().category('Spiel').build(),
+    ItemBuilder.with().category('Buch').build(),
   ];
 
   constructor() { }

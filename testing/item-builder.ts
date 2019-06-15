@@ -1,7 +1,9 @@
 import { Item } from 'src/app/domain';
+import { TestRandom } from './test-random';
 
 export class ItemBuilder {
-  private categoryValue = '';
+  private idValue = TestRandom.id('item');
+  private categoryValue = TestRandom.randomString(8);
 
   private constructor() { }
 
@@ -21,7 +23,8 @@ export class ItemBuilder {
   public build() {
     const i = new Item();
 
-    i.Category = this.categoryValue;
+    i.id = this.idValue;
+    i.category = this.categoryValue;
 
     return i;
   }
