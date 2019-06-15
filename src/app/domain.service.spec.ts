@@ -4,6 +4,8 @@ import { DomainService } from './domain.service';
 import { BackendService } from './backend.service';
 import { ListBuilder, TestRandom, ItemBuilder } from 'testing';
 import { Result } from './domain/result';
+import { Category } from './domain/category';
+import { Item } from './domain/item';
 
 describe('DomainService', () => {
   let nextCallback: jasmine.Spy;
@@ -12,7 +14,10 @@ describe('DomainService', () => {
   beforeEach(() => {
     const backend = jasmine.createSpyObj(
       'BackendService',
-      ['getItems']
+      [
+        'getItems',
+        'getItemsByCategory',
+      ]
     );
 
     initTestScheduler();
@@ -58,7 +63,33 @@ describe('DomainService', () => {
     // Assert
     expect(nextCallback).toHaveBeenCalledTimes(1);
     expect(completeCallback).toHaveBeenCalledTimes(1);
-    const resultCategories: Result<string[]> = nextCallback.calls.first().args[0];
-    expect(resultCategories.data).toEqual(categories);
+    const resultCategories: Result<Category[]> = nextCallback.calls.first().args[0];
+    expect(resultCategories.data.map(c => c.value)).toEqual(categories);
+  });
+
+  it('can build a list of items by categories', () => {
+    // Arrange
+    const categories = ListBuilder.with(() => TestRandom.randomString(8)).items(3).build();
+    const items = ListBuilder.with(
+      (i) => ItemBuilder.with().category(categories[i % categories.length]).build()
+    ).items(TestRandom.r(40, 20)).build();
+    fakeBackend.getItems.and.returnValue(cold('--x|', { x: new Result(items) }));
+    const service: DomainService = TestBed.get(DomainService);
+
+    // Act
+    service.getItemsByCategory(new Category(categories[0])).subscribe(
+      nextCallback,
+      fail,
+      () => {
+        completeCallback();
+      }
+    );
+    getTestScheduler().flush(); // flush the observables
+
+    // Assert
+    expect(nextCallback).toHaveBeenCalledTimes(1);
+    expect(completeCallback).toHaveBeenCalledTimes(1);
+    const resultItems: Result<Item[]> = nextCallback.calls.first().args[0];
+    expect(resultItems.data.every(item => item.Category === categories[0])).toBeTruthy();
   });
 });

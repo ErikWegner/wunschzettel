@@ -4,7 +4,7 @@ import { cold, getTestScheduler, initTestScheduler, resetTestScheduler } from 'j
 import { CategoriesListComponent } from './categories-list.component';
 import { TestAppLoaderComponent, ListBuilder, TestRandom, RouterLinkDirectiveStub } from '../../../testing/';
 import { DomainService } from '../domain.service';
-import { Result } from '../domain';
+import { Result, Category } from '../domain';
 import { By } from '@angular/platform-browser';
 
 describe('CategoriesListComponent', () => {
@@ -59,9 +59,9 @@ describe('CategoriesListComponent', () => {
 
   it('should display list of categories from service', () => {
     // Arrange
-    const categories = ListBuilder.with(() => TestRandom.randomString(8)).items(3).build();
+    const categories = ListBuilder.with(() => new Category(TestRandom.randomString(8))).items(3).build();
     domainServiceStub.getCategories.and.returnValue(
-      cold('--x|', { x: new Result(categories) })
+      cold('--x|', { x: new Result<Category[]>(categories) })
     );
 
     // Act
@@ -74,6 +74,6 @@ describe('CategoriesListComponent', () => {
       .queryAll(By.directive(RouterLinkDirectiveStub));
     const routerLinks = linkDes.map(de => de.injector.get(RouterLinkDirectiveStub));
     expect(routerLinks.length).toBe(3);
-    expect(routerLinks.map(r => r.linkParams)).toEqual(categories.map(c => '/categories/' + c));
+    expect(routerLinks.map(r => r.linkParams)).toEqual(categories.map(c => '/categories/' + c.value));
   });
 });

@@ -32,6 +32,12 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 - Routen
 - - /
+- - /categories/:name
+- - /items/:id
+- - /items/:id/edit
+- - /items/:id/delete
+- Views
+- - /
 - - /categories
 - - /categories/:name
 - - /items/:id
@@ -43,8 +49,6 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 - - SetItem
 - - DeleteItem
 - Domain
-- - GetCategories
-- - GetItemsByCategory
 - - GetItem
 - - GetReservationFlag
 - - SetReservationFlag
