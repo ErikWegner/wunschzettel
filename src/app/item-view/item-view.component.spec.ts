@@ -22,13 +22,13 @@ describe('ItemViewComponent', () => {
     initTestScheduler();
     activatedRoute = new ActivatedRouteStub();
     TestBed.configureTestingModule({
-      declarations: [ ItemViewComponent, RouterLinkDirectiveStub],
+      declarations: [ItemViewComponent, RouterLinkDirectiveStub],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRoute },
         { provide: DomainService, useValue: domainService }
       ]
     })
-    .compileComponents();
+      .compileComponents();
     domainServiceStub = TestBed.get(DomainService);
   }));
 
@@ -43,20 +43,25 @@ describe('ItemViewComponent', () => {
 
   it('should create', () => {
     domainServiceStub.getItem.and.returnValue(
-      cold('--x|', {x: new Result(null)})
+      cold('--x|', { x: new Result(null) })
     );
     fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 
-  it('should get item by id', () => {
-    // Arrange
+  function prepareViewData() {
     const id = TestRandom.r(9000, 4000);
     const item = ItemBuilder.with().id(id).build();
     activatedRoute.setParamMap({ id });
     domainServiceStub.getItem.and.returnValue(
-      cold('--x|', {x: new Result(item)})
+      cold('--x|', { x: new Result(item) })
     );
+    return { id, item };
+  }
+
+  it('should get item by id', () => {
+    // Arrange
+    const viewData = prepareViewData();
 
     // Act
     fixture.detectChanges();
@@ -64,6 +69,20 @@ describe('ItemViewComponent', () => {
     fixture.detectChanges();
 
     // Assert
-    expect(domainServiceStub.getItem).toHaveBeenCalledWith(item.id);
+    expect(domainServiceStub.getItem).toHaveBeenCalledWith(viewData.id);
+  });
+
+  it('should show title of item', () => {
+    // Arrange
+    const viewData = prepareViewData();
+
+    // Act
+    fixture.detectChanges();
+    getTestScheduler().flush(); // flush the observables
+    fixture.detectChanges();
+
+    // Assert
+    const compiled = fixture.debugElement.nativeElement;
+    expect(compiled.querySelector('h1').textContent).toBe(viewData.item.title);
   });
 });

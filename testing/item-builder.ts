@@ -3,7 +3,8 @@ import { TestRandom } from './test-random';
 
 export class ItemBuilder {
   private idValue = TestRandom.id('item');
-  private categoryValue = TestRandom.randomString(8);
+  private titleValue = TestRandom.randomString(13, 'title-');
+  private categoryValue = TestRandom.randomString(8, 'category-');
 
   private constructor() { }
 
@@ -29,6 +30,7 @@ export class ItemBuilder {
     const i = new Item();
 
     i.id = this.idValue;
+    i.title = this.titleValue;
     i.category = this.categoryValue;
 
     return i;

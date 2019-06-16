@@ -15,8 +15,8 @@ export class TestRandom {
    *
    * @param length The length of the generated string.
    */
-  static randomString(length: number): string {
-    let r = '';
+  static randomString(length: number, prefix = ''): string {
+    let r = prefix;
     for (let i = 0; i < length; i++) {
       r += String.fromCharCode(97 + Math.floor(Math.random() * 26));
     }
