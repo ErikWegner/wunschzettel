@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map, first } from 'rxjs/operators';
-import { Result, Category, Item } from './domain';
+import { map } from 'rxjs/operators';
+import { Result, Category, Item, CaptchaResponse } from './domain';
 import { BackendService } from './backend.service';
 
 @Injectable({
@@ -27,6 +27,10 @@ export class DomainService {
   public getItem(id: number) {
     return this.loadItems()
     .pipe(map(items => this.filterById(items, id)));
+  }
+
+  public setReservationFlag(id: number, isReserved: boolean, captaResponse: CaptchaResponse): Observable<Result<void>> {
+    throw new Error('Not implemeted');
   }
 
   private filterById(items: Result<Item[]>, id: number) {

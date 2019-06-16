@@ -1,18 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { Item } from '../domain';
+import { Item } from '../../domain';
 import { ActivatedRoute } from 'testing';
-import { DomainService } from '../domain.service';
+import { DomainService } from '../../domain.service';
 
 @Component({
-  selector: 'app-item-view',
-  templateUrl: './item-view.component.html',
-  styleUrls: ['./item-view.component.css']
+  selector: 'app-item-delete',
+  templateUrl: './item-delete.component.html',
+  styleUrls: ['./item-delete.component.css']
 })
-export class ItemViewComponent implements OnInit {
+export class ItemDeleteComponent implements OnInit {
 
   isLoading = true;
   item: Item;
-  revealStatus: false;
 
   constructor(
     private route: ActivatedRoute,

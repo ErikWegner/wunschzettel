@@ -3,8 +3,8 @@ import { cold, getTestScheduler, initTestScheduler, resetTestScheduler } from 'j
 
 import { ItemEditComponent } from './item-edit.component';
 import { ActivatedRouteStub, RouterLinkDirectiveStub, ActivatedRoute, TestRandom, ItemBuilder } from 'testing';
-import { DomainService } from '../domain.service';
-import { Result } from '../domain';
+import { DomainService } from '../../domain.service';
+import { Result } from '../../domain';
 import { ReactiveFormsModule } from '@angular/forms';
 
 describe('ItemEditComponent', () => {

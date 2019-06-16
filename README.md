@@ -37,13 +37,13 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 - - /items/:id
 - - /items/:id/edit
 - - /items/:id/delete
+- - 404 Not Found
 - Backend
 - - GetItems
 - - SetReserved
 - - SetItem
 - - DeleteItem
 - Domain
-- - GetReservationFlag
 - - SetReservationFlag
 - - SetItem
 - - DeleteItem

@@ -1,3 +1,4 @@
-export { Category } from './category';
-export { Result } from './result';
-export { Item } from './item';
+export * from './captcha-response';
+export * from './category';
+export * from './item';
+export * from './result';

@@ -1,17 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { Item } from '../domain';
+import { Item } from '../../domain';
 import { ActivatedRoute } from 'testing';
-import { DomainService } from '../domain.service';
+import { DomainService } from '../../domain.service';
+import { FormControl } from '@angular/forms';
 
 @Component({
-  selector: 'app-item-delete',
-  templateUrl: './item-delete.component.html',
-  styleUrls: ['./item-delete.component.css']
+  selector: 'app-item-edit',
+  templateUrl: './item-edit.component.html',
+  styleUrls: ['./item-edit.component.css']
 })
-export class ItemDeleteComponent implements OnInit {
+export class ItemEditComponent implements OnInit {
 
   isLoading = true;
-  item: Item;
+
+  title = new FormControl('');
 
   constructor(
     private route: ActivatedRoute,
@@ -22,7 +24,7 @@ export class ItemDeleteComponent implements OnInit {
     const id = parseInt(this.route.snapshot.paramMap.get('id'), 10);
     this.service.getItem(id).subscribe({
       next: (result) => {
-        this.item = result.data;
+        this.title.setValue(result.data.title);
       },
       error: (e) => { },
       complete: () => {

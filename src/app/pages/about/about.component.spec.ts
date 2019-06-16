@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AboutComponent } from './about.component';
-import { CustomMaterialModule } from '../custom-material/custom-material.module';
+import { CustomMaterialModule } from '../../custom-material/custom-material.module';
 import { RouterTestingModule } from '@angular/router/testing';
 
 describe('AboutComponent', () => {

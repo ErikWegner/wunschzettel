@@ -3,8 +3,8 @@ import { cold, getTestScheduler, initTestScheduler, resetTestScheduler } from 'j
 
 import { ItemDeleteComponent } from './item-delete.component';
 import { ActivatedRouteStub, RouterLinkDirectiveStub, ActivatedRoute, ItemBuilder, TestRandom } from 'testing';
-import { DomainService } from '../domain.service';
-import { Result } from '../domain';
+import { DomainService } from '../../domain.service';
+import { Result } from '../../domain';
 
 describe('ItemDeleteComponent', () => {
   let component: ItemDeleteComponent;

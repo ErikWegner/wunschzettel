@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { DomainService } from '../domain.service';
-import { Category } from '../domain';
+import { DomainService } from '../../domain.service';
+import { Category } from '../../domain';
 
 @Component({
   selector: 'app-categories-list',

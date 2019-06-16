@@ -3,9 +3,9 @@ import { cold, getTestScheduler, initTestScheduler, resetTestScheduler } from 'j
 
 import { ItemViewComponent } from './item-view.component';
 import { ActivatedRouteStub, RouterLinkDirectiveStub, ActivatedRoute, ItemBuilder, TestRandom, TestAppLoaderComponent } from 'testing';
-import { DomainService } from '../domain.service';
-import { Result } from '../domain';
-import { CustomMaterialModule } from '../custom-material/custom-material.module';
+import { DomainService } from '../../domain.service';
+import { Result } from '../../domain';
+import { CustomMaterialModule } from '../../custom-material/custom-material.module';
 import { By } from '@angular/platform-browser';
 
 describe('ItemViewComponent', () => {
@@ -18,7 +18,8 @@ describe('ItemViewComponent', () => {
     const domainService = jasmine.createSpyObj(
       'DomainService',
       [
-        'getItem'
+        'getItem',
+        'setReservationFlag',
       ]
     );
     initTestScheduler();
@@ -163,6 +164,29 @@ describe('ItemViewComponent', () => {
 
       const button: HTMLButtonElement = fixture.nativeElement.querySelectorAll('mat-card-actions button')[1];
       expect(button.textContent).toBe(testRunData.buttonText);
+    });
+
+    [{
+      testName: 'should remove reservation on click',
+      isReservedValue: true
+    }, {
+      testName: 'should set reservation on click',
+      isReservedValue: false
+    }].forEach(testRunData2 => {
+      xit(testRunData2.testName, () => {
+        // Arrange
+        initItemView();
+        fixture.componentInstance.item.isReserved = testRunData2.isReservedValue;
+        revealStatus();
+        const button: HTMLButtonElement = fixture.nativeElement.querySelectorAll('mat-card-actions button')[1];
+        domainServiceStub.setReservationFlag.and.returnValue(cold('--x|', { x: new Result(null) }));
+
+        // Act
+        button.click();
+
+        // Assert
+        // TODO: do something
+      });
     });
   });
 });

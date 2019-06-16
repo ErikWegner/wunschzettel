@@ -11,10 +11,10 @@ import {
   TestAppLoaderComponent,
   TestRandom,
 } from 'testing';
-import { DomainService } from '../domain.service';
-import { Result, Category } from '../domain';
+import { DomainService } from '../../domain.service';
+import { Result, Category } from '../../domain';
 import { By } from '@angular/platform-browser';
-import { CustomMaterialModule } from '../custom-material/custom-material.module';
+import { CustomMaterialModule } from '../../custom-material/custom-material.module';
 
 describe('ItemsListComponent', () => {
   let component: ItemsListComponent;

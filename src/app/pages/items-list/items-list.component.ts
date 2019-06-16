@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { DomainService } from '../domain.service';
-import { Category, Item, Result } from '../domain';
+import { DomainService } from '../../domain.service';
+import { Category, Item, Result } from '../../domain';
 
 @Component({
   selector: 'app-items-list',
