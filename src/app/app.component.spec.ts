@@ -2,6 +2,8 @@ import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { CustomMaterialModule } from './custom-material/custom-material.module';
+import { RouterLinkDirectiveStub } from 'testing';
+import { By } from '@angular/platform-browser';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -11,7 +13,8 @@ describe('AppComponent', () => {
         CustomMaterialModule,
       ],
       declarations: [
-        AppComponent
+        AppComponent,
+        RouterLinkDirectiveStub,
       ],
     }).compileComponents();
   }));
@@ -28,10 +31,20 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('Wunschzettel');
   });
 
-  it('should render title in a h1 tag', () => {
+  it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
     expect(compiled.querySelector('mat-toolbar > span').textContent).toContain('Wunschzettel');
+  });
+
+  it('should have a link to start page', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const linkDes = fixture.debugElement
+      .queryAll(By.directive(RouterLinkDirectiveStub));
+    const routerLinks = linkDes.map(de => de.injector.get(RouterLinkDirectiveStub));
+    expect(routerLinks.length).toBe(1);
+    expect(routerLinks.map(r => r.linkParams)).toEqual(['/']);
   });
 });

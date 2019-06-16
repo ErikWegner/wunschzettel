@@ -1,7 +1,16 @@
 <div>
-  <div *ngIf="items && items.length > 0">
-    <ul>
-      <li *ngFor="let item of items"><a routerLink="['/items', item.id]">{{ item.title }}</a></li>
-    </ul>
+  <app-loader *ngIf="isLoading"></app-loader>
+  <div *ngIf="items && items.length > 0" class="td-none">
+      <a *ngFor="let item of items" [routerLink]="['/items', item.id]">
+        <mat-card class="itembox">
+          <mat-card-title>
+            {{ item.title }}
+          </mat-card-title>
+          <mat-card-content class="preview">
+            <img [src]="item.imagesrc">
+            {{ item.description }}
+          </mat-card-content>
+        </mat-card>
+      </a>
   </div>
-</div>>
+</div>

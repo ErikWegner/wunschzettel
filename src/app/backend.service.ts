@@ -12,6 +12,10 @@ export class BackendService {
     ItemBuilder.with().category('Buch').build(),
     ItemBuilder.with().category('Spiel').build(),
     ItemBuilder.with().category('Buch').build(),
+    ItemBuilder.with().category('Buch').build(),
+    ItemBuilder.with().category('Spiel').build(),
+    ItemBuilder.with().category('Technik').build(),
+    ItemBuilder.with().category('Medien').build(),
   ];
 
   constructor() { }

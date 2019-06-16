@@ -1,0 +1,17 @@
+.preview img {
+  height: 72px;
+  width: 72px;
+  float: left;
+  margin-right: 5px;
+  object-fit: cover;
+}
+
+.preview {
+  height: 52px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.itembox {
+  margin: 16px;
+}

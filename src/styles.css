@@ -1,2 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+.td-none a,
+.td-none a:hover,
+.td-none a:active {
+  text-decoration: none
+}

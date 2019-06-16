@@ -2,10 +2,19 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { cold, getTestScheduler, initTestScheduler, resetTestScheduler } from 'jasmine-marbles';
 
 import { ItemsListComponent } from './items-list.component';
-import { ActivatedRouteStub, ActivatedRoute, TestRandom, ItemBuilder, ListBuilder, RouterLinkDirectiveStub } from 'testing';
+import {
+  ActivatedRouteStub,
+  ActivatedRoute,
+  ItemBuilder,
+  ListBuilder,
+  RouterLinkDirectiveStub,
+  TestAppLoaderComponent,
+  TestRandom,
+} from 'testing';
 import { DomainService } from '../domain.service';
 import { Result, Category } from '../domain';
 import { By } from '@angular/platform-browser';
+import { CustomMaterialModule } from '../custom-material/custom-material.module';
 
 describe('ItemsListComponent', () => {
   let component: ItemsListComponent;
@@ -23,7 +32,14 @@ describe('ItemsListComponent', () => {
     initTestScheduler();
     activatedRoute = new ActivatedRouteStub();
     TestBed.configureTestingModule({
-      declarations: [ItemsListComponent, RouterLinkDirectiveStub],
+      declarations: [
+        ItemsListComponent,
+        TestAppLoaderComponent,
+        RouterLinkDirectiveStub
+      ],
+      imports: [
+        CustomMaterialModule
+      ],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRoute },
         { provide: DomainService, useValue: domainService }
@@ -92,6 +108,6 @@ describe('ItemsListComponent', () => {
       .queryAll(By.directive(RouterLinkDirectiveStub));
     const routerLinks = linkDes.map(de => de.injector.get(RouterLinkDirectiveStub));
     expect(routerLinks.length).toBe(items.length);
-    routerLinks.forEach(l => expect(l.linkParams).toEqual('[\'/items\', item.id]'));
+    expect(routerLinks.map(r => r.linkParams)).toEqual(items.map(item => ['/items', item.id]));
   });
 });
