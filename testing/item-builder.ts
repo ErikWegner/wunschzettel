@@ -34,6 +34,11 @@ export class ItemBuilder {
     return this;
   }
 
+  public reservedStatus(status: boolean) {
+    this.isReservedValue = status;
+    return this;
+  }
+
   public build() {
     const i = new Item();
 

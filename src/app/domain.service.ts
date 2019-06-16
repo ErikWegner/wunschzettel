@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Result, Category, Item, CaptchaResponse } from './domain';
 import { BackendService } from './backend.service';
+import { CaptchaChallenge } from './domain/captcha-challenge';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +35,10 @@ export class DomainService {
   }
 
   public setReservationFlag(id: number, isReserved: boolean, captaResponse: CaptchaResponse): Observable<Result<void>> {
+    throw new Error('Not implemeted');
+  }
+
+  public getCaptchaChallenge(): Observable<Result<CaptchaChallenge>> {
     throw new Error('Not implemeted');
   }
 
