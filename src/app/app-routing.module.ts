@@ -5,14 +5,16 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { CategoriesListComponent } from './categories-list/categories-list.component';
 import { ItemsListComponent } from './items-list/items-list.component';
 import { ItemViewComponent } from './item-view/item-view.component';
+import { ItemEditComponent } from './item-edit/item-edit.component';
 
 const routes: Routes = [
   { path: 'about', component: AboutComponent },
   { path: 'categories', component: CategoriesListComponent },
   { path: 'categories/:category', component: ItemsListComponent },
   { path: 'items/:id', component: ItemViewComponent },
+  { path: 'items/:edit', component: ItemEditComponent },
 
-  { path: '', redirectTo: '/categories', pathMatch: 'full'},
+  { path: '', redirectTo: '/categories', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }
 ];
 
