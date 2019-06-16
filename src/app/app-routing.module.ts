@@ -6,13 +6,15 @@ import { CategoriesListComponent } from './categories-list/categories-list.compo
 import { ItemsListComponent } from './items-list/items-list.component';
 import { ItemViewComponent } from './item-view/item-view.component';
 import { ItemEditComponent } from './item-edit/item-edit.component';
+import { ItemDeleteComponent } from './item-delete/item-delete.component';
 
 const routes: Routes = [
   { path: 'about', component: AboutComponent },
   { path: 'categories', component: CategoriesListComponent },
   { path: 'categories/:category', component: ItemsListComponent },
   { path: 'items/:id', component: ItemViewComponent },
-  { path: 'items/:edit', component: ItemEditComponent },
+  { path: 'items/:id/edit', component: ItemEditComponent },
+  { path: 'items/:id/delete', component: ItemDeleteComponent },
 
   { path: '', redirectTo: '/categories', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }
