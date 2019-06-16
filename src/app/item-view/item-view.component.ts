@@ -12,6 +12,7 @@ export class ItemViewComponent implements OnInit {
 
   isLoading = true;
   item: Item;
+  revealStatus: false;
 
   constructor(
     private route: ActivatedRoute,

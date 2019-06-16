@@ -1,3 +1,16 @@
 <div>
-  <h1 *ngIf="item">{{ item.title }}</h1>
+  <app-loader *ngIf="isLoading"></app-loader>
+  <mat-card class="itemcard" *ngIf="item">
+    <img [src]="item.imagesrc">
+    <mat-card-header>
+      <h1>{{ item.title }}</h1>
+    </mat-card-header>
+    <mat-card-content>
+      {{ item.description }}
+    </mat-card-content>
+    <mat-card-actions>
+      <button [disabled]="revealStatus" mat-flat-button color="primary" (click)="revealStatus = true">Reservierungsstatus</button>
+      <span *ngIf="revealStatus" class="rstatus">{{ item.isReserved ? 'Reserviert' : 'Nicht reserviert' }}</span>
+    </mat-card-actions>
+  </mat-card>
 </div>

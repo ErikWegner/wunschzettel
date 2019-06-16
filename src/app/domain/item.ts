@@ -4,4 +4,5 @@ export class Item {
   public category: string;
   public imagesrc: string;
   public description: string;
+  public isReserved: boolean;
 }

@@ -10,8 +10,11 @@ export class ItemBuilder {
   private descriptionValue = ListBuilder.with(
     () => TestRandom.randomString(TestRandom.r(12, 3))
   ).items(TestRandom.r(400)).build().join(' ');
+  private isReservedValue = false;
 
-  private constructor() { }
+  private constructor() {
+    this.isReservedValue = (this.idValue % 2) === 0;
+  }
 
   public static with() {
     return new ItemBuilder();
@@ -39,6 +42,7 @@ export class ItemBuilder {
     i.category = this.categoryValue;
     i.imagesrc = this.imagesrcValue;
     i.description = this.descriptionValue;
+    i.isReserved = this.isReservedValue;
 
     return i;
   }

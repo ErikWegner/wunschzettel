@@ -2,9 +2,11 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { cold, getTestScheduler, initTestScheduler, resetTestScheduler } from 'jasmine-marbles';
 
 import { ItemViewComponent } from './item-view.component';
-import { ActivatedRouteStub, RouterLinkDirectiveStub, ActivatedRoute, ItemBuilder, TestRandom } from 'testing';
+import { ActivatedRouteStub, RouterLinkDirectiveStub, ActivatedRoute, ItemBuilder, TestRandom, TestAppLoaderComponent } from 'testing';
 import { DomainService } from '../domain.service';
 import { Result } from '../domain';
+import { CustomMaterialModule } from '../custom-material/custom-material.module';
+import { By } from '@angular/platform-browser';
 
 describe('ItemViewComponent', () => {
   let component: ItemViewComponent;
@@ -22,7 +24,12 @@ describe('ItemViewComponent', () => {
     initTestScheduler();
     activatedRoute = new ActivatedRouteStub();
     TestBed.configureTestingModule({
-      declarations: [ItemViewComponent, RouterLinkDirectiveStub],
+      declarations: [
+        ItemViewComponent,
+        TestAppLoaderComponent,
+        RouterLinkDirectiveStub
+      ],
+      imports: [ CustomMaterialModule ],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRoute },
         { provide: DomainService, useValue: domainService }
@@ -59,6 +66,18 @@ describe('ItemViewComponent', () => {
     return { id, item };
   }
 
+  function initItemView() {
+    prepareViewData();
+    fixture.detectChanges();
+    getTestScheduler().flush(); // flush the observables
+    fixture.detectChanges();
+  }
+
+  function revealStatus() {
+    fixture.debugElement.query(By.css('mat-card-actions button')).nativeElement.click();
+    fixture.detectChanges();
+  }
+
   it('should get item by id', () => {
     // Arrange
     const viewData = prepareViewData();
@@ -84,5 +103,35 @@ describe('ItemViewComponent', () => {
     // Assert
     const compiled = fixture.debugElement.nativeElement;
     expect(compiled.querySelector('h1').textContent).toBe(viewData.item.title);
+  });
+
+  it('should show status only after action click', () => {
+    // Arrange
+    initItemView();
+    const itemviewDe = fixture.debugElement;
+    const rstatusPreClickDe = itemviewDe.queryAll(By.css('.rstatus'));
+
+    // Act
+    revealStatus();
+
+    // Assert
+    const rstatusPostClickDe = itemviewDe.queryAll(By.css('.rstatus'));
+    expect(rstatusPostClickDe.length).toBe(1, 'Element should exist after click');
+    expect(rstatusPreClickDe.length).toBe(0, 'Element must not exist before click');
+  });
+
+
+  it('should disable button after click', () => {
+    // Arrange
+    initItemView();
+    const button: HTMLButtonElement = fixture.debugElement.query(By.css('mat-card-actions button')).nativeElement;
+    const preClickState = button.disabled;
+
+    // Act
+    revealStatus();
+
+    // Assert
+    expect(button.disabled).toBeTruthy('Should be disabled after click');
+    expect(preClickState).toBeFalsy('Should be enabled');
   });
 });
