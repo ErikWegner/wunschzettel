@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EditReservationDialogComponent } from './edit-reservation-dialog.component';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 describe('EditReservationDialogComponent', () => {
   let component: EditReservationDialogComponent;
@@ -9,12 +9,13 @@ describe('EditReservationDialogComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EditReservationDialogComponent ],
+      declarations: [EditReservationDialogComponent],
       providers: [
-        { provide: MatDialogRef, useValue: null }
+        { provide: MatDialogRef, useValue: null },
+        { provide: MAT_DIALOG_DATA, useValue: null }
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

@@ -36,6 +36,12 @@ export class ItemViewComponent implements OnInit {
   }
 
   openDialog() {
-    this.dialog.open(EditReservationDialogComponent);
+    this.dialog.open(
+      EditReservationDialogComponent,
+      {
+        data: {
+          item: this.item
+        }
+      });
   }
 }

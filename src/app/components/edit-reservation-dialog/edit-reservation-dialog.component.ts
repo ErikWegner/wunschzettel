@@ -1,5 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Item } from 'src/app/domain';
+
+export interface EditReservationDialogData {
+  item: Item;
+}
 
 @Component({
   selector: 'app-edit-reservation-dialog',
@@ -9,7 +14,8 @@ import { MatDialogRef } from '@angular/material/dialog';
 export class EditReservationDialogComponent implements OnInit {
 
   constructor(
-    public dialogRef: MatDialogRef<EditReservationDialogComponent>
+    public dialogRef: MatDialogRef<EditReservationDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: EditReservationDialogData
   ) { }
 
   ngOnInit() {

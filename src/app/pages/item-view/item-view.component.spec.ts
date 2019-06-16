@@ -7,12 +7,16 @@ import { DomainService } from '../../domain.service';
 import { Result } from '../../domain';
 import { CustomMaterialModule } from '../../custom-material/custom-material.module';
 import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { EditReservationDialogComponent } from 'src/app/components/edit-reservation-dialog/edit-reservation-dialog.component';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 describe('ItemViewComponent', () => {
   let component: ItemViewComponent;
   let fixture: ComponentFixture<ItemViewComponent>;
   let activatedRoute: ActivatedRouteStub;
   let domainServiceStub: jasmine.SpyObj<DomainService>;
+  let matDialogStub: jasmine.SpyObj<MatDialog>;
 
   beforeEach(async(() => {
     const domainService = jasmine.createSpyObj(
@@ -20,6 +24,12 @@ describe('ItemViewComponent', () => {
       [
         'getItem',
         'setReservationFlag',
+      ]
+    );
+    const matDialog = jasmine.createSpyObj(
+      'MatDialog',
+      [
+        'open'
       ]
     );
     initTestScheduler();
@@ -30,14 +40,19 @@ describe('ItemViewComponent', () => {
         TestAppLoaderComponent,
         RouterLinkDirectiveStub
       ],
-      imports: [CustomMaterialModule],
+      imports: [
+        CustomMaterialModule,
+        NoopAnimationsModule,
+      ],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRoute },
-        { provide: DomainService, useValue: domainService }
+        { provide: DomainService, useValue: domainService },
+        { provide: MatDialog, useValue: matDialog },
       ]
     })
       .compileComponents();
     domainServiceStub = TestBed.get(DomainService);
+    matDialogStub = TestBed.get(MatDialog);
   }));
 
   beforeEach(() => {
@@ -68,10 +83,11 @@ describe('ItemViewComponent', () => {
   }
 
   function initItemView() {
-    prepareViewData();
+    const viewData = prepareViewData();
     fixture.detectChanges();
     getTestScheduler().flush(); // flush the observables
     fixture.detectChanges();
+    return viewData;
   }
 
   function revealStatus() {
@@ -167,15 +183,15 @@ describe('ItemViewComponent', () => {
     });
 
     [{
-      testName: 'should remove reservation on click',
+      testName: 'should open dialog on click to remove reservation',
       isReservedValue: true
     }, {
-      testName: 'should set reservation on click',
+      testName: 'should open dialog on click to set reservation',
       isReservedValue: false
     }].forEach(testRunData2 => {
-      xit(testRunData2.testName, () => {
+      it(testRunData2.testName, () => {
         // Arrange
-        initItemView();
+        const viewData = initItemView();
         fixture.componentInstance.item.isReserved = testRunData2.isReservedValue;
         revealStatus();
         const button: HTMLButtonElement = fixture.nativeElement.querySelectorAll('mat-card-actions button')[1];
@@ -183,9 +199,13 @@ describe('ItemViewComponent', () => {
 
         // Act
         button.click();
+        fixture.detectChanges();
 
         // Assert
-        // TODO: do something
+        const dlgConfig: MatDialogConfig = {
+          data: { item: viewData.item }
+        };
+        expect(matDialogStub.open).toHaveBeenCalledWith(EditReservationDialogComponent, dlgConfig);
       });
     });
   });

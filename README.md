@@ -35,15 +35,21 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 - Views
 - - /
 - - /items/:id
+- - - Refresh status on reveal
+- - EditReservationDialog
 - - /items/:id/edit
 - - /items/:id/delete
 - - 404 Not Found
 - Backend
 - - GetItems
+- - GetReserved
 - - SetReserved
 - - SetItem
 - - DeleteItem
+- - GetCaptchaChallenge
 - Domain
+- - GetReservationFlag
 - - SetReservationFlag
 - - SetItem
 - - DeleteItem
+- - GetCaptchaChallenge
