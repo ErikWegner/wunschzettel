@@ -11,6 +11,9 @@
     <mat-card-actions>
       <button [disabled]="revealStatus" mat-flat-button color="primary" (click)="revealStatus = true">Reservierungsstatus</button>
       <span *ngIf="revealStatus" class="rstatus">{{ item.isReserved ? 'Reserviert' : 'Nicht reserviert' }}</span>
+
+      <button *ngIf="revealStatus && !item.isReserved" mat-flat-button color="primary">Reservieren</button>
+      <button *ngIf="revealStatus && item.isReserved" mat-flat-button color="primary">Reservierung löschen</button>
     </mat-card-actions>
   </mat-card>
 </div>

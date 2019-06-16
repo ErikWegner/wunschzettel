@@ -29,7 +29,7 @@ describe('ItemViewComponent', () => {
         TestAppLoaderComponent,
         RouterLinkDirectiveStub
       ],
-      imports: [ CustomMaterialModule ],
+      imports: [CustomMaterialModule],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRoute },
         { provide: DomainService, useValue: domainService }
@@ -74,7 +74,7 @@ describe('ItemViewComponent', () => {
   }
 
   function revealStatus() {
-    fixture.debugElement.query(By.css('mat-card-actions button')).nativeElement.click();
+    fixture.debugElement.query(By.css('mat-card-actions button:nth-child(1)')).nativeElement.click();
     fixture.detectChanges();
   }
 
@@ -120,7 +120,6 @@ describe('ItemViewComponent', () => {
     expect(rstatusPreClickDe.length).toBe(0, 'Element must not exist before click');
   });
 
-
   it('should disable button after click', () => {
     // Arrange
     initItemView();
@@ -133,5 +132,37 @@ describe('ItemViewComponent', () => {
     // Assert
     expect(button.disabled).toBeTruthy('Should be disabled after click');
     expect(preClickState).toBeFalsy('Should be enabled');
+  });
+
+  [
+    {
+      testName: 'should show action to unreserve after click',
+      isReservedValue: true,
+      buttonText: 'Reservierung löschen'
+    },
+    {
+      testName: 'should show action to reserve after click',
+      isReservedValue: false,
+      buttonText: 'Reservieren'
+    }
+  ].forEach(testRunData => {
+    it(testRunData.testName, () => {
+      // Arrange
+      initItemView();
+      fixture.componentInstance.item.isReserved = testRunData.isReservedValue;
+      const preClickCount = fixture.nativeElement.querySelectorAll('mat-card-actions button').length;
+
+      // Act
+      revealStatus();
+
+      // Assert
+      expect(preClickCount).toBe(1, 'Button must not exist before click');
+
+      const postClickCount = fixture.nativeElement.querySelectorAll('mat-card-actions button').length;
+      expect(postClickCount).toBe(2, 'Button should exist after click');
+
+      const button: HTMLButtonElement = fixture.nativeElement.querySelectorAll('mat-card-actions button')[1];
+      expect(button.textContent).toBe(testRunData.buttonText);
+    });
   });
 });
