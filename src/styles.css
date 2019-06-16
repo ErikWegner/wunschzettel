@@ -6,3 +6,22 @@
 .td-none a:active {
   text-decoration: none
 }
+
+.busytext{
+  animation: busytextFrames ease-out 1s;
+  animation-iteration-count: infinite;
+  transform-origin: 50% 50%;
+}
+
+@keyframes busytextFrames{
+  0% {
+    opacity:1;
+  }
+  50% {
+    opacity:0.36;
+  }
+  100% {
+    opacity:1;
+  }
+}
+

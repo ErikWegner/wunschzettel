@@ -16,7 +16,7 @@ describe('DomainService', () => {
       'BackendService',
       [
         'getItems',
-        'getItemsByCategory',
+        'getReservationFlag',
       ]
     );
 
@@ -114,7 +114,32 @@ describe('DomainService', () => {
     // Assert
     expect(nextCallback).toHaveBeenCalledTimes(1);
     expect(completeCallback).toHaveBeenCalledTimes(1);
-    const resultItems: Result<Item> = nextCallback.calls.first().args[0];
-    expect(resultItems.data).toBe(items[index]);
+    const resultItem: Result<Item> = nextCallback.calls.first().args[0];
+    expect(resultItem.data).toBe(items[index]);
+  });
+
+  it('should get reservation status from backend', () => {
+    // Arrange
+    const backendValue = true;
+    const id = TestRandom.r(9000, 100);
+    fakeBackend.getReservationFlag.and.returnValue(cold('--x|', {x: new Result(backendValue)}));
+    const service: DomainService = TestBed.get(DomainService);
+
+    // Act
+    service.getReservationFlag(id).subscribe(
+      nextCallback,
+      fail,
+      () => {
+        completeCallback();
+      }
+    );
+    getTestScheduler().flush(); // flush the observables
+
+    // Assert
+    expect(fakeBackend.getReservationFlag).toHaveBeenCalledWith(id);
+    expect(nextCallback).toHaveBeenCalledTimes(1);
+    expect(completeCallback).toHaveBeenCalledTimes(1);
+    const resultValue: Result<boolean> = nextCallback.calls.first().args[0];
+    expect(resultValue.data).toBe(backendValue);
   });
 });

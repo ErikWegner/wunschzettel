@@ -9,7 +9,8 @@
       {{ item.description }}
     </mat-card-content>
     <mat-card-actions>
-      <button [disabled]="revealStatus" mat-flat-button color="primary" (click)="revealStatus = true">Reservierungsstatus</button>
+      <button [disabled]="revealStatus || busy" mat-flat-button color="primary" (click)="updateAndRevealStatus()">Reservierungsstatus</button>
+      <span *ngIf="busy" class="busytext busytextStatus">Wird geladen…</span>
       <span *ngIf="revealStatus" class="rstatus">{{ item.isReserved ? 'Reserviert' : 'Nicht reserviert' }}</span>
 
       <button *ngIf="revealStatus && !item.isReserved" mat-flat-button color="primary" (click)="openDialog()">Reservieren</button>

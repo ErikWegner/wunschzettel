@@ -28,4 +28,13 @@ export class BackendService {
       }, 1500);
     });
   }
+
+  public getReservationFlag(id: number) {
+    return new Observable<Result<boolean>>((observer) => {
+      window.setTimeout(() => {
+        observer.next(new Result(this.mockdata.find(i => i.id === id).isReserved));
+        observer.complete();
+      }, 1500);
+    });
+  }
 }

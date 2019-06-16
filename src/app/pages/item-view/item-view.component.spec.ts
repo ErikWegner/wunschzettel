@@ -23,6 +23,7 @@ describe('ItemViewComponent', () => {
       'DomainService',
       [
         'getItem',
+        'getReservationFlag',
         'setReservationFlag',
       ]
     );
@@ -79,6 +80,11 @@ describe('ItemViewComponent', () => {
     domainServiceStub.getItem.and.returnValue(
       cold('--x|', { x: new Result(item) })
     );
+    domainServiceStub.getReservationFlag.and.callFake((idparam) =>
+      (idparam === id
+        ? cold('--x|', { x: new Result(item.isReserved) })
+        : cold('--#', new Error('Item not found')))
+    );
     return { id, item };
   }
 
@@ -92,6 +98,7 @@ describe('ItemViewComponent', () => {
 
   function revealStatus() {
     fixture.debugElement.query(By.css('mat-card-actions button:nth-child(1)')).nativeElement.click();
+    getTestScheduler().flush(); // flush the observables
     fixture.detectChanges();
   }
 
@@ -151,6 +158,19 @@ describe('ItemViewComponent', () => {
     expect(preClickState).toBeFalsy('Should be enabled');
   });
 
+  it('should refresh reservation status on click', () => {
+    // Arrange
+    const viewData = initItemView();
+    const preClickCallCount = domainServiceStub.getReservationFlag.calls.count();
+
+    // Act
+    revealStatus();
+
+    // Assert
+    const postClickCallCount = domainServiceStub.getReservationFlag.calls.count();
+    expect(preClickCallCount).toBe(0, 'Function should not be called prior to click');
+    expect(postClickCallCount).toBe(1, 'Function should be called after click');
+  });
   [
     {
       testName: 'should show action to unreserve after click',

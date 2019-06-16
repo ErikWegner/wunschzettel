@@ -14,7 +14,8 @@ export class ItemViewComponent implements OnInit {
 
   isLoading = true;
   item: Item;
-  revealStatus: false;
+  revealStatus = false;
+  busy = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -31,6 +32,20 @@ export class ItemViewComponent implements OnInit {
       error: (e) => { },
       complete: () => {
         this.isLoading = false;
+      }
+    });
+  }
+
+  updateAndRevealStatus() {
+    this.busy = true;
+    this.service.getReservationFlag(this.item.id).subscribe({
+      next: (result) => {
+        this.item.isReserved = result.data;
+      },
+      error: (e) => { },
+      complete: () => {
+        this.busy = false;
+        this.revealStatus = true;
       }
     });
   }

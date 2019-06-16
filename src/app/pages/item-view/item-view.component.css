@@ -5,6 +5,8 @@
   max-height: 170px;
   object-fit: cover;
 }
+
+.busytextStatus,
 .rstatus {
   margin-left: 20px;
   margin-right: 20px;
