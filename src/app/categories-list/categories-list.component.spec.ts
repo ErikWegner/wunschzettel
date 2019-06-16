@@ -6,6 +6,7 @@ import { TestAppLoaderComponent, ListBuilder, TestRandom, RouterLinkDirectiveStu
 import { DomainService } from '../domain.service';
 import { Result, Category } from '../domain';
 import { By } from '@angular/platform-browser';
+import { CustomMaterialModule } from '../custom-material/custom-material.module';
 
 describe('CategoriesListComponent', () => {
   let component: CategoriesListComponent;
@@ -25,6 +26,9 @@ describe('CategoriesListComponent', () => {
         CategoriesListComponent,
         TestAppLoaderComponent,
         RouterLinkDirectiveStub
+      ],
+      imports: [
+        CustomMaterialModule
       ],
       providers: [
         { provide: DomainService, useValue: domainService }
@@ -74,6 +78,6 @@ describe('CategoriesListComponent', () => {
       .queryAll(By.directive(RouterLinkDirectiveStub));
     const routerLinks = linkDes.map(de => de.injector.get(RouterLinkDirectiveStub));
     expect(routerLinks.length).toBe(3);
-    expect(routerLinks.map(r => r.linkParams)).toEqual(categories.map(c => '[\'/categories\', category.value]'));
+    expect(routerLinks.map(r => r.linkParams)).toEqual(categories.map(category => ['/categories', category.value]));
   });
 });

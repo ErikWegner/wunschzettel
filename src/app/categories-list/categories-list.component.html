@@ -1,9 +1,13 @@
 <div>
   <app-loader *ngIf="isLoading"></app-loader>
   <div class="empty" *ngIf="categories && categories.length == 0">Noch keine Einträge in diesem Wunschzettel</div>
-  <div *ngIf="categories && categories.length > 0">
-    <ul>
-      <li *ngFor="let category of categories"><a routerLink="['/categories', category.value]">{{ category.value }}</a></li>
-    </ul>
+  <div *ngIf="categories && categories.length > 0" class="categoieslist">
+    <a *ngFor="let category of categories" [routerLink]="['/categories', category.value]">
+      <mat-card class="categorybox">
+        <mat-card-title>
+          {{ category.value }}
+        </mat-card-title>
+      </mat-card>
+    </a>
   </div>
 </div>

@@ -1,0 +1,15 @@
+.categoieslist {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20px;
+}
+.categorybox {
+  padding: 16px;
+  margin: 8px;
+}
+
+.categoieslist a,
+.categoieslist a:hover,
+.categoieslist a:active {
+  text-decoration: none
+}
