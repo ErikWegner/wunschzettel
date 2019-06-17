@@ -34,7 +34,7 @@ export class DomainService {
     return this.backend.getReservationFlag(id);
   }
 
-  public setReservationFlag(id: number, isReserved: boolean, captaResponse: CaptchaResponse): Observable<Result<boolean>> {
+  public setReservationFlag(id: number, isReserved: boolean, captaResponse: CaptchaResponse): Observable<Result<string>> {
     throw new Error('Not implemeted');
   }
 

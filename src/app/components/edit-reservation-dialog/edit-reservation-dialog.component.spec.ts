@@ -68,10 +68,13 @@ describe('EditReservationDialogComponent', () => {
     input.dispatchEvent(new Event('input'));
   }
 
-  function clickSubmitAndSucceed() {
-    domainServiceStub.setReservationFlag.and.callFake(() => {
+  function clickSubmitAndRespond(r: Result<string>|Error) {
+    domainServiceStub.setReservationFlag.and.callFake((id, f, c) => {
       onClickState = fixture.componentInstance.dlgState;
-      return cold('--x|', { x: new Result(true) });
+      if (r instanceof Error) {
+        return cold('#', r);
+      }
+      return cold('--r|', { r });
     });
     fixture.debugElement.query(By.css('.mat-dialog-actions button:nth-child(1)')).nativeElement.click();
     getTestScheduler().flush(); // flush the observables
@@ -115,31 +118,46 @@ describe('EditReservationDialogComponent', () => {
     expect(fixture.nativeElement.querySelectorAll('label')[0].textContent).toContain(challengeText);
   });
 
-  [
-    { isReserved: true },
-    { isReserved: false }
-  ].forEach(testRunData1 => {
-    it('should send request', () => {
-      // Arrange
-      dialogData.item.isReserved = testRunData1.isReserved;
-      const captchaInput = TestRandom.randomString(8);
-      createComponent();
-      getTestScheduler().flush(); // flush the observables
-      fixture.detectChanges();
-      const preSubmitState = fixture.componentInstance.dlgState;
+  [true, false].forEach(isReserved => {
+    [
+      {
+        testname: 'everything ok',
+        backendResponse: new Result('Success'),
+        expectedFinalDlgState: DlgState.Success
+      },
+      {
+        testname: 'backend refused',
+        backendResponse: new Result('Reservation state mismatch', false),
+        expectedFinalDlgState: DlgState.Error
+      },
+      {
+        testname: 'transmission failed',
+        backendResponse: new Error('Connection timeout'),
+        expectedFinalDlgState: DlgState.Fail
+      }
+    ].forEach(testRunData1 => {
+      it('should send request: ' + testRunData1.testname, () => {
+        // Arrange
+        dialogData.item.isReserved = isReserved;
+        const captchaInput = TestRandom.randomString(8);
+        createComponent();
+        getTestScheduler().flush(); // flush the observables
+        fixture.detectChanges();
+        const preSubmitState = fixture.componentInstance.dlgState;
 
-      // Act
-      setCaptchaResponse(captchaInput);
-      fixture.detectChanges();
-      clickSubmitAndSucceed();
+        // Act
+        setCaptchaResponse(captchaInput);
+        fixture.detectChanges();
+        clickSubmitAndRespond(testRunData1.backendResponse);
 
-      // Assert
-      expect(domainServiceStub.setReservationFlag).toHaveBeenCalledWith(
-        dialogData.item.id, !testRunData1.isReserved, captchaInput);
-      const postSubmitState = fixture.componentInstance.dlgState;
-      expect(preSubmitState).toBe(DlgState.Captcha);
-      expect(onClickState).toBe(DlgState.Submitting);
-      expect(postSubmitState).toBe(DlgState.Success);
+        // Assert
+        expect(domainServiceStub.setReservationFlag).toHaveBeenCalledWith(
+          dialogData.item.id, !isReserved, captchaInput);
+        const postSubmitState = fixture.componentInstance.dlgState;
+        expect(preSubmitState).toBe(DlgState.Captcha);
+        expect(onClickState).toBe(DlgState.Submitting);
+        expect(postSubmitState).toBe(testRunData1.expectedFinalDlgState);
+      });
     });
   });
 });

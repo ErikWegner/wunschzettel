@@ -51,6 +51,7 @@ export class EditReservationDialogComponent implements OnInit {
   titleAndButtonText = '';
   captchaChallengeText = 'Sicherheitsfrage';
   captchaResponse = new FormControl('');
+  resultText = '';
 
   constructor(
     public dialogRef: MatDialogRef<EditReservationDialogComponent>,
@@ -81,9 +82,12 @@ export class EditReservationDialogComponent implements OnInit {
       !this.data.item.isReserved,
       this.captchaResponse.value).subscribe({
         next: (result) => {
-          if (result.data) {
-            this.dlgState = DlgState.Success;
-          }
+          this.dlgState = result.success ? DlgState.Success : DlgState.Error;
+          this.resultText = result.data;
+        },
+        error: (e) => {
+          this.dlgState = DlgState.Fail;
+          this.resultText = 'Übertragungsfehler';
         }
       });
   }

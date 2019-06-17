@@ -5,6 +5,10 @@
         {{ captchaChallengeText }}:
         <input *ngIf="!busy" type="text" [formControl]="captchaResponse">
     </label>
+    <span *ngIf="dlgState == dlgStateEnum.Submitting" class="busytext">Wird übertragen…</span>
+    <span *ngIf="dlgState == dlgStateEnum.Success" class="serviceok">OK: {{ resultText }}</span>
+    <span *ngIf="dlgState == dlgStateEnum.Error" class="serviceerror">Achtung: {{ resultText }}</span>
+    <span *ngIf="dlgState == dlgStateEnum.Fail" class="servicefail">Fehler: {{ resultText }}</span>
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="submitClick()">{{ titleAndButtonText }}</button>
