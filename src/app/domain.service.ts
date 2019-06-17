@@ -34,12 +34,12 @@ export class DomainService {
     return this.backend.getReservationFlag(id);
   }
 
-  public setReservationFlag(id: number, isReserved: boolean, captaResponse: CaptchaResponse): Observable<Result<void>> {
+  public setReservationFlag(id: number, isReserved: boolean, captaResponse: CaptchaResponse): Observable<Result<boolean>> {
     throw new Error('Not implemeted');
   }
 
   public getCaptchaChallenge(): Observable<Result<CaptchaChallenge>> {
-    throw new Error('Not implemeted');
+    return this.backend.getCaptchaChallenge();
   }
 
   private filterById(items: Result<Item[]>, id: number) {

@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { cold, getTestScheduler, initTestScheduler, resetTestScheduler } from 'jasmine-marbles';
 
-import { EditReservationDialogComponent, EditReservationDialogData } from './edit-reservation-dialog.component';
+import { EditReservationDialogComponent, EditReservationDialogData, DlgState } from './edit-reservation-dialog.component';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material/dialog';
 import { CustomMaterialModule } from 'src/app/custom-material/custom-material.module';
 import { ItemBuilder, TestRandom } from 'testing';
@@ -9,6 +9,7 @@ import { DomainService } from 'src/app/domain.service';
 import { Result } from 'src/app/domain';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CaptchaChallenge } from 'src/app/domain/captcha-challenge';
+import { By } from '@angular/platform-browser';
 
 describe('EditReservationDialogComponent', () => {
   let component: EditReservationDialogComponent;
@@ -16,12 +17,15 @@ describe('EditReservationDialogComponent', () => {
   let dialogData: EditReservationDialogData;
   let domainServiceStub: jasmine.SpyObj<DomainService>;
   let challengeText: string;
+  let onClickState: DlgState;
 
   beforeEach(async(() => {
+    onClickState = null;
     const domainService = jasmine.createSpyObj(
       'DomainService',
       [
         'getCaptchaChallenge',
+        'setReservationFlag',
       ]
     );
     dialogData = {
@@ -55,6 +59,22 @@ describe('EditReservationDialogComponent', () => {
   function createComponent() {
     fixture = TestBed.createComponent(EditReservationDialogComponent);
     component = fixture.componentInstance;
+    fixture.detectChanges();
+  }
+
+  function setCaptchaResponse(text: string) {
+    const input: HTMLInputElement = fixture.nativeElement.querySelectorAll('input')[0];
+    input.value = text;
+    input.dispatchEvent(new Event('input'));
+  }
+
+  function clickSubmitAndSucceed() {
+    domainServiceStub.setReservationFlag.and.callFake(() => {
+      onClickState = fixture.componentInstance.dlgState;
+      return cold('--x|', { x: new Result(true) });
+    });
+    fixture.debugElement.query(By.css('.mat-dialog-actions button:nth-child(1)')).nativeElement.click();
+    getTestScheduler().flush(); // flush the observables
     fixture.detectChanges();
   }
 
@@ -93,5 +113,33 @@ describe('EditReservationDialogComponent', () => {
 
     // Assert
     expect(fixture.nativeElement.querySelectorAll('label')[0].textContent).toContain(challengeText);
+  });
+
+  [
+    { isReserved: true },
+    { isReserved: false }
+  ].forEach(testRunData1 => {
+    it('should send request', () => {
+      // Arrange
+      dialogData.item.isReserved = testRunData1.isReserved;
+      const captchaInput = TestRandom.randomString(8);
+      createComponent();
+      getTestScheduler().flush(); // flush the observables
+      fixture.detectChanges();
+      const preSubmitState = fixture.componentInstance.dlgState;
+
+      // Act
+      setCaptchaResponse(captchaInput);
+      fixture.detectChanges();
+      clickSubmitAndSucceed();
+
+      // Assert
+      expect(domainServiceStub.setReservationFlag).toHaveBeenCalledWith(
+        dialogData.item.id, !testRunData1.isReserved, captchaInput);
+      const postSubmitState = fixture.componentInstance.dlgState;
+      expect(preSubmitState).toBe(DlgState.Captcha);
+      expect(onClickState).toBe(DlgState.Submitting);
+      expect(postSubmitState).toBe(DlgState.Success);
+    });
   });
 });

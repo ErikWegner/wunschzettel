@@ -6,6 +6,7 @@ import { ListBuilder, TestRandom, ItemBuilder } from 'testing';
 import { Result } from './domain/result';
 import { Category } from './domain/category';
 import { Item } from './domain/item';
+import { CaptchaChallenge } from './domain/captcha-challenge';
 
 describe('DomainService', () => {
   let nextCallback: jasmine.Spy;
@@ -17,6 +18,7 @@ describe('DomainService', () => {
       [
         'getItems',
         'getReservationFlag',
+        'getCaptchaChallenge',
       ]
     );
 
@@ -122,7 +124,7 @@ describe('DomainService', () => {
     // Arrange
     const backendValue = true;
     const id = TestRandom.r(9000, 100);
-    fakeBackend.getReservationFlag.and.returnValue(cold('--x|', {x: new Result(backendValue)}));
+    fakeBackend.getReservationFlag.and.returnValue(cold('--x|', { x: new Result(backendValue) }));
     const service: DomainService = TestBed.get(DomainService);
 
     // Act
@@ -141,5 +143,30 @@ describe('DomainService', () => {
     expect(completeCallback).toHaveBeenCalledTimes(1);
     const resultValue: Result<boolean> = nextCallback.calls.first().args[0];
     expect(resultValue.data).toBe(backendValue);
+  });
+
+  it('should get captcha challenge from backend', () => {
+    const captchaText = TestRandom.randomString(8);
+    fakeBackend.getCaptchaChallenge.and.returnValue(
+      cold('--x|', { x: new Result(new CaptchaChallenge(captchaText)) }));
+
+    const service: DomainService = TestBed.get(DomainService);
+
+    // Act
+    service.getCaptchaChallenge().subscribe(
+      nextCallback,
+      fail,
+      () => {
+        completeCallback();
+      }
+    );
+    getTestScheduler().flush(); // flush the observables
+
+    // Assert
+    expect(fakeBackend.getCaptchaChallenge).toHaveBeenCalledTimes(1);
+    expect(nextCallback).toHaveBeenCalledTimes(1);
+    expect(completeCallback).toHaveBeenCalledTimes(1);
+    const resultValue: Result<CaptchaChallenge> = nextCallback.calls.first().args[0];
+    expect(resultValue.data.text).toBe(captchaText);
   });
 });

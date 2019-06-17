@@ -8,7 +8,7 @@ export interface EditReservationDialogData {
   item: Item;
 }
 
-enum DlgState {
+export enum DlgState {
   /**
    * Loading the captcha challenge
    */
@@ -67,11 +67,25 @@ export class EditReservationDialogComponent implements OnInit {
       },
       error: (e) => {
         this.dlgState = DlgState.Fail;
-       },
+      },
       complete: () => {
         this.dlgState = DlgState.Captcha;
       }
     });
+  }
+
+  submitClick() {
+    this.dlgState = DlgState.Submitting;
+    this.service.setReservationFlag(
+      this.data.item.id,
+      !this.data.item.isReserved,
+      this.captchaResponse.value).subscribe({
+        next: (result) => {
+          if (result.data) {
+            this.dlgState = DlgState.Success;
+          }
+        }
+      });
   }
 
 }
