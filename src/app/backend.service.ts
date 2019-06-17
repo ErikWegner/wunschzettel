@@ -24,7 +24,7 @@ export class BackendService {
   public getItems() {
     return new Observable<Result<Item[]>>((observer) => {
       window.setTimeout(() => {
-        observer.next(new Result(this.mockdata));
+        observer.next(new Result(JSON.parse(JSON.stringify(this.mockdata))));
         observer.complete();
       }, 1500);
     });
@@ -34,6 +34,28 @@ export class BackendService {
     return new Observable<Result<boolean>>((observer) => {
       window.setTimeout(() => {
         observer.next(new Result(this.mockdata.find(i => i.id === id).isReserved));
+        observer.complete();
+      }, 1500);
+    });
+  }
+
+  public setReservationFlag(id: number, flag: boolean, captchaAnswer: string) {
+    return new Observable<Result<string>>((observer) => {
+      window.setTimeout(() => {
+        if (captchaAnswer === 'FAIL') {
+          observer.error('No response');
+          return;
+        }
+        let responseText: string;
+        let success = false;
+        if (captchaAnswer === 'OK') {
+          this.mockdata.find(i => i.id === id).isReserved = flag;
+          responseText = flag ? 'gesetzt' : 'gelöscht';
+          success = true;
+        } else {
+          responseText = 'Captcha falsch';
+        }
+        observer.next(new Result(responseText, success));
         observer.complete();
       }, 1500);
     });

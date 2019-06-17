@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Item } from 'src/app/domain';
+import { Item, CaptchaResponse } from 'src/app/domain';
 import { FormControl } from '@angular/forms';
 import { DomainService } from 'src/app/domain.service';
 
@@ -80,7 +80,7 @@ export class EditReservationDialogComponent implements OnInit {
     this.service.setReservationFlag(
       this.data.item.id,
       !this.data.item.isReserved,
-      this.captchaResponse.value).subscribe({
+      new CaptchaResponse(this.captchaResponse.value)).subscribe({
         next: (result) => {
           this.dlgState = result.success ? DlgState.Success : DlgState.Error;
           this.resultText = result.data;

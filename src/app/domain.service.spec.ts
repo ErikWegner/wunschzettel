@@ -7,6 +7,7 @@ import { Result } from './domain/result';
 import { Category } from './domain/category';
 import { Item } from './domain/item';
 import { CaptchaChallenge } from './domain/captcha-challenge';
+import { CaptchaResponse } from './domain/captcha-response';
 
 describe('DomainService', () => {
   let nextCallback: jasmine.Spy;
@@ -18,6 +19,7 @@ describe('DomainService', () => {
       [
         'getItems',
         'getReservationFlag',
+        'setReservationFlag',
         'getCaptchaChallenge',
       ]
     );
@@ -146,6 +148,7 @@ describe('DomainService', () => {
   });
 
   it('should get captcha challenge from backend', () => {
+    // Arrange
     const captchaText = TestRandom.randomString(8);
     fakeBackend.getCaptchaChallenge.and.returnValue(
       cold('--x|', { x: new Result(new CaptchaChallenge(captchaText)) }));
@@ -168,5 +171,31 @@ describe('DomainService', () => {
     expect(completeCallback).toHaveBeenCalledTimes(1);
     const resultValue: Result<CaptchaChallenge> = nextCallback.calls.first().args[0];
     expect(resultValue.data.text).toBe(captchaText);
+  });
+
+  [true, false].forEach(flag => {
+    it('should send request to change reservation state to backend', () => {
+      // Arrange
+      const id = TestRandom.r(9000, 100);
+      const answer = TestRandom.randomString(6, 'answer-');
+      const captchaResponse = new CaptchaResponse(answer);
+      fakeBackend.setReservationFlag.and.returnValue(cold('--x|', { x: new Result('OK') }));
+      const service: DomainService = TestBed.get(DomainService);
+
+      // Act
+      service.setReservationFlag(id, flag, captchaResponse).subscribe(
+        nextCallback,
+        fail,
+        () => {
+          completeCallback();
+        }
+      );
+      getTestScheduler().flush(); // flush the observables
+
+      // Assert
+      expect(fakeBackend.setReservationFlag).toHaveBeenCalledWith(id, flag, answer);
+      expect(nextCallback).toHaveBeenCalledTimes(1);
+      expect(completeCallback).toHaveBeenCalledTimes(1);
+    });
   });
 });

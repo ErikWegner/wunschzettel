@@ -35,7 +35,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 - Views
 - - /
 - - /items/:id
-- - - Refresh status on reveal
+- - - Refresh status on dialog close
 - - EditReservationDialog
 - - /items/:id/edit
 - - /items/:id/delete
@@ -48,6 +48,5 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 - - DeleteItem
 - - GetCaptchaChallenge
 - Domain
-- - GetReservationFlag
 - - SetItem
 - - DeleteItem

@@ -6,7 +6,7 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/materia
 import { CustomMaterialModule } from 'src/app/custom-material/custom-material.module';
 import { ItemBuilder, TestRandom } from 'testing';
 import { DomainService } from 'src/app/domain.service';
-import { Result } from 'src/app/domain';
+import { Result, CaptchaResponse } from 'src/app/domain';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CaptchaChallenge } from 'src/app/domain/captcha-challenge';
 import { By } from '@angular/platform-browser';
@@ -152,7 +152,7 @@ describe('EditReservationDialogComponent', () => {
 
         // Assert
         expect(domainServiceStub.setReservationFlag).toHaveBeenCalledWith(
-          dialogData.item.id, !isReserved, captchaInput);
+          dialogData.item.id, !isReserved, new CaptchaResponse(captchaInput));
         const postSubmitState = fixture.componentInstance.dlgState;
         expect(preSubmitState).toBe(DlgState.Captcha);
         expect(onClickState).toBe(DlgState.Submitting);
