@@ -75,6 +75,11 @@ export class EditReservationDialogComponent implements OnInit {
     });
   }
 
+  retryCaptcha() {
+    this.dlgState = DlgState.Loading;
+    this.ngOnInit();
+  }
+
   submitClick() {
     this.dlgState = DlgState.Submitting;
     this.service.setReservationFlag(
@@ -88,6 +93,7 @@ export class EditReservationDialogComponent implements OnInit {
         error: (e) => {
           this.dlgState = DlgState.Fail;
           this.resultText = 'Übertragungsfehler';
+          this.dialogRef.updateSize();
         }
       });
   }

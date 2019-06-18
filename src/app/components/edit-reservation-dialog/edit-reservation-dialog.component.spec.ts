@@ -40,7 +40,7 @@ describe('EditReservationDialogComponent', () => {
         CustomMaterialModule,
       ],
       providers: [
-        { provide: MatDialogRef, useValue: null },
+        { provide: MatDialogRef, useValue: { updateSize: jasmine.createSpy() } },
         { provide: DomainService, useValue: domainService },
         { provide: MAT_DIALOG_DATA, useFactory: () => dialogData }
       ]
@@ -68,7 +68,7 @@ describe('EditReservationDialogComponent', () => {
     input.dispatchEvent(new Event('input'));
   }
 
-  function clickSubmitAndRespond(r: Result<string>|Error) {
+  function clickSubmitAndRespond(r: Result<string> | Error) {
     domainServiceStub.setReservationFlag.and.callFake((id, f, c) => {
       onClickState = fixture.componentInstance.dlgState;
       if (r instanceof Error) {
@@ -158,6 +158,35 @@ describe('EditReservationDialogComponent', () => {
         expect(onClickState).toBe(DlgState.Submitting);
         expect(postSubmitState).toBe(testRunData1.expectedFinalDlgState);
       });
+    });
+
+    it('should show a button to try again on error', () => {
+      // Arrange
+      dialogData.item.isReserved = isReserved;
+      const captchaInput = TestRandom.randomString(8);
+      createComponent();
+      getTestScheduler().flush(); // flush the observables
+      fixture.detectChanges();
+      const challenge1 = fixture.nativeElement.querySelectorAll('label')[0].textContent;
+      setCaptchaResponse(captchaInput);
+      fixture.detectChanges();
+      clickSubmitAndRespond(new Result('Captcha wrong', false));
+      challengeText = TestRandom.randomString(8);
+      domainServiceStub.getCaptchaChallenge.and.returnValue(
+        cold('--x|', { x: new Result(new CaptchaChallenge(challengeText)) })
+      );
+
+      // Act
+      fixture.debugElement.query(By.css('.mat-dialog-content button')).nativeElement.click();
+      getTestScheduler().flush(); // flush the observables
+      fixture.detectChanges();
+
+      // Assert
+      const challenge2 = fixture.nativeElement.querySelectorAll('label')[0].textContent as string;
+      const postSubmitState = fixture.componentInstance.dlgState;
+      expect(postSubmitState).toBe(DlgState.Captcha);
+      expect(challenge1).not.toBe(challenge2);
+      expect(challenge2.trim()).toBe(challengeText + ':');
     });
   });
 });

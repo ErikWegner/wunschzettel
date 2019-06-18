@@ -5,12 +5,24 @@
         {{ captchaChallengeText }}:
         <input *ngIf="!busy" type="text" [formControl]="captchaResponse">
     </label>
-    <span *ngIf="dlgState == dlgStateEnum.Submitting" class="busytext">Wird übertragen…</span>
-    <span *ngIf="dlgState == dlgStateEnum.Success" class="serviceok">OK: {{ resultText }}</span>
-    <span *ngIf="dlgState == dlgStateEnum.Error" class="serviceerror">Achtung: {{ resultText }}</span>
-    <span *ngIf="dlgState == dlgStateEnum.Fail" class="servicefail">Fehler: {{ resultText }}</span>
+    <div *ngIf="dlgState == dlgStateEnum.Submitting" class="busytext">Wird übertragen…</div>
+    <div *ngIf="dlgState == dlgStateEnum.Success" class="serviceok">OK: {{ resultText }}</div>
+    <div *ngIf="dlgState == dlgStateEnum.Error" class="serviceerror">
+      Achtung: {{ resultText }}<br>
+    </div>
+    <div *ngIf="dlgState == dlgStateEnum.Fail" class="servicefail">Fehler: {{ resultText }}</div>
+    <button 
+      *ngIf="dlgState == dlgStateEnum.Error || dlgState == dlgStateEnum.Fail"
+      mat-stroked-button color="primary" (click)="retryCaptcha()"
+    >Neuer Versuch</button>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="submitClick()">{{ titleAndButtonText }}</button>
-  <button mat-button [mat-dialog-close]>zurück</button>
+  <button
+    mat-flat-button color="primary" (click)="submitClick()"
+    [disabled]="dlgState != dlgStateEnum.Captcha"
+  >{{ titleAndButtonText }}</button>
+  <button 
+    mat-stroked-button color="warn" [mat-dialog-close]
+    [disabled]="dlgState == dlgStateEnum.Submitting || dlgState == dlgStateEnum.Loading"
+  >zurück</button>
 </div>

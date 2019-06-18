@@ -8,3 +8,7 @@
 .serviceerror, .servicefail {
     background-color: #faa;
 }
+
+.serviceerror {
+    margin-bottom: 2ex;
+}
