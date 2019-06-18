@@ -10,6 +10,7 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EditReservationDialogComponent } from 'src/app/components/edit-reservation-dialog/edit-reservation-dialog.component';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { Subject } from 'rxjs';
 
 describe('ItemViewComponent', () => {
   let component: ItemViewComponent;
@@ -215,7 +216,6 @@ describe('ItemViewComponent', () => {
         fixture.componentInstance.item.isReserved = testRunData2.isReservedValue;
         revealStatus();
         const button: HTMLButtonElement = fixture.nativeElement.querySelectorAll('mat-card-actions button')[1];
-        domainServiceStub.setReservationFlag.and.returnValue(cold('--x|', { x: new Result(null) }));
 
         // Act
         button.click();
@@ -228,5 +228,30 @@ describe('ItemViewComponent', () => {
         expect(matDialogStub.open).toHaveBeenCalledWith(EditReservationDialogComponent, dlgConfig);
       });
     });
+  });
+
+  it('should refresh reservation status on dialog close event', () => {
+        // Arrange
+        const afterClosed$ = new Subject<void>();
+        matDialogStub.open.and.returnValue(
+          {
+            afterClosed: () => afterClosed$.asObservable()
+          } as any
+        );
+        const viewData = initItemView();
+        revealStatus();
+        const button: HTMLButtonElement = fixture.nativeElement.querySelectorAll('mat-card-actions button')[1];
+        button.click();
+        fixture.detectChanges();
+        const preCloseCallCount = domainServiceStub.getReservationFlag.calls.count();
+
+        // Act
+        afterClosed$.next();
+        afterClosed$.complete();
+
+        // Assert
+        expect(preCloseCallCount).toBe(1);
+        const postCloseCallCount = domainServiceStub.getReservationFlag.calls.count();
+        expect(postCloseCallCount).toBe(2);
   });
 });

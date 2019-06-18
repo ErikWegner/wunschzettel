@@ -51,12 +51,15 @@ export class ItemViewComponent implements OnInit {
   }
 
   openDialog() {
-    this.dialog.open(
+    const dlg = this.dialog.open(
       EditReservationDialogComponent,
       {
         data: {
           item: this.item
         }
       });
+    dlg.afterClosed().subscribe(() => {
+        this.updateAndRevealStatus();
+    });
   }
 }
