@@ -6,7 +6,8 @@
       <h1>{{ item.title }}</h1>
     </mat-card-header>
     <mat-card-content>
-      {{ item.description }}
+      <div>{{ item.description }}</div>
+      <div class="editbutton"><button mat-fab [routerLink]="['/items', item.id, 'edit']">🖉</button></div>
     </mat-card-content>
     <mat-card-actions>
       <button [disabled]="revealStatus || busy" mat-flat-button color="primary" (click)="updateAndRevealStatus()">Reservierungsstatus</button>
