@@ -18,7 +18,7 @@ describe('ItemViewComponent', () => {
   let activatedRoute: ActivatedRouteStub;
   let domainServiceStub: jasmine.SpyObj<DomainService>;
   let matDialogStub: jasmine.SpyObj<MatDialog>;
-
+  let afterClosed$: Subject<void>;
   beforeEach(async(() => {
     const domainService = jasmine.createSpyObj(
       'DomainService',
@@ -58,6 +58,13 @@ describe('ItemViewComponent', () => {
   }));
 
   beforeEach(() => {
+    afterClosed$ = new Subject<void>();
+    matDialogStub.open.and.returnValue(
+      {
+        afterClosed: () => afterClosed$.asObservable()
+      } as any
+    );
+
     fixture = TestBed.createComponent(ItemViewComponent);
     component = fixture.componentInstance;
   });
@@ -232,12 +239,6 @@ describe('ItemViewComponent', () => {
 
   it('should refresh reservation status on dialog close event', () => {
         // Arrange
-        const afterClosed$ = new Subject<void>();
-        matDialogStub.open.and.returnValue(
-          {
-            afterClosed: () => afterClosed$.asObservable()
-          } as any
-        );
         const viewData = initItemView();
         revealStatus();
         const button: HTMLButtonElement = fixture.nativeElement.querySelectorAll('mat-card-actions button')[1];

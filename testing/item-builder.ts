@@ -5,7 +5,7 @@ import { ListBuilder } from './list-builder';
 export class ItemBuilder {
   private idValue = TestRandom.id('item');
   private titleValue = TestRandom.randomString(13, 'title-');
-  private imagesrcValue = 'https://loremflickr.com/320/240?random=' + TestRandom.id('imagesrc');
+  private imagesrcValue = '/assets/mockimg.svg';
   private categoryValue = TestRandom.randomString(8, 'category-');
   private descriptionValue = ListBuilder.with(
     () => TestRandom.randomString(TestRandom.r(12, 3))
