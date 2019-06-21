@@ -16,6 +16,7 @@ export class ItemEditComponent implements OnInit {
   title = new FormControl('');
   description = new FormControl('');
   category = new FormControl('');
+  imagesrc = new FormControl('');
 
   constructor(
     private route: ActivatedRoute,
@@ -29,6 +30,7 @@ export class ItemEditComponent implements OnInit {
         this.title.setValue(result.data.title);
         this.description.setValue(result.data.description);
         this.category.setValue(result.data.category);
+        this.imagesrc.setValue(result.data.imagesrc);
         this.hasData = true;
       },
       error: (e) => { },

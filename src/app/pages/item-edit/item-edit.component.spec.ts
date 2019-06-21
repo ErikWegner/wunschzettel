@@ -125,4 +125,18 @@ describe('ItemEditComponent', () => {
     const compiled = fixture.debugElement.nativeElement;
     expect((compiled.querySelectorAll('input')[1] as HTMLInputElement).value).toBe(viewData.item.category);
   });
+
+  it('should show image url of item', () => {
+    // Arrange
+    const viewData = prepareViewData();
+
+    // Act
+    fixture.detectChanges();
+    getTestScheduler().flush(); // flush the observables
+    fixture.detectChanges();
+
+    // Assert
+    const compiled = fixture.debugElement.nativeElement;
+    expect((compiled.querySelectorAll('input')[2] as HTMLInputElement).value).toBe(viewData.item.imagesrc);
+  });
 });
