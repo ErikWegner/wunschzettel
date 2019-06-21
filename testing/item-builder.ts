@@ -6,6 +6,7 @@ export class ItemBuilder {
   private idValue = TestRandom.id('item');
   private titleValue = TestRandom.randomString(13, 'title-');
   private imagesrcValue = '/assets/mockimg.svg';
+  private buyurlValue = 'http://ewus.de/contact';
   private categoryValue = TestRandom.randomString(8, 'category-');
   private descriptionValue = ListBuilder.with(
     () => TestRandom.randomString(TestRandom.r(12, 3))
@@ -46,6 +47,7 @@ export class ItemBuilder {
     i.title = this.titleValue;
     i.category = this.categoryValue;
     i.imagesrc = this.imagesrcValue;
+    i.buyurl = this.buyurlValue;
     i.description = this.descriptionValue;
     i.isReserved = this.isReservedValue;
 
