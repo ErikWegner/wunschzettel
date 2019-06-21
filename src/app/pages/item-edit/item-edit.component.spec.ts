@@ -2,10 +2,12 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { cold, getTestScheduler, initTestScheduler, resetTestScheduler } from 'jasmine-marbles';
 
 import { ItemEditComponent } from './item-edit.component';
-import { ActivatedRouteStub, RouterLinkDirectiveStub, ActivatedRoute, TestRandom, ItemBuilder } from 'testing';
+import { ActivatedRouteStub, RouterLinkDirectiveStub, ActivatedRoute, TestRandom, ItemBuilder, TestAppLoaderComponent } from 'testing';
 import { DomainService } from '../../domain.service';
 import { Result } from '../../domain';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CustomMaterialModule } from 'src/app/custom-material/custom-material.module';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('ItemEditComponent', () => {
   let component: ItemEditComponent;
@@ -23,8 +25,16 @@ describe('ItemEditComponent', () => {
     initTestScheduler();
     activatedRoute = new ActivatedRouteStub();
     TestBed.configureTestingModule({
-      declarations: [ItemEditComponent, RouterLinkDirectiveStub],
-      imports: [ReactiveFormsModule],
+      declarations: [
+        ItemEditComponent,
+        TestAppLoaderComponent,
+        RouterLinkDirectiveStub,
+      ],
+      imports: [
+        NoopAnimationsModule,
+        CustomMaterialModule,
+        ReactiveFormsModule,
+      ],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRoute },
         { provide: DomainService, useValue: domainService }
@@ -85,6 +95,20 @@ describe('ItemEditComponent', () => {
 
     // Assert
     const compiled = fixture.debugElement.nativeElement;
-    expect((compiled.querySelector('input') as HTMLInputElement).value).toBe(viewData.item.title);
+    expect((compiled.querySelector('#mat-input-0') as HTMLInputElement).value).toBe(viewData.item.title);
+  });
+
+  it('should show description of item', () => {
+    // Arrange
+    const viewData = prepareViewData();
+
+    // Act
+    fixture.detectChanges();
+    getTestScheduler().flush(); // flush the observables
+    fixture.detectChanges();
+
+    // Assert
+    const compiled = fixture.debugElement.nativeElement;
+    expect((compiled.querySelector('#mat-input-1') as HTMLTextAreaElement).value).toBe(viewData.item.description);
   });
 });

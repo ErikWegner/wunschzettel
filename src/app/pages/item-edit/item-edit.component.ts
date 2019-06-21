@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Item } from '../../domain';
 import { ActivatedRoute } from 'testing';
 import { DomainService } from '../../domain.service';
 import { FormControl } from '@angular/forms';
@@ -12,8 +11,10 @@ import { FormControl } from '@angular/forms';
 export class ItemEditComponent implements OnInit {
 
   isLoading = true;
+  hasData = false;
 
   title = new FormControl('');
+  description = new FormControl('');
 
   constructor(
     private route: ActivatedRoute,
@@ -25,6 +26,8 @@ export class ItemEditComponent implements OnInit {
     this.service.getItem(id).subscribe({
       next: (result) => {
         this.title.setValue(result.data.title);
+        this.description.setValue(result.data.description);
+        this.hasData = true;
       },
       error: (e) => { },
       complete: () => {

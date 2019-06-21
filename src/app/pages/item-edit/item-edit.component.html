@@ -1,6 +1,14 @@
 <div>
-  <label>
-    Bezeichnung:
-    <input type="text" [formControl]="title">
-  </label>
+  <app-loader *ngIf="isLoading"></app-loader>
+  <mat-card class="item-form" *ngIf="hasData">
+    <mat-card-content>
+      <mat-form-field class="item-form-fw">
+        <input matInput placeholder="Bezeichnung" [formControl]="title" required>
+      </mat-form-field>
+      <mat-form-field class="item-form-fw">
+        <textarea matInput placeholder="Beschreibung" [formControl]="description" cdkTextareaAutosize
+          #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3" cdkAutosizeMaxRows="10"></textarea>
+      </mat-form-field>
+    </mat-card-content>
+  </mat-card>
 </div>
