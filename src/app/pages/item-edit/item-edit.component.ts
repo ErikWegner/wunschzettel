@@ -15,6 +15,7 @@ export class ItemEditComponent implements OnInit {
 
   title = new FormControl('');
   description = new FormControl('');
+  category = new FormControl('');
 
   constructor(
     private route: ActivatedRoute,
@@ -27,6 +28,7 @@ export class ItemEditComponent implements OnInit {
       next: (result) => {
         this.title.setValue(result.data.title);
         this.description.setValue(result.data.description);
+        this.category.setValue(result.data.category);
         this.hasData = true;
       },
       error: (e) => { },

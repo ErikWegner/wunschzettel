@@ -111,4 +111,18 @@ describe('ItemEditComponent', () => {
     const compiled = fixture.debugElement.nativeElement;
     expect((compiled.querySelectorAll('textarea')[0] as HTMLTextAreaElement).value).toBe(viewData.item.description);
   });
+
+  it('should show category of item', () => {
+    // Arrange
+    const viewData = prepareViewData();
+
+    // Act
+    fixture.detectChanges();
+    getTestScheduler().flush(); // flush the observables
+    fixture.detectChanges();
+
+    // Assert
+    const compiled = fixture.debugElement.nativeElement;
+    expect((compiled.querySelectorAll('input')[1] as HTMLInputElement).value).toBe(viewData.item.category);
+  });
 });
