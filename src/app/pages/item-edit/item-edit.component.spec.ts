@@ -95,7 +95,7 @@ describe('ItemEditComponent', () => {
 
     // Assert
     const compiled = fixture.debugElement.nativeElement;
-    expect((compiled.querySelector('#mat-input-0') as HTMLInputElement).value).toBe(viewData.item.title);
+    expect((compiled.querySelectorAll('input')[0] as HTMLInputElement).value).toBe(viewData.item.title);
   });
 
   it('should show description of item', () => {
@@ -109,6 +109,6 @@ describe('ItemEditComponent', () => {
 
     // Assert
     const compiled = fixture.debugElement.nativeElement;
-    expect((compiled.querySelector('#mat-input-1') as HTMLTextAreaElement).value).toBe(viewData.item.description);
+    expect((compiled.querySelectorAll('textarea')[0] as HTMLTextAreaElement).value).toBe(viewData.item.description);
   });
 });
