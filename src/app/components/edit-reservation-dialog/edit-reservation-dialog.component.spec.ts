@@ -109,6 +109,7 @@ describe('EditReservationDialogComponent', () => {
   it('should query captcha text', () => {
     // Arrange
     createComponent();
+    const state1 = fixture.componentInstance.dlgState;
 
     // Act
     getTestScheduler().flush(); // flush the observables
@@ -116,6 +117,9 @@ describe('EditReservationDialogComponent', () => {
 
     // Assert
     expect(fixture.nativeElement.querySelectorAll('label')[0].textContent).toContain(challengeText);
+    expect(state1).toBe(fixture.componentInstance.dlgStateEnum.Loading);
+    const state2 = fixture.componentInstance.dlgState;
+    expect(state2).toBe(fixture.componentInstance.dlgStateEnum.Captcha);
   });
 
   [true, false].forEach(isReserved => {
