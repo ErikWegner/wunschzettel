@@ -29,7 +29,7 @@ import { EditReservationDialogComponent } from './components/edit-reservation-di
     PageNotFoundComponent,
     LoaderComponent,
     MessageComponent,
-    EditReservationDialogComponent
+    EditReservationDialogComponent,
   ],
   entryComponents: [
     EditReservationDialogComponent,

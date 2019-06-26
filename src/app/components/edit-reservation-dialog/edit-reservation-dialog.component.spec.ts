@@ -1,13 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { cold, getTestScheduler, initTestScheduler, resetTestScheduler } from 'jasmine-marbles';
 
-import { EditReservationDialogComponent, EditReservationDialogData, DlgState } from './edit-reservation-dialog.component';
+import { EditReservationDialogComponent, EditReservationDialogData } from './edit-reservation-dialog.component';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material/dialog';
 import { CustomMaterialModule } from 'src/app/custom-material/custom-material.module';
 import { ItemBuilder, TestRandom } from 'testing';
 import { DomainService } from 'src/app/domain.service';
 import { Result, CaptchaResponse } from 'src/app/domain';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CaptchaState } from '../captcha-state';
 import { CaptchaChallenge } from 'src/app/domain/captcha-challenge';
 import { By } from '@angular/platform-browser';
 
@@ -17,7 +18,7 @@ describe('EditReservationDialogComponent', () => {
   let dialogData: EditReservationDialogData;
   let domainServiceStub: jasmine.SpyObj<DomainService>;
   let challengeText: string;
-  let onClickState: DlgState;
+  let onClickState: CaptchaState;
 
   beforeEach(async(() => {
     onClickState = null;
@@ -119,7 +120,7 @@ describe('EditReservationDialogComponent', () => {
     expect(fixture.nativeElement.querySelectorAll('label')[0].textContent).toContain(challengeText);
     expect(state1).toBe(fixture.componentInstance.dlgStateEnum.Loading);
     const state2 = fixture.componentInstance.dlgState;
-    expect(state2).toBe(fixture.componentInstance.dlgStateEnum.Captcha);
+    expect(state2).toBe(fixture.componentInstance.dlgStateEnum.WaitingForUserInput);
   });
 
   [true, false].forEach(isReserved => {
@@ -127,17 +128,17 @@ describe('EditReservationDialogComponent', () => {
       {
         testname: 'everything ok',
         backendResponse: new Result('Success'),
-        expectedFinalDlgState: DlgState.Success
+        expectedFinalDlgState: CaptchaState.Success
       },
       {
         testname: 'backend refused',
         backendResponse: new Result('Reservation state mismatch', false),
-        expectedFinalDlgState: DlgState.Error
+        expectedFinalDlgState: CaptchaState.Error
       },
       {
         testname: 'transmission failed',
         backendResponse: new Error('Connection timeout'),
-        expectedFinalDlgState: DlgState.Fail
+        expectedFinalDlgState: CaptchaState.Fail
       }
     ].forEach(testRunData1 => {
       it('should send request: ' + testRunData1.testname, () => {
@@ -158,8 +159,8 @@ describe('EditReservationDialogComponent', () => {
         expect(domainServiceStub.setReservationFlag).toHaveBeenCalledWith(
           dialogData.item.id, !isReserved, new CaptchaResponse(captchaInput));
         const postSubmitState = fixture.componentInstance.dlgState;
-        expect(preSubmitState).toBe(DlgState.Captcha);
-        expect(onClickState).toBe(DlgState.Submitting);
+        expect(preSubmitState).toBe(CaptchaState.WaitingForUserInput);
+        expect(onClickState).toBe(CaptchaState.Submitting);
         expect(postSubmitState).toBe(testRunData1.expectedFinalDlgState);
       });
     });
@@ -188,7 +189,7 @@ describe('EditReservationDialogComponent', () => {
       // Assert
       const challenge2 = fixture.nativeElement.querySelectorAll('label')[0].textContent as string;
       const postSubmitState = fixture.componentInstance.dlgState;
-      expect(postSubmitState).toBe(DlgState.Captcha);
+      expect(postSubmitState).toBe(CaptchaState.WaitingForUserInput);
       expect(challenge1).not.toBe(challenge2);
       expect(challenge2.trim()).toBe(challengeText + ':');
     });

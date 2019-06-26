@@ -1,7 +1,7 @@
 <h1 mat-dialog-title>{{ titleAndButtonText }}?</h1>
 <div mat-dialog-content>
     <span *ngIf="dlgState == dlgStateEnum.Loading" class="busytext">Wird geladen…</span>
-    <label *ngIf="dlgState == dlgStateEnum.Captcha">
+    <label *ngIf="dlgState == dlgStateEnum.WaitingForUserInput">
         {{ captchaChallengeText }}:
         <input *ngIf="!busy" type="text" [formControl]="captchaResponse">
     </label>
@@ -19,7 +19,7 @@
 <div mat-dialog-actions>
   <button
     mat-flat-button color="primary" (click)="submitClick()"
-    [disabled]="dlgState != dlgStateEnum.Captcha"
+    [disabled]="dlgState != dlgStateEnum.WaitingForUserInput"
   >{{ titleAndButtonText }}</button>
   <button 
     mat-stroked-button color="warn" [mat-dialog-close]

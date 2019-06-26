@@ -13,10 +13,13 @@
         <input matInput placeholder="Kategorie" [formControl]="category" required>
       </mat-form-field>
       <mat-form-field class="item-form-fw">
-        <input matInput placeholder="Bild-Adresse" [formControl]="imagesrc" required>
+        <input matInput placeholder="Bild-Adresse" [formControl]="imagesrc">
       </mat-form-field>
       <mat-form-field class="item-form-fw">
-        <input matInput placeholder="Bild-Adresse" [formControl]="buyurl" required>
+        <input matInput placeholder="Kauf-Adresse" [formControl]="buyurl">
+      </mat-form-field>
+      <mat-form-field class="item-form-fw">
+        <input matInput placeholder="Antwort" [formControl]="captchaResponse" required>
       </mat-form-field>
     </mat-card-content>
   </mat-card>

@@ -18,6 +18,7 @@ export class ItemEditComponent implements OnInit {
   category = new FormControl('');
   imagesrc = new FormControl('');
   buyurl = new FormControl('');
+  captchaResponse = new FormControl('');
 
   constructor(
     private route: ActivatedRoute,
