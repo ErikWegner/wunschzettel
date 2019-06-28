@@ -19,7 +19,7 @@
         <input matInput placeholder="Kauf-Adresse" [formControl]="buyurl">
       </mat-form-field>
       <mat-form-field class="item-form-fw">
-        <input matInput placeholder="Antwort" [formControl]="captchaResponse" required>
+        <input matInput placeholder="{{ captchaChallengeText }}" [formControl]="captchaResponse" required>
       </mat-form-field>
     </mat-card-content>
   </mat-card>

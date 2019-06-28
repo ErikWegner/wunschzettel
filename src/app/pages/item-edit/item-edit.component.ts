@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from 'testing';
 import { DomainService } from '../../domain.service';
 import { FormControl } from '@angular/forms';
+import { CaptchaState } from 'src/app/components/captcha-state';
 
 @Component({
   selector: 'app-item-edit',
@@ -9,6 +10,8 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./item-edit.component.css']
 })
 export class ItemEditComponent implements OnInit {
+  formStateEnum = CaptchaState;
+  formState = CaptchaState.Loading;
 
   isLoading = true;
   hasData = false;
@@ -19,6 +22,8 @@ export class ItemEditComponent implements OnInit {
   imagesrc = new FormControl('');
   buyurl = new FormControl('');
   captchaResponse = new FormControl('');
+
+  captchaChallengeText = 'Sicherheitsfrage';
 
   constructor(
     private route: ActivatedRoute,
@@ -35,6 +40,17 @@ export class ItemEditComponent implements OnInit {
         this.imagesrc.setValue(result.data.imagesrc);
         this.buyurl.setValue(result.data.buyurl);
         this.hasData = true;
+        this.service.getCaptchaChallenge().subscribe({
+          next: (result) => {
+            this.captchaChallengeText = result.data.text;
+          },
+          error: (e) => {
+            this.formState = CaptchaState.Fail;
+          },
+          complete: () => {
+            this.formState = CaptchaState.WaitingForUserInput;
+          } 
+        });
       },
       error: (e) => { },
       complete: () => {

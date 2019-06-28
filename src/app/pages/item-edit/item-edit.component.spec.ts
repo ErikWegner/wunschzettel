@@ -8,20 +8,24 @@ import { Result } from '../../domain';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CustomMaterialModule } from 'src/app/custom-material/custom-material.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { CaptchaChallenge } from 'src/app/domain/captcha-challenge';
 
 describe('ItemEditComponent', () => {
   let component: ItemEditComponent;
   let fixture: ComponentFixture<ItemEditComponent>;
   let activatedRoute: ActivatedRouteStub;
   let domainServiceStub: jasmine.SpyObj<DomainService>;
+  let challengeText: string;
 
   beforeEach(async(() => {
     const domainService = jasmine.createSpyObj(
       'DomainService',
       [
-        'getItem'
+        'getCaptchaChallenge',
+        'getItem',
       ]
     );
+    challengeText = TestRandom.randomString(6, 'challenge-');
     initTestScheduler();
     activatedRoute = new ActivatedRouteStub();
     TestBed.configureTestingModule({
@@ -42,6 +46,9 @@ describe('ItemEditComponent', () => {
     })
       .compileComponents();
     domainServiceStub = TestBed.get(DomainService);
+    domainServiceStub.getCaptchaChallenge.and.returnValue(
+      cold('--x|', { x: new Result(new CaptchaChallenge(challengeText)) })
+    );
   }));
 
   beforeEach(() => {
@@ -152,5 +159,22 @@ describe('ItemEditComponent', () => {
     // Assert
     const compiled = fixture.debugElement.nativeElement;
     expect((compiled.querySelectorAll('input')[3] as HTMLInputElement).value).toBe(viewData.item.buyurl);
+  });
+
+  it('should query captcha text', () => {
+    // Arrange
+    const viewData = prepareViewData();
+    const state1 = fixture.componentInstance.formState;
+
+    // Act
+    fixture.detectChanges();
+    getTestScheduler().flush(); // flush the observables
+    fixture.detectChanges();
+
+    // Assert
+    expect(fixture.nativeElement.querySelectorAll('label')[5].textContent).toContain(challengeText);
+    expect(state1).toBe(fixture.componentInstance.formStateEnum.Loading);
+    const state2 = fixture.componentInstance.formState;
+    expect(state2).toBe(fixture.componentInstance.formStateEnum.WaitingForUserInput);
   });
 });

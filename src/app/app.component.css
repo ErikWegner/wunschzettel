@@ -7,3 +7,9 @@
 .itemcard {
   margin: 8px;
 }
+
+main {
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+}
