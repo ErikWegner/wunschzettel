@@ -21,6 +21,13 @@
       <mat-form-field class="item-form-fw">
         <input matInput placeholder="{{ captchaChallengeText }}" [formControl]="captchaResponse" required>
       </mat-form-field>
+      Achtung: {{ resultText }}
     </mat-card-content>
+    <mat-card-actions>
+      <button
+        mat-raised-button color="primary" (click)="submitClick()"
+        [disabled]="formState != formStateEnum.WaitingForUserInput"
+      >Speichern</button>
+    </mat-card-actions>
   </mat-card>
 </div>

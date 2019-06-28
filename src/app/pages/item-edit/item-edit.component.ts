@@ -3,6 +3,7 @@ import { ActivatedRoute } from 'testing';
 import { DomainService } from '../../domain.service';
 import { FormControl } from '@angular/forms';
 import { CaptchaState } from 'src/app/components/captcha-state';
+import { Item } from 'src/app/domain';
 
 @Component({
   selector: 'app-item-edit',
@@ -23,7 +24,9 @@ export class ItemEditComponent implements OnInit {
   buyurl = new FormControl('');
   captchaResponse = new FormControl('');
 
+  id: number;
   captchaChallengeText = 'Sicherheitsfrage';
+  resultText = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -31,8 +34,8 @@ export class ItemEditComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    const id = parseInt(this.route.snapshot.paramMap.get('id'), 10);
-    this.service.getItem(id).subscribe({
+    this.id = parseInt(this.route.snapshot.paramMap.get('id'), 10);
+    this.service.getItem(this.id).subscribe({
       next: (result) => {
         this.title.setValue(result.data.title);
         this.description.setValue(result.data.description);
@@ -55,6 +58,27 @@ export class ItemEditComponent implements OnInit {
       error: (e) => { },
       complete: () => {
         this.isLoading = false;
+      }
+    });
+  }
+
+  submitClick() {
+    this.formState = CaptchaState.Submitting;
+    const item = new Item();
+    item.id = this.id;
+    item.title = this.title.value;
+    item.category = this.category.value;
+    item.imagesrc = this.imagesrc.value;
+    item.buyurl = this.buyurl.value;
+    item.description = this.description.value;
+    this.service.setItem(item).subscribe({
+      next: (result) => {
+        this.formState = result.success ? CaptchaState.Success : CaptchaState.Error;
+        this.resultText = result.data;
+      },
+      error: (e) => {
+        this.formState = CaptchaState.Fail;
+        this.resultText = 'Übertragungsfehler';
       }
     });
   }

@@ -42,6 +42,10 @@ export class DomainService {
     return this.backend.getCaptchaChallenge();
   }
 
+  public setItem(item: Item): Observable<Result<string>> {
+    throw new Error('Not implemented');
+  }
+
   private filterById(items: Result<Item[]>, id: number) {
     const item = items.data.find(i => i.id === id);
     return new Result(item);
