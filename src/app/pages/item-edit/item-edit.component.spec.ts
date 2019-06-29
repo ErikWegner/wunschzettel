@@ -79,7 +79,7 @@ describe('ItemEditComponent', () => {
   }
 
   function setFormValues(item: Item) {
-    component.description.setValue(item.description);
+    component.itemForm.patchValue({ description: item.description });
     setFormItemValue(item.title, 0);
     setFormItemValue(item.category, 1);
     setFormItemValue(item.imagesrc, 2);
@@ -261,5 +261,36 @@ describe('ItemEditComponent', () => {
       expect(onClickState).toBe(CaptchaState.Submitting, 'onClickState');
       expect(postSubmitState).toBe(testRunData1.expectedFinalDlgState, 'postSubmitState');
     });
+  });
+
+  it('should show a button to try again on error', () => {
+    // Arrange
+    const viewData = prepareViewData();
+    const captchaInput = TestRandom.randomString(8);
+    fixture.detectChanges();
+    getTestScheduler().flush(); // flush the observables
+    getTestScheduler().flush(); // flush the observables
+    fixture.detectChanges();
+    const challenge1 = fixture.nativeElement.querySelectorAll('label')[5].textContent;
+    setCaptchaResponse(captchaInput);
+    fixture.detectChanges();
+    clickSubmitAndRespond(new Result('Captcha wrong', false));
+    challengeText = TestRandom.randomString(8);
+    domainServiceStub.getCaptchaChallenge.and.returnValue(
+      cold('--x|', { x: new Result(new CaptchaChallenge(challengeText)) })
+    );
+
+    // Act
+    fixture.debugElement.query(By.css('mat-card-content button')).nativeElement.click();
+    getTestScheduler().flush(); // flush the observables
+    getTestScheduler().flush(); // flush the observables
+    fixture.detectChanges();
+
+    // Assert
+    const challenge2 = fixture.nativeElement.querySelectorAll('label')[5].textContent as string;
+    const postSubmitState = fixture.componentInstance.formState;
+    expect(postSubmitState).toBe(CaptchaState.WaitingForUserInput);
+    expect(challenge1).not.toBe(challenge2);
+    expect(challenge2.trim()).toBe(challengeText + ' *');
   });
 });

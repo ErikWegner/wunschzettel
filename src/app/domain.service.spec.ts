@@ -20,6 +20,7 @@ describe('DomainService', () => {
         'getItems',
         'getReservationFlag',
         'setReservationFlag',
+        'setItem',
         'getCaptchaChallenge',
       ]
     );
@@ -198,4 +199,28 @@ describe('DomainService', () => {
       expect(completeCallback).toHaveBeenCalledTimes(1);
     });
   });
+
+  it('should send item update to backend', () => {
+    // Arrange
+    const item = ItemBuilder.default();
+    const answer = TestRandom.randomString(6, 'answer-');
+    const captchaResponse = new CaptchaResponse(answer);
+    fakeBackend.setItem.and.returnValue(cold('--x|', { x: new Result('OK') }));
+    const service: DomainService = TestBed.get(DomainService);
+      
+    // Act
+    service.setItem(item, captchaResponse).subscribe(
+      nextCallback,
+      fail,
+      () => {
+        completeCallback();
+      }
+    );
+    getTestScheduler().flush(); // flush the observables
+
+     // Assert
+     expect(fakeBackend.setItem).toHaveBeenCalledWith(item, answer);
+     expect(nextCallback).toHaveBeenCalledTimes(1);
+     expect(completeCallback).toHaveBeenCalledTimes(1);
+ });
 });

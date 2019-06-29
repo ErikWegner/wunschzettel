@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subscriber, Subscriber } from 'rxjs';
 import { Result, Item } from './domain';
 import { ItemBuilder } from 'testing';
 import { CaptchaChallenge } from './domain/captcha-challenge';
@@ -40,7 +40,40 @@ export class BackendService {
   }
 
   public setReservationFlag(id: number, flag: boolean, captchaAnswer: string) {
+    return this.processCaptcha(captchaAnswer, () => {
+      this.mockdata.find(i => i.id === id).isReserved = flag;
+          return  flag ? 'gesetzt' : 'gelöscht';
+    });
+  }
+
+  public setItem(item: Item, captchaAnswer: string) {
+    return this.processCaptcha(captchaAnswer, () => { 
+      const mockItem = this.mockdata.find(i => i.id === item.id) as Item;
+      mockItem.title =  item.title;
+      mockItem.description = item.description;
+      mockItem.category = item.category;
+      mockItem.imagesrc = item.imagesrc;
+      mockItem.buyurl = item.buyurl;
+
+      return 'Gespeichert';
+    });
+  }
+
+  public getCaptchaChallenge() {
+    return new Observable<Result<CaptchaChallenge>>((observer) => {
+      window.setTimeout(() => {
+        observer.next(new Result(new CaptchaChallenge('Eingabe: OK, FAIL, sonstiges')));
+        observer.complete();
+      }, 1500);
+    });
+  }
+
+  private processCaptcha(
+    captchaAnswer: string,
+    successCallback: () => string
+  ) {
     return new Observable<Result<string>>((observer) => {
+      
       window.setTimeout(() => {
         if (captchaAnswer === 'FAIL') {
           observer.error('No response');
@@ -49,8 +82,7 @@ export class BackendService {
         let responseText: string;
         let success = false;
         if (captchaAnswer === 'OK') {
-          this.mockdata.find(i => i.id === id).isReserved = flag;
-          responseText = flag ? 'gesetzt' : 'gelöscht';
+          responseText = successCallback();
           success = true;
         } else {
           responseText = 'Captcha falsch';
@@ -59,14 +91,6 @@ export class BackendService {
         observer.complete();
       }, 1500);
     });
-  }
 
-  public getCaptchaChallenge() {
-    return new Observable<Result<CaptchaChallenge>>((observer) => {
-      window.setTimeout(() => {
-        observer.next(new Result(new CaptchaChallenge('Math equation')));
-        observer.complete();
-      }, 1500);
-    });
   }
 }

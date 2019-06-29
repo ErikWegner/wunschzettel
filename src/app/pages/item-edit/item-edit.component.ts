@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from 'testing';
 import { DomainService } from '../../domain.service';
-import { FormControl } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { CaptchaState } from 'src/app/components/captcha-state';
-import { Item } from 'src/app/domain';
+import { Item, CaptchaResponse } from 'src/app/domain';
 
 @Component({
   selector: 'app-item-edit',
@@ -17,18 +17,21 @@ export class ItemEditComponent implements OnInit {
   isLoading = true;
   hasData = false;
 
-  title = new FormControl('');
-  description = new FormControl('');
-  category = new FormControl('');
-  imagesrc = new FormControl('');
-  buyurl = new FormControl('');
-  captchaResponse = new FormControl('');
+  itemForm = this.fb.group({
+    title: ['', Validators.required],
+    description: [''],
+    category: ['', Validators.required],
+    imagesrc: [''],
+    buyurl: [''],
+    captchaResponse: ['', Validators.required],
+  })
 
   id: number;
   captchaChallengeText = 'Sicherheitsfrage';
   resultText = '';
 
   constructor(
+    private fb: FormBuilder,
     private route: ActivatedRoute,
     private service: DomainService,
   ) { }
@@ -37,23 +40,9 @@ export class ItemEditComponent implements OnInit {
     this.id = parseInt(this.route.snapshot.paramMap.get('id'), 10);
     this.service.getItem(this.id).subscribe({
       next: (result) => {
-        this.title.setValue(result.data.title);
-        this.description.setValue(result.data.description);
-        this.category.setValue(result.data.category);
-        this.imagesrc.setValue(result.data.imagesrc);
-        this.buyurl.setValue(result.data.buyurl);
+        this.itemForm.patchValue(result.data);
         this.hasData = true;
-        this.service.getCaptchaChallenge().subscribe({
-          next: (result) => {
-            this.captchaChallengeText = result.data.text;
-          },
-          error: (e) => {
-            this.formState = CaptchaState.Fail;
-          },
-          complete: () => {
-            this.formState = CaptchaState.WaitingForUserInput;
-          } 
-        });
+        this.loadCaptcha();
       },
       error: (e) => { },
       complete: () => {
@@ -66,12 +55,13 @@ export class ItemEditComponent implements OnInit {
     this.formState = CaptchaState.Submitting;
     const item = new Item();
     item.id = this.id;
-    item.title = this.title.value;
-    item.category = this.category.value;
-    item.imagesrc = this.imagesrc.value;
-    item.buyurl = this.buyurl.value;
-    item.description = this.description.value;
-    this.service.setItem(item).subscribe({
+    const formValue = this.itemForm.value;
+    item.title = formValue.title;
+    item.category = formValue.category;
+    item.imagesrc = formValue.imagesrc;
+    item.buyurl = formValue.buyurl;
+    item.description = formValue.description;
+    this.service.setItem(item, new CaptchaResponse(formValue.captchaResponse)).subscribe({
       next: (result) => {
         this.formState = result.success ? CaptchaState.Success : CaptchaState.Error;
         this.resultText = result.data;
@@ -83,4 +73,18 @@ export class ItemEditComponent implements OnInit {
     });
   }
 
+  loadCaptcha() {
+    this.formState = CaptchaState.Loading;
+    this.service.getCaptchaChallenge().subscribe({
+      next: (result) => {
+        this.captchaChallengeText = result.data.text;
+      },
+      error: (e) => {
+        this.formState = CaptchaState.Fail;
+      },
+      complete: () => {
+        this.formState = CaptchaState.WaitingForUserInput;
+      }
+    });
+  }
 }

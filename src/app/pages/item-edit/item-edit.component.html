@@ -1,32 +1,42 @@
-<div>
+<div [formGroup]="itemForm">
   <app-loader *ngIf="isLoading"></app-loader>
   <mat-card class="item-form" *ngIf="hasData">
     <mat-card-content>
-      <mat-form-field class="item-form-fw">
-        <input matInput placeholder="Bezeichnung" [formControl]="title" required>
+      <mat-form-field class="item-form-fw" disabled="true">
+        <input matInput placeholder="Bezeichnung" formControlName="title" required>
       </mat-form-field>
       <mat-form-field class="item-form-fw">
-        <textarea matInput placeholder="Beschreibung" [formControl]="description" cdkTextareaAutosize
+        <textarea matInput placeholder="Beschreibung" formControlName="description" cdkTextareaAutosize
           #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3" cdkAutosizeMaxRows="10"></textarea>
       </mat-form-field>
       <mat-form-field class="item-form-fw">
-        <input matInput placeholder="Kategorie" [formControl]="category" required>
+        <input matInput placeholder="Kategorie" formControlName="category" required>
       </mat-form-field>
       <mat-form-field class="item-form-fw">
-        <input matInput placeholder="Bild-Adresse" [formControl]="imagesrc">
+        <input matInput placeholder="Bild-Adresse" formControlName="imagesrc">
       </mat-form-field>
       <mat-form-field class="item-form-fw">
-        <input matInput placeholder="Kauf-Adresse" [formControl]="buyurl">
+        <input matInput placeholder="Kauf-Adresse" formControlName="buyurl">
       </mat-form-field>
+      <span *ngIf="formState == formStateEnum.Loading" class="busytext">Wird geladen…</span>
       <mat-form-field class="item-form-fw">
-        <input matInput placeholder="{{ captchaChallengeText }}" [formControl]="captchaResponse" required>
+        <input matInput placeholder="{{ captchaChallengeText }}" formControlName="captchaResponse" required>
       </mat-form-field>
-      Achtung: {{ resultText }}
+      <div *ngIf="formState == formStateEnum.Success" class="serviceok">OK: {{ resultText }}</div>
+      <div *ngIf="formState == formStateEnum.Error" class="serviceerror">
+        Achtung: {{ resultText }}<br>
+      </div>
+      <div *ngIf="formState == formStateEnum.Fail" class="servicefail">Fehler: {{ resultText }}</div>
+      <button 
+        *ngIf="formState == formStateEnum.Error || formState == formStateEnum.Fail"
+        mat-stroked-button color="primary" (click)="loadCaptcha()"
+      >Neuer Versuch</button>
+      <div *ngIf="formState == formStateEnum.Submitting" class="busytext">Wird übertragen…</div>
     </mat-card-content>
     <mat-card-actions>
       <button
         mat-raised-button color="primary" (click)="submitClick()"
-        [disabled]="formState != formStateEnum.WaitingForUserInput"
+        [disabled]="formState != formStateEnum.WaitingForUserInput || !itemForm.valid"
       >Speichern</button>
     </mat-card-actions>
   </mat-card>
