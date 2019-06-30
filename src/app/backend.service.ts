@@ -4,7 +4,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { Result, Item, AddItemResponse } from './domain';
 import { CaptchaChallenge } from './domain';
-import { ListResponse, ListResponseItem } from './backend';
+import { ListResponse, ListResponseItem, ServerUpdateItemRequest, ServerUpdateItemResponse } from './backend';
 import { GetReservationFlagResponse } from './backend';
 import { SetReservationFlagResponse } from './backend';
 import { ServerAddItemResponse } from './backend';
@@ -45,9 +45,21 @@ export class BackendService {
   }
 
   public setItem(item: Item, captchaAnswer: string) {
-    return new Observable<Result<string>>((observer) => {
-      observer.error('Not implemented');
-    });
+    const body: ServerUpdateItemRequest = {
+      action: 'update',
+      captcha: captchaAnswer,
+      item: {
+        BuyUrl: item.buyurl,
+        Category: item.category,
+        Description: item.description,
+        id: item.id,
+        ImgageUrl: item.imagesrc,
+        Title: item.title
+      }
+    };
+    return this.http.post<ServerUpdateItemResponse>(this.apiUrl(''), body).pipe(
+      map(r => new Result<string>(r.data.message, r.data.success))
+    );
   }
 
   public addItem(item: Item, captchaAnswer: string) {

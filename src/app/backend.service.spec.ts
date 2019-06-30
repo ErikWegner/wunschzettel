@@ -1,3 +1,4 @@
+import { Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpClient } from '@angular/common/http';
@@ -7,10 +8,10 @@ import { APP_MOCK_BACKEND } from './app.config';
 import { ListBuilder, ItemBuilder, TestRandom } from 'testing';
 import { ItemMapper } from 'testing/item-mapper';
 import { Result } from './domain';
-import { GetReservationFlagResponse } from './backend/get-reservation-flag-response';
+import { GetReservationFlagResponse } from './backend';
 import { SetReservationFlagResponse } from './backend';
-import { Type } from '@angular/core';
-import { ServerAddItemResponse } from './backend/server-add-item-response';
+import { ServerAddItemResponse } from './backend';
+import { ServerUpdateItemResponse } from './backend';
 
 describe('BackendService', () => {
   let httpClient: HttpClient;
@@ -131,11 +132,35 @@ describe('BackendService', () => {
     // Assert
     const req = httpTestingController.expectOne(apiUrl(''));
     expect(req.request.method).toBe('POST');
+    expect(req.request.body.action).toBe('add');
     req.flush({
       data: { success: true, message, id }
     } as ServerAddItemResponse);
     expect(nextCallback).toHaveBeenCalledTimes(1);
     expect(complCallback).toHaveBeenCalledTimes(1);
     expect(nextCallback.calls.first().args[0]).toEqual(new Result({ message, id }));
+  });
+
+  it('should update an existing item', () => {
+    // Arrange
+    const message = 'Geändert';
+    const item = ItemBuilder.default();
+    const captchaAnswer = TestRandom.randomString(6, 'answer-');
+
+    // Act
+    service
+      .setItem(item, captchaAnswer)
+      .subscribe(nextCallback, fail, complCallback);
+
+    // Assert
+    const req = httpTestingController.expectOne(apiUrl(''));
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body.action).toBe('update');
+    req.flush({
+      data: { success: true, message }
+    } as ServerUpdateItemResponse);
+    expect(nextCallback).toHaveBeenCalledTimes(1);
+    expect(complCallback).toHaveBeenCalledTimes(1);
+    expect(nextCallback.calls.first().args[0]).toEqual(new Result({ message }));
   });
 });
