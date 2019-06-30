@@ -1,12 +1,14 @@
 import { Injectable, Inject } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { map, catchError } from 'rxjs/operators';
 import { Result, Item, AddItemResponse } from './domain';
 import { CaptchaChallenge } from './domain';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ListResponse, ListResponseItem } from './backend';
-import { map, catchError } from 'rxjs/operators';
-import { GetReservationFlagResponse } from './backend/get-reservation-flag-response';
-import { SetReservationFlagResponse } from './backend/set-reservation-flag-response';
+import { GetReservationFlagResponse } from './backend';
+import { SetReservationFlagResponse } from './backend';
+import { ServerAddItemResponse } from './backend';
+import { ServerAddItemRequest } from './backend/server-add-item-request';
 
 @Injectable({
   providedIn: 'root'
@@ -49,9 +51,21 @@ export class BackendService {
   }
 
   public addItem(item: Item, captchaAnswer: string) {
-    return new Observable<Result<AddItemResponse>>((observer) => {
-      observer.error('Not implemented');
-    });
+    const body: ServerAddItemRequest = {
+      action: 'add',
+      captcha: captchaAnswer,
+      item: {
+        BuyUrl: item.buyurl,
+        Category: item.category,
+        Description: item.description,
+        id: 0,
+        ImgageUrl: item.imagesrc,
+        Title: item.title
+      }
+    };
+    return this.http.post<ServerAddItemResponse>(this.apiUrl(''), body).pipe(
+      map(r => new Result<AddItemResponse>({ message: r.data.message, id: r.data.id }, r.data.success))
+    );
   }
 
   public deleteItem(id: number, captchaAnswer: string) {
@@ -67,13 +81,17 @@ export class BackendService {
   }
 
   private apiUrl(action: string, options?: { id?: number, captcha?: string }) {
-    let url = this.serviceUrl + '?action=' + action;
-    if (options) {
-      if (options.id) {
-        url += '&id=' + options.id;
-      }
-      if (options.captcha) {
-        url += '&captcha=' + encodeURIComponent(options.captcha);
+    let url = this.serviceUrl;
+    if (action !== '') {
+      url += '?action=' + action;
+
+      if (options) {
+        if (options.id) {
+          url += '&id=' + options.id;
+        }
+        if (options.captcha) {
+          url += '&captcha=' + encodeURIComponent(options.captcha);
+        }
       }
     }
 

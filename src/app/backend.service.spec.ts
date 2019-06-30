@@ -10,6 +10,7 @@ import { Result } from './domain';
 import { GetReservationFlagResponse } from './backend/get-reservation-flag-response';
 import { SetReservationFlagResponse } from './backend';
 import { Type } from '@angular/core';
+import { ServerAddItemResponse } from './backend/server-add-item-response';
 
 describe('BackendService', () => {
   let httpClient: HttpClient;
@@ -113,5 +114,28 @@ describe('BackendService', () => {
         expect(nextCallback.calls.first().args[0]).toEqual(new Result('Server', isSuccess));
       });
     });
+  });
+
+  it('should add new item', () => {
+    // Arrange
+    const id = TestRandom.r(9000);
+    const message = 'Angelegt';
+    const item = ItemBuilder.with().id(0).build();
+    const captchaAnswer = TestRandom.randomString(6, 'answer-');
+
+    // Act
+    service
+      .addItem(item, captchaAnswer)
+      .subscribe(nextCallback, fail, complCallback);
+
+    // Assert
+    const req = httpTestingController.expectOne(apiUrl(''));
+    expect(req.request.method).toBe('POST');
+    req.flush({
+      data: { success: true, message, id }
+    } as ServerAddItemResponse);
+    expect(nextCallback).toHaveBeenCalledTimes(1);
+    expect(complCallback).toHaveBeenCalledTimes(1);
+    expect(nextCallback.calls.first().args[0]).toEqual(new Result({ message, id }));
   });
 });
