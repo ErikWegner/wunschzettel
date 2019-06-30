@@ -18,11 +18,11 @@
           (click)="updateAndRevealStatus()">Reservierungsstatus</button>
         <span *ngIf="busy" class="busytext busytextStatus">Wird geladen…</span>
         <span *ngIf="revealStatus && !busy"
-          class="rstatus">{{ item.isReserved ? 'Reserviert' : 'Nicht reserviert' }}</span>
+          class="rstatus">{{ isReserved ? 'Reserviert' : 'Nicht reserviert' }}</span>
 
-        <button *ngIf="revealStatus && !item.isReserved && !busy" mat-flat-button color="primary"
+        <button *ngIf="revealStatus && !isReserved && !busy" mat-flat-button color="primary"
           (click)="openDialog()">Reservieren</button>
-        <button *ngIf="revealStatus && item.isReserved && !busy" mat-flat-button color="primary"
+        <button *ngIf="revealStatus && isReserved && !busy" mat-flat-button color="primary"
           (click)="openDialog()">Reservierung löschen</button>
         <span class="flexspacer"></span>
         <a mat-button [routerLink]="['/categories', item.category]">zurück</a>

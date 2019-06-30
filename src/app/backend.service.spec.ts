@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 import { BackendService } from './backend.service';
 import { APP_MOCK_BACKEND } from './app.config';
 import { ListBuilder, ItemBuilder } from 'testing';
-import { ListResponse } from './backend';
 import { ItemMapper } from 'testing/item-mapper';
+import { Result } from './domain';
 
 describe('BackendService', () => {
   let httpClient: HttpClient;
@@ -57,6 +57,6 @@ describe('BackendService', () => {
 
     expect(nextCallback).toHaveBeenCalledTimes(1);
     expect(complCallback).toHaveBeenCalledTimes(1);
-    expect(nextCallback.calls.first().args[0]).toEqual(items);
+    expect(nextCallback.calls.first().args[0]).toEqual(new Result(items));
   });
 });

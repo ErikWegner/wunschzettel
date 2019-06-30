@@ -203,8 +203,8 @@ describe('ItemViewComponent', () => {
   ].forEach(testRunData => {
     it(testRunData.testName, () => {
       // Arrange
-      initItemView();
       isReservedValue = testRunData.isReservedValue;
+      initItemView();
       const preClickCount = fixture.nativeElement.querySelectorAll('mat-card-actions button').length;
 
       // Act
@@ -229,8 +229,8 @@ describe('ItemViewComponent', () => {
     }].forEach(testRunData2 => {
       it(testRunData2.testName, () => {
         // Arrange
+        isReservedValue = testRunData2.isReservedValue;
         const viewData = initItemView();
-        fixture.componentInstance.isReserved = testRunData2.isReservedValue;
         revealStatus();
         const button: HTMLButtonElement = fixture.nativeElement.querySelectorAll('mat-card-actions button')[1];
 
@@ -240,9 +240,13 @@ describe('ItemViewComponent', () => {
 
         // Assert
         const dlgConfig: MatDialogConfig = {
-          data: { item: viewData.item }
+          data: {
+            item: viewData.item,
+            isReserved: testRunData2.isReservedValue,
+           }
         };
-        expect(matDialogStub.open).toHaveBeenCalledWith(EditReservationDialogComponent, dlgConfig);
+        expect(matDialogStub.open).toHaveBeenCalledTimes(1);
+        expect(matDialogStub.open.calls.mostRecent().args).toEqual([EditReservationDialogComponent, dlgConfig]);
       });
     });
   });
