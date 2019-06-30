@@ -5,6 +5,7 @@ import { CaptchaChallenge } from './domain';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ListResponse, ListResponseItem } from './backend';
 import { map, catchError } from 'rxjs/operators';
+import { GetReservationFlagResponse } from './backend/get-reservation-flag-response';
 
 @Injectable({
   providedIn: 'root'
@@ -26,9 +27,9 @@ export class BackendService {
   }
 
   public getReservationFlag(id: number) {
-    return new Observable<Result<boolean>>((observer) => {
-      observer.error('Not implemented');
-    });
+    return this.http.get<GetReservationFlagResponse>(this.apiUrl('status', { id })).pipe(
+      map(r => new Result(r.data.status))
+    )
   }
 
   public setReservationFlag(id: number, flag: boolean, captchaAnswer: string) {
@@ -61,8 +62,15 @@ export class BackendService {
     });
   }
 
-  private apiUrl(action: string) {
-    return this.serviceUrl + '?action=' + action;
+  private apiUrl(action: string, options?: { id?: number }) {
+    let url = this.serviceUrl + '?action=' + action;
+    if (options) {
+      if (options.id) {
+        url += '&id=' + options.id;
+      }
+    }
+
+    return url;
   }
 
   private handleError(error: HttpErrorResponse) {

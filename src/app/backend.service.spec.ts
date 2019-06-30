@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { BackendService } from './backend.service';
 import { APP_MOCK_BACKEND } from './app.config';
-import { ListBuilder, ItemBuilder } from 'testing';
+import { ListBuilder, ItemBuilder, TestRandom } from 'testing';
 import { ItemMapper } from 'testing/item-mapper';
 import { Result } from './domain';
 
@@ -58,5 +58,25 @@ describe('BackendService', () => {
     expect(nextCallback).toHaveBeenCalledTimes(1);
     expect(complCallback).toHaveBeenCalledTimes(1);
     expect(nextCallback.calls.first().args[0]).toEqual(new Result(items));
+  });
+
+  [true, false].forEach(backendStatus => {
+
+
+    it('should get reservation flag', () => {
+      // Arrange
+      const id = TestRandom.r(9000);
+
+      // Act
+      service.getReservationFlag(id).subscribe(nextCallback, fail, complCallback);
+
+      // Assert
+      const req = httpTestingController.expectOne(apiUrl('?action=status&id=' + id));
+      req.flush({data:{status: backendStatus}});
+
+      expect(nextCallback).toHaveBeenCalledTimes(1);
+      expect(complCallback).toHaveBeenCalledTimes(1);
+      expect(nextCallback.calls.first().args[0]).toEqual(new Result(backendStatus));
+    });
   });
 });
