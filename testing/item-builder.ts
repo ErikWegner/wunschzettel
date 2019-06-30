@@ -15,6 +15,9 @@ export class ItemBuilder {
 
   private constructor() {
     this.isReservedValue = (this.idValue % 2) === 0;
+    if (this.idValue % 2) {
+      this.imagesrcValue = '';
+    }
   }
 
   public static with() {

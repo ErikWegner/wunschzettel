@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -16,6 +17,8 @@ import { CustomMaterialModule } from './custom-material/custom-material.module';
 import { LoaderComponent } from './components/loader/loader.component';
 import { MessageComponent } from './components/message/message.component';
 import { EditReservationDialogComponent } from './components/edit-reservation-dialog/edit-reservation-dialog.component';
+import { BackendService } from './backend.service';
+import { BackendServiceMock } from './backend.service.mock';
 
 @NgModule({
   declarations: [
@@ -40,8 +43,11 @@ import { EditReservationDialogComponent } from './components/edit-reservation-di
     AppRoutingModule,
     BrowserAnimationsModule,
     CustomMaterialModule,
+    HttpClientModule,
   ],
-  providers: [],
+  providers: [
+    { provide: BackendService, useClass: isDevMode() ? BackendServiceMock : BackendService}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
