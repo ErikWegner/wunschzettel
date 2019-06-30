@@ -35,7 +35,6 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 - - /items/add
 - Views
 - - /
-- - /items/:id/edit
 - - /items/:id/delete
 - - /items/add
 - - 404 Not Found

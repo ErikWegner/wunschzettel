@@ -1,6 +1,13 @@
 <div [formGroup]="itemForm">
   <app-loader *ngIf="isLoading"></app-loader>
   <mat-card class="item-form" *ngIf="hasData">
+    <mat-card-title>
+      <mat-toolbar>
+        <span>Wunschzetteleintrag</span>
+        <span class="flexspacer"></span>
+        <button mat-button color="warn" [routerLink]="['/items', id, 'delete']">Löschen</button>
+      </mat-toolbar>
+    </mat-card-title>
     <mat-card-content>
       <mat-form-field class="item-form-fw" disabled="true">
         <input matInput placeholder="Bezeichnung" formControlName="title" required>
@@ -27,17 +34,17 @@
         Achtung: {{ resultText }}<br>
       </div>
       <div *ngIf="formState == formStateEnum.Fail" class="servicefail">Fehler: {{ resultText }}</div>
-      <button 
-        *ngIf="formState == formStateEnum.Error || formState == formStateEnum.Fail"
-        mat-stroked-button color="primary" (click)="loadCaptcha()"
-      >Neuer Versuch</button>
+      <button *ngIf="formState == formStateEnum.Error || formState == formStateEnum.Fail" mat-stroked-button
+        color="primary" (click)="loadCaptcha()">Neuer Versuch</button>
       <div *ngIf="formState == formStateEnum.Submitting" class="busytext">Wird übertragen…</div>
     </mat-card-content>
-    <mat-card-actions>
-      <button
-        mat-raised-button color="primary" (click)="submitClick()"
-        [disabled]="formState != formStateEnum.WaitingForUserInput || !itemForm.valid"
-      >Speichern</button>
+    <mat-card-actions *ngIf="hasData">
+      <div class="flex-container">
+        <button mat-raised-button color="primary" (click)="submitClick()"
+          [disabled]="formState != formStateEnum.WaitingForUserInput || !itemForm.valid">Speichern</button>
+        <span class="flexspacer"></span>
+        <a mat-button [routerLink]="['/items', id]">zurück</a>
+      </div>
     </mat-card-actions>
   </mat-card>
 </div>
