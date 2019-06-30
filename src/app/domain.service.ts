@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { Result, Category, Item, CaptchaResponse } from './domain';
 import { BackendService } from './backend.service';
 import { CaptchaChallenge } from './domain/captcha-challenge';
@@ -27,7 +27,7 @@ export class DomainService {
 
   public getItem(id: number) {
     return this.loadItems()
-    .pipe(map(items => this.filterById(items, id)));
+      .pipe(map(items => this.filterById(items, id)));
   }
 
   public getReservationFlag(id: number): Observable<Result<boolean>> {
@@ -43,7 +43,13 @@ export class DomainService {
   }
 
   public setItem(item: Item, captaResponse: CaptchaResponse): Observable<Result<string>> {
-    return this.backend.setItem(item, captaResponse.answer);
+    return this.backend.setItem(item, captaResponse.answer).pipe(
+      tap(result => {
+        if (result.success) {
+          this.items = null;
+        }
+      })
+    );
   }
 
   private filterById(items: Result<Item[]>, id: number) {
@@ -62,7 +68,7 @@ export class DomainService {
       .filter(c => {
         return dict.hasOwnProperty(c) ? false : dict[c] = true;
       })
-    .map (c => new Category(c));
+      .map(c => new Category(c));
     return new Result(categories);
   }
 

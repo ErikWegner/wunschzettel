@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subscriber, Subscriber } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Result, Item } from './domain';
 import { ItemBuilder } from 'testing';
 import { CaptchaChallenge } from './domain/captcha-challenge';
@@ -42,14 +42,14 @@ export class BackendService {
   public setReservationFlag(id: number, flag: boolean, captchaAnswer: string) {
     return this.processCaptcha(captchaAnswer, () => {
       this.mockdata.find(i => i.id === id).isReserved = flag;
-          return  flag ? 'gesetzt' : 'gelöscht';
+      return flag ? 'gesetzt' : 'gelöscht';
     });
   }
 
   public setItem(item: Item, captchaAnswer: string) {
-    return this.processCaptcha(captchaAnswer, () => { 
+    return this.processCaptcha(captchaAnswer, () => {
       const mockItem = this.mockdata.find(i => i.id === item.id) as Item;
-      mockItem.title =  item.title;
+      mockItem.title = item.title;
       mockItem.description = item.description;
       mockItem.category = item.category;
       mockItem.imagesrc = item.imagesrc;
@@ -73,7 +73,7 @@ export class BackendService {
     successCallback: () => string
   ) {
     return new Observable<Result<string>>((observer) => {
-      
+
       window.setTimeout(() => {
         if (captchaAnswer === 'FAIL') {
           observer.error('No response');

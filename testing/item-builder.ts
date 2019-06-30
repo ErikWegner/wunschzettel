@@ -25,6 +25,18 @@ export class ItemBuilder {
     return ItemBuilder.with().build();
   }
 
+  static from(item: Item) {
+    const instance = new ItemBuilder();
+    instance.idValue = item.id;
+    instance.titleValue = item.title;
+    instance.descriptionValue = item.description;
+    instance.categoryValue = item.category;
+    instance.imagesrcValue = item.imagesrc;
+    instance.buyurlValue = item.buyurl;
+    instance.isReservedValue = item.isReserved;
+    return instance;
+  }
+
   public category(category: string) {
     this.categoryValue = category;
     return this;
@@ -32,6 +44,11 @@ export class ItemBuilder {
 
   public id(id: number) {
     this.idValue = id;
+    return this;
+  }
+
+  public title(title: string) {
+    this.titleValue = title;
     return this;
   }
 
