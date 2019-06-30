@@ -7,6 +7,8 @@ import { APP_MOCK_BACKEND } from './app.config';
 import { ListBuilder, ItemBuilder, TestRandom } from 'testing';
 import { ItemMapper } from 'testing/item-mapper';
 import { Result } from './domain';
+import { GetReservationFlagResponse } from './backend/get-reservation-flag-response';
+import { SetReservationFlagResponse } from './backend';
 
 describe('BackendService', () => {
   let httpClient: HttpClient;
@@ -61,8 +63,6 @@ describe('BackendService', () => {
   });
 
   [true, false].forEach(backendStatus => {
-
-
     it('should get reservation flag', () => {
       // Arrange
       const id = TestRandom.r(9000);
@@ -72,11 +72,44 @@ describe('BackendService', () => {
 
       // Assert
       const req = httpTestingController.expectOne(apiUrl('?action=status&id=' + id));
-      req.flush({data:{status: backendStatus}});
+      req.flush({ data: { status: backendStatus } } as GetReservationFlagResponse);
 
       expect(nextCallback).toHaveBeenCalledTimes(1);
       expect(complCallback).toHaveBeenCalledTimes(1);
       expect(nextCallback.calls.first().args[0]).toEqual(new Result(backendStatus));
+    });
+  });
+
+  [true, false].forEach(isSuccess => {
+
+    [
+      {
+        action: 'reserve',
+        desiredReservationFlag: true
+      },
+      {
+        action: 'clear',
+        desiredReservationFlag: false
+      }
+    ].forEach(testRunData => {
+      it('should set reservation flag to ' + testRunData.desiredReservationFlag + ' with server response ' + isSuccess, () => {
+        // Arrange
+        const id = TestRandom.r(9000);
+        const captchaAnswer = TestRandom.randomString(6, 'answer-');
+
+        // Act
+        service
+          .setReservationFlag(id, testRunData.desiredReservationFlag, captchaAnswer)
+          .subscribe(nextCallback, fail, complCallback);
+
+        // Assert
+        const req = httpTestingController.expectOne(apiUrl(`?action=${testRunData.action}&id=${id}&captcha=${captchaAnswer}`));
+        req.flush({ data: { success: isSuccess, message: 'Server' } } as SetReservationFlagResponse);
+
+        expect(nextCallback).toHaveBeenCalledTimes(1);
+        expect(complCallback).toHaveBeenCalledTimes(1);
+        expect(nextCallback.calls.first().args[0]).toEqual(new Result('Server', isSuccess));
+      });
     });
   });
 });
