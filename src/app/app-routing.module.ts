@@ -16,6 +16,7 @@ const routes: Routes = [
   { path: 'items/:id', component: ItemViewComponent },
   { path: 'items/:id/edit', component: ItemEditComponent },
   { path: 'items/:id/delete', component: ItemDeleteComponent },
+  { path: '404', component: PageNotFoundComponent },
 
   { path: '', redirectTo: '/categories', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }

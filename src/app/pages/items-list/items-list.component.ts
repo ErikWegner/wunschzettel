@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { DomainService } from '../../domain.service';
 import { Category, Item, Result } from '../../domain';
@@ -16,6 +16,7 @@ export class ItemsListComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private service: DomainService,
   ) { }
 
@@ -24,6 +25,9 @@ export class ItemsListComponent implements OnInit {
     const category = new Category(categoryName);
     this.service.getItemsByCategory(category).subscribe({
       next: (result) => {
+        if (!result.data || result.data.length === 0) {
+          this.router.navigate(['/404'], { skipLocationChange: true });
+        }
         this.items = result.data;
       },
       error: (e) => { },

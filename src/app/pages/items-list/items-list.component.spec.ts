@@ -15,6 +15,7 @@ import { DomainService } from '../../domain.service';
 import { Result, Category } from '../../domain';
 import { By } from '@angular/platform-browser';
 import { CustomMaterialModule } from '../../custom-material/custom-material.module';
+import { Router, NavigationExtras } from '@angular/router';
 
 describe('ItemsListComponent', () => {
   let component: ItemsListComponent;
@@ -27,6 +28,12 @@ describe('ItemsListComponent', () => {
       'DomainService',
       [
         'getItemsByCategory'
+      ]
+    );
+    const routerSpy = jasmine.createSpyObj(
+      'Router',
+      [
+        'navigate'
       ]
     );
     initTestScheduler();
@@ -42,7 +49,8 @@ describe('ItemsListComponent', () => {
       ],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRoute },
-        { provide: DomainService, useValue: domainService }
+        { provide: DomainService, useValue: domainService },
+        { provide: Router, useValue: routerSpy },
       ]
     })
       .compileComponents();
@@ -109,5 +117,23 @@ describe('ItemsListComponent', () => {
     const routerLinks = linkDes.map(de => de.injector.get(RouterLinkDirectiveStub));
     expect(routerLinks.length).toBe(items.length);
     expect(routerLinks.map(r => r.linkParams)).toEqual(items.map(item => ['/items', item.id]));
+  });
+
+  it('should show 404 when category does not exist', () => {
+    // Arrange
+    domainServiceStub.getItemsByCategory.and.returnValue(
+      cold('--x|', { x: new Result(null) })
+    );
+    activatedRoute.setParamMap({ category: 'not-existing' });
+    const router = TestBed.get(Router) as jasmine.SpyObj<Router>;
+
+    // Act
+    fixture.detectChanges();
+    getTestScheduler().flush(); // flush the observables
+    fixture.detectChanges();
+
+    // Assert
+    expect(router.navigate).toHaveBeenCalledTimes(1);
+    expect(router.navigate.calls.mostRecent().args[0]).toEqual(['/404'], { skipLocationChange: true } as NavigationExtras);
   });
 });
