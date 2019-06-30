@@ -15,6 +15,7 @@ export class ItemViewComponent implements OnInit {
 
   isLoading = true;
   item: Item;
+  isReserved = false;
   revealStatus = false;
   busy = false;
 
@@ -46,7 +47,7 @@ export class ItemViewComponent implements OnInit {
     this.busy = true;
     this.service.getReservationFlag(this.item.id).subscribe({
       next: (result) => {
-        this.item.isReserved = result.data;
+        this.isReserved = result.data;
       },
       error: (e) => { },
       complete: () => {
@@ -61,7 +62,8 @@ export class ItemViewComponent implements OnInit {
       EditReservationDialogComponent,
       {
         data: {
-          item: this.item
+          item: this.item,
+          isReserved: this.isReserved,
         }
       });
     dlg.afterClosed().subscribe(() => {

@@ -5,5 +5,4 @@ export class Item {
   public imagesrc: string;
   public buyurl: string;
   public description: string;
-  public isReserved: boolean;
 }

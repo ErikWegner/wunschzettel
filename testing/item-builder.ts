@@ -11,10 +11,8 @@ export class ItemBuilder {
   private descriptionValue = ListBuilder.with(
     () => TestRandom.randomString(TestRandom.r(12, 3))
   ).items(TestRandom.r(400)).build().join(' ');
-  private isReservedValue = false;
 
   private constructor() {
-    this.isReservedValue = (this.idValue % 2) === 0;
     if (this.idValue % 2) {
       this.imagesrcValue = '';
     }
@@ -36,7 +34,6 @@ export class ItemBuilder {
     instance.categoryValue = item.category;
     instance.imagesrcValue = item.imagesrc;
     instance.buyurlValue = item.buyurl;
-    instance.isReservedValue = item.isReserved;
     return instance;
   }
 
@@ -55,11 +52,6 @@ export class ItemBuilder {
     return this;
   }
 
-  public reservedStatus(status: boolean) {
-    this.isReservedValue = status;
-    return this;
-  }
-
   public build() {
     const i = new Item();
 
@@ -69,7 +61,6 @@ export class ItemBuilder {
     i.imagesrc = this.imagesrcValue;
     i.buyurl = this.buyurlValue;
     i.description = this.descriptionValue;
-    i.isReserved = this.isReservedValue;
 
     return i;
   }

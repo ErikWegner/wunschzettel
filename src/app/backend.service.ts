@@ -93,7 +93,6 @@ export class BackendService {
     item.imagesrc = serverItem.ImgageUrl;
     item.buyurl = serverItem.BuyUrl;
     item.description = serverItem.Description;
-    item.isReserved = false;
 
     return item;
   }

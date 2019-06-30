@@ -7,6 +7,7 @@ import { CaptchaState } from '../captcha-state';
 
 export interface EditReservationDialogData {
   item: Item;
+  isReserved: boolean;
 }
 
 @Component({
@@ -29,7 +30,7 @@ export class EditReservationDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: EditReservationDialogData,
     public service: DomainService,
   ) {
-    this.titleAndButtonText = data.item.isReserved ? 'Reservierung löschen' : 'Reservieren';
+    this.titleAndButtonText = data.isReserved ? 'Reservierung löschen' : 'Reservieren';
   }
 
   ngOnInit() {
@@ -55,7 +56,7 @@ export class EditReservationDialogComponent implements OnInit {
     this.dlgState = CaptchaState.Submitting;
     this.service.setReservationFlag(
       this.data.item.id,
-      !this.data.item.isReserved,
+      !this.data.isReserved,
       new CaptchaResponse(this.captchaResponse.value)).subscribe({
         next: (result) => {
           this.dlgState = result.success ? CaptchaState.Success : CaptchaState.Error;

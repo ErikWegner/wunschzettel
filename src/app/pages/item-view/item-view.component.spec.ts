@@ -20,6 +20,8 @@ describe('ItemViewComponent', () => {
   let domainServiceStub: jasmine.SpyObj<DomainService>;
   let matDialogStub: jasmine.SpyObj<MatDialog>;
   let afterClosed$: Subject<void>;
+  let isReservedValue = false;
+
   beforeEach(async(() => {
     const domainService = jasmine.createSpyObj(
       'DomainService',
@@ -98,7 +100,7 @@ describe('ItemViewComponent', () => {
     );
     domainServiceStub.getReservationFlag.and.callFake((idparam) =>
       (idparam === id
-        ? cold('--x|', { x: new Result(item.isReserved) })
+        ? cold('--x|', { x: new Result(isReservedValue) })
         : cold('--#', new Error('Item not found')))
     );
     return { id, item };
@@ -202,7 +204,7 @@ describe('ItemViewComponent', () => {
     it(testRunData.testName, () => {
       // Arrange
       initItemView();
-      fixture.componentInstance.item.isReserved = testRunData.isReservedValue;
+      isReservedValue = testRunData.isReservedValue;
       const preClickCount = fixture.nativeElement.querySelectorAll('mat-card-actions button').length;
 
       // Act
@@ -228,7 +230,7 @@ describe('ItemViewComponent', () => {
       it(testRunData2.testName, () => {
         // Arrange
         const viewData = initItemView();
-        fixture.componentInstance.item.isReserved = testRunData2.isReservedValue;
+        fixture.componentInstance.isReserved = testRunData2.isReservedValue;
         revealStatus();
         const button: HTMLButtonElement = fixture.nativeElement.querySelectorAll('mat-card-actions button')[1];
 

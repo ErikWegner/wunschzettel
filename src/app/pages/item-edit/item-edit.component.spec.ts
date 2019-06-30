@@ -263,7 +263,6 @@ describe('ItemEditComponent', () => {
       // Assert
       expect(domainServiceStub.setItem).toHaveBeenCalledTimes(1);
       const arg = domainServiceStub.setItem.calls.mostRecent().args[0];
-      newItem.isReserved = arg.isReserved = false; // property is ignored
       expect(arg).toEqual(newItem);
       const postSubmitState = fixture.componentInstance.formState;
       expect(preSubmitState).toBe(CaptchaState.WaitingForUserInput, 'preSubmitState');

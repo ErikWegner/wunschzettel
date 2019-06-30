@@ -19,6 +19,8 @@ export class BackendServiceMock {
     ItemBuilder.with().category('Medien').build(),
   ]
 
+  private mockReservations: { [itemId: number]: boolean } = {};
+
   constructor() {
     if (isDevMode() === false) {
       throw new Error('Mock must not be used in production');
@@ -37,7 +39,7 @@ export class BackendServiceMock {
   public getReservationFlag(id: number) {
     return new Observable<Result<boolean>>((observer) => {
       window.setTimeout(() => {
-        observer.next(new Result(this.mockdata.find(i => i.id === id).isReserved));
+        observer.next(new Result(this.mockReservations[id] === true));
         observer.complete();
       }, 1500);
     });
@@ -45,7 +47,7 @@ export class BackendServiceMock {
 
   public setReservationFlag(id: number, flag: boolean, captchaAnswer: string) {
     return this.processCaptcha(captchaAnswer, () => {
-      this.mockdata.find(i => i.id === id).isReserved = flag;
+      this.mockReservations[id] = flag;
       return flag ? 'gesetzt' : 'gelöscht';
     });
   }

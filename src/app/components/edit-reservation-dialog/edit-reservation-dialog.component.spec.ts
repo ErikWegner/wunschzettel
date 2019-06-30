@@ -30,7 +30,8 @@ describe('EditReservationDialogComponent', () => {
       ]
     );
     dialogData = {
-      item: ItemBuilder.default()
+      item: ItemBuilder.default(),
+      isReserved: false,
     };
     challengeText = TestRandom.randomString(6, 'challenge-');
     initTestScheduler();
@@ -96,8 +97,8 @@ describe('EditReservationDialogComponent', () => {
   }].forEach(testRunData => {
     it('should show title when reserved is ' + testRunData.isReservedValue, () => {
       // Arrange
-      const item = ItemBuilder.with().reservedStatus(testRunData.isReservedValue).build();
-      dialogData = { item };
+      const item = ItemBuilder.default();
+      dialogData = { item, isReserved: testRunData.isReservedValue };
 
       // Act
       createComponent();
@@ -143,7 +144,7 @@ describe('EditReservationDialogComponent', () => {
     ].forEach(testRunData1 => {
       it('should send request: ' + testRunData1.testname, () => {
         // Arrange
-        dialogData.item.isReserved = isReserved;
+        dialogData.isReserved = isReserved;
         const captchaInput = TestRandom.randomString(8);
         createComponent();
         getTestScheduler().flush(); // flush the observables
@@ -167,7 +168,7 @@ describe('EditReservationDialogComponent', () => {
 
     it('should show a button to try again on error', () => {
       // Arrange
-      dialogData.item.isReserved = isReserved;
+      dialogData.isReserved = isReserved;
       const captchaInput = TestRandom.randomString(8);
       createComponent();
       getTestScheduler().flush(); // flush the observables
