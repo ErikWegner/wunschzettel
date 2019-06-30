@@ -17,7 +17,7 @@ export class BackendServiceMock {
     ItemBuilder.with().category('Spiel').build(),
     ItemBuilder.with().category('Technik').build(),
     ItemBuilder.with().category('Medien').build(),
-  ]
+  ];
 
   private mockReservations: { [itemId: number]: boolean } = {};
 

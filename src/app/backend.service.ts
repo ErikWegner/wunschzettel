@@ -30,7 +30,7 @@ export class BackendService {
   public getReservationFlag(id: number) {
     return this.http.get<GetReservationFlagResponse>(this.apiUrl('status', { id })).pipe(
       map(r => new Result(r.data.status))
-    )
+    );
   }
 
   public setReservationFlag(id: number, flag: boolean, captchaAnswer: string) {

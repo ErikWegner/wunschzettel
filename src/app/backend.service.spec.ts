@@ -9,6 +9,7 @@ import { ItemMapper } from 'testing/item-mapper';
 import { Result } from './domain';
 import { GetReservationFlagResponse } from './backend/get-reservation-flag-response';
 import { SetReservationFlagResponse } from './backend';
+import { Type } from '@angular/core';
 
 describe('BackendService', () => {
   let httpClient: HttpClient;
@@ -25,7 +26,8 @@ describe('BackendService', () => {
 
     // Inject the http service and test controller for each test
     httpClient = TestBed.get(HttpClient);
-    httpTestingController = TestBed.get(HttpTestingController);
+    // see https://github.com/angular/angular/issues/29905
+    httpTestingController = TestBed.get(HttpTestingController as Type<HttpTestingController>);
 
     service = TestBed.get(BackendService);
 
