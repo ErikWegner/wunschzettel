@@ -12,6 +12,7 @@ const routes: Routes = [
   { path: 'about', component: AboutComponent },
   { path: 'categories', component: CategoriesListComponent },
   { path: 'categories/:category', component: ItemsListComponent },
+  { path: 'items/add', component: ItemEditComponent },
   { path: 'items/:id', component: ItemViewComponent },
   { path: 'items/:id/edit', component: ItemEditComponent },
   { path: 'items/:id/delete', component: ItemDeleteComponent },

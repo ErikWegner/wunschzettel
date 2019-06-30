@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Result, Item } from './domain';
+import { Result, Item, AddItemResponse } from './domain';
 import { ItemBuilder } from 'testing';
 import { CaptchaChallenge } from './domain/captcha-challenge';
 
@@ -59,12 +59,42 @@ export class BackendService {
     });
   }
 
+  public addItem(item: Item, captchaAnswer: string) {
+    return new Observable<Result<AddItemResponse>>((observer) => {
+
+      window.setTimeout(() => {
+        if (captchaAnswer === 'FAIL') {
+          observer.error('No response');
+          return;
+        }
+        let response: AddItemResponse;
+        let success = false;
+        if (captchaAnswer === 'OK') {
+          const nextId = this.mockdata.map(i => i.id).reduce((prev, cur) => Math.max(prev, cur)) + 1;
+          item.id = nextId;
+          this.mockdata.push(item);
+          response = {
+            message: 'Angelegt',
+            id: nextId
+          };
+          success = true;
+        } else {
+          response = {
+            message: 'Captcha falsch'
+          };
+        }
+        observer.next(new Result(response, success));
+        observer.complete();
+      }, 1500);
+    });
+  }
+
   public deleteItem(id: number, captchaAnswer: string) {
     return this.processCaptcha(captchaAnswer, () => {
       const index = this.mockdata.findIndex(i => i.id === id);
       this.mockdata.splice(index, 1);
 
-      return 'Gelöscht'
+      return 'Gelöscht';
     });
   }
 

@@ -4,13 +4,14 @@ import { cold, getTestScheduler, initTestScheduler, resetTestScheduler } from 'j
 import { ItemEditComponent } from './item-edit.component';
 import { ActivatedRouteStub, RouterLinkDirectiveStub, ActivatedRoute, TestRandom, ItemBuilder, TestAppLoaderComponent } from 'testing';
 import { DomainService } from '../../domain.service';
-import { Result, Item } from '../../domain';
+import { Result, Item, AddItemResponse } from '../../domain';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CustomMaterialModule } from 'src/app/custom-material/custom-material.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CaptchaChallenge } from 'src/app/domain/captcha-challenge';
 import { CaptchaState } from 'src/app/components/captcha-state';
 import { By } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 describe('ItemEditComponent', () => {
   let component: ItemEditComponent;
@@ -24,9 +25,16 @@ describe('ItemEditComponent', () => {
     const domainService = jasmine.createSpyObj(
       'DomainService',
       [
+        'addItem',
         'getCaptchaChallenge',
         'getItem',
         'setItem',
+      ]
+    );
+    const routerSpy = jasmine.createSpyObj(
+      'Router',
+      [
+        'navigate'
       ]
     );
     challengeText = TestRandom.randomString(6, 'challenge-');
@@ -45,7 +53,8 @@ describe('ItemEditComponent', () => {
       ],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRoute },
-        { provide: DomainService, useValue: domainService }
+        { provide: DomainService, useValue: domainService },
+        { provide: Router, useValue: routerSpy },
       ]
     })
       .compileComponents();
@@ -292,5 +301,31 @@ describe('ItemEditComponent', () => {
     expect(postSubmitState).toBe(CaptchaState.WaitingForUserInput);
     expect(challenge1).not.toBe(challenge2);
     expect(challenge2.trim()).toBe(challengeText + ' *');
+  });
+
+  it('should redirect to view after succefully adding a new item', () => {
+    // Arrange
+    activatedRoute.setParamMap({ id: null });
+    fixture.detectChanges();
+    getTestScheduler().flush(); // flush the observables
+    fixture.detectChanges();
+    const router = TestBed.get(Router) as Router;
+    const newId = TestRandom.r(9000, 8000);
+    domainServiceStub.addItem.and.returnValue(
+      cold('--x|', {
+        x: new Result(
+          {
+            message: 'OK',
+            id: newId
+          } as AddItemResponse)
+      })
+    );
+
+    // Act
+    fixture.componentInstance.submitClick();
+    getTestScheduler().flush(); // flush the observables
+
+    // Assert
+    expect(router.navigate).toHaveBeenCalledWith(['/items', newId]);
   });
 });

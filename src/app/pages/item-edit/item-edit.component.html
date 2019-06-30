@@ -5,7 +5,7 @@
       <mat-toolbar>
         <span>Wunschzetteleintrag</span>
         <span class="flexspacer"></span>
-        <button mat-button color="warn" [routerLink]="['/items', id, 'delete']">Löschen</button>
+        <button mat-button color="warn" [routerLink]="['/items', id, 'delete']" *ngIf="id > 0">Löschen</button>
       </mat-toolbar>
     </mat-card-title>
     <mat-card-content>
@@ -43,7 +43,8 @@
         <button mat-raised-button color="primary" (click)="submitClick()"
           [disabled]="formState != formStateEnum.WaitingForUserInput || !itemForm.valid">Speichern</button>
         <span class="flexspacer"></span>
-        <a mat-button [routerLink]="['/items', id]">zurück</a>
+        <a mat-button [routerLink]="['/items', id]" *ngIf="id > 0">zurück</a>
+        <a mat-button routerLink="/" *ngIf="id == 0">zurück</a>
       </div>
     </mat-card-actions>
   </mat-card>

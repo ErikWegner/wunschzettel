@@ -32,11 +32,13 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 - Routen
 - - /
-- - /items/add
 - Views
 - - /
-- - /items/add
 - - 404 Not Found
+- - category not found
+- - item view not found
+- - item edit not found
+- - item delete not found
 - Backend
 - - GetItems
 - - GetReserved
@@ -44,5 +46,3 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 - - SetItem
 - - DeleteItem
 - - GetCaptchaChallenge
-- Domain
-- - AddItem

@@ -4,6 +4,7 @@ import { DomainService } from '../../domain.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { CaptchaState } from 'src/app/components/captcha-state';
 import { Item, CaptchaResponse } from 'src/app/domain';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-item-edit',
@@ -24,7 +25,7 @@ export class ItemEditComponent implements OnInit {
     imagesrc: [''],
     buyurl: [''],
     captchaResponse: ['', Validators.required],
-  })
+  });
 
   id: number;
   captchaChallengeText = 'Sicherheitsfrage';
@@ -33,22 +34,33 @@ export class ItemEditComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
+    private router: Router,
     private service: DomainService,
   ) { }
 
   ngOnInit() {
-    this.id = parseInt(this.route.snapshot.paramMap.get('id'), 10);
-    this.service.getItem(this.id).subscribe({
-      next: (result) => {
-        this.itemForm.patchValue(result.data);
-        this.hasData = true;
-        this.loadCaptcha();
-      },
-      error: (e) => { },
-      complete: () => {
-        this.isLoading = false;
-      }
-    });
+    const routingId = this.route.snapshot.paramMap.get('id');
+    if (routingId) {
+      // Edit an existing item
+      this.id = parseInt(routingId, 10);
+      this.service.getItem(this.id).subscribe({
+        next: (result) => {
+          this.itemForm.patchValue(result.data);
+          this.hasData = true;
+          this.loadCaptcha();
+        },
+        error: (e) => { },
+        complete: () => {
+          this.isLoading = false;
+        }
+      });
+    } else {
+      // Add a new item
+      this.id = 0;
+      this.hasData = true;
+      this.isLoading = false;
+      this.loadCaptcha();
+    }
   }
 
   submitClick() {
@@ -61,16 +73,34 @@ export class ItemEditComponent implements OnInit {
     item.imagesrc = formValue.imagesrc;
     item.buyurl = formValue.buyurl;
     item.description = formValue.description;
-    this.service.setItem(item, new CaptchaResponse(formValue.captchaResponse)).subscribe({
-      next: (result) => {
-        this.formState = result.success ? CaptchaState.Success : CaptchaState.Error;
-        this.resultText = result.data;
-      },
-      error: (e) => {
-        this.formState = CaptchaState.Fail;
-        this.resultText = 'Übertragungsfehler';
-      }
-    });
+    if (this.id === 0) {
+      // Add new item
+      this.service.addItem(item, new CaptchaResponse(formValue.captchaResponse)).subscribe({
+        next: (result) => {
+          this.formState = result.success ? CaptchaState.Success : CaptchaState.Error;
+          this.resultText = result.data.message;
+          if (result.success && result.data.id > 0) {
+            this.router.navigate(['/items', result.data.id]);
+          }
+        },
+        error: (e) => {
+          this.formState = CaptchaState.Fail;
+          this.resultText = 'Übertragungsfehler';
+        }
+      });
+    } else {
+      // Update existing item
+      this.service.setItem(item, new CaptchaResponse(formValue.captchaResponse)).subscribe({
+        next: (result) => {
+          this.formState = result.success ? CaptchaState.Success : CaptchaState.Error;
+          this.resultText = result.data;
+        },
+        error: (e) => {
+          this.formState = CaptchaState.Fail;
+          this.resultText = 'Übertragungsfehler';
+        }
+      });
+    }
   }
 
   loadCaptcha() {
