@@ -11,6 +11,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CaptchaChallenge } from 'src/app/domain/captcha-challenge';
 import { CaptchaState } from 'src/app/components/captcha-state';
 import { By } from '@angular/platform-browser';
+import { Router, NavigationExtras } from '@angular/router';
 
 describe('ItemDeleteComponent', () => {
   let component: ItemDeleteComponent;
@@ -29,6 +30,12 @@ describe('ItemDeleteComponent', () => {
         'getItem',
       ]
     );
+    const routerSpy = jasmine.createSpyObj(
+      'Router',
+      [
+        'navigate'
+      ]
+    );
     challengeText = TestRandom.randomString(6, 'challenge-');
     initTestScheduler();
     activatedRoute = new ActivatedRouteStub();
@@ -45,7 +52,8 @@ describe('ItemDeleteComponent', () => {
       ],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRoute },
-        { provide: DomainService, useValue: domainService }
+        { provide: DomainService, useValue: domainService },
+        { provide: Router, useValue: routerSpy },
       ]
     })
       .compileComponents();
@@ -218,5 +226,23 @@ describe('ItemDeleteComponent', () => {
     expect(postSubmitState).toBe(CaptchaState.WaitingForUserInput);
     expect(challenge1).not.toBe(challenge2);
     expect(challenge2.trim()).toBe(challengeText + ' *');
+  });
+
+  it('should show 404 when item does not exist', () => {
+    // Arrange
+    domainServiceStub.getItem.and.returnValue(
+      cold('--x|', { x: {} })
+    );
+    activatedRoute.setParamMap({ id: '99999' });
+    const router = TestBed.get(Router) as jasmine.SpyObj<Router>;
+
+    // Act
+    fixture.detectChanges();
+    getTestScheduler().flush(); // flush the observables
+    fixture.detectChanges();
+
+    // Assert
+    expect(router.navigate).toHaveBeenCalledTimes(1);
+    expect(router.navigate.calls.mostRecent().args[0]).toEqual(['/404'], { skipLocationChange: true } as NavigationExtras);
   });
 });

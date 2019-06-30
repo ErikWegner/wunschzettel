@@ -11,6 +11,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EditReservationDialogComponent } from 'src/app/components/edit-reservation-dialog/edit-reservation-dialog.component';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
+import { Router, NavigationExtras } from '@angular/router';
 
 describe('ItemViewComponent', () => {
   let component: ItemViewComponent;
@@ -34,6 +35,12 @@ describe('ItemViewComponent', () => {
         'open'
       ]
     );
+    const routerSpy = jasmine.createSpyObj(
+      'Router',
+      [
+        'navigate'
+      ]
+    );
     initTestScheduler();
     activatedRoute = new ActivatedRouteStub();
     TestBed.configureTestingModule({
@@ -50,6 +57,7 @@ describe('ItemViewComponent', () => {
         { provide: ActivatedRoute, useValue: activatedRoute },
         { provide: DomainService, useValue: domainService },
         { provide: MatDialog, useValue: matDialog },
+        { provide: Router, useValue: routerSpy },
       ]
     })
       .compileComponents();
@@ -238,21 +246,39 @@ describe('ItemViewComponent', () => {
   });
 
   it('should refresh reservation status on dialog close event', () => {
-        // Arrange
-        const viewData = initItemView();
-        revealStatus();
-        const button: HTMLButtonElement = fixture.nativeElement.querySelectorAll('mat-card-actions button')[1];
-        button.click();
-        fixture.detectChanges();
-        const preCloseCallCount = domainServiceStub.getReservationFlag.calls.count();
+    // Arrange
+    const viewData = initItemView();
+    revealStatus();
+    const button: HTMLButtonElement = fixture.nativeElement.querySelectorAll('mat-card-actions button')[1];
+    button.click();
+    fixture.detectChanges();
+    const preCloseCallCount = domainServiceStub.getReservationFlag.calls.count();
 
-        // Act
-        afterClosed$.next();
-        afterClosed$.complete();
+    // Act
+    afterClosed$.next();
+    afterClosed$.complete();
 
-        // Assert
-        expect(preCloseCallCount).toBe(1);
-        const postCloseCallCount = domainServiceStub.getReservationFlag.calls.count();
-        expect(postCloseCallCount).toBe(2);
+    // Assert
+    expect(preCloseCallCount).toBe(1);
+    const postCloseCallCount = domainServiceStub.getReservationFlag.calls.count();
+    expect(postCloseCallCount).toBe(2);
+  });
+
+  it('should show 404 when item does not exist', () => {
+    // Arrange
+    domainServiceStub.getItem.and.returnValue(
+      cold('--x|', { x: {} })
+    );
+    activatedRoute.setParamMap({ id: '99999' });
+    const router = TestBed.get(Router) as jasmine.SpyObj<Router>;
+
+    // Act
+    fixture.detectChanges();
+    getTestScheduler().flush(); // flush the observables
+    fixture.detectChanges();
+
+    // Assert
+    expect(router.navigate).toHaveBeenCalledTimes(1);
+    expect(router.navigate.calls.mostRecent().args[0]).toEqual(['/404'], { skipLocationChange: true } as NavigationExtras);
   });
 });

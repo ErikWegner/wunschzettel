@@ -11,7 +11,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CaptchaChallenge } from 'src/app/domain/captcha-challenge';
 import { CaptchaState } from 'src/app/components/captcha-state';
 import { By } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 
 describe('ItemEditComponent', () => {
   let component: ItemEditComponent;
@@ -327,5 +327,23 @@ describe('ItemEditComponent', () => {
 
     // Assert
     expect(router.navigate).toHaveBeenCalledWith(['/items', newId]);
+  });
+
+  it('should show 404 when item does not exist', () => {
+    // Arrange
+    domainServiceStub.getItem.and.returnValue(
+      cold('--x|', { x: {} })
+    );
+    activatedRoute.setParamMap({ id: '99999' });
+    const router = TestBed.get(Router) as jasmine.SpyObj<Router>;
+
+    // Act
+    fixture.detectChanges();
+    getTestScheduler().flush(); // flush the observables
+    fixture.detectChanges();
+
+    // Assert
+    expect(router.navigate).toHaveBeenCalledTimes(1);
+    expect(router.navigate.calls.mostRecent().args[0]).toEqual(['/404'], { skipLocationChange: true } as NavigationExtras);
   });
 });

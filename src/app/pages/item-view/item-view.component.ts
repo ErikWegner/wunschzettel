@@ -4,6 +4,7 @@ import { ActivatedRoute } from 'testing';
 import { DomainService } from '../../domain.service';
 import { EditReservationDialogComponent } from 'src/app/components/edit-reservation-dialog/edit-reservation-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-item-view',
@@ -19,6 +20,7 @@ export class ItemViewComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private service: DomainService,
     public dialog: MatDialog,
   ) { }
@@ -27,7 +29,11 @@ export class ItemViewComponent implements OnInit {
     const id = parseInt(this.route.snapshot.paramMap.get('id'), 10);
     this.service.getItem(id).subscribe({
       next: (result) => {
-        this.item = result.data;
+        if (result.data) {
+          this.item = result.data;
+        } else {
+          this.router.navigate(['/404'], { skipLocationChange: true });
+        }
       },
       error: (e) => { },
       complete: () => {
@@ -59,7 +65,7 @@ export class ItemViewComponent implements OnInit {
         }
       });
     dlg.afterClosed().subscribe(() => {
-        this.updateAndRevealStatus();
+      this.updateAndRevealStatus();
     });
   }
 }

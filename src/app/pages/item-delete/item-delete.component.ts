@@ -4,6 +4,7 @@ import { ActivatedRoute } from 'testing';
 import { DomainService } from '../../domain.service';
 import { CaptchaState } from 'src/app/components/captcha-state';
 import { FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-item-delete',
@@ -25,6 +26,7 @@ export class ItemDeleteComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private service: DomainService,
   ) { }
 
@@ -32,8 +34,12 @@ export class ItemDeleteComponent implements OnInit {
     const id = parseInt(this.route.snapshot.paramMap.get('id'), 10);
     this.service.getItem(id).subscribe({
       next: (result) => {
-        this.item = result.data;
-        this.loadCaptcha();
+        if (result.data) {
+          this.item = result.data;
+          this.loadCaptcha();
+        } else {
+          this.router.navigate(['/404'], { skipLocationChange: true });
+        }
       },
       error: (e) => { },
       complete: () => {

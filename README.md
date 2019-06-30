@@ -30,13 +30,6 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ## TODO
 
-- Routen
-- - /
-- Views
-- - /
-- - item view not found
-- - item edit not found
-- - item delete not found
 - Backend
 - - GetItems
 - - GetReserved

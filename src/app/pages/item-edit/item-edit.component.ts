@@ -45,9 +45,13 @@ export class ItemEditComponent implements OnInit {
       this.id = parseInt(routingId, 10);
       this.service.getItem(this.id).subscribe({
         next: (result) => {
-          this.itemForm.patchValue(result.data);
-          this.hasData = true;
-          this.loadCaptcha();
+          if (result.data) {
+            this.itemForm.patchValue(result.data);
+            this.hasData = true;
+            this.loadCaptcha();
+          } else {
+            this.router.navigate(['/404'], { skipLocationChange: true });
+          }
         },
         error: (e) => { },
         complete: () => {
