@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Item } from '../../domain';
+import { Item, CaptchaResponse } from '../../domain';
 import { ActivatedRoute } from 'testing';
 import { DomainService } from '../../domain.service';
+import { CaptchaState } from 'src/app/components/captcha-state';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-item-delete',
@@ -9,9 +11,17 @@ import { DomainService } from '../../domain.service';
   styleUrls: ['./item-delete.component.css']
 })
 export class ItemDeleteComponent implements OnInit {
+  formStateEnum = CaptchaState;
+  formState = CaptchaState.Loading;
+
+  captchaResponse = new FormControl({ disabled: true, value: '' }, [
+    Validators.required
+  ]);
 
   isLoading = true;
   item: Item;
+  captchaChallengeText = 'Sicherheitsfrage';
+  resultText = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -23,6 +33,7 @@ export class ItemDeleteComponent implements OnInit {
     this.service.getItem(id).subscribe({
       next: (result) => {
         this.item = result.data;
+        this.loadCaptcha();
       },
       error: (e) => { },
       complete: () => {
@@ -31,4 +42,38 @@ export class ItemDeleteComponent implements OnInit {
     });
   }
 
+  loadCaptcha() {
+    this.formState = CaptchaState.Loading;
+    this.captchaResponse.disable();
+    this.service.getCaptchaChallenge().subscribe({
+      next: (result) => {
+        this.captchaChallengeText = result.data.text;
+        this.captchaResponse.enable();
+        this.captchaResponse.reset();
+      },
+      error: (e) => {
+        this.formState = CaptchaState.Fail;
+      },
+      complete: () => {
+        this.formState = CaptchaState.WaitingForUserInput;
+      }
+    });
+  }
+
+  submitClick() {
+    this.formState = CaptchaState.Submitting;
+    this.captchaResponse.disable();
+    this.service.deteleItem(
+      this.item.id,
+      new CaptchaResponse(this.captchaResponse.value)).subscribe({
+        next: (result) => {
+          this.formState = result.success ? CaptchaState.Success : CaptchaState.Error;
+          this.resultText = result.data;
+        },
+        error: (e) => {
+          this.formState = CaptchaState.Fail;
+          this.resultText = 'Übertragungsfehler';
+        }
+      });
+  }
 }

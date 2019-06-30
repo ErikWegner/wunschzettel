@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Item, CaptchaResponse } from 'src/app/domain';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { DomainService } from 'src/app/domain.service';
 import { CaptchaState } from '../captcha-state';
 
@@ -19,7 +19,9 @@ export class EditReservationDialogComponent implements OnInit {
   dlgState = CaptchaState.Loading;
   titleAndButtonText = '';
   captchaChallengeText = 'Sicherheitsfrage';
-  captchaResponse = new FormControl('');
+  captchaResponse = new FormControl('', [
+    Validators.required
+  ]);
   resultText = '';
 
   constructor(

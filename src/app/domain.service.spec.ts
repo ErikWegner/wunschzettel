@@ -17,6 +17,7 @@ describe('DomainService', () => {
     const backend = jasmine.createSpyObj(
       'BackendService',
       [
+        'deleteItem',
         'getItems',
         'getReservationFlag',
         'setReservationFlag',
@@ -224,22 +225,57 @@ describe('DomainService', () => {
     expect(completeCallback).toHaveBeenCalledTimes(1);
   });
 
+  it('should send delete request to backend', () => {
+    // Arrange
+    const item = ItemBuilder.default();
+    const answer = TestRandom.randomString(6, 'answer-');
+    const captchaResponse = new CaptchaResponse(answer);
+    fakeBackend.deleteItem.and.returnValue(cold('--x|', { x: new Result('OK') }));
+    const service: DomainService = TestBed.get(DomainService);
+
+    // Act
+    service.deteleItem(item.id, captchaResponse).subscribe(
+      nextCallback,
+      fail,
+      () => {
+        completeCallback();
+      }
+    );
+    getTestScheduler().flush(); // flush the observables
+
+    // Assert
+    expect(fakeBackend.deleteItem).toHaveBeenCalledWith(item.id, answer);
+    expect(nextCallback).toHaveBeenCalledTimes(1);
+    expect(completeCallback).toHaveBeenCalledTimes(1);
+  });
+
   [
     {
       testname: 'should update',
       backendSuccess: true,
       shouldBeEqual: true,
-      backendQueryCound: 2,
+      backendQueryCount: 2,
     },
     {
       testname: 'should not update',
       backendSuccess: false,
       shouldBeEqual: false,
-      backendQueryCound: 1,
+      backendQueryCount: 1,
     }
   ].forEach(testRunData1 => {
     function setupSetItem() {
       fakeBackend.setItem.and.returnValue(
+        cold(
+          '--x|',
+          {
+            x: testRunData1.backendSuccess
+              ? new Result('Success')
+              : new Result('Backend refused', false)
+          }));
+    }
+
+    function setupDeleteItem() {
+      fakeBackend.deleteItem.and.returnValue(
         cold(
           '--x|',
           {
@@ -285,7 +321,7 @@ describe('DomainService', () => {
       getTestScheduler().flush(); // flush the observables
 
       // Assert
-      expect(fakeBackend.getItems).toHaveBeenCalledTimes(testRunData1.backendQueryCound);
+      expect(fakeBackend.getItems).toHaveBeenCalledTimes(testRunData1.backendQueryCount);
       expect(nextCallback).toHaveBeenCalledTimes(1);
       expect(completeCallback).toHaveBeenCalledTimes(1);
       const resultItem: Result<Item> = nextCallback.calls.first().args[0];
@@ -330,7 +366,7 @@ describe('DomainService', () => {
       getTestScheduler().flush(); // flush the observables
 
       // Assert
-      expect(fakeBackend.getItems).toHaveBeenCalledTimes(testRunData1.backendQueryCound);
+      expect(fakeBackend.getItems).toHaveBeenCalledTimes(testRunData1.backendQueryCount);
       expect(nextCallback).toHaveBeenCalledTimes(1);
       expect(completeCallback).toHaveBeenCalledTimes(1);
       const resultCategories: Result<Category[]> = nextCallback.calls.first().args[0];
@@ -340,5 +376,94 @@ describe('DomainService', () => {
         expect(resultCategories.data.map(c => c.value)).not.toContain(newItem.category);
       }
     });
+
+    it(testRunData1.testname + ' cache item on delete', () => {
+      // Arrange
+      const items = ListBuilder.with(() => ItemBuilder.default()).items(TestRandom.r(40, 20)).build();
+      const index = Math.floor(items.length * 0.8);
+      const specialItem = items[index];
+      const id = specialItem.id;
+      setupGetItems(items);
+      setupDeleteItem();
+      const service: DomainService = TestBed.get(DomainService);
+
+      // Act
+      // Load items to cache
+      service.getItem(id).subscribe();
+      getTestScheduler().flush(); // flush the observables
+      // Update one item
+      service.deteleItem(id, new CaptchaResponse('')).subscribe();
+      getTestScheduler().flush(); // flush the observables
+      // Update item in backend
+      items.splice(index, 1);
+      setupGetItems(items);
+      // Reload item
+      service.getItem(id).subscribe(
+        nextCallback,
+        fail,
+        () => {
+          completeCallback();
+        }
+      );
+      getTestScheduler().flush(); // flush the observables
+
+      // Assert
+      expect(fakeBackend.getItems).toHaveBeenCalledTimes(testRunData1.backendQueryCount);
+      expect(nextCallback).toHaveBeenCalledTimes(1);
+      expect(completeCallback).toHaveBeenCalledTimes(1);
+      const resultItem: Result<Item> = nextCallback.calls.first().args[0];
+      if (testRunData1.backendSuccess) {
+        expect(resultItem.data).toBeUndefined();
+      } else {
+        expect(resultItem.data).toEqual(specialItem);
+      }
+    });
+
+    it(testRunData1.testname + ' cache item for category on delete', () => {
+      // Arrange
+      const categories = ListBuilder.with(() => TestRandom.randomString(8)).items(3).build();
+      const items = ListBuilder.with(
+        (i) => ItemBuilder.with().category(categories[i % categories.length]).build()
+      ).items(TestRandom.r(40, 20)).build();
+      const index = Math.floor(items.length * 0.8);
+      const specialItem = items[index];
+      const id = specialItem.id;
+      specialItem.category = 'category-of-deleted-item';
+      setupGetItems(items);
+      setupDeleteItem();
+      const service: DomainService = TestBed.get(DomainService);
+
+      // Act
+      // Load items to cache
+      service.getCategories().subscribe();
+      getTestScheduler().flush(); // flush the observables
+      // Update one item
+      service.deteleItem(id, new CaptchaResponse('')).subscribe();
+      getTestScheduler().flush(); // flush the observables
+      // Update item in backend
+      items.splice(index, 1);
+      setupGetItems(items);
+      // Reload item
+      service.getCategories().subscribe(
+        nextCallback,
+        fail,
+        () => {
+          completeCallback();
+        }
+      );
+      getTestScheduler().flush(); // flush the observables
+
+      // Assert
+      expect(fakeBackend.getItems).toHaveBeenCalledTimes(testRunData1.backendQueryCount);
+      expect(nextCallback).toHaveBeenCalledTimes(1);
+      expect(completeCallback).toHaveBeenCalledTimes(1);
+      const resultCategories: Result<Category[]> = nextCallback.calls.first().args[0];
+      if (testRunData1.backendSuccess) {
+        expect(resultCategories.data.map(c => c.value)).not.toContain(specialItem.category);
+      } else {
+        expect(resultCategories.data.map(c => c.value)).toContain(specialItem.category);
+      }
+    });
+
   });
 });

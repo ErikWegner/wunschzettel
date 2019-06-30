@@ -59,6 +59,15 @@ export class BackendService {
     });
   }
 
+  public deleteItem(id: number, captchaAnswer: string) {
+    return this.processCaptcha(captchaAnswer, () => {
+      const index = this.mockdata.findIndex(i => i.id === id);
+      this.mockdata.splice(index, 1);
+
+      return 'Gelöscht'
+    });
+  }
+
   public getCaptchaChallenge() {
     return new Observable<Result<CaptchaChallenge>>((observer) => {
       window.setTimeout(() => {

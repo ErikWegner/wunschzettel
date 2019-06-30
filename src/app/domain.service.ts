@@ -52,6 +52,16 @@ export class DomainService {
     );
   }
 
+  public deteleItem(id: number, captaResponse: CaptchaResponse) {
+    return this.backend.deleteItem(id, captaResponse.answer).pipe(
+      tap(result => {
+        if (result.success) {
+          this.items = null;
+        }
+      })
+    );
+  }
+
   private filterById(items: Result<Item[]>, id: number) {
     const item = items.data.find(i => i.id === id);
     return new Result(item);

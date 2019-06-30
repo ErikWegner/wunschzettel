@@ -1,3 +1,36 @@
 <div>
-  <h1 *ngIf="item">{{ item.title }}</h1>
+  <app-loader *ngIf="isLoading"></app-loader>
+  <mat-card class="item-form" *ngIf="item">
+    <mat-card-title>
+      <mat-toolbar color="warn">
+        <span>Eintrag löschen</span>
+      </mat-toolbar>
+    </mat-card-title>
+    <mat-card-content>
+      <h1>{{ item.title }}</h1>
+      <p>wird gelöscht.</p>
+      <span *ngIf="formState == formStateEnum.Loading" class="busytext">Wird geladen…</span>
+      <mat-form-field class="item-form-fw">
+        <input matInput placeholder="{{ captchaChallengeText }}" [formControl]="captchaResponse" required>
+      </mat-form-field>
+      <div *ngIf="formState == formStateEnum.Success" class="serviceok">OK: {{ resultText }}</div>
+      <div *ngIf="formState == formStateEnum.Error" class="serviceerror">
+        Achtung: {{ resultText }}<br>
+      </div>
+      <div *ngIf="formState == formStateEnum.Fail" class="servicefail">Fehler: {{ resultText }}</div>
+      <button *ngIf="formState == formStateEnum.Error || formState == formStateEnum.Fail" mat-stroked-button
+        color="primary" (click)="loadCaptcha()">Neuer Versuch</button>
+      <div *ngIf="formState == formStateEnum.Submitting" class="busytext">Wird übertragen…</div>
+    </mat-card-content>
+    <mat-card-actions *ngIf="item">
+      <div class="flex-container">
+        <button mat-raised-button color="warn" (click)="submitClick()"
+          [disabled]="formState != formStateEnum.WaitingForUserInput || !captchaResponse.valid">Löschen</button>
+        <span class="flexspacer"></span>
+        <a mat-button [routerLink]="['/items', item.id]"
+          *ngIf="formState == formStateEnum.WaitingForUserInput || formState == formStateEnum.Error || formState == formStateEnum.Fail">zurück</a>
+        <a mat-button [routerLink]="['/']" *ngIf="formState == formStateEnum.Success">Startseite</a>
+      </div>
+    </mat-card-actions>
+  </mat-card>
 </div>

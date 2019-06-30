@@ -35,7 +35,6 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 - - /items/add
 - Views
 - - /
-- - /items/:id/delete
 - - /items/add
 - - 404 Not Found
 - Backend
@@ -47,4 +46,3 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 - - GetCaptchaChallenge
 - Domain
 - - AddItem
-- - DeleteItem
