@@ -7,7 +7,8 @@
             {{ item.title }}
           </mat-card-title>
           <mat-card-content class="preview">
-            <img [src]="item.imagesrc">
+            <img [src]="item.imagesrc" *ngIf="item.imagesrc">
+            <span class="no-img" *ngIf="!item.imagesrc"></span>
             {{ item.description }}
           </mat-card-content>
         </mat-card>

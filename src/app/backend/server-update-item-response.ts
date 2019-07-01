@@ -3,5 +3,5 @@ export interface ServerUpdateItemResponse {
     success: boolean,
     message: string,
     id?: number
-  }
+  };
 }

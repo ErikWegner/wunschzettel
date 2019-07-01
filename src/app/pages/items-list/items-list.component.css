@@ -1,4 +1,5 @@
-.preview img {
+.preview img,
+.preview .no-img {
   height: 72px;
   width: 72px;
   float: left;

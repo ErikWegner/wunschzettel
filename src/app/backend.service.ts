@@ -9,6 +9,7 @@ import { GetReservationFlagResponse } from './backend';
 import { SetReservationFlagResponse } from './backend';
 import { ServerAddItemResponse } from './backend';
 import { ServerAddItemRequest } from './backend/server-add-item-request';
+import { ServerDeleteItemResponse } from './backend/server-delete-item-response';
 
 @Injectable({
   providedIn: 'root'
@@ -81,9 +82,14 @@ export class BackendService {
   }
 
   public deleteItem(id: number, captchaAnswer: string) {
-    return new Observable<Result<string>>((observer) => {
-      observer.error('Not implemented');
-    });
+    const body = {
+      action: 'delete',
+      captcha: captchaAnswer,
+      id
+    };
+    return this.http.post<ServerDeleteItemResponse>(this.apiUrl(''), body).pipe(
+      map(r => new Result(r.data.message, r.data.success))
+    );
   }
 
   public getCaptchaChallenge() {

@@ -8,5 +8,5 @@ export interface ServerAddItemRequest {
     ImgageUrl: string;
     BuyUrl: string;
     id: number;
-  }
+  };
 }

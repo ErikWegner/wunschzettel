@@ -8,7 +8,7 @@ import { APP_MOCK_BACKEND } from './app.config';
 import { ListBuilder, ItemBuilder, TestRandom } from 'testing';
 import { ItemMapper } from 'testing/item-mapper';
 import { Result } from './domain';
-import { GetReservationFlagResponse } from './backend';
+import { GetReservationFlagResponse, ServerDeleteItemResponse } from './backend';
 import { SetReservationFlagResponse } from './backend';
 import { ServerAddItemResponse } from './backend';
 import { ServerUpdateItemResponse } from './backend';
@@ -161,6 +161,29 @@ describe('BackendService', () => {
     } as ServerUpdateItemResponse);
     expect(nextCallback).toHaveBeenCalledTimes(1);
     expect(complCallback).toHaveBeenCalledTimes(1);
-    expect(nextCallback.calls.first().args[0]).toEqual(new Result({ message }));
+    expect(nextCallback.calls.first().args[0]).toEqual(new Result(message));
+  });
+
+  it('should delete an item', () => {
+    // Arrange
+    const id = TestRandom.r(9000);
+    const message = 'Eintrag gelöscht';
+    const captchaAnswer = TestRandom.randomString(6, 'answer-');
+
+    // Act
+    service
+      .deleteItem(id, captchaAnswer)
+      .subscribe(nextCallback, fail, complCallback);
+
+    // Assert
+    const req = httpTestingController.expectOne(apiUrl(''));
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body.action).toBe('delete');
+    req.flush({
+      data: { success: true, message, id }
+    } as ServerDeleteItemResponse);
+    expect(nextCallback).toHaveBeenCalledTimes(1);
+    expect(complCallback).toHaveBeenCalledTimes(1);
+    expect(nextCallback.calls.first().args[0]).toEqual(new Result(message));
   });
 });

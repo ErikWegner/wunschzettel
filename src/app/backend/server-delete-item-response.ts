@@ -1,4 +1,4 @@
-export interface ServerAddItemResponse {
+export interface ServerDeleteItemResponse {
   data: {
     success: boolean,
     message: string,
