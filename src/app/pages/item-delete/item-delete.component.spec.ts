@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { cold, getTestScheduler, initTestScheduler, resetTestScheduler } from 'jasmine-marbles';
 
 import { ItemDeleteComponent } from './item-delete.component';
-import { ActivatedRouteStub, RouterLinkDirectiveStub, ActivatedRoute, ItemBuilder, TestRandom, TestAppLoaderComponent } from 'testing';
+import { ActivatedRouteStub, ActivatedRoute, ItemBuilder, TestRandom } from 'testing';
 import { DomainService } from '../../domain.service';
 import { Result, CaptchaResponse } from '../../domain';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -12,6 +12,7 @@ import { CaptchaChallenge } from 'src/app/domain/captcha-challenge';
 import { CaptchaState } from 'src/app/components/captcha-state';
 import { By } from '@angular/platform-browser';
 import { Router, NavigationExtras } from '@angular/router';
+import { TestingModule } from 'src/app/testing.module';
 
 describe('ItemDeleteComponent', () => {
   let component: ItemDeleteComponent;
@@ -42,13 +43,12 @@ describe('ItemDeleteComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         ItemDeleteComponent,
-        RouterLinkDirectiveStub,
-        TestAppLoaderComponent
       ],
       imports: [
         NoopAnimationsModule,
         CustomMaterialModule,
         ReactiveFormsModule,
+        TestingModule,
       ],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRoute },

@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { cold, getTestScheduler, initTestScheduler, resetTestScheduler } from 'jasmine-marbles';
 
 import { ItemEditComponent } from './item-edit.component';
-import { ActivatedRouteStub, RouterLinkDirectiveStub, ActivatedRoute, TestRandom, ItemBuilder, TestAppLoaderComponent } from 'testing';
+import { ActivatedRouteStub, ActivatedRoute, TestRandom, ItemBuilder } from 'testing';
 import { DomainService } from '../../domain.service';
 import { Result, Item, AddItemResponse } from '../../domain';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -12,6 +12,7 @@ import { CaptchaChallenge } from 'src/app/domain/captcha-challenge';
 import { CaptchaState } from 'src/app/components/captcha-state';
 import { By } from '@angular/platform-browser';
 import { Router, NavigationExtras } from '@angular/router';
+import { TestingModule } from 'src/app/testing.module';
 
 describe('ItemEditComponent', () => {
   let component: ItemEditComponent;
@@ -43,13 +44,12 @@ describe('ItemEditComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         ItemEditComponent,
-        TestAppLoaderComponent,
-        RouterLinkDirectiveStub,
       ],
       imports: [
         NoopAnimationsModule,
         CustomMaterialModule,
         ReactiveFormsModule,
+        TestingModule,
       ],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRoute },

@@ -8,7 +8,6 @@ import {
   ItemBuilder,
   ListBuilder,
   RouterLinkDirectiveStub,
-  TestAppLoaderComponent,
   TestRandom,
 } from 'testing';
 import { DomainService } from '../../domain.service';
@@ -16,6 +15,7 @@ import { Result, Category } from '../../domain';
 import { By } from '@angular/platform-browser';
 import { CustomMaterialModule } from '../../custom-material/custom-material.module';
 import { Router, NavigationExtras } from '@angular/router';
+import { TestingModule } from 'src/app/testing.module';
 
 describe('ItemsListComponent', () => {
   let component: ItemsListComponent;
@@ -41,11 +41,10 @@ describe('ItemsListComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         ItemsListComponent,
-        TestAppLoaderComponent,
-        RouterLinkDirectiveStub
       ],
       imports: [
-        CustomMaterialModule
+        CustomMaterialModule,
+        TestingModule,
       ],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRoute },

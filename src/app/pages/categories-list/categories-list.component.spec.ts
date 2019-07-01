@@ -2,11 +2,12 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { cold, getTestScheduler, initTestScheduler, resetTestScheduler } from 'jasmine-marbles';
 
 import { CategoriesListComponent } from './categories-list.component';
-import { TestAppLoaderComponent, ListBuilder, TestRandom, RouterLinkDirectiveStub } from '../../../../testing';
+import { ListBuilder, TestRandom, RouterLinkDirectiveStub } from 'testing';
 import { DomainService } from '../../domain.service';
 import { Result, Category } from '../../domain';
 import { By } from '@angular/platform-browser';
 import { CustomMaterialModule } from '../../custom-material/custom-material.module';
+import { TestingModule } from 'src/app/testing.module';
 
 describe('CategoriesListComponent', () => {
   let component: CategoriesListComponent;
@@ -24,11 +25,10 @@ describe('CategoriesListComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         CategoriesListComponent,
-        TestAppLoaderComponent,
-        RouterLinkDirectiveStub
       ],
       imports: [
-        CustomMaterialModule
+        CustomMaterialModule,
+        TestingModule
       ],
       providers: [
         { provide: DomainService, useValue: domainService }

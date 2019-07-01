@@ -4,6 +4,7 @@ import { AppComponent } from './app.component';
 import { CustomMaterialModule } from './custom-material/custom-material.module';
 import { RouterLinkDirectiveStub } from 'testing';
 import { By } from '@angular/platform-browser';
+import { TestingModule } from './testing.module';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -11,10 +12,10 @@ describe('AppComponent', () => {
       imports: [
         RouterTestingModule,
         CustomMaterialModule,
+        TestingModule,
       ],
       declarations: [
         AppComponent,
-        RouterLinkDirectiveStub,
       ],
     }).compileComponents();
   }));

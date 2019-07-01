@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, isDevMode } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -19,6 +19,7 @@ import { MessageComponent } from './components/message/message.component';
 import { EditReservationDialogComponent } from './components/edit-reservation-dialog/edit-reservation-dialog.component';
 import { BackendService } from './backend.service';
 import { BackendServiceMock } from './backend.service.mock';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,7 @@ import { BackendServiceMock } from './backend.service.mock';
     HttpClientModule,
   ],
   providers: [
-    { provide: BackendService, useClass: isDevMode() ? BackendServiceMock : BackendService}
+    { provide: BackendService, useClass: environment.production ? BackendService : BackendServiceMock }
   ],
   bootstrap: [AppComponent]
 })

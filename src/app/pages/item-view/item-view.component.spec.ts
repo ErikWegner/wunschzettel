@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { cold, getTestScheduler, initTestScheduler, resetTestScheduler } from 'jasmine-marbles';
 
 import { ItemViewComponent } from './item-view.component';
-import { ActivatedRouteStub, RouterLinkDirectiveStub, ActivatedRoute, ItemBuilder, TestRandom, TestAppLoaderComponent } from 'testing';
+import { ActivatedRouteStub, ActivatedRoute, ItemBuilder, TestRandom } from 'testing';
 import { DomainService } from '../../domain.service';
 import { Result } from '../../domain';
 import { CustomMaterialModule } from '../../custom-material/custom-material.module';
@@ -12,6 +12,7 @@ import { EditReservationDialogComponent } from 'src/app/components/edit-reservat
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { Router, NavigationExtras } from '@angular/router';
+import { TestingModule } from 'src/app/testing.module';
 
 describe('ItemViewComponent', () => {
   let component: ItemViewComponent;
@@ -48,12 +49,11 @@ describe('ItemViewComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         ItemViewComponent,
-        TestAppLoaderComponent,
-        RouterLinkDirectiveStub
       ],
       imports: [
         CustomMaterialModule,
         NoopAnimationsModule,
+        TestingModule,
       ],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRoute },
