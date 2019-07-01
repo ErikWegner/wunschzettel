@@ -1,3 +1,4 @@
+export * from './get-captcha-challenge-response';
 export * from './get-reservation-flag-response';
 export * from './list-response';
 export * from './list-response-item';

@@ -7,11 +7,12 @@ import { BackendService } from './backend.service';
 import { APP_MOCK_BACKEND } from './app.config';
 import { ListBuilder, ItemBuilder, TestRandom } from 'testing';
 import { ItemMapper } from 'testing/item-mapper';
-import { Result } from './domain';
+import { Result, CaptchaChallenge } from './domain';
 import { GetReservationFlagResponse, ServerDeleteItemResponse } from './backend';
 import { SetReservationFlagResponse } from './backend';
 import { ServerAddItemResponse } from './backend';
 import { ServerUpdateItemResponse } from './backend';
+import { GetCaptchaChallengeResponse } from './backend/get-captcha-challenge-response';
 
 describe('BackendService', () => {
   let httpClient: HttpClient;
@@ -185,5 +186,21 @@ describe('BackendService', () => {
     expect(nextCallback).toHaveBeenCalledTimes(1);
     expect(complCallback).toHaveBeenCalledTimes(1);
     expect(nextCallback.calls.first().args[0]).toEqual(new Result(message));
+  });
+
+  it('should get captcha', () => {
+    // Arrange
+    const captchaChallengeText = TestRandom.randomString(6, 'challenge-');
+
+    // Act
+    service.getCaptchaChallenge().subscribe(nextCallback, fail, complCallback);
+
+    // Assert
+    const req = httpTestingController.expectOne(apiUrl('?action=captcha'));
+    req.flush({ data: { captchatext: captchaChallengeText } } as GetCaptchaChallengeResponse);
+
+    expect(nextCallback).toHaveBeenCalledTimes(1);
+    expect(complCallback).toHaveBeenCalledTimes(1);
+    expect(nextCallback.calls.first().args[0]).toEqual(new Result(new CaptchaChallenge(captchaChallengeText)));
   });
 });

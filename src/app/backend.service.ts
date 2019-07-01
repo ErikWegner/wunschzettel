@@ -10,6 +10,7 @@ import { SetReservationFlagResponse } from './backend';
 import { ServerAddItemResponse } from './backend';
 import { ServerAddItemRequest } from './backend/server-add-item-request';
 import { ServerDeleteItemResponse } from './backend/server-delete-item-response';
+import { GetCaptchaChallengeResponse } from './backend/get-captcha-challenge-response';
 
 @Injectable({
   providedIn: 'root'
@@ -93,9 +94,9 @@ export class BackendService {
   }
 
   public getCaptchaChallenge() {
-    return new Observable<Result<CaptchaChallenge>>((observer) => {
-      observer.error('Not implemented');
-    });
+    return this.http.get<GetCaptchaChallengeResponse>(this.apiUrl('captcha')).pipe(
+      map(r => new Result(new CaptchaChallenge(r.data.captchatext)))
+    );
   }
 
   private apiUrl(action: string, options?: { id?: number, captcha?: string }) {
