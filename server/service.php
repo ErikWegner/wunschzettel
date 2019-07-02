@@ -96,7 +96,7 @@ function listitems() {
   while ($filename = readdir ($verz)) {
     if (substr($filename, 0, 2) == "ws") {
       $item = read_file($filename, FALSE);
-      $item["id"] = substr($filename, 2);
+      $item["id"] = intval(substr($filename, 2));
       unset($item["Status"]);
       $w[] = $item;
     }
