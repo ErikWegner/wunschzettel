@@ -21,6 +21,7 @@
     mat-flat-button color="primary" (click)="submitClick()"
     [disabled]="dlgState != dlgStateEnum.WaitingForUserInput"
   >{{ titleAndButtonText }}</button>
+  <span class="flexspacer"></span>
   <button 
     mat-stroked-button color="warn" [mat-dialog-close]
     [disabled]="dlgState == dlgStateEnum.Submitting || dlgState == dlgStateEnum.Loading"
