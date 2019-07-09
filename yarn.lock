@@ -115,12 +115,31 @@
     rxjs "6.4.0"
     source-map "0.7.3"
 
+"@angular-devkit/core@8.1.0":
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-8.1.0.tgz#eb91d2f620ae75533c301e549249ae2287f6e2f6"
+  integrity sha512-Xdtkrs62WMMR1BnSfpBvwjapRYalvArewAi7NXo0QxIFWPhQGbgSqT5PJMie4V3vHHNMbcC9cPzjKGjwwF8FHw==
+  dependencies:
+    ajv "6.10.0"
+    fast-json-stable-stringify "2.0.0"
+    magic-string "0.25.3"
+    rxjs "6.4.0"
+    source-map "0.7.3"
+
 "@angular-devkit/schematics@8.0.6":
   version "8.0.6"
   resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-8.0.6.tgz#e50805582f4a082079201dffd8940e001f3721e0"
   integrity sha512-FGPcVKxNvtdFB0A6oHyxtWeugL83nW+kPATlAimgh1hu7TCP94dDpflCV9o/lgZlH817xTYXrhToXJaMZSnDPw==
   dependencies:
     "@angular-devkit/core" "8.0.6"
+    rxjs "6.4.0"
+
+"@angular-devkit/schematics@8.1.0":
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-8.1.0.tgz#3cd4c9e99cab025c665515ce0730453ebed57fad"
+  integrity sha512-9gatz7QEExtE3MvLcto8k5qNNyqtD+ouHWxIStdKi+L1T/Pys4ylMrUAF8JvHwK6UssVuSPzewe5DTVoNc2B0A==
+  dependencies:
+    "@angular-devkit/core" "8.1.0"
     rxjs "6.4.0"
 
 "@angular/animations@^8.0.0":
@@ -233,10 +252,27 @@
   dependencies:
     tslib "^1.9.0"
 
+"@angular/pwa@^0.801.0":
+  version "0.801.0"
+  resolved "https://registry.yarnpkg.com/@angular/pwa/-/pwa-0.801.0.tgz#a1d345573f5ae7144c69151130207403f455157e"
+  integrity sha512-WlerwRDMx891Ref7/pYL4HwNjbcu5VkG25DmDbb6E09BtOmXzeFLvzC/oqlBPeiezoRBWWGnLgxd/McS2EVqIQ==
+  dependencies:
+    "@angular-devkit/core" "8.1.0"
+    "@angular-devkit/schematics" "8.1.0"
+    "@schematics/angular" "8.1.0"
+    parse5-html-rewriting-stream "5.1.0"
+
 "@angular/router@~8.0.0":
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/@angular/router/-/router-8.0.0.tgz#26094fd473e17441b0ae8af4883ec1b4ea3ad569"
   integrity sha512-DGUTb8qpndE5m716xh00GxuC8o7qamlqbUruGB+SQD6ynU7s5yLGxtKffxqb1BT63+YewpsVxc2Koruvb1qjDw==
+  dependencies:
+    tslib "^1.9.0"
+
+"@angular/service-worker@~8.0.0":
+  version "8.0.3"
+  resolved "https://registry.yarnpkg.com/@angular/service-worker/-/service-worker-8.0.3.tgz#30f5b8c8822376ad28f546eafb88c92dca1eccae"
+  integrity sha512-sP7b2eb/wzNIb8CUUQ8NnNl0fvL67neRwbImRKNaMhvikKuDv8iyW4Jy3Jx1p60szgaIUIf+cHbciN/N/rO3YQ==
   dependencies:
     tslib "^1.9.0"
 
@@ -346,6 +382,14 @@
   dependencies:
     "@angular-devkit/core" "8.0.6"
     "@angular-devkit/schematics" "8.0.6"
+
+"@schematics/angular@8.1.0":
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/@schematics/angular/-/angular-8.1.0.tgz#853715399962914525aeec60947b12a3623b1865"
+  integrity sha512-zAZQF5RTzkUXrGzIQn5Be2cUmvRuC4miYnf7K63kbr4Ox4KIBYAcplbd7rINwVG2g/xm8wnZHdfJlGls2u0oYA==
+  dependencies:
+    "@angular-devkit/core" "8.1.0"
+    "@angular-devkit/schematics" "8.1.0"
 
 "@schematics/update@0.800.6":
   version "0.800.6"
@@ -3973,6 +4017,13 @@ magic-string@0.25.2, magic-string@^0.25.0:
   dependencies:
     sourcemap-codec "^1.4.4"
 
+magic-string@0.25.3:
+  version "0.25.3"
+  resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.25.3.tgz#34b8d2a2c7fec9d9bdf9929a3fd81d271ef35be9"
+  integrity sha512-6QK0OpF/phMz0Q2AxILkX2mFhi7m+WMwTRg0LQKq/WBB0cDP4rYH3Wp4/d3OTXlrPLVJT/RFqj8tFeAR4nk8AA==
+  dependencies:
+    sourcemap-codec "^1.4.4"
+
 make-dir@^2.0.0, make-dir@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/make-dir/-/make-dir-2.1.0.tgz#5f0310e18b8be898cc07009295a30ae41e91e6f5"
@@ -4744,12 +4795,27 @@ parse-json@^4.0.0:
     error-ex "^1.3.1"
     json-parse-better-errors "^1.0.1"
 
+parse5-html-rewriting-stream@5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/parse5-html-rewriting-stream/-/parse5-html-rewriting-stream-5.1.0.tgz#63f92c958764aea8cbe3aa68f2e5895c32068ab8"
+  integrity sha512-hZlaOTHJs4dpC5yFHnOSEMh26ErsqTsLzxKqkuRcUqtiu0kMsBQ9pkgANkECDyoBUhJ3+hvb2DPLsyqbtcS61Q==
+  dependencies:
+    parse5 "^5.1.0"
+    parse5-sax-parser "^5.1.0"
+
+parse5-sax-parser@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/parse5-sax-parser/-/parse5-sax-parser-5.1.0.tgz#ec234d23223a8054a74ff173aa3dc2da74c5bbd9"
+  integrity sha512-VEhdEDhBkoSILPmsZ96SoIIUow3hZbtgQsqXw7r8DxxnqsCIO0fwkT9mWgBcf9SPjVUh92liuEprHrrYzXBPWQ==
+  dependencies:
+    parse5 "^5.1.0"
+
 parse5@4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/parse5/-/parse5-4.0.0.tgz#6d78656e3da8d78b4ec0b906f7c08ef1dfe3f608"
   integrity sha512-VrZ7eOd3T1Fk4XWNXMgiGBK/z0MG48BWG2uQNU4I72fkQuKUTZpl+u9k+CxEG0twMVzSmXEEz12z5Fnw1jIQFA==
 
-parse5@^5.0.0:
+parse5@^5.0.0, parse5@^5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/parse5/-/parse5-5.1.0.tgz#c59341c9723f414c452975564c7c00a68d58acd2"
   integrity sha512-fxNG2sQjHvlVAYmzBZS9YlDp6PTSSDwa98vkD4QgVDDCAo84z5X1t5XyJQ62ImdLXx5NdIIfihey6xpum9/gRQ==

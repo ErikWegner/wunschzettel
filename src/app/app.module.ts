@@ -20,6 +20,7 @@ import { EditReservationDialogComponent } from './components/edit-reservation-di
 import { BackendService } from './backend.service';
 import { BackendServiceMock } from './backend.service.mock';
 import { environment } from 'src/environments/environment';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { environment } from 'src/environments/environment';
     BrowserAnimationsModule,
     CustomMaterialModule,
     HttpClientModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [
     { provide: BackendService, useClass: environment.production ? BackendService : BackendServiceMock }
