@@ -22,7 +22,7 @@ export class ItemsListComponent implements OnInit {
 
   ngOnInit() {
     const categoryName = this.route.snapshot.paramMap.get('category');
-    const category = new Category(categoryName);
+    const category = categoryName ? new Category(categoryName) : Category.Unspecified;
     this.service.getItemsByCategory(category).subscribe({
       next: (result) => {
         if (!result.data || result.data.length === 0) {

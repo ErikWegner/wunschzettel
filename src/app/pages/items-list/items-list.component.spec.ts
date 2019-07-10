@@ -100,6 +100,20 @@ describe('ItemsListComponent', () => {
     expect(domainServiceStub.getItemsByCategory).toHaveBeenCalledWith(new Category(category));
   });
 
+  it('should get all items by empty category', () => {
+    // Arrange
+    prepareView();
+    activatedRoute.setParamMap({});
+
+    // Act
+    fixture.detectChanges();
+    getTestScheduler().flush(); // flush the observables
+    fixture.detectChanges();
+
+    // Assert
+    expect(domainServiceStub.getItemsByCategory).toHaveBeenCalledWith(Category.Unspecified);
+  });
+
   it('should display list of items', () => {
     // Arrange
     const viewData = prepareView();

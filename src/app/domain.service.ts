@@ -72,7 +72,7 @@ export class DomainService {
   }
 
   private filterByCategory(items: Result<Item[]>, category: Category) {
-    return new Result(items.data.filter(item => item.category === category.value));
+    return new Result(items.data.filter(item => category === Category.Unspecified || item.category === category.value));
   }
 
   private extractCategories(result: Result<Item[]>) {

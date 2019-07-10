@@ -99,6 +99,32 @@ describe('DomainService', () => {
     resultItems.data.every(item => expect(item.category).toBe(categories[0]));
   });
 
+  it('can build a list of all items by unspecified category', () => {
+    // Arrange
+    const categories = ListBuilder.with(() => TestRandom.randomString(8)).items(3).build();
+    const items = ListBuilder.with(
+      (i) => ItemBuilder.with().category(categories[i % categories.length]).build()
+    ).items(TestRandom.r(40, 20)).build();
+    fakeBackend.getItems.and.returnValue(cold('--x|', { x: new Result(items) }));
+    const service: DomainService = TestBed.get(DomainService);
+
+    // Act
+    service.getItemsByCategory(Category.Unspecified).subscribe(
+      nextCallback,
+      fail,
+      () => {
+        completeCallback();
+      }
+    );
+    getTestScheduler().flush(); // flush the observables
+
+    // Assert
+    expect(nextCallback).toHaveBeenCalledTimes(1);
+    expect(completeCallback).toHaveBeenCalledTimes(1);
+    const resultItems: Result<Item[]> = nextCallback.calls.first().args[0];
+    expect(resultItems.data).toEqual(items);
+  });
+
   it('can load an item', () => {
     // Arrange
     const items = ListBuilder.with(() => ItemBuilder.default()).items(TestRandom.r(40, 20)).build();

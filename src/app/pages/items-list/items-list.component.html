@@ -1,17 +1,21 @@
 <div>
   <app-loader *ngIf="isLoading"></app-loader>
   <div *ngIf="items && items.length > 0" class="td-none">
-      <a *ngFor="let item of items" [routerLink]="['/items', item.id]">
-        <mat-card class="itembox">
-          <mat-card-title>
-            {{ item.title }}
-          </mat-card-title>
-          <mat-card-content class="preview">
-            <img [src]="item.imagesrc" *ngIf="item.imagesrc">
-            <span class="no-img" *ngIf="!item.imagesrc"></span>
-            {{ item.description }}
-          </mat-card-content>
-        </mat-card>
-      </a>
+    <a *ngFor="let item of items" [routerLink]="['/items', item.id]">
+      <mat-card class="itembox">
+        <mat-card-title>
+          <div class="flex-container flex-wrap">
+            <span class="flex00a">{{ item.title }}</span>
+            <span class="flexspacer"></span>
+            <span class="flex00a mat-small category">{{ item.category }}</span>
+          </div>
+        </mat-card-title>
+        <mat-card-content class="preview">
+          <img [src]="item.imagesrc" *ngIf="item.imagesrc">
+          <span class="no-img" *ngIf="!item.imagesrc"></span>
+          {{ item.description }}
+        </mat-card-content>
+      </mat-card>
+    </a>
   </div>
 </div>
