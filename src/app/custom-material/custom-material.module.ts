@@ -6,7 +6,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [],
@@ -17,7 +17,7 @@ import { MatChipsModule } from '@angular/material/chips';
     MatInputModule,
     MatMenuModule,
     MatToolbarModule,
-    MatChipsModule,
+    MatIconModule,
   ],
   exports: [
     MatButtonModule,
@@ -26,7 +26,7 @@ import { MatChipsModule } from '@angular/material/chips';
     MatInputModule,
     MatMenuModule,
     MatToolbarModule,
-    MatChipsModule,
+    MatIconModule,
   ]
 })
 export class CustomMaterialModule { }

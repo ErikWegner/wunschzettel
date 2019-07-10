@@ -13,6 +13,8 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { Router, NavigationExtras } from '@angular/router';
 import { TestingModule } from 'src/app/testing.module';
+import { DomSanitizer } from '@angular/platform-browser';
+import { MatIconRegistry } from '@angular/material/icon';
 
 describe('ItemViewComponent', () => {
   let component: ItemViewComponent;
@@ -65,6 +67,9 @@ describe('ItemViewComponent', () => {
       .compileComponents();
     domainServiceStub = TestBed.get(DomainService);
     matDialogStub = TestBed.get(MatDialog);
+    const iconRegistry: MatIconRegistry = TestBed.get(MatIconRegistry);
+    const sanitizer: DomSanitizer = TestBed.get(DomSanitizer);
+    iconRegistry.addSvgIconLiteral('edit', sanitizer.bypassSecurityTrustHtml('<svg></svg>'));
   }));
 
   beforeEach(() => {
@@ -243,7 +248,7 @@ describe('ItemViewComponent', () => {
           data: {
             item: viewData.item,
             isReserved: testRunData2.isReservedValue,
-           }
+          }
         };
         expect(matDialogStub.open).toHaveBeenCalledTimes(1);
         expect(matDialogStub.open.calls.mostRecent().args).toEqual([EditReservationDialogComponent, dlgConfig]);

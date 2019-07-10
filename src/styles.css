@@ -61,3 +61,8 @@
   flex-shrink: 0;
   flex-wrap: auto;
 }
+
+button.m1,
+.m1 {
+  margin: 2px;
+}
