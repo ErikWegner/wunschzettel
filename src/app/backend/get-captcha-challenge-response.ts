@@ -1,5 +1,6 @@
 export interface GetCaptchaChallengeResponse {
   data: {
-    captchatext: string
+    captchatext: string,
+    captchahint: string,
   };
 }

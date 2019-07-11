@@ -1,5 +1,5 @@
-import { Injectable, Inject } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { Result, Item, AddItemResponse } from './domain';
@@ -95,7 +95,7 @@ export class BackendService {
 
   public getCaptchaChallenge() {
     return this.http.get<GetCaptchaChallengeResponse>(this.apiUrl('captcha')).pipe(
-      map(r => new Result(new CaptchaChallenge(r.data.captchatext, '')))
+      map(r => new Result(new CaptchaChallenge(r.data.captchatext, r.data.captchahint)))
     );
   }
 
