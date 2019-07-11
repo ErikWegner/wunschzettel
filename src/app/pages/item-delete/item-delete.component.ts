@@ -22,6 +22,7 @@ export class ItemDeleteComponent implements OnInit {
   isLoading = true;
   item: Item;
   captchaChallengeText = 'Sicherheitsfrage';
+  captchaChallengeHint = 'Hinweis';
   resultText = '';
 
   constructor(
@@ -54,6 +55,7 @@ export class ItemDeleteComponent implements OnInit {
     this.service.getCaptchaChallenge().subscribe({
       next: (result) => {
         this.captchaChallengeText = result.data.text;
+        this.captchaChallengeHint = result.data.hint;
         this.captchaResponse.enable();
         this.captchaResponse.reset();
       },

@@ -13,13 +13,14 @@ import { CaptchaState } from 'src/app/components/captcha-state';
 import { By } from '@angular/platform-browser';
 import { Router, NavigationExtras } from '@angular/router';
 import { TestingModule } from 'src/app/testing.module';
+import { CaptchaChallengeBuilder } from 'testing/captcha-challenge-builder';
 
 describe('ItemEditComponent', () => {
   let component: ItemEditComponent;
   let fixture: ComponentFixture<ItemEditComponent>;
   let activatedRoute: ActivatedRouteStub;
   let domainServiceStub: jasmine.SpyObj<DomainService>;
-  let challengeText: string;
+  let challenge: CaptchaChallenge;
   let onClickState: CaptchaState;
 
   beforeEach(async(() => {
@@ -38,7 +39,7 @@ describe('ItemEditComponent', () => {
         'navigate'
       ]
     );
-    challengeText = TestRandom.randomString(6, 'challenge-');
+    challenge = CaptchaChallengeBuilder.default();
     initTestScheduler();
     activatedRoute = new ActivatedRouteStub();
     TestBed.configureTestingModule({
@@ -60,7 +61,7 @@ describe('ItemEditComponent', () => {
       .compileComponents();
     domainServiceStub = TestBed.get(DomainService);
     domainServiceStub.getCaptchaChallenge.and.returnValue(
-      cold('--x|', { x: new Result(new CaptchaChallenge(challengeText)) })
+      cold('--x|', { x: new Result(challenge) })
     );
   }));
 
@@ -220,7 +221,8 @@ describe('ItemEditComponent', () => {
     fixture.detectChanges();
 
     // Assert
-    expect(fixture.nativeElement.querySelectorAll('label')[5].textContent).toContain(challengeText);
+    expect(fixture.nativeElement.querySelectorAll('label')[5].textContent).toContain(challenge.text);
+    expect(fixture.nativeElement.querySelectorAll('mat-hint')[0].textContent).toBe(challenge.hint);
     expect(state1).toBe(fixture.componentInstance.formStateEnum.Loading);
     const state2 = fixture.componentInstance.formState;
     expect(state2).toBe(fixture.componentInstance.formStateEnum.WaitingForUserInput);
@@ -283,9 +285,9 @@ describe('ItemEditComponent', () => {
     setCaptchaResponse(captchaInput);
     fixture.detectChanges();
     clickSubmitAndRespond(new Result('Captcha wrong', false));
-    challengeText = TestRandom.randomString(8);
+    challenge = CaptchaChallengeBuilder.with().text('New text').build();
     domainServiceStub.getCaptchaChallenge.and.returnValue(
-      cold('--x|', { x: new Result(new CaptchaChallenge(challengeText)) })
+      cold('--x|', { x: new Result(challenge) })
     );
 
     // Act
@@ -299,7 +301,7 @@ describe('ItemEditComponent', () => {
     const postSubmitState = fixture.componentInstance.formState;
     expect(postSubmitState).toBe(CaptchaState.WaitingForUserInput);
     expect(challenge1).not.toBe(challenge2);
-    expect(challenge2.trim()).toBe(challengeText + ' *');
+    expect(challenge2.trim()).toBe(challenge.text + ' *');
   });
 
   it('should redirect to view after succefully adding a new item', () => {

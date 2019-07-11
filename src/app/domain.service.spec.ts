@@ -180,8 +180,9 @@ describe('DomainService', () => {
   it('should get captcha challenge from backend', () => {
     // Arrange
     const captchaText = TestRandom.randomString(8);
+    const captchaHint = TestRandom.randomString(8);
     fakeBackend.getCaptchaChallenge.and.returnValue(
-      cold('--x|', { x: new Result(new CaptchaChallenge(captchaText)) }));
+      cold('--x|', { x: new Result(new CaptchaChallenge(captchaText, captchaHint)) }));
 
     const service: DomainService = TestBed.get(DomainService);
 
@@ -201,6 +202,7 @@ describe('DomainService', () => {
     expect(completeCallback).toHaveBeenCalledTimes(1);
     const resultValue: Result<CaptchaChallenge> = nextCallback.calls.first().args[0];
     expect(resultValue.data.text).toBe(captchaText);
+    expect(resultValue.data.hint).toBe(captchaHint);
   });
 
   [true, false].forEach(flag => {

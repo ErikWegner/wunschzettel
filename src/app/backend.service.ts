@@ -95,7 +95,7 @@ export class BackendService {
 
   public getCaptchaChallenge() {
     return this.http.get<GetCaptchaChallengeResponse>(this.apiUrl('captcha')).pipe(
-      map(r => new Result(new CaptchaChallenge(r.data.captchatext)))
+      map(r => new Result(new CaptchaChallenge(r.data.captchatext, '')))
     );
   }
 

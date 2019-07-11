@@ -13,13 +13,14 @@ import { CaptchaState } from 'src/app/components/captcha-state';
 import { By } from '@angular/platform-browser';
 import { Router, NavigationExtras } from '@angular/router';
 import { TestingModule } from 'src/app/testing.module';
+import { CaptchaChallengeBuilder } from 'testing/captcha-challenge-builder';
 
 describe('ItemDeleteComponent', () => {
   let component: ItemDeleteComponent;
   let fixture: ComponentFixture<ItemDeleteComponent>;
   let activatedRoute: ActivatedRouteStub;
   let domainServiceStub: jasmine.SpyObj<DomainService>;
-  let challengeText: string;
+  let challenge: CaptchaChallenge;
   let onClickState: CaptchaState;
 
   beforeEach(async(() => {
@@ -37,7 +38,7 @@ describe('ItemDeleteComponent', () => {
         'navigate'
       ]
     );
-    challengeText = TestRandom.randomString(6, 'challenge-');
+    challenge = CaptchaChallengeBuilder.default();
     initTestScheduler();
     activatedRoute = new ActivatedRouteStub();
     TestBed.configureTestingModule({
@@ -59,7 +60,7 @@ describe('ItemDeleteComponent', () => {
       .compileComponents();
     domainServiceStub = TestBed.get(DomainService);
     domainServiceStub.getCaptchaChallenge.and.returnValue(
-      cold('--x|', { x: new Result(new CaptchaChallenge(challengeText)) })
+      cold('--x|', { x: new Result(challenge) })
     );
   }));
 
@@ -154,7 +155,8 @@ describe('ItemDeleteComponent', () => {
     fixture.detectChanges();
 
     // Assert
-    expect(fixture.nativeElement.querySelectorAll('label')[0].textContent).toContain(challengeText);
+    expect(fixture.nativeElement.querySelectorAll('label')[0].textContent).toContain(challenge.text);
+    expect(fixture.nativeElement.querySelectorAll('mat-hint')[0].textContent).toBe(challenge.hint);
     expect(state1).toBe(fixture.componentInstance.formStateEnum.Loading, 'state1');
     const state2 = fixture.componentInstance.formState;
     expect(state2).toBe(fixture.componentInstance.formStateEnum.WaitingForUserInput, 'state2');
@@ -210,9 +212,9 @@ describe('ItemDeleteComponent', () => {
     setCaptchaResponse(captchaInput);
     fixture.detectChanges();
     clickSubmitAndRespond(new Result('Captcha wrong', false));
-    challengeText = TestRandom.randomString(8);
+    challenge = CaptchaChallengeBuilder.with().text('New delete challenge').build();
     domainServiceStub.getCaptchaChallenge.and.returnValue(
-      cold('--x|', { x: new Result(new CaptchaChallenge(challengeText)) })
+      cold('--x|', { x: new Result(challenge) })
     );
 
     // Act
@@ -225,7 +227,7 @@ describe('ItemDeleteComponent', () => {
     const postSubmitState = fixture.componentInstance.formState;
     expect(postSubmitState).toBe(CaptchaState.WaitingForUserInput);
     expect(challenge1).not.toBe(challenge2);
-    expect(challenge2.trim()).toBe(challengeText + ' *');
+    expect(challenge2.trim()).toBe(challenge.text + ' *');
   });
 
   it('should show 404 when item does not exist', () => {

@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Item, CaptchaResponse } from 'src/app/domain';
-import { FormControl, Validators } from '@angular/forms';
+import { Validators, FormBuilder } from '@angular/forms';
 import { DomainService } from 'src/app/domain.service';
 import { CaptchaState } from '../captcha-state';
 
@@ -20,12 +20,15 @@ export class EditReservationDialogComponent implements OnInit {
   dlgState = CaptchaState.Loading;
   titleAndButtonText = '';
   captchaChallengeText = 'Sicherheitsfrage';
-  captchaResponse = new FormControl('', [
-    Validators.required
-  ]);
+  captchaChallengeHint = 'Hinweis';
   resultText = '';
 
+  reservationForm = this.fb.group({
+    captchaResponse: ['', Validators.required],
+  });
+
   constructor(
+    private fb: FormBuilder,
     public dialogRef: MatDialogRef<EditReservationDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: EditReservationDialogData,
     public service: DomainService,
@@ -37,6 +40,7 @@ export class EditReservationDialogComponent implements OnInit {
     this.service.getCaptchaChallenge().subscribe({
       next: (result) => {
         this.captchaChallengeText = result.data.text;
+        this.captchaChallengeHint = result.data.hint;
       },
       error: (e) => {
         this.dlgState = CaptchaState.Fail;
@@ -57,7 +61,7 @@ export class EditReservationDialogComponent implements OnInit {
     this.service.setReservationFlag(
       this.data.item.id,
       !this.data.isReserved,
-      new CaptchaResponse(this.captchaResponse.value)).subscribe({
+      new CaptchaResponse(this.reservationForm.get('captchaResponse').value)).subscribe({
         next: (result) => {
           this.dlgState = result.success ? CaptchaState.Success : CaptchaState.Error;
           this.resultText = result.data;

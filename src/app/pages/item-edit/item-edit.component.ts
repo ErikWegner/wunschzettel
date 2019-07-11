@@ -29,6 +29,7 @@ export class ItemEditComponent implements OnInit {
 
   id: number;
   captchaChallengeText = 'Sicherheitsfrage';
+  captchaChallengeHint = 'Hinweis';
   resultText = '';
 
   constructor(
@@ -112,6 +113,7 @@ export class ItemEditComponent implements OnInit {
     this.service.getCaptchaChallenge().subscribe({
       next: (result) => {
         this.captchaChallengeText = result.data.text;
+        this.captchaChallengeHint = result.data.hint;
       },
       error: (e) => {
         this.formState = CaptchaState.Fail;

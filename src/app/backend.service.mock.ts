@@ -107,7 +107,7 @@ export class BackendServiceMock {
   public getCaptchaChallenge() {
     return new Observable<Result<CaptchaChallenge>>((observer) => {
       window.setTimeout(() => {
-        observer.next(new Result(new CaptchaChallenge('Eingabe: OK, FAIL, sonstiges')));
+        observer.next(new Result(new CaptchaChallenge('Eingabe Captcha', 'OK, FAIL, sonstiges')));
         observer.complete();
       }, 1500);
     });

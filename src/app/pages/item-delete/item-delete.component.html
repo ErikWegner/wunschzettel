@@ -12,6 +12,7 @@
       <span *ngIf="formState == formStateEnum.Loading" class="busytext">Wird geladen…</span>
       <mat-form-field class="item-form-fw">
         <input matInput placeholder="{{ captchaChallengeText }}" [formControl]="captchaResponse" required>
+        <mat-hint align="start">{{ captchaChallengeHint }}</mat-hint>
       </mat-form-field>
       <div *ngIf="formState == formStateEnum.Success" class="serviceok">OK: {{ resultText }}</div>
       <div *ngIf="formState == formStateEnum.Error" class="serviceerror">

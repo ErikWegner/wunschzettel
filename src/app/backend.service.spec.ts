@@ -201,6 +201,6 @@ describe('BackendService', () => {
 
     expect(nextCallback).toHaveBeenCalledTimes(1);
     expect(complCallback).toHaveBeenCalledTimes(1);
-    expect(nextCallback.calls.first().args[0]).toEqual(new Result(new CaptchaChallenge(captchaChallengeText)));
+    expect(nextCallback.calls.first().args[0]).toEqual(new Result(new CaptchaChallenge(captchaChallengeText, '')));
   });
 });

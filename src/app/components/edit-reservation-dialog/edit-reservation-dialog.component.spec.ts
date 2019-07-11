@@ -11,13 +11,15 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CaptchaState } from '../captcha-state';
 import { CaptchaChallenge } from 'src/app/domain/captcha-challenge';
 import { By } from '@angular/platform-browser';
+import { CaptchaChallengeBuilder } from 'testing/captcha-challenge-builder';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('EditReservationDialogComponent', () => {
   let component: EditReservationDialogComponent;
   let fixture: ComponentFixture<EditReservationDialogComponent>;
   let dialogData: EditReservationDialogData;
   let domainServiceStub: jasmine.SpyObj<DomainService>;
-  let challengeText: string;
+  let challenge: CaptchaChallenge;
   let onClickState: CaptchaState;
 
   beforeEach(async(() => {
@@ -33,11 +35,12 @@ describe('EditReservationDialogComponent', () => {
       item: ItemBuilder.default(),
       isReserved: false,
     };
-    challengeText = TestRandom.randomString(6, 'challenge-');
+    challenge = CaptchaChallengeBuilder.default();
     initTestScheduler();
     TestBed.configureTestingModule({
       declarations: [EditReservationDialogComponent],
       imports: [
+        NoopAnimationsModule,
         ReactiveFormsModule,
         CustomMaterialModule,
       ],
@@ -50,7 +53,7 @@ describe('EditReservationDialogComponent', () => {
       .compileComponents();
     domainServiceStub = TestBed.get(DomainService);
     domainServiceStub.getCaptchaChallenge.and.returnValue(
-      cold('--x|', { x: new Result(new CaptchaChallenge(challengeText)) })
+      cold('--x|', { x: new Result(challenge) })
     );
   }));
 
@@ -118,7 +121,8 @@ describe('EditReservationDialogComponent', () => {
     fixture.detectChanges();
 
     // Assert
-    expect(fixture.nativeElement.querySelectorAll('label')[0].textContent).toContain(challengeText);
+    expect(fixture.nativeElement.querySelectorAll('label')[0].textContent).toBe(challenge.text);
+    expect(fixture.nativeElement.querySelectorAll('mat-hint')[0].textContent).toBe(challenge.hint);
     expect(state1).toBe(fixture.componentInstance.dlgStateEnum.Loading);
     const state2 = fixture.componentInstance.dlgState;
     expect(state2).toBe(fixture.componentInstance.dlgStateEnum.WaitingForUserInput);
@@ -177,9 +181,9 @@ describe('EditReservationDialogComponent', () => {
       setCaptchaResponse(captchaInput);
       fixture.detectChanges();
       clickSubmitAndRespond(new Result('Captcha wrong', false));
-      challengeText = TestRandom.randomString(8);
+      challenge = CaptchaChallengeBuilder.with().text('New reservation challenge').build();
       domainServiceStub.getCaptchaChallenge.and.returnValue(
-        cold('--x|', { x: new Result(new CaptchaChallenge(challengeText)) })
+        cold('--x|', { x: new Result(challenge) })
       );
 
       // Act
@@ -192,7 +196,7 @@ describe('EditReservationDialogComponent', () => {
       const postSubmitState = fixture.componentInstance.dlgState;
       expect(postSubmitState).toBe(CaptchaState.WaitingForUserInput);
       expect(challenge1).not.toBe(challenge2);
-      expect(challenge2.trim()).toBe(challengeText + ':');
+      expect(challenge2.trim()).toBe(challenge.text);
     });
   });
 });
