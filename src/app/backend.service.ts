@@ -144,7 +144,7 @@ export class BackendService {
     item.category = serverItem.Category;
     item.imagesrc = serverItem.ImgageUrl;
     item.buyurl = serverItem.BuyUrl;
-    item.description = serverItem.Description;
+    item.description = serverItem.Description.replace(/<br>/g, '\n');
 
     return item;
   }

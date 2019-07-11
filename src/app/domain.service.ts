@@ -53,7 +53,13 @@ export class DomainService {
   }
 
   public addItem(item: Item, captaResponse: CaptchaResponse) {
-    return this.backend.addItem(item, captaResponse.answer);
+    return this.backend.addItem(item, captaResponse.answer).pipe(
+      tap(result => {
+        if (result.success) {
+          this.items = null;
+        }
+      })
+    );
   }
 
   public deteleItem(id: number, captaResponse: CaptchaResponse) {

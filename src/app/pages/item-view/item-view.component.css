@@ -20,3 +20,7 @@
   flex-grow: 1;
   flex-shrink: 0;
 }
+
+.description {
+  white-space: pre-wrap;
+}
