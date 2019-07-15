@@ -191,16 +191,17 @@ describe('BackendService', () => {
   it('should get captcha', () => {
     // Arrange
     const captchaChallengeText = TestRandom.randomString(6, 'challenge-');
+    const captchaChallengeHint = TestRandom.randomString(7, 'hint-');
 
     // Act
     service.getCaptchaChallenge().subscribe(nextCallback, fail, complCallback);
 
     // Assert
     const req = httpTestingController.expectOne(apiUrl('?action=captcha'));
-    req.flush({ data: { captchatext: captchaChallengeText } } as GetCaptchaChallengeResponse);
+    req.flush({ data: { captchatext: captchaChallengeText, captchahint: captchaChallengeHint } } as GetCaptchaChallengeResponse);
 
     expect(nextCallback).toHaveBeenCalledTimes(1);
     expect(complCallback).toHaveBeenCalledTimes(1);
-    expect(nextCallback.calls.first().args[0]).toEqual(new Result(new CaptchaChallenge(captchaChallengeText, '')));
+    expect(nextCallback.calls.first().args[0]).toEqual(new Result(new CaptchaChallenge(captchaChallengeText, captchaChallengeHint)));
   });
 });
