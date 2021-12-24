@@ -8,12 +8,17 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { FrameComponent } from './frame.component';
+import { EMPTY } from 'rxjs';
+import { Router } from '@angular/router';
 
 describe('FrameComponent', () => {
   let component: FrameComponent;
   let fixture: ComponentFixture<FrameComponent>;
 
   beforeEach(waitForAsync(() => {
+    const router = jasmine.createSpyObj('Router', [], {
+      events: EMPTY
+    });
     TestBed.configureTestingModule({
       declarations: [FrameComponent],
       imports: [
@@ -24,6 +29,9 @@ describe('FrameComponent', () => {
         MatListModule,
         MatSidenavModule,
         MatToolbarModule,
+      ],
+      providers: [
+        { provide: Router, useValue: router}
       ]
     }).compileComponents();
   }));
