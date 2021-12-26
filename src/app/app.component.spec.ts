@@ -1,15 +1,23 @@
+import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
+  @Component({
+    selector: 'app-frame',
+    template: '<div>app-frame stub</div>',
+  })
+  class FrameStubComponent { }
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
         RouterTestingModule
       ],
       declarations: [
-        AppComponent
+        AppComponent,
+        FrameStubComponent,
       ],
     }).compileComponents();
   });
