@@ -14,6 +14,8 @@ import { FrameComponent } from './frame/frame.component';
 import { AboutComponent } from './pages/about/about.component';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { wReducer } from './store/w.reducer';
+import { WishlistEffects } from './store/w.effects';
 
 @NgModule({
   declarations: [AppComponent, FrameComponent, AboutComponent],
@@ -28,8 +30,8 @@ import { EffectsModule } from '@ngrx/effects';
     MatListModule,
     MatSidenavModule,
     MatToolbarModule,
-    StoreModule.forRoot({}, {}),
-    EffectsModule.forRoot([]),
+    StoreModule.forRoot({ wishlist: wReducer }),
+    EffectsModule.forRoot([WishlistEffects]),
   ],
   providers: [],
   bootstrap: [AppComponent],
