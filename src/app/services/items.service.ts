@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { EMPTY, Observable } from 'rxjs';
 import { AddItemResponse } from '../business/add-item-response';
-import { Item } from '../business/item';
+import { WishlistItem } from '../business/item';
 import { Result } from '../business/result';
 
 @Injectable({
@@ -10,7 +10,7 @@ import { Result } from '../business/result';
 export class ItemsService {
   constructor() {}
 
-  public getItems(): Observable<Item[]> {
+  public getItems(): Observable<WishlistItem[]> {
     return EMPTY;
   }
 
@@ -27,14 +27,14 @@ export class ItemsService {
   }
 
   public setItem(
-    item: Item,
+    item: WishlistItem,
     captchaAnswer: string
   ): Observable<Result<string>> {
     return EMPTY;
   }
 
   public addItem(
-    item: Item,
+    item: WishlistItem,
     captchaAnswer: string
   ): Observable<Result<AddItemResponse>> {
     return EMPTY;
