@@ -1,0 +1,10 @@
+{
+  "/service.php": {
+    "target": "https://ewus.de",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/service.php": "/wdemo/service.php"
+    }
+  }
+}
