@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { EMPTY, Observable } from 'rxjs';
 import { AddItemResponse } from '../business/add-item-response';
@@ -8,10 +9,10 @@ import { Result } from '../business/result';
   providedIn: 'root',
 })
 export class ItemsService {
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
   public getItems(): Observable<WishlistItem[]> {
-    return EMPTY;
+    return this.http.get<WishlistItem[]>('service.php');
   }
 
   public getReservationFlag(id: number): Observable<boolean> {
