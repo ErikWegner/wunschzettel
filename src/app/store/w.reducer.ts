@@ -1,10 +1,9 @@
 import { createReducer } from "@ngrx/store"
+import { WishlistState } from './w.state';
 
 export const initialState = {
+  categories: [],
   items: [],
-  isLoading: false,
-}
+};
 
-export const wReducer = createReducer(
-  initialState,
-);
+export const wReducer = createReducer<WishlistState>(initialState);

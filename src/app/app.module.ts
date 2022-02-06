@@ -15,12 +15,18 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FrameComponent } from './frame/frame.component';
 import { AboutComponent } from './pages/about/about.component';
+import { CategoriesPageComponent } from './pages/categories-page/categories-page.component';
+import { AppState } from './store/app.state';
 import { WishlistEffects } from './store/w.effects';
 import { wReducer } from './store/w.reducer';
-import { CategoriesPageComponent } from './pages/categories-page/categories-page.component';
 
 @NgModule({
-  declarations: [AppComponent, FrameComponent, AboutComponent, CategoriesPageComponent],
+  declarations: [
+    AppComponent,
+    FrameComponent,
+    AboutComponent,
+    CategoriesPageComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -32,7 +38,7 @@ import { CategoriesPageComponent } from './pages/categories-page/categories-page
     MatListModule,
     MatSidenavModule,
     MatToolbarModule,
-    StoreModule.forRoot({ wishlist: wReducer }),
+    StoreModule.forRoot<AppState>({ wishlist: wReducer }),
     EffectsModule.forRoot([WishlistEffects]),
     // import HttpClientModule after BrowserModule.
     HttpClientModule,

@@ -11,8 +11,7 @@ describe('AboutComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [AboutComponent],
       imports: [MatCardModule],
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {
