@@ -6,12 +6,10 @@ import {
 
 // Other imports
 import { TestBed } from '@angular/core/testing';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 import { ItemsService } from './items.service';
-import { WishlistEffects } from '../store/w.effects';
 import { ListBuilder } from 'testing/list-builder';
-import { WishlistItem } from '../business/item';
 import { WishlistItemBuilder } from 'testing/item.builder';
 
 describe('ItemsService', () => {
@@ -57,7 +55,7 @@ describe('ItemsService', () => {
     service.getItems().subscribe(subscribeCallbacks);
 
     // Assert
-    const req = httpTestingController.expectOne('service.php');
+    const req = httpTestingController.expectOne('service.php?action=list');
     expect(req.request.method).toEqual('GET');
     req?.flush(items);
     expect(subscribeCallbacks.next).toHaveBeenCalledOnceWith(items);

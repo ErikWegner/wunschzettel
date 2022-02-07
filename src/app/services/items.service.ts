@@ -12,7 +12,7 @@ export class ItemsService {
   constructor(private http: HttpClient) {}
 
   public getItems(): Observable<WishlistItem[]> {
-    return this.http.get<WishlistItem[]>('service.php');
+    return this.http.get<WishlistItem[]>('service.php?action=list');
   }
 
   public getReservationFlag(id: number): Observable<boolean> {
