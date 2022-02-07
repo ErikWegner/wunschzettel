@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { EMPTY, Observable } from 'rxjs';
+import { EMPTY, map, Observable } from 'rxjs';
 import { AddItemResponse } from '../business/add-item-response';
 import { WishlistItem } from '../business/item';
 import { Result } from '../business/result';
@@ -12,7 +12,9 @@ export class ItemsService {
   constructor(private http: HttpClient) {}
 
   public getItems(): Observable<WishlistItem[]> {
-    return this.http.get<WishlistItem[]>('service.php?action=list');
+    return this.http
+      .get<{ data: WishlistItem[] }>('service.php?action=list')
+      .pipe(map((d) => d.data));
   }
 
   public getReservationFlag(id: number): Observable<boolean> {

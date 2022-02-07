@@ -57,7 +57,7 @@ describe('ItemsService', () => {
     // Assert
     const req = httpTestingController.expectOne('service.php?action=list');
     expect(req.request.method).toEqual('GET');
-    req?.flush(items);
+    req?.flush({ data: items });
     expect(subscribeCallbacks.next).toHaveBeenCalledOnceWith(items);
     expect(subscribeCallbacks.error).not.toHaveBeenCalled();
     expect(subscribeCallbacks.complete).toHaveBeenCalledTimes(1);

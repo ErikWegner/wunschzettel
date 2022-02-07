@@ -9,17 +9,27 @@ export class WishlistItemBuilder {
   shopping_url = randomString(8, 'shop ');
   category = randomString(8, 'category ');
 
-  static default() {
-    return new WishlistItemBuilder().build();
+  static n() {
+    return new WishlistItemBuilder();
   }
+
+  static default() {
+    return WishlistItemBuilder.n().build();
+  }
+
+  withCategory(category: string) {
+    this.category = category;
+    return this;
+  }
+
   build(): WishlistItem {
     return {
       id: this.id,
-      title: this.title,
-      description: this.description,
-      image_url: this.image_url,
-      shopping_url: this.shopping_url,
-      category: this.category,
+      Title: this.title,
+      Description: this.description,
+      ImgageUrl: this.image_url,
+      BuyUrl: this.shopping_url,
+      Category: this.category,
     };
   }
 }
