@@ -19,6 +19,8 @@ import { CategoriesPageComponent } from './pages/categories-page/categories-page
 import { AppState } from './store/app.state';
 import { WishlistEffects } from './store/w.effects';
 import { wReducer } from './store/w.reducer';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -42,6 +44,7 @@ import { wReducer } from './store/w.reducer';
     EffectsModule.forRoot([WishlistEffects]),
     // import HttpClientModule after BrowserModule.
     HttpClientModule,
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
   ],
   providers: [],
   bootstrap: [AppComponent],
