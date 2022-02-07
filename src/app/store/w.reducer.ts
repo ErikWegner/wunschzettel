@@ -20,7 +20,8 @@ export const wReducer = createReducer<WishlistState>(
             a.push(c);
           }
           return a;
-        }, [] as string[]),
+        }, [] as string[])
+        .sort(),
     })
   )
 );
