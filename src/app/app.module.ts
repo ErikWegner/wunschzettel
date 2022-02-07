@@ -11,16 +11,17 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FrameComponent } from './frame/frame.component';
 import { AboutComponent } from './pages/about/about.component';
 import { CategoriesPageComponent } from './pages/categories-page/categories-page.component';
+import { agReducer } from './store/a.reducer';
 import { AppState } from './store/app.state';
 import { WishlistEffects } from './store/w.effects';
 import { wReducer } from './store/w.reducer';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -40,11 +41,14 @@ import { environment } from '../environments/environment';
     MatListModule,
     MatSidenavModule,
     MatToolbarModule,
-    StoreModule.forRoot<AppState>({ wishlist: wReducer }),
+    StoreModule.forRoot<AppState>({ ag: agReducer, wishlist: wReducer }),
     EffectsModule.forRoot([WishlistEffects]),
     // import HttpClientModule after BrowserModule.
     HttpClientModule,
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.production,
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent],
