@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { selectCategories } from 'src/app/store/w.selectors';
 
@@ -7,10 +7,8 @@ import { selectCategories } from 'src/app/store/w.selectors';
   templateUrl: './categories-page.component.html',
   styleUrls: ['./categories-page.component.scss'],
 })
-export class CategoriesPageComponent implements OnInit {
+export class CategoriesPageComponent {
   categories$ = this.store.select(selectCategories);
 
   constructor(private store: Store) {}
-
-  ngOnInit(): void {}
 }
