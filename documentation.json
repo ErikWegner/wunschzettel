@@ -1,0 +1,2976 @@
+{
+    "pipes": [],
+    "interfaces": [
+        {
+            "name": "AddItemResponse",
+            "id": "interface-AddItemResponse-2b6489df8d4409f7cca76bca2f8dcaba7f292ea8d46efe19352d0c48fa35eb5e814e980c1eca634a432c431f8481a19b60c42eaec5bca15bf2739e9fda915d2a",
+            "file": "src/app/business/add-item-response.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "export interface AddItemResponse {\n  message: string;\n  id?: number;\n}\n",
+            "properties": [
+                {
+                    "name": "id",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "optional": true,
+                    "description": "",
+                    "line": 3
+                },
+                {
+                    "name": "message",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 2
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 165,
+            "methods": []
+        },
+        {
+            "name": "AppGlobalState",
+            "id": "interface-AppGlobalState-460ed15f14f9efec08dcceb05b69ee3469475f8f61070d2f59f492ee25c63790559d22b0ab8e5065e9f18abb33911faee4afb8a4cae5ed4ec5b56c5d176a927c",
+            "file": "src/app/store/a.state.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "export interface AppGlobalState {\n  loading: boolean;\n}\n",
+            "properties": [
+                {
+                    "name": "loading",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "optional": false,
+                    "description": "",
+                    "line": 2
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 165,
+            "methods": []
+        },
+        {
+            "name": "AppState",
+            "id": "interface-AppState-238f8c3b637cc225c3f7b9283137e1cea6f73bb2d863489a86a7a148ee2b76650b85bf51400674d15d890661edf7a1973711ac1ee43c7253177e8fd33758f381",
+            "file": "src/app/store/app.state.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "import { AppGlobalState } from './a.state';\nimport { WishlistState } from './w.state';\n\nexport interface AppState {\n  ag: AppGlobalState;\n  wishlist: WishlistState;\n}\n",
+            "properties": [
+                {
+                    "name": "ag",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "AppGlobalState",
+                    "optional": false,
+                    "description": "",
+                    "line": 5
+                },
+                {
+                    "name": "wishlist",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "WishlistState",
+                    "optional": false,
+                    "description": "",
+                    "line": 6
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 165,
+            "methods": []
+        },
+        {
+            "name": "User",
+            "id": "interface-User-9c7e5f1bbbab702cb032307d130876cb68969b0cd4eedef32a0c8cad8081a54e5f8f577ed6ad4539c1b99a1d246cb34031d198c2ea8eba440e64e91b14f01fdc",
+            "file": "src/stories/User.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "export interface User {}\n",
+            "properties": [],
+            "indexSignatures": [],
+            "methods": []
+        },
+        {
+            "name": "WishlistItem",
+            "id": "interface-WishlistItem-fccc03d73c025785804af7d1ecb3fdf6bb6da6f5e6c356ee5376e1690a82d28d0f7f2b559b686411cc47c8913789ccf94e3f79ac6171b8ccfa18311df226b99a",
+            "file": "src/app/business/item.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "export interface WishlistItem {\n  id: number;\n  Title: string;\n  Description: string;\n  ImgageUrl: string;\n  BuyUrl: string;\n  Category: string;\n};\n",
+            "properties": [
+                {
+                    "name": "BuyUrl",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 6
+                },
+                {
+                    "name": "Category",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 7
+                },
+                {
+                    "name": "Description",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 4
+                },
+                {
+                    "name": "id",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "optional": false,
+                    "description": "",
+                    "line": 2
+                },
+                {
+                    "name": "ImgageUrl",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 5
+                },
+                {
+                    "name": "Title",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 3
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 165,
+            "methods": []
+        },
+        {
+            "name": "WishlistState",
+            "id": "interface-WishlistState-a832e7db2655a2614e0bb0697d3e1a48af88210921bfdb269d31bd1778f78ce8d0d88a475d46be1ce443f3caeb2f85cd9f1158019a9c074c7e102fdd5032a91d",
+            "file": "src/app/store/w.state.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "import { WishlistItem } from '../business/item';\n\nexport interface WishlistState {\n  categories: string[];\n  items: WishlistItem[];\n}\n",
+            "properties": [
+                {
+                    "name": "categories",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 4
+                },
+                {
+                    "name": "items",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "WishlistItem[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 5
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 165,
+            "methods": []
+        }
+    ],
+    "injectables": [
+        {
+            "name": "ItemsService",
+            "id": "injectable-ItemsService-a002875ab0192a35eab6a22f8dff18922bcf79d8977619ac77c4dadab199e96c4bf52f127ee416ceb57dc00efd327c7bf99b4eaeff077c9075678094f482beef",
+            "file": "src/app/services/items.service.ts",
+            "properties": [],
+            "methods": [
+                {
+                    "name": "addItem",
+                    "args": [
+                        {
+                            "name": "item",
+                            "type": "WishlistItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "captchaAnswer",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "Observable<Result<AddItemResponse>>",
+                    "typeParameters": [],
+                    "line": 39,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "item",
+                            "type": "WishlistItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "captchaAnswer",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "deleteItem",
+                    "args": [
+                        {
+                            "name": "id",
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "captchaAnswer",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "Observable<Result<string>>",
+                    "typeParameters": [],
+                    "line": 46,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "id",
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "captchaAnswer",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "getCaptchaChallenge",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "Observable<Result<string>>",
+                    "typeParameters": [],
+                    "line": 53,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "getItems",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "Observable<WishlistItem[]>",
+                    "typeParameters": [],
+                    "line": 14,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "getReservationFlag",
+                    "args": [
+                        {
+                            "name": "id",
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "Observable<boolean>",
+                    "typeParameters": [],
+                    "line": 20,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "id",
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "setItem",
+                    "args": [
+                        {
+                            "name": "item",
+                            "type": "WishlistItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "captchaAnswer",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "Observable<Result<string>>",
+                    "typeParameters": [],
+                    "line": 32,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "item",
+                            "type": "WishlistItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "captchaAnswer",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "setReservationFlag",
+                    "args": [
+                        {
+                            "name": "id",
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "flag",
+                            "type": "boolean",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "captchaAnswer",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "Observable<Result<string>>",
+                    "typeParameters": [],
+                    "line": 24,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "id",
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "flag",
+                            "type": "boolean",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "captchaAnswer",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import { HttpClient } from '@angular/common/http';\nimport { Injectable } from '@angular/core';\nimport { EMPTY, map, Observable } from 'rxjs';\nimport { AddItemResponse } from '../business/add-item-response';\nimport { WishlistItem } from '../business/item';\nimport { Result } from '../business/result';\n\n@Injectable({\n  providedIn: 'root',\n})\nexport class ItemsService {\n  constructor(private http: HttpClient) {}\n\n  public getItems(): Observable<WishlistItem[]> {\n    return this.http\n      .get<{ data: WishlistItem[] }>('service.php?action=list')\n      .pipe(map((d) => d.data));\n  }\n\n  public getReservationFlag(id: number): Observable<boolean> {\n    return EMPTY;\n  }\n\n  public setReservationFlag(\n    id: number,\n    flag: boolean,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public setItem(\n    item: WishlistItem,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public addItem(\n    item: WishlistItem,\n    captchaAnswer: string\n  ): Observable<Result<AddItemResponse>> {\n    return EMPTY;\n  }\n\n  public deleteItem(\n    id: number,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public getCaptchaChallenge(): Observable<Result<string>> {\n    return EMPTY;\n  }\n}\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "http",
+                        "type": "HttpClient",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 11,
+                "jsdoctags": [
+                    {
+                        "name": "http",
+                        "type": "HttpClient",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "type": "injectable"
+        },
+        {
+            "name": "WishlistEffects",
+            "id": "injectable-WishlistEffects-29ad81d6589218cc79f8a96c1254a06d505d26d6dfaa00a16fd4cf42f3fc5c0b979aed60c05eee03beaed05ef94bce2537a24b89892b5815632795be10d7dc12",
+            "file": "src/app/store/w.effects.ts",
+            "properties": [
+                {
+                    "name": "getItems$",
+                    "defaultValue": "createEffect(() => {\n    return this.actions$.pipe(\n      ofType(getItems),\n      switchMap((_) =>\n        this.itemsService\n          .getItems()\n          .pipe(map((items) => itemsLoaded({ items })))\n      )\n    );\n  })",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 16
+                },
+                {
+                    "name": "init$",
+                    "defaultValue": "createEffect(() => {\n    return this.actions$.pipe(\n      ofType(ROOT_EFFECTS_INIT),\n      map((_) => getItems())\n    );\n  })",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 9
+                }
+            ],
+            "methods": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import { Injectable } from \"@angular/core\";\nimport { Actions, createEffect, ofType, ROOT_EFFECTS_INIT } from \"@ngrx/effects\";\nimport { map, switchMap } from 'rxjs';\nimport { ItemsService } from '../services/items.service';\nimport { getItems, itemsLoaded } from './w.actions';\n\n@Injectable()\nexport class WishlistEffects {\n  init$ = createEffect(() => {\n    return this.actions$.pipe(\n      ofType(ROOT_EFFECTS_INIT),\n      map((_) => getItems())\n    );\n  });\n\n  getItems$ = createEffect(() => {\n    return this.actions$.pipe(\n      ofType(getItems),\n      switchMap((_) =>\n        this.itemsService\n          .getItems()\n          .pipe(map((items) => itemsLoaded({ items })))\n      )\n    );\n  });\n\n  constructor(private actions$: Actions, private itemsService: ItemsService) {}\n}\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "actions$",
+                        "type": "Actions",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "itemsService",
+                        "type": "ItemsService",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 25,
+                "jsdoctags": [
+                    {
+                        "name": "actions$",
+                        "type": "Actions",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "itemsService",
+                        "type": "ItemsService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "type": "injectable"
+        }
+    ],
+    "guards": [],
+    "interceptors": [],
+    "classes": [
+        {
+            "name": "AppStateBuilder",
+            "id": "class-AppStateBuilder-20febe9113d7329b646a1e3a81f3c46d4f002b8d1bf0b67d86877fa9ac0915b4699984c7610f3cde9f167561687a7eaeaa80e9a21ee4874ee5816a1004980cb6",
+            "file": "testing/app.state.builder.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "class",
+            "sourceCode": "import { AppGlobalState } from 'src/app/store/a.state';\nimport { AppState } from 'src/app/store/app.state';\nimport { WishlistState } from 'src/app/store/w.state';\n\nexport const appStateStub = (): AppStateBuilder => new AppStateBuilder();\n\nexport class AppStateBuilder implements AppState {\n  ag: AppGlobalState = {\n    loading: false,\n  };\n  wishlist: WishlistState = {\n    categories: [],\n    items: [],\n  };\n}\n",
+            "properties": [
+                {
+                    "name": "ag",
+                    "defaultValue": "{\n    loading: false,\n  }",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "AppGlobalState",
+                    "optional": false,
+                    "description": "",
+                    "line": 8
+                },
+                {
+                    "name": "wishlist",
+                    "defaultValue": "{\n    categories: [],\n    items: [],\n  }",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "WishlistState",
+                    "optional": false,
+                    "description": "",
+                    "line": 11
+                }
+            ],
+            "methods": [],
+            "indexSignatures": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "hostBindings": [],
+            "hostListeners": [],
+            "implements": [
+                "AppState"
+            ]
+        },
+        {
+            "name": "ListBuilder",
+            "id": "class-ListBuilder-13ae2b07584874bdcee222aca169324453cea782173e22094bdc836c558d2cfe5ae1daac41c97b9912ca1b8064c91ffcd7da23a52aef03d54f9886343b67beb4",
+            "file": "testing/list-builder.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "class",
+            "sourceCode": "export class ListBuilder<T> {\n  private count = 1;\n\n  static with<T>(generator: (index: number) => T): ListBuilder<T> {\n    return new ListBuilder(generator);\n  }\n\n  constructor(private generator: (index: number) => T) { }\n\n  public items(count: number): ListBuilder<T> {\n    this.count = count;\n    return this;\n  }\n\n  public build(): T[] {\n    const r = [];\n    for (let i = 0; i < this.count; i++) {\n      r.push(this.generator(i));\n    }\n\n    return r;\n  }\n}\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "generator",
+                        "type": "function",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "function": [
+                            {
+                                "name": "index",
+                                "type": "number",
+                                "deprecated": false,
+                                "deprecationMessage": ""
+                            }
+                        ]
+                    }
+                ],
+                "line": 6,
+                "jsdoctags": [
+                    {
+                        "name": "generator",
+                        "type": "function",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "function": [
+                            {
+                                "name": "index",
+                                "type": "number",
+                                "deprecated": false,
+                                "deprecationMessage": ""
+                            }
+                        ],
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "properties": [
+                {
+                    "name": "count",
+                    "defaultValue": "1",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "optional": false,
+                    "description": "",
+                    "line": 2,
+                    "modifierKind": [
+                        121
+                    ]
+                }
+            ],
+            "methods": [
+                {
+                    "name": "build",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "T[]",
+                    "typeParameters": [],
+                    "line": 15,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "items",
+                    "args": [
+                        {
+                            "name": "count",
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "ListBuilder<T>",
+                    "typeParameters": [],
+                    "line": 10,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "count",
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "with",
+                    "args": [
+                        {
+                            "name": "generator",
+                            "type": "function",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "function": [
+                                {
+                                    "name": "index",
+                                    "type": "number",
+                                    "deprecated": false,
+                                    "deprecationMessage": ""
+                                }
+                            ]
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "ListBuilder<T>",
+                    "typeParameters": [
+                        "T"
+                    ],
+                    "line": 4,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        124
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "generator",
+                            "type": "function",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "function": [
+                                {
+                                    "name": "index",
+                                    "type": "number",
+                                    "deprecated": false,
+                                    "deprecationMessage": ""
+                                }
+                            ],
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "indexSignatures": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "hostBindings": [],
+            "hostListeners": []
+        },
+        {
+            "name": "Result",
+            "id": "class-Result-637567a3846f18f466b8ccdbba049c4c3f2a99fe67809fb7a50c70069a5e7c1a9ae1bf8d05120142acb38be17c36b919b4288ca168cd2a7f57ce233ed7db7f36",
+            "file": "src/app/business/result.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "class",
+            "sourceCode": "export class Result<T> {\n  constructor(public readonly data: T, public readonly success = true) {}\n}\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "data",
+                        "type": "T",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "success",
+                        "type": "",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "defaultValue": "true"
+                    }
+                ],
+                "line": 1,
+                "jsdoctags": [
+                    {
+                        "name": "data",
+                        "type": "T",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "success",
+                        "type": "",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "defaultValue": "true",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "properties": [
+                {
+                    "name": "data",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "T",
+                    "optional": false,
+                    "description": "",
+                    "line": 2,
+                    "modifierKind": [
+                        123,
+                        144
+                    ]
+                },
+                {
+                    "name": "success",
+                    "defaultValue": "true",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 2,
+                    "modifierKind": [
+                        123,
+                        144
+                    ]
+                }
+            ],
+            "methods": [],
+            "indexSignatures": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "hostBindings": [],
+            "hostListeners": []
+        },
+        {
+            "name": "WishlistItemBuilder",
+            "id": "class-WishlistItemBuilder-e4835e3a7ae44fdb6cf587061f7173280d64e9eda4a9abd350a4fcabad40d339f7a5f73d2618874cfab8a5d62fdf61ab04b2e70e54276c3fd7afe8b6a609ddd7",
+            "file": "testing/item.builder.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "class",
+            "sourceCode": "import { WishlistItem } from 'src/app/business/item';\nimport { randomNumber, randomString } from './utils';\n\nexport class WishlistItemBuilder {\n  id = randomNumber(900);\n  title = randomString(8, 'title ');\n  description = randomString(30, 'description ');\n  image_url = randomString(8, 'image ');\n  shopping_url = randomString(8, 'shop ');\n  category = randomString(8, 'category ');\n\n  static n() {\n    return new WishlistItemBuilder();\n  }\n\n  static default() {\n    return WishlistItemBuilder.n().build();\n  }\n\n  withCategory(category: string) {\n    this.category = category;\n    return this;\n  }\n\n  build(): WishlistItem {\n    return {\n      id: this.id,\n      Title: this.title,\n      Description: this.description,\n      ImgageUrl: this.image_url,\n      BuyUrl: this.shopping_url,\n      Category: this.category,\n    };\n  }\n}\n",
+            "properties": [
+                {
+                    "name": "category",
+                    "defaultValue": "randomString(8, 'category ')",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 10
+                },
+                {
+                    "name": "description",
+                    "defaultValue": "randomString(30, 'description ')",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 7
+                },
+                {
+                    "name": "id",
+                    "defaultValue": "randomNumber(900)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 5
+                },
+                {
+                    "name": "image_url",
+                    "defaultValue": "randomString(8, 'image ')",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 8
+                },
+                {
+                    "name": "shopping_url",
+                    "defaultValue": "randomString(8, 'shop ')",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 9
+                },
+                {
+                    "name": "title",
+                    "defaultValue": "randomString(8, 'title ')",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 6
+                }
+            ],
+            "methods": [
+                {
+                    "name": "build",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "WishlistItem",
+                    "typeParameters": [],
+                    "line": 25,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "default",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "WishlistItem",
+                    "typeParameters": [],
+                    "line": 16,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        124
+                    ]
+                },
+                {
+                    "name": "n",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "WishlistItemBuilder",
+                    "typeParameters": [],
+                    "line": 12,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        124
+                    ]
+                },
+                {
+                    "name": "withCategory",
+                    "args": [
+                        {
+                            "name": "category",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "this",
+                    "typeParameters": [],
+                    "line": 20,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "category",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "indexSignatures": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "hostBindings": [],
+            "hostListeners": []
+        }
+    ],
+    "directives": [],
+    "components": [
+        {
+            "name": "AboutComponent",
+            "id": "component-AboutComponent-8759f3e1be85290a1fc5a2da05afcd744728c88b7b996b479216dbbddbbf71c8098f290607f34c2ab3d946c1072be6704729868928e064cfa86db29b8bb09f16",
+            "file": "src/app/pages/about/about.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-about",
+            "styleUrls": [
+                "./about.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./about.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component } from '@angular/core';\n\n@Component({\n  selector: 'app-about',\n  templateUrl: './about.component.html',\n  styleUrls: ['./about.component.scss'],\n})\nexport class AboutComponent {\n  constructor() {}\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "",
+                    "styleUrl": "./about.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [],
+                "line": 8
+            },
+            "templateData": "<mat-card>\n  <mat-card-header>\n    <mat-card-title>Wunschzettel</mat-card-title>\n  </mat-card-header>\n  <mat-card-content>\n    <p>\n      Version 28\n    </p>\n    <p>\n      powered by<br>\n      <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"64\" height=\"64\">\n        <g fill=\"#2e2e2e\">\n          <path\n            d=\"M12.159 19.592c-2.476-2.171-4.574-3.977-4.663-4.012-.09-.036-1.496.103-3.127.308-1.63.205-3.114.373-3.297.373-.33 0-.335-.023-.722-3.65-.213-2.007-.37-3.667-.348-3.688.076-.073 8.792-1.23 9.267-1.23.37 0 .674.177 1.406.82.513.452 3.073 2.678 5.69 4.948 2.616 2.27 4.793 4.187 4.837 4.26.06.1-3.255 4.366-4.375 5.628-.135.152-1.058-.59-4.668-3.757zM28.73 14.5a583.493 583.493 0 0 1-4.583-4.434l-2.41-2.36-4.042-.102-4.043-.102V5.15c0-1.294.042-2.959.093-3.701L13.838.1l5.617.07 5.616.07.3.422c.457.643 5.453 5.667 8.074 8.12 1.28 1.198 2.333 2.219 2.339 2.269.009.073-3.37 3.91-4.565 5.184l-.316.337-2.173-2.073zM48.055 12.757a601.664 601.664 0 0 1-3.94-4.494l-.352-.426-2.962-.216a312.396 312.396 0 0 0-3.107-.217c-.136-.002.29-7.242.435-7.392.11-.114 9.023.6 9.187.736.25.209 9.557 10.856 9.6 10.983.031.093-3.737 3.76-4.893 4.762l-.382.331-3.586-4.067zM34.244 22.456c-3.137.01-5.328.245-7.968.859-6.78 1.575-13.096 5.623-16.91 10.842-4.482 6.132-5.377 13.467-2.415 19.828 1.66 3.567 3.525 5.58 6.685 7.217 2.525 1.309 7.143 2.411 11.51 2.749 1.789.138 10.116-.038 11.918-.253C45.24 62.696 55.509 60.338 64 56.86c.001-.123-2.248-6.775-2.323-6.87-.017-.021-1.231.382-2.697.896-6.467 2.267-12.933 3.934-18.91 4.877-10.646 1.679-19.683.849-24.53-2.255-1.068-.684-1.393-1.096-2.225-2.797-.855-1.748-1.116-3.003-1.034-4.96.11-2.631.85-4.437 2.922-7.114 2.947-3.806 6.99-6.485 11.737-7.777 4.773-1.3 10.613-1.223 16.042.212 2.388.631 3.572 1.137 4.688 2.005.597.463 1.63 1.724 1.504 1.835-.028.024-6.746 1.894-14.93 4.153a6779.731 6779.731 0 0 0-14.902 4.121c-.011.01.402 1.655.918 3.66l.937 3.644 16.854-4.765c9.27-2.621 17.373-4.88 18.009-5.017l1.154-.25.115-.95c.222-1.86.129-4.194-.218-5.455-1.373-4.992-6.14-8.808-13.066-10.457-3.408-.811-6.32-1.15-9.801-1.14zM58.796 53.54l1.258 4.012-.46.152-.137-.433a1.062 1.062 0 0 1-.249.508c-.12.131-.283.23-.49.299a1.032 1.032 0 0 1-.96-.141c-.3-.208-.521-.54-.664-.994-.142-.454-.15-.854-.025-1.203.127-.35.359-.583.698-.695.207-.07.395-.084.569-.05a.983.983 0 0 1 .488.26l-.488-1.563.46-.152zm2.78.244c.217-.012.42.034.608.14.303.17.525.467.67.894l.078.23-2.1.755c.13.317.306.53.532.64.228.108.495.106.798 0 .176-.063.336-.143.485-.246.151-.104.292-.23.424-.377l.15.445c-.139.13-.289.246-.448.345a2.65 2.65 0 0 1-.505.244c-.444.16-.84.153-1.19-.02s-.6-.488-.754-.942c-.159-.469-.16-.884-.008-1.246.153-.365.438-.623.856-.773.14-.05.274-.079.404-.086zm-.02.43c-.078 0-.16.022-.245.053-.255.09-.434.238-.538.442-.102.203-.12.446-.053.724l1.632-.589c-.09-.256-.232-.436-.421-.54a.684.684 0 0 0-.374-.089zm-3.287 1.15a.842.842 0 0 0-.265.043.715.715 0 0 0-.483.488c-.076.244-.06.541.05.89.11.35.265.6.466.753a.694.694 0 0 0 .67.106.72.72 0 0 0 .482-.488c.078-.246.062-.545-.047-.894-.11-.349-.267-.598-.469-.75a.7.7 0 0 0-.404-.149zm-4.058.901c.075 0 .149 0 .22.01l.125.454a1.836 1.836 0 0 0-.909.041c-.231.068-.394.154-.49.261a.384.384 0 0 0-.082.38c.031.11.098.186.198.226.1.038.282.05.547.034l.17-.01c.351-.024.614.01.79.104.176.09.296.256.362.494a.805.805 0 0 1-.137.735c-.163.219-.427.382-.792.488a2.688 2.688 0 0 1-.488.092 3.832 3.832 0 0 1-.555.017l-.136-.496c.197.042.386.062.566.06.18 0 .35-.03.513-.078.22-.064.377-.15.474-.262a.396.396 0 0 0 .087-.382c-.036-.13-.107-.217-.212-.261-.104-.045-.308-.057-.614-.037l-.173.01c-.306.022-.542-.012-.706-.103-.164-.093-.275-.254-.337-.48-.076-.275-.042-.513.106-.718.148-.205.397-.358.745-.46.172-.05.337-.085.496-.103.08-.01.156-.013.232-.014zm-2.508.707l.737 2.938-.469.126-.114-.45c-.07.208-.167.374-.296.502a1.083 1.083 0 0 1-.49.267c-.329.087-.604.047-.826-.118-.223-.164-.385-.448-.486-.853l-.446-1.777.469-.127.44 1.764c.07.278.175.47.315.583.14.11.317.139.528.083.253-.067.43-.203.535-.408.106-.206.125-.451.053-.738l-.418-1.669.468-.123zm-2.956.79l-.114 3.133-.558.126-1.144-2.286-.097 2.57-.558.127-1.392-2.789.474-.109 1.088 2.177.092-2.447.555-.126 1.09 2.177.09-2.447.474-.106zm7.762.227l.192.657-.53.167-.195-.66.533-.164zm-13.022.867c.27 0 .51.079.714.241.273.215.45.544.53.988l.042.241-2.19.414c.081.334.225.574.432.718.21.142.471.183.787.124.183-.035.356-.091.519-.17.164-.079.324-.183.477-.307l.08.465a2.865 2.865 0 0 1-.493.27c-.173.073-.351.126-.536.16-.462.088-.853.02-1.174-.206-.318-.226-.52-.576-.605-1.048-.087-.489-.029-.9.176-1.235.205-.337.527-.547.962-.63a1.52 1.52 0 0 1 .279-.025zm-.03.425c-.055 0-.112.01-.171.017-.266.05-.464.168-.597.353-.131.185-.185.419-.159.704l1.699-.325c-.052-.267-.163-.467-.335-.6a.69.69 0 0 0-.438-.15z\" />\n          <path\n            d=\"M42.564 60.13c0-.25.543-.735.825-.735.29 0 .81.513.63.62-.283.17-1.455.261-1.455.115zM58.114 57.43c-.17-.123-.385-.483-.477-.8-.147-.504-.135-.61.094-.872.335-.382.738-.315 1.097.182.36.5.372 1.252.022 1.515-.328.247-.36.246-.736-.026zM60.781 55.023c.062-.447.73-.842 1.06-.628.41.266.355.443-.198.628-.293.098-.617.215-.72.259-.132.055-.175-.022-.142-.26z\" />\n        </g>\n        <path d=\"M326.25 25.7c103.294 4.702 242.479-14.123 417.625-77.25\"\n          style=\"line-height:normal;-inkscape-font-specification:Sans;text-indent:0;text-align:start;text-decoration-line:none;text-transform:none;block-progression:tb;marker:none\"\n          color=\"#000\" font-weight=\"400\" font-family=\"Sans\" overflow=\"visible\" fill=\"none\" />\n      </svg>\n    </p>\n  </mat-card-content>\n  <mat-card-actions>\n    <a mat-button routerLink=\"/\">Schließen</a>\n  </mat-card-actions>\n</mat-card>\n"
+        },
+        {
+            "name": "AppComponent",
+            "id": "component-AppComponent-cd078729ab31a045bc3b31599a21092d2a6806a22f0c6f2fbafe4a6585410ccbf88ee94df513110401b44e841535f0d5cca4f229173efaadbb3030bca5ed6923",
+            "file": "src/app/app.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-root",
+            "styleUrls": [
+                "./app.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./app.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component } from '@angular/core';\n\n@Component({\n  selector: 'app-root',\n  templateUrl: './app.component.html',\n  styleUrls: ['./app.component.scss']\n})\nexport class AppComponent { }\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "",
+                    "styleUrl": "./app.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "templateData": "<app-frame></app-frame>\n"
+        },
+        {
+            "name": "ButtonComponent",
+            "id": "component-ButtonComponent-4ef205c97a334c309aa4001c8ab4a6d9571dcae18d0e85aaf0d367467ab5d3a9f13ab3573726f1fcb409bc9b49894dadfb80b1bbe1b6ba7041455ad9d4922004",
+            "file": "src/stories/button.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "storybook-button",
+            "styleUrls": [
+                "./button.css"
+            ],
+            "styles": [],
+            "template": "<button   type=\"button\"\n   (click)=\"onClick.emit($event)\"\n   [ngClass]=\"classes\"\n   [ngStyle]=\"{ 'background-color': backgroundColor }\"\n >\n   {{ label }}\n </button>",
+            "templateUrl": [],
+            "viewProviders": [],
+            "inputsClass": [
+                {
+                    "name": "backgroundColor",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nWhat background color to use\n",
+                    "description": "<p>What background color to use</p>\n",
+                    "line": 26,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "label",
+                    "defaultValue": "'Button'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "pos": 711,
+                            "end": 724,
+                            "flags": 4227072,
+                            "modifierFlagsCache": 0,
+                            "transformFlags": 0,
+                            "kind": 325,
+                            "tagName": {
+                                "pos": 712,
+                                "end": 720,
+                                "flags": 4227072,
+                                "modifierFlagsCache": 0,
+                                "transformFlags": 0,
+                                "kind": 79,
+                                "escapedText": "required"
+                            },
+                            "comment": ""
+                        }
+                    ],
+                    "rawdescription": "\n\nButton contents\n\n",
+                    "description": "<p>Button contents</p>\n",
+                    "line": 40,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "primary",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nIs this the principal call to action on the page?\n",
+                    "description": "<p>Is this the principal call to action on the page?</p>\n",
+                    "line": 20,
+                    "type": "boolean",
+                    "decorators": []
+                },
+                {
+                    "name": "size",
+                    "defaultValue": "'medium'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nHow large should the button be?\n",
+                    "description": "<p>How large should the button be?</p>\n",
+                    "line": 32,
+                    "type": "\"small\" | \"medium\" | \"large\"",
+                    "decorators": []
+                }
+            ],
+            "outputsClass": [
+                {
+                    "name": "onClick",
+                    "defaultValue": "new EventEmitter<Event>()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nOptional click handler\n",
+                    "description": "<p>Optional click handler</p>\n",
+                    "line": 46,
+                    "type": "EventEmitter"
+                }
+            ],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, Input, Output, EventEmitter } from '@angular/core';\n\n@Component({\n  selector: 'storybook-button',\n  template: ` <button\n    type=\"button\"\n    (click)=\"onClick.emit($event)\"\n    [ngClass]=\"classes\"\n    [ngStyle]=\"{ 'background-color': backgroundColor }\"\n  >\n    {{ label }}\n  </button>`,\n  styleUrls: ['./button.css'],\n})\nexport default class ButtonComponent {\n  /**\n   * Is this the principal call to action on the page?\n   */\n  @Input()\n  primary = false;\n\n  /**\n   * What background color to use\n   */\n  @Input()\n  backgroundColor?: string;\n\n  /**\n   * How large should the button be?\n   */\n  @Input()\n  size: 'small' | 'medium' | 'large' = 'medium';\n\n  /**\n   * Button contents\n   *\n   * @required\n   */\n  @Input()\n  label = 'Button';\n\n  /**\n   * Optional click handler\n   */\n  @Output()\n  onClick = new EventEmitter<Event>();\n\n  public get classes(): string[] {\n    const mode = this.primary ? 'storybook-button--primary' : 'storybook-button--secondary';\n\n    return ['storybook-button', `storybook-button--${this.size}`, mode];\n  }\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": ".storybook-button {\n  font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;\n  font-weight: 700;\n  border: 0;\n  border-radius: 3em;\n  cursor: pointer;\n  display: inline-block;\n  line-height: 1;\n}\n.storybook-button--primary {\n  color: white;\n  background-color: #1ea7fd;\n}\n.storybook-button--secondary {\n  color: #333;\n  background-color: transparent;\n  box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 0px 1px inset;\n}\n.storybook-button--small {\n  font-size: 12px;\n  padding: 10px 16px;\n}\n.storybook-button--medium {\n  font-size: 14px;\n  padding: 11px 20px;\n}\n.storybook-button--large {\n  font-size: 16px;\n  padding: 12px 24px;\n}\n",
+                    "styleUrl": "./button.css"
+                }
+            ],
+            "stylesData": "",
+            "accessors": {
+                "classes": {
+                    "name": "classes",
+                    "getSignature": {
+                        "name": "classes",
+                        "type": "[]",
+                        "returnType": "string[]",
+                        "line": 48
+                    }
+                }
+            }
+        },
+        {
+            "name": "CategoriesPageComponent",
+            "id": "component-CategoriesPageComponent-6f64c49d7d4ae4f0659aa1a15fc87ba4ee693467f01696d017831e52c0c9a1d5453f34fe458b34a1c9f1c868232316a9b5d77bad76530b96c8b525c37fb84676",
+            "file": "src/app/pages/categories-page/categories-page.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-categories-page",
+            "styleUrls": [
+                "./categories-page.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./categories-page.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "categories$",
+                    "defaultValue": "this.store.select(selectCategories)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 11
+                }
+            ],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component } from '@angular/core';\nimport { Store } from '@ngrx/store';\nimport { selectCategories } from 'src/app/store/w.selectors';\n\n@Component({\n  selector: 'app-categories-page',\n  templateUrl: './categories-page.component.html',\n  styleUrls: ['./categories-page.component.scss'],\n})\nexport class CategoriesPageComponent {\n  categories$ = this.store.select(selectCategories);\n\n  constructor(private store: Store) {}\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": ".categorieslist {\n  padding: 20px;\n}\nmat-card {\n  padding: 16px;\n  margin: 8px auto;\n  max-width: 520px;\n  text-align: center;\n}\n",
+                    "styleUrl": "./categories-page.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "store",
+                        "type": "Store",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 11,
+                "jsdoctags": [
+                    {
+                        "name": "store",
+                        "type": "Store",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "templateData": "<div class=\"categorieslist\">\n  <mat-card *ngFor=\"let category of (categories$ | async)\">{{ category }}</mat-card>\n</div>\n"
+        },
+        {
+            "name": "FrameComponent",
+            "id": "component-FrameComponent-7b6ae25badd7c2ddb9efc3e591915adadeade50bc986b975dc43440cac22a067bab2f25a4d3a14b0ca5473df913b43f3fd84e1503702f311026fb2efeac69211",
+            "file": "src/app/frame/frame.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-frame",
+            "styleUrls": [
+                "./frame.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./frame.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "drawer",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "MatSidenav | undefined",
+                    "optional": false,
+                    "description": "",
+                    "line": 19,
+                    "decorators": [
+                        {
+                            "name": "ViewChild",
+                            "stringifiedArguments": "'drawer'"
+                        }
+                    ]
+                },
+                {
+                    "name": "isHandset$",
+                    "defaultValue": "this.breakpointObserver\n    .observe(Breakpoints.Handset)\n    .pipe(\n      map((result) => result.matches),\n      shareReplay()\n    )",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Observable<boolean>",
+                    "optional": false,
+                    "description": "",
+                    "line": 21
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 33,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "prepareRoute",
+                    "args": [
+                        {
+                            "name": "outlet",
+                            "type": "RouterOutlet",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "any",
+                    "typeParameters": [],
+                    "line": 42,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "outlet",
+                            "type": "RouterOutlet",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';\nimport { Component, OnInit, ViewChild } from '@angular/core';\nimport { MatSidenav } from '@angular/material/sidenav';\nimport { NavigationEnd, Router, RouterOutlet } from '@angular/router';\nimport { Observable } from 'rxjs';\nimport { filter, map, shareReplay, withLatestFrom } from 'rxjs/operators';\nimport { slideInAnimation } from '../animations';\n\n@Component({\n  selector: 'app-frame',\n  templateUrl: './frame.component.html',\n  styleUrls: ['./frame.component.scss'],\n  animations: [\n    slideInAnimation\n  ]\n\n})\nexport class FrameComponent implements OnInit {\n  @ViewChild('drawer') drawer: MatSidenav | undefined;\n\n  isHandset$: Observable<boolean> = this.breakpointObserver\n    .observe(Breakpoints.Handset)\n    .pipe(\n      map((result) => result.matches),\n      shareReplay()\n    );\n\n  constructor(\n    private breakpointObserver: BreakpointObserver,\n    private router: Router\n  ) {}\n\n  ngOnInit(): void {\n    this.router.events\n      .pipe(\n        withLatestFrom(this.isHandset$),\n        filter(([a, b]) => b && a instanceof NavigationEnd)\n      )\n      .subscribe((_) => this.drawer?.close());\n  }\n\n  prepareRoute(outlet: RouterOutlet) {\n    return outlet?.activatedRouteData?.['animation'];\n  }\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": ".sidenav-container {\n  height: 100%;\n}\n\n.sidenav {\n  width: 200px;\n}\n\n.sidenav .mat-toolbar {\n  background: inherit;\n}\n\n.mat-toolbar.mat-primary {\n  position: sticky;\n  top: 0;\n  z-index: 1;\n}\n",
+                    "styleUrl": "./frame.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "breakpointObserver",
+                        "type": "BreakpointObserver",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "router",
+                        "type": "Router",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 26,
+                "jsdoctags": [
+                    {
+                        "name": "breakpointObserver",
+                        "type": "BreakpointObserver",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "router",
+                        "type": "Router",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<mat-sidenav-container class=\"sidenav-container\">\n  <mat-sidenav #drawer class=\"sidenav\" fixedInViewport [attr.role]=\"(isHandset$ | async) ? 'dialog' : 'navigation'\"\n    [mode]=\"(isHandset$ | async) ? 'over' : 'side'\" [opened]=\"(isHandset$ | async) === false\">\n    <mat-toolbar>Menu</mat-toolbar>\n    <mat-nav-list>\n      <a mat-list-item href=\"#\">Link 1</a>\n      <a mat-list-item href=\"#\">Link 2</a>\n      <a mat-list-item routerLink=\"/about\">Über</a>\n    </mat-nav-list>\n  </mat-sidenav>\n  <mat-sidenav-content>\n    <mat-toolbar color=\"primary\">\n      <button type=\"button\" aria-label=\"Toggle sidenav\" mat-icon-button (click)=\"drawer.toggle()\"\n        *ngIf=\"isHandset$ | async\">\n        <mat-icon aria-label=\"Side nav toggle icon\">menu</mat-icon>\n      </button>\n      <span>Wunschzettel</span>\n    </mat-toolbar>\n    <div [@routeAnimations]=\"prepareRoute(outlet)\">\n      <router-outlet #outlet=\"outlet\"></router-outlet>\n    </div>\n  </mat-sidenav-content>\n</mat-sidenav-container>\n"
+        },
+        {
+            "name": "HeaderComponent",
+            "id": "component-HeaderComponent-a557eec14f72c438a8033301f4d6ce023e0a1844a3b06ec2b38794a612acc31735ae78a5ee10071b230c8c20d699eb914554e69d07ade54adb371da8efb464cc",
+            "file": "src/stories/header.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "storybook-header",
+            "styleUrls": [
+                "./header.css"
+            ],
+            "styles": [],
+            "template": "<header>    <div class=\"wrapper\">\n      <div>\n        <svg width=\"32\" height=\"32\" viewBox=\"0 0 32 32\" xmlns=\"http://www.w3.org/2000/svg\">\n          <g fill=\"none\" fillRule=\"evenodd\">\n            <path\n              d=\"M10 0h12a10 10 0 0110 10v12a10 10 0 01-10 10H10A10 10 0 010 22V10A10 10 0 0110 0z\"\n              fill=\"#FFF\"\n            />\n            <path\n              d=\"M5.3 10.6l10.4 6v11.1l-10.4-6v-11zm11.4-6.2l9.7 5.5-9.7 5.6V4.4z\"\n              fill=\"#555AB9\"\n            />\n            <path\n              d=\"M27.2 10.6v11.2l-10.5 6V16.5l10.5-6zM15.7 4.4v11L6 10l9.7-5.5z\"\n              fill=\"#91BAF8\"\n            />\n          </g>\n        </svg>\n        <h1>Acme</h1>\n      </div>\n      <div>\n        <div *ngIf=\"user\">\n          <span class=\"welcome\">\n            Welcome, <b>{{ user.name }}</b\n            >!\n          </span>\n          <storybook-button\n            *ngIf=\"user\"\n            size=\"small\"\n            (onClick)=\"onLogout.emit($event)\"\n            label=\"Log out\"\n          ></storybook-button>\n        </div>\n        <div *ngIf=\"!user\">\n          <storybook-button\n            *ngIf=\"!user\"\n            size=\"small\"\n            class=\"margin-left\"\n            (onClick)=\"onLogin.emit($event)\"\n            label=\"Log in\"\n          ></storybook-button>\n          <storybook-button\n            *ngIf=\"!user\"\n            primary\n            size=\"small\"\n            primary=\"true\"\n            class=\"margin-left\"\n            (onClick)=\"onCreateAccount.emit($event)\"\n            label=\"Sign up\"\n          ></storybook-button>\n        </div>\n      </div>\n    </div>\n  </header>",
+            "templateUrl": [],
+            "viewProviders": [],
+            "inputsClass": [
+                {
+                    "name": "user",
+                    "defaultValue": "null",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 65,
+                    "type": "User | null",
+                    "decorators": []
+                }
+            ],
+            "outputsClass": [
+                {
+                    "name": "onCreateAccount",
+                    "defaultValue": "new EventEmitter<Event>()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 74,
+                    "type": "EventEmitter"
+                },
+                {
+                    "name": "onLogin",
+                    "defaultValue": "new EventEmitter<Event>()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 68,
+                    "type": "EventEmitter"
+                },
+                {
+                    "name": "onLogout",
+                    "defaultValue": "new EventEmitter<Event>()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 71,
+                    "type": "EventEmitter"
+                }
+            ],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, Input, Output, EventEmitter } from '@angular/core';\nimport { User } from './User';\n\n@Component({\n  selector: 'storybook-header',\n  template: `<header>\n    <div class=\"wrapper\">\n      <div>\n        <svg width=\"32\" height=\"32\" viewBox=\"0 0 32 32\" xmlns=\"http://www.w3.org/2000/svg\">\n          <g fill=\"none\" fillRule=\"evenodd\">\n            <path\n              d=\"M10 0h12a10 10 0 0110 10v12a10 10 0 01-10 10H10A10 10 0 010 22V10A10 10 0 0110 0z\"\n              fill=\"#FFF\"\n            />\n            <path\n              d=\"M5.3 10.6l10.4 6v11.1l-10.4-6v-11zm11.4-6.2l9.7 5.5-9.7 5.6V4.4z\"\n              fill=\"#555AB9\"\n            />\n            <path\n              d=\"M27.2 10.6v11.2l-10.5 6V16.5l10.5-6zM15.7 4.4v11L6 10l9.7-5.5z\"\n              fill=\"#91BAF8\"\n            />\n          </g>\n        </svg>\n        <h1>Acme</h1>\n      </div>\n      <div>\n        <div *ngIf=\"user\">\n          <span class=\"welcome\">\n            Welcome, <b>{{ user.name }}</b\n            >!\n          </span>\n          <storybook-button\n            *ngIf=\"user\"\n            size=\"small\"\n            (onClick)=\"onLogout.emit($event)\"\n            label=\"Log out\"\n          ></storybook-button>\n        </div>\n        <div *ngIf=\"!user\">\n          <storybook-button\n            *ngIf=\"!user\"\n            size=\"small\"\n            class=\"margin-left\"\n            (onClick)=\"onLogin.emit($event)\"\n            label=\"Log in\"\n          ></storybook-button>\n          <storybook-button\n            *ngIf=\"!user\"\n            primary\n            size=\"small\"\n            primary=\"true\"\n            class=\"margin-left\"\n            (onClick)=\"onCreateAccount.emit($event)\"\n            label=\"Sign up\"\n          ></storybook-button>\n        </div>\n      </div>\n    </div>\n  </header>`,\n  styleUrls: ['./header.css'],\n})\nexport default class HeaderComponent {\n  @Input()\n  user: User | null = null;\n\n  @Output()\n  onLogin = new EventEmitter<Event>();\n\n  @Output()\n  onLogout = new EventEmitter<Event>();\n\n  @Output()\n  onCreateAccount = new EventEmitter<Event>();\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": ".wrapper {\n  font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.1);\n  padding: 15px 20px;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n}\n\nsvg {\n  display: inline-block;\n  vertical-align: top;\n}\n\nh1 {\n  font-weight: 900;\n  font-size: 20px;\n  line-height: 1;\n  margin: 6px 0 6px 10px;\n  display: inline-block;\n  vertical-align: top;\n}\n\nbutton + button {\n  margin-left: 10px;\n}\n\n.welcome {\n  color: #333;\n  font-size: 14px;\n  margin-right: 10px;\n}\n",
+                    "styleUrl": "./header.css"
+                }
+            ],
+            "stylesData": ""
+        },
+        {
+            "name": "PageComponent",
+            "id": "component-PageComponent-7126d8c2607c946741c651482413b43feb72b2d63cac9d3ac173fde206a5e635eb4cdbf7ca7ac9327c7d4d05cf7ef619144c34c11609ad677081d0ee4e855064",
+            "file": "src/stories/page.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "storybook-page",
+            "styleUrls": [
+                "./page.css"
+            ],
+            "styles": [],
+            "template": "<article>    <storybook-header\n      [user]=\"user\"\n      (onLogout)=\"doLogout()\"\n      (onLogin)=\"doLogin()\"\n      (onCreateAccount)=\"doCreateAccount()\"\n    ></storybook-header>\n    <section>\n      <h2>Pages in Storybook</h2>\n      <p>\n        We recommend building UIs with a\n        <a href=\"https://componentdriven.org\" target=\"_blank\" rel=\"noopener noreferrer\">\n          <strong>component-driven</strong>\n        </a>\n        process starting with atomic components and ending with pages.\n      </p>\n      <p>\n        Render pages with mock data. This makes it easy to build and review page states without\n        needing to navigate to them in your app. Here are some handy patterns for managing page data\n        in Storybook:\n      </p>\n      <ul>\n        <li>\n          Use a higher-level connected component. Storybook helps you compose such data from the\n          \"args\" of child component stories\n        </li>\n        <li>\n          Assemble data in the page component from your services. You can mock these services out\n          using Storybook.\n        </li>\n      </ul>\n      <p>\n        Get a guided tutorial on component-driven development at\n        <a href=\"https://storybook.js.org/tutorials/\" target=\"_blank\" rel=\"noopener noreferrer\">\n          Storybook tutorials\n        </a>\n        . Read more in the\n        <a href=\"https://storybook.js.org/docs\" target=\"_blank\" rel=\"noopener noreferrer\"> docs </a>\n        .\n      </p>\n      <div class=\"tip-wrapper\">\n        <span class=\"tip\">Tip</span> Adjust the width of the canvas with the\n        <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" xmlns=\"http://www.w3.org/2000/svg\">\n          <g fill=\"none\" fillRule=\"evenodd\">\n            <path\n              d=\"M1.5 5.2h4.8c.3 0 .5.2.5.4v5.1c-.1.2-.3.3-.4.3H1.4a.5.5 0 01-.5-.4V5.7c0-.3.2-.5.5-.5zm0-2.1h6.9c.3 0 .5.2.5.4v7a.5.5 0 01-1 0V4H1.5a.5.5 0 010-1zm0-2.1h9c.3 0 .5.2.5.4v9.1a.5.5 0 01-1 0V2H1.5a.5.5 0 010-1zm4.3 5.2H2V10h3.8V6.2z\"\n              id=\"a\"\n              fill=\"#999\"\n            />\n          </g>\n        </svg>\n        Viewports addon in the toolbar\n      </div>\n    </section>\n  </article>",
+            "templateUrl": [],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "user",
+                    "defaultValue": "null",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "User | null",
+                    "optional": false,
+                    "description": "",
+                    "line": 64
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "doCreateAccount",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 74,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "doLogin",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 70,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "doLogout",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 66,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component } from '@angular/core';\nimport { User } from './User';\n\n@Component({\n  selector: 'storybook-page',\n  template: `<article>\n    <storybook-header\n      [user]=\"user\"\n      (onLogout)=\"doLogout()\"\n      (onLogin)=\"doLogin()\"\n      (onCreateAccount)=\"doCreateAccount()\"\n    ></storybook-header>\n    <section>\n      <h2>Pages in Storybook</h2>\n      <p>\n        We recommend building UIs with a\n        <a href=\"https://componentdriven.org\" target=\"_blank\" rel=\"noopener noreferrer\">\n          <strong>component-driven</strong>\n        </a>\n        process starting with atomic components and ending with pages.\n      </p>\n      <p>\n        Render pages with mock data. This makes it easy to build and review page states without\n        needing to navigate to them in your app. Here are some handy patterns for managing page data\n        in Storybook:\n      </p>\n      <ul>\n        <li>\n          Use a higher-level connected component. Storybook helps you compose such data from the\n          \"args\" of child component stories\n        </li>\n        <li>\n          Assemble data in the page component from your services. You can mock these services out\n          using Storybook.\n        </li>\n      </ul>\n      <p>\n        Get a guided tutorial on component-driven development at\n        <a href=\"https://storybook.js.org/tutorials/\" target=\"_blank\" rel=\"noopener noreferrer\">\n          Storybook tutorials\n        </a>\n        . Read more in the\n        <a href=\"https://storybook.js.org/docs\" target=\"_blank\" rel=\"noopener noreferrer\"> docs </a>\n        .\n      </p>\n      <div class=\"tip-wrapper\">\n        <span class=\"tip\">Tip</span> Adjust the width of the canvas with the\n        <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" xmlns=\"http://www.w3.org/2000/svg\">\n          <g fill=\"none\" fillRule=\"evenodd\">\n            <path\n              d=\"M1.5 5.2h4.8c.3 0 .5.2.5.4v5.1c-.1.2-.3.3-.4.3H1.4a.5.5 0 01-.5-.4V5.7c0-.3.2-.5.5-.5zm0-2.1h6.9c.3 0 .5.2.5.4v7a.5.5 0 01-1 0V4H1.5a.5.5 0 010-1zm0-2.1h9c.3 0 .5.2.5.4v9.1a.5.5 0 01-1 0V2H1.5a.5.5 0 010-1zm4.3 5.2H2V10h3.8V6.2z\"\n              id=\"a\"\n              fill=\"#999\"\n            />\n          </g>\n        </svg>\n        Viewports addon in the toolbar\n      </div>\n    </section>\n  </article>`,\n  styleUrls: ['./page.css'],\n})\nexport default class PageComponent {\n  user: User | null = null;\n\n  doLogout() {\n    this.user = null;\n  }\n\n  doLogin() {\n    this.user = { name: 'Jane Doe' };\n  }\n\n  doCreateAccount() {\n    this.user = { name: 'Jane Doe' };\n  }\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "section {\n  font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;\n  font-size: 14px;\n  line-height: 24px;\n  padding: 48px 20px;\n  margin: 0 auto;\n  max-width: 600px;\n  color: #333;\n}\n\nsection h2 {\n  font-weight: 900;\n  font-size: 32px;\n  line-height: 1;\n  margin: 0 0 4px;\n  display: inline-block;\n  vertical-align: top;\n}\n\nsection p {\n  margin: 1em 0;\n}\n\nsection a {\n  text-decoration: none;\n  color: #1ea7fd;\n}\n\nsection ul {\n  padding-left: 30px;\n  margin: 1em 0;\n}\n\nsection li {\n  margin-bottom: 8px;\n}\n\nsection .tip {\n  display: inline-block;\n  border-radius: 1em;\n  font-size: 11px;\n  line-height: 12px;\n  font-weight: 700;\n  background: #e7fdd8;\n  color: #66bf3c;\n  padding: 4px 12px;\n  margin-right: 10px;\n  vertical-align: top;\n}\n\nsection .tip-wrapper {\n  font-size: 13px;\n  line-height: 20px;\n  margin-top: 40px;\n  margin-bottom: 40px;\n}\n\nsection .tip-wrapper svg {\n  display: inline-block;\n  height: 12px;\n  width: 12px;\n  margin-right: 4px;\n  vertical-align: top;\n  margin-top: 3px;\n}\n\nsection .tip-wrapper svg path {\n  fill: #1ea7fd;\n}\n",
+                    "styleUrl": "./page.css"
+                }
+            ],
+            "stylesData": ""
+        }
+    ],
+    "modules": [
+        {
+            "name": "AppModule",
+            "id": "module-AppModule-2e4def3040314fa6dafb9ab75c54fe47d8b1388459c86d735051ca513951e53e177cae1a6aba80e87b0aa6818a71c6251767b0cb2d0728f6df827b93595e5873",
+            "description": "",
+            "deprecationMessage": "",
+            "deprecated": false,
+            "file": "src/app/app.module.ts",
+            "methods": [],
+            "sourceCode": "import { LayoutModule } from '@angular/cdk/layout';\nimport { HttpClientModule } from '@angular/common/http';\nimport { NgModule } from '@angular/core';\nimport { MatButtonModule } from '@angular/material/button';\nimport { MatCardModule } from '@angular/material/card';\nimport { MatIconModule } from '@angular/material/icon';\nimport { MatListModule } from '@angular/material/list';\nimport { MatSidenavModule } from '@angular/material/sidenav';\nimport { MatToolbarModule } from '@angular/material/toolbar';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\nimport { EffectsModule } from '@ngrx/effects';\nimport { StoreModule } from '@ngrx/store';\nimport { StoreDevtoolsModule } from '@ngrx/store-devtools';\nimport { environment } from '../environments/environment';\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { FrameComponent } from './frame/frame.component';\nimport { AboutComponent } from './pages/about/about.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { agReducer } from './store/a.reducer';\nimport { AppState } from './store/app.state';\nimport { WishlistEffects } from './store/w.effects';\nimport { wReducer } from './store/w.reducer';\n\n@NgModule({\n  declarations: [\n    AppComponent,\n    FrameComponent,\n    AboutComponent,\n    CategoriesPageComponent,\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    BrowserAnimationsModule,\n    LayoutModule,\n    MatButtonModule,\n    MatCardModule,\n    MatIconModule,\n    MatListModule,\n    MatSidenavModule,\n    MatToolbarModule,\n    StoreModule.forRoot<AppState>({ ag: agReducer, wishlist: wReducer }),\n    EffectsModule.forRoot([WishlistEffects]),\n    // import HttpClientModule after BrowserModule.\n    HttpClientModule,\n    StoreDevtoolsModule.instrument({\n      maxAge: 25,\n      logOnly: environment.production,\n    }),\n  ],\n  providers: [],\n  bootstrap: [AppComponent],\n})\nexport class AppModule {}\n",
+            "children": [
+                {
+                    "type": "providers",
+                    "elements": []
+                },
+                {
+                    "type": "declarations",
+                    "elements": [
+                        {
+                            "name": "AboutComponent"
+                        },
+                        {
+                            "name": "AppComponent"
+                        },
+                        {
+                            "name": "CategoriesPageComponent"
+                        },
+                        {
+                            "name": "FrameComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "imports",
+                    "elements": [
+                        {
+                            "name": "AppRoutingModule"
+                        }
+                    ]
+                },
+                {
+                    "type": "exports",
+                    "elements": []
+                },
+                {
+                    "type": "bootstrap",
+                    "elements": [
+                        {
+                            "name": "AppComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "classes",
+                    "elements": []
+                }
+            ]
+        },
+        {
+            "name": "AppRoutingModule",
+            "id": "module-AppRoutingModule-6f79bba737d39a8d4d1dec7a3e379d3062c81d7f56cfbee968b3799b6541b10d0dd54c5c431ab5fbaada420d8fb9fc7e746ffd0b59708a994d4b08682e7ac5e9",
+            "description": "",
+            "deprecationMessage": "",
+            "deprecated": false,
+            "file": "src/app/app-routing.module.ts",
+            "methods": [],
+            "sourceCode": "import { NgModule } from '@angular/core';\nimport { RouterModule, Routes } from '@angular/router';\nimport { AboutComponent } from './pages/about/about.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\n\nconst routes: Routes = [\n  { path: 'wunschliste', component: CategoriesPageComponent, data: { animation: 'CategoriesPage' } },\n  { path: 'about', component: AboutComponent, data: { animation: 'AboutPage' } },\n\n  { path: '', redirectTo: '/wunschliste', pathMatch: 'full' },\n];\n\n@NgModule({\n  imports: [RouterModule.forRoot(routes, { useHash: true })],\n  exports: [RouterModule]\n})\nexport class AppRoutingModule { }\n",
+            "children": [
+                {
+                    "type": "providers",
+                    "elements": []
+                },
+                {
+                    "type": "declarations",
+                    "elements": []
+                },
+                {
+                    "type": "imports",
+                    "elements": []
+                },
+                {
+                    "type": "exports",
+                    "elements": []
+                },
+                {
+                    "type": "bootstrap",
+                    "elements": []
+                },
+                {
+                    "type": "classes",
+                    "elements": []
+                }
+            ]
+        }
+    ],
+    "miscellaneous": {
+        "variables": [
+            {
+                "name": "agReducer",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/a.reducer.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createReducer<AppGlobalState>(\n  initialState,\n  on(\n    getItems,\n    (state, _p): AppGlobalState => ({\n      ...state,\n      loading: true,\n    })\n  ),\n  on(\n    itemsLoaded,\n    (state, _p): AppGlobalState => ({\n      ...state,\n      loading: false,\n    })\n  )\n)"
+            },
+            {
+                "name": "appStateStub",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "testing/app.state.builder.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "(): AppStateBuilder => new AppStateBuilder()"
+            },
+            {
+                "name": "context",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/test.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "require.context('./', true, /\\.spec\\.ts$/)"
+            },
+            {
+                "name": "environment",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/environments/environment.prod.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  production: true\n}"
+            },
+            {
+                "name": "environment",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/environments/environment.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  production: false\n}"
+            },
+            {
+                "name": "getItems",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/w.actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction('[W] Get items')"
+            },
+            {
+                "name": "initialState",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/a.reducer.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "AppGlobalState",
+                "defaultValue": "{\n  loading: true,\n}"
+            },
+            {
+                "name": "initialState",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/w.reducer.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  categories: [],\n  items: [],\n}"
+            },
+            {
+                "name": "itemsLoaded",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/w.actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction(\n  '[W] Items loaded',\n  props<{\n    items: WishlistItem[];\n  }>()\n)"
+            },
+            {
+                "name": "Large",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "LoggedIn",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Header.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "LoggedIn",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Page.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "LoggedOut",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Header.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "LoggedOut",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Page.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Primary",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "require",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/test.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "literal type"
+            },
+            {
+                "name": "Secondary",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "selectCategories",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/w.selectors.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createSelector(\n  selectFeature,\n  (state: WishlistState) => state.categories\n)"
+            },
+            {
+                "name": "selectFeature",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/w.selectors.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "(state: any) => (state as AppState).wishlist"
+            },
+            {
+                "name": "slideInAnimation",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/animations.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "trigger('routeAnimations', [\n  transition('* <=> CategoriesPage, * <=> AboutPage', [\n    style({ position: 'relative' }),\n    query(':enter, :leave', [\n      style({\n        position: 'absolute',\n        top: 0,\n        left: 0,\n        width: '100%',\n      }),\n    ]),\n    query(':enter', [style({ left: '-100%' })], { optional: true }),\n    group([\n      query(':leave', [animate('300ms ease-out', style({ left: '100%' }))], {\n        optional: true,\n      }),\n      query(':enter', [animate('300ms ease-out', style({ left: '0%' }))]),\n    ]),\n    query(':enter', animateChild()),\n  ]),\n])"
+            },
+            {
+                "name": "Small",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<Button>",
+                "defaultValue": "(args: Button) => ({\n  props: args,\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Header.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<Header>",
+                "defaultValue": "(args: Header) => ({\n  props: args,\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Page.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<Page>",
+                "defaultValue": "(args: Page) => ({\n  props: args,\n})"
+            },
+            {
+                "name": "wReducer",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/w.reducer.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createReducer<WishlistState>(\n  initialState,\n  on(\n    itemsLoaded,\n    (state, p): WishlistState => ({\n      ...state,\n      categories: p.items\n        .map((i) => i.Category)\n        .reduce((a, c) => {\n          if (a.indexOf(c) === -1) {\n            a.push(c);\n          }\n          return a;\n        }, [] as string[])\n        .sort(),\n    })\n  )\n)"
+            }
+        ],
+        "functions": [
+            {
+                "name": "delayDuringTest",
+                "file": "testing/utils.ts",
+                "ctype": "miscellaneous",
+                "subtype": "function",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "args": [
+                    {
+                        "name": "ms",
+                        "type": "number",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "returnType": "Promise<void>",
+                "jsdoctags": [
+                    {
+                        "name": "ms",
+                        "type": "number",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "randomNumber",
+                "file": "testing/utils.ts",
+                "ctype": "miscellaneous",
+                "subtype": "function",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "args": [
+                    {
+                        "name": "max",
+                        "type": "number",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "min",
+                        "type": "number",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "defaultValue": "0"
+                    }
+                ],
+                "returnType": "number",
+                "jsdoctags": [
+                    {
+                        "name": "max",
+                        "type": "number",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "min",
+                        "type": "number",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "defaultValue": "0",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "randomString",
+                "file": "testing/utils.ts",
+                "ctype": "miscellaneous",
+                "subtype": "function",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "args": [
+                    {
+                        "name": "length",
+                        "type": "number",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "prefix",
+                        "type": "string",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "defaultValue": "''"
+                    }
+                ],
+                "returnType": "string",
+                "jsdoctags": [
+                    {
+                        "name": "length",
+                        "type": "number",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "prefix",
+                        "type": "string",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "defaultValue": "''",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            }
+        ],
+        "typealiases": [],
+        "enumerations": [],
+        "groupedVariables": {
+            "src/app/store/a.reducer.ts": [
+                {
+                    "name": "agReducer",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/a.reducer.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createReducer<AppGlobalState>(\n  initialState,\n  on(\n    getItems,\n    (state, _p): AppGlobalState => ({\n      ...state,\n      loading: true,\n    })\n  ),\n  on(\n    itemsLoaded,\n    (state, _p): AppGlobalState => ({\n      ...state,\n      loading: false,\n    })\n  )\n)"
+                },
+                {
+                    "name": "initialState",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/a.reducer.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "AppGlobalState",
+                    "defaultValue": "{\n  loading: true,\n}"
+                }
+            ],
+            "testing/app.state.builder.ts": [
+                {
+                    "name": "appStateStub",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "testing/app.state.builder.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "(): AppStateBuilder => new AppStateBuilder()"
+                }
+            ],
+            "src/test.ts": [
+                {
+                    "name": "context",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/test.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "require.context('./', true, /\\.spec\\.ts$/)"
+                },
+                {
+                    "name": "require",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/test.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "literal type"
+                }
+            ],
+            "src/environments/environment.prod.ts": [
+                {
+                    "name": "environment",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/environments/environment.prod.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n  production: true\n}"
+                }
+            ],
+            "src/environments/environment.ts": [
+                {
+                    "name": "environment",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/environments/environment.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n  production: false\n}"
+                }
+            ],
+            "src/app/store/w.actions.ts": [
+                {
+                    "name": "getItems",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/w.actions.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createAction('[W] Get items')"
+                },
+                {
+                    "name": "itemsLoaded",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/w.actions.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createAction(\n  '[W] Items loaded',\n  props<{\n    items: WishlistItem[];\n  }>()\n)"
+                }
+            ],
+            "src/app/store/w.reducer.ts": [
+                {
+                    "name": "initialState",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/w.reducer.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n  categories: [],\n  items: [],\n}"
+                },
+                {
+                    "name": "wReducer",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/w.reducer.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createReducer<WishlistState>(\n  initialState,\n  on(\n    itemsLoaded,\n    (state, p): WishlistState => ({\n      ...state,\n      categories: p.items\n        .map((i) => i.Category)\n        .reduce((a, c) => {\n          if (a.indexOf(c) === -1) {\n            a.push(c);\n          }\n          return a;\n        }, [] as string[])\n        .sort(),\n    })\n  )\n)"
+                }
+            ],
+            "src/stories/Button.stories.ts": [
+                {
+                    "name": "Large",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Primary",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Secondary",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Small",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<Button>",
+                    "defaultValue": "(args: Button) => ({\n  props: args,\n})"
+                }
+            ],
+            "src/stories/Header.stories.ts": [
+                {
+                    "name": "LoggedIn",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Header.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "LoggedOut",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Header.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Header.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<Header>",
+                    "defaultValue": "(args: Header) => ({\n  props: args,\n})"
+                }
+            ],
+            "src/stories/Page.stories.ts": [
+                {
+                    "name": "LoggedIn",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Page.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "LoggedOut",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Page.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Page.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<Page>",
+                    "defaultValue": "(args: Page) => ({\n  props: args,\n})"
+                }
+            ],
+            "src/app/store/w.selectors.ts": [
+                {
+                    "name": "selectCategories",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/w.selectors.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createSelector(\n  selectFeature,\n  (state: WishlistState) => state.categories\n)"
+                },
+                {
+                    "name": "selectFeature",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/w.selectors.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "(state: any) => (state as AppState).wishlist"
+                }
+            ],
+            "src/app/animations.ts": [
+                {
+                    "name": "slideInAnimation",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/animations.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "trigger('routeAnimations', [\n  transition('* <=> CategoriesPage, * <=> AboutPage', [\n    style({ position: 'relative' }),\n    query(':enter, :leave', [\n      style({\n        position: 'absolute',\n        top: 0,\n        left: 0,\n        width: '100%',\n      }),\n    ]),\n    query(':enter', [style({ left: '-100%' })], { optional: true }),\n    group([\n      query(':leave', [animate('300ms ease-out', style({ left: '100%' }))], {\n        optional: true,\n      }),\n      query(':enter', [animate('300ms ease-out', style({ left: '0%' }))]),\n    ]),\n    query(':enter', animateChild()),\n  ]),\n])"
+                }
+            ]
+        },
+        "groupedFunctions": {
+            "testing/utils.ts": [
+                {
+                    "name": "delayDuringTest",
+                    "file": "testing/utils.ts",
+                    "ctype": "miscellaneous",
+                    "subtype": "function",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "args": [
+                        {
+                            "name": "ms",
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "returnType": "Promise<void>",
+                    "jsdoctags": [
+                        {
+                            "name": "ms",
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "randomNumber",
+                    "file": "testing/utils.ts",
+                    "ctype": "miscellaneous",
+                    "subtype": "function",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "args": [
+                        {
+                            "name": "max",
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "min",
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "defaultValue": "0"
+                        }
+                    ],
+                    "returnType": "number",
+                    "jsdoctags": [
+                        {
+                            "name": "max",
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "min",
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "defaultValue": "0",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "randomString",
+                    "file": "testing/utils.ts",
+                    "ctype": "miscellaneous",
+                    "subtype": "function",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "args": [
+                        {
+                            "name": "length",
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "prefix",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "defaultValue": "''"
+                        }
+                    ],
+                    "returnType": "string",
+                    "jsdoctags": [
+                        {
+                            "name": "length",
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "prefix",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "defaultValue": "''",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "groupedEnumerations": {},
+        "groupedTypeAliases": {}
+    },
+    "routes": {
+        "name": "<root>",
+        "kind": "module",
+        "className": "AppModule",
+        "children": [
+            {
+                "name": "routes",
+                "filename": "src/app/app-routing.module.ts",
+                "module": "AppRoutingModule",
+                "children": [
+                    {
+                        "path": "wunschliste",
+                        "component": "CategoriesPageComponent",
+                        "data": {
+                            "animation": "CategoriesPage"
+                        }
+                    },
+                    {
+                        "path": "about",
+                        "component": "AboutComponent",
+                        "data": {
+                            "animation": "AboutPage"
+                        }
+                    },
+                    {
+                        "path": "",
+                        "redirectTo": "/wunschliste",
+                        "pathMatch": "full"
+                    }
+                ],
+                "kind": "module"
+            }
+        ]
+    },
+    "coverage": {
+        "count": 1,
+        "status": "low",
+        "files": [
+            {
+                "filePath": "src/app/animations.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "slideInAnimation",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/app.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "AppComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/business/add-item-response.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "AddItemResponse",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/business/item.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "WishlistItem",
+                "coveragePercent": 0,
+                "coverageCount": "0/7",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/business/result.ts",
+                "type": "class",
+                "linktype": "classe",
+                "name": "Result",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/frame/frame.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "FrameComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/6",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/pages/about/about.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "AboutComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/2",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/pages/categories-page/categories-page.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "CategoriesPageComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/services/items.service.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "ItemsService",
+                "coveragePercent": 0,
+                "coverageCount": "0/9",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/a.reducer.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "agReducer",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/a.reducer.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "initialState",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/a.state.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "AppGlobalState",
+                "coveragePercent": 0,
+                "coverageCount": "0/2",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/app.state.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "AppState",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/w.actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "getItems",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/w.actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "itemsLoaded",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/w.effects.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "WishlistEffects",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/w.reducer.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "initialState",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/w.reducer.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "wReducer",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/w.selectors.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "selectCategories",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/w.selectors.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "selectFeature",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/w.state.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "WishlistState",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/environments/environment.prod.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "environment",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/environments/environment.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "environment",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Large",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Primary",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Secondary",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Small",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Header.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "LoggedIn",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Header.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "LoggedOut",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Header.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Page.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "LoggedIn",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Page.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "LoggedOut",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Page.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/User.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "User",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/button.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ButtonComponent",
+                "coveragePercent": 83,
+                "coverageCount": "5/6",
+                "status": "very-good"
+            },
+            {
+                "filePath": "src/stories/header.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "HeaderComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/5",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/page.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "PageComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/5",
+                "status": "low"
+            },
+            {
+                "filePath": "src/test.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "context",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/test.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "require",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "testing/app.state.builder.ts",
+                "type": "class",
+                "linktype": "classe",
+                "name": "AppStateBuilder",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "testing/app.state.builder.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "appStateStub",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "testing/item.builder.ts",
+                "type": "class",
+                "linktype": "classe",
+                "name": "WishlistItemBuilder",
+                "coveragePercent": 0,
+                "coverageCount": "0/11",
+                "status": "low"
+            },
+            {
+                "filePath": "testing/list-builder.ts",
+                "type": "class",
+                "linktype": "classe",
+                "name": "ListBuilder",
+                "coveragePercent": 0,
+                "coverageCount": "0/6",
+                "status": "low"
+            },
+            {
+                "filePath": "testing/utils.ts",
+                "type": "function",
+                "linktype": "miscellaneous",
+                "linksubtype": "function",
+                "name": "delayDuringTest",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "testing/utils.ts",
+                "type": "function",
+                "linktype": "miscellaneous",
+                "linksubtype": "function",
+                "name": "randomNumber",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "testing/utils.ts",
+                "type": "function",
+                "linktype": "miscellaneous",
+                "linksubtype": "function",
+                "name": "randomString",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            }
+        ]
+    }
+}
