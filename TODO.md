@@ -2,7 +2,8 @@ TODO
 ====
 
 * 👁️ Load list
-* 📎 Show categories
+    * 📎 Visualize pending request
+* 👁️ Show categories
 * 📎 Link categories
 * 📎 Show items of selected category
 * 📎 Show item

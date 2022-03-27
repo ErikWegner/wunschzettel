@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { selectHasPendingRequest } from 'src/app/store/a.selectors';
 import { selectCategories } from 'src/app/store/w.selectors';
 
 @Component({
@@ -9,6 +10,7 @@ import { selectCategories } from 'src/app/store/w.selectors';
 })
 export class CategoriesPageComponent {
   categories$ = this.store.select(selectCategories);
+  hasRequestPending$ = this.store.select(selectHasPendingRequest);
 
   constructor(private store: Store) {}
 }

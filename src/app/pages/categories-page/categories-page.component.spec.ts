@@ -7,9 +7,8 @@ import { MatCardHarness } from '@angular/material/card/testing';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { By } from '@angular/platform-browser';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { EmptyListComponent } from 'src/app/components/empty-list/empty-list.component';
 import { AppState } from 'src/app/store/app.state';
-import { appStateStub } from 'testing/app.state.builder';
+import { AppStateBuilder, appStateStub } from 'testing/app.state.builder';
 import { ListBuilder } from 'testing/list-builder';
 import { EmptyListStubComponent } from 'testing/stubs/empty-list.stub.component';
 import { randomNumber } from 'testing/utils';
@@ -46,17 +45,43 @@ describe('CategoriesPageComponent', () => {
   const expectVisiblities = async (expecations: {
     wishlistItemsCount: number;
     emptyVisible: boolean;
+    spinnerVisible: boolean;
   }): Promise<void> => {
     const items = await loader.getAllHarnesses(MatCardHarness);
     expect(items.length).toEqual(expecations.wishlistItemsCount);
     const pageDe: DebugElement = fixture.debugElement;
+
     const emptyCard = pageDe.query(By.css('app-empty-list'));
+    const emptyCardExpect = expect(emptyCard).withContext('Empty card');
     if (expecations.emptyVisible) {
-      expect(emptyCard).not.toBeNull();
+      emptyCardExpect.not.toBeNull();
     } else {
-      expect(emptyCard).toBeNull();
+      emptyCardExpect.toBeNull();
+    }
+
+    const spinner = pageDe.query(By.css('mat-spinner'));
+    const spinnerExpect = expect(spinner).withContext('Spinner element');
+    if (expecations.spinnerVisible) {
+      spinnerExpect.not.toBeNull();
+    } else {
+      spinnerExpect.toBeNull();
     }
   };
+
+  it('should display spinner while request is pending', async () => {
+    const nextState = AppStateBuilder.pendingRequest();
+    store.setState(nextState);
+
+    // Act
+    fixture.detectChanges();
+
+    // Assert
+    await expectVisiblities({
+      wishlistItemsCount: 0,
+      emptyVisible: false,
+      spinnerVisible: true,
+    });
+  });
 
   it('should display categories', async () => {
     // Arrange
@@ -71,7 +96,11 @@ describe('CategoriesPageComponent', () => {
     fixture.detectChanges();
 
     // Assert
-    await expectVisiblities({ wishlistItemsCount: count, emptyVisible: false });
+    await expectVisiblities({
+      wishlistItemsCount: count,
+      emptyVisible: false,
+      spinnerVisible: false,
+    });
     const items = await loader.getAllHarnesses(MatCardHarness);
     expect(items.length).toEqual(count);
     expect(await items[1].getText()).toEqual('Category 1');
@@ -85,6 +114,10 @@ describe('CategoriesPageComponent', () => {
     fixture.detectChanges();
 
     // Assert
-    await expectVisiblities({ wishlistItemsCount: 0, emptyVisible: true });
+    await expectVisiblities({
+      wishlistItemsCount: 0,
+      emptyVisible: true,
+      spinnerVisible: false,
+    });
   });
 });

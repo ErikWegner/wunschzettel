@@ -23,6 +23,7 @@ import { AppState } from './store/app.state';
 import { WishlistEffects } from './store/w.effects';
 import { wReducer } from './store/w.reducer';
 import { EmptyListComponent } from './components/empty-list/empty-list.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { EmptyListComponent } from './components/empty-list/empty-list.component
     MatCardModule,
     MatIconModule,
     MatListModule,
+    MatProgressSpinnerModule,
     MatSidenavModule,
     MatToolbarModule,
     StoreModule.forRoot<AppState>({ ag: agReducer, wishlist: wReducer }),
