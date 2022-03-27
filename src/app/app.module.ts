@@ -22,6 +22,7 @@ import { agReducer } from './store/a.reducer';
 import { AppState } from './store/app.state';
 import { WishlistEffects } from './store/w.effects';
 import { wReducer } from './store/w.reducer';
+import { EmptyListComponent } from './components/empty-list/empty-list.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { wReducer } from './store/w.reducer';
     FrameComponent,
     AboutComponent,
     CategoriesPageComponent,
+    EmptyListComponent,
   ],
   imports: [
     BrowserModule,

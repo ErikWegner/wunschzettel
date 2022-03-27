@@ -1,5 +1,6 @@
 import { provideMockStore } from '@ngrx/store/testing';
 import { Meta, moduleMetadata, Story } from '@storybook/angular';
+import { EmptyListComponent } from 'src/app/components/empty-list/empty-list.component';
 import { CategoriesPageComponent } from 'src/app/pages/categories-page/categories-page.component';
 import { AppState } from 'src/app/store/app.state';
 import { appStateStub, AppStateBuilder } from 'testing/app.state.builder';
@@ -12,7 +13,7 @@ export default {
   component: CategoriesPageComponent,
   decorators: [
     moduleMetadata({
-      declarations: [],
+      declarations: [EmptyListComponent],
       imports: moduleImports,
       providers: [provideMockStore({ initialState })],
     }),

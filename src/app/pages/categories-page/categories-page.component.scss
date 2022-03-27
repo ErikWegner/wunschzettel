@@ -6,4 +6,8 @@ mat-card {
   margin: 8px auto;
   max-width: 520px;
   text-align: center;
+
+  &.empty {
+    text-align: left;
+  }
 }
