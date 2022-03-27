@@ -3,7 +3,7 @@ import { selectCategories } from './w.selectors';
 
 describe('Wishlist selectors', () => {
   const initialState: AppState = {
-    ag: { loading: false },
+    ag: { pendingRequest: false },
     wishlist: {
       categories: ['Book', 'Game', 'Everything else'],
       items: [],

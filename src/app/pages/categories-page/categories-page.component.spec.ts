@@ -4,6 +4,7 @@ import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { MatCardHarness } from '@angular/material/card/testing';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { By } from '@angular/platform-browser';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { EmptyListComponent } from 'src/app/components/empty-list/empty-list.component';
@@ -25,7 +26,7 @@ describe('CategoriesPageComponent', () => {
     const initialState: AppState = appStateStub();
     await TestBed.configureTestingModule({
       declarations: [CategoriesPageComponent, EmptyListStubComponent],
-      imports: [MatCardModule],
+      imports: [MatCardModule, MatProgressSpinnerModule],
       providers: [provideMockStore({ initialState })],
     }).compileComponents();
     store = TestBed.inject(MockStore);

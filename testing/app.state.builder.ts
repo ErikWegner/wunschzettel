@@ -8,7 +8,7 @@ export const appStateStub = (): AppStateBuilder => new AppStateBuilder();
 
 export class AppStateBuilder implements AppState {
   ag: AppGlobalState = {
-    loading: false,
+    pendingRequest: false,
   };
   wishlist: WishlistState = {
     categories: [],
@@ -22,6 +22,12 @@ export class AppStateBuilder implements AppState {
     )
       .items(7)
       .build();
+    return b;
+  }
+
+  public static pendingRequest(): any {
+    const b = new AppStateBuilder();
+    b.ag.pendingRequest = true;
     return b;
   }
 }

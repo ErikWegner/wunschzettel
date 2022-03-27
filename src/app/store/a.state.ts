@@ -1,3 +1,3 @@
 export interface AppGlobalState {
-  loading: boolean;
+  pendingRequest: boolean;
 }

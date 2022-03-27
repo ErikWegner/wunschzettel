@@ -30,6 +30,17 @@ export const Empty: Story = () => ({
   props: {},
 });
 
+export const Loading: Story = () => ({});
+Loading.decorators = [
+  moduleMetadata({
+    declarations: [],
+    imports: moduleImports,
+    providers: [
+      provideMockStore({ initialState: AppStateBuilder.pendingRequest() }),
+    ],
+  }),
+];
+
 export const Categories: Story = () => ({});
 Categories.decorators = [
   moduleMetadata({

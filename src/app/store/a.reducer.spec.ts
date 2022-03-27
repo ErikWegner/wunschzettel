@@ -7,28 +7,28 @@ describe('AppGlobal reducer', () => {
     it('should set isLoading to true', () => {
       // Arrange
       const initialState = appStateStub();
-      initialState.ag.loading = false;
+      initialState.ag.pendingRequest = false;
       const action = getItems();
 
       // Act
       const newstate = agReducer(initialState.ag, action);
 
       // Assert
-      expect(newstate.loading).toBeTrue();
+      expect(newstate.pendingRequest).toBeTrue();
     });
   });
   describe('itemsLoaded', () => {
     it('should set isLoading to false', () => {
       // Arrange
       const initialState = appStateStub();
-      initialState.ag.loading = true;
+      initialState.ag.pendingRequest = true;
       const action = itemsLoaded({ items: [] });
 
       // Act
       const newstate = agReducer(initialState.ag, action);
 
       // Assert
-      expect(newstate.loading).toBeFalse();
+      expect(newstate.pendingRequest).toBeFalse();
     });
   });
 });

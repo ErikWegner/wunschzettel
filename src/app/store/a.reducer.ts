@@ -3,7 +3,7 @@ import { AppGlobalState } from './a.state';
 import { getItems, itemsLoaded } from './w.actions';
 
 export const initialState: AppGlobalState = {
-  loading: true,
+  pendingRequest: true,
 };
 
 export const agReducer = createReducer<AppGlobalState>(
@@ -12,14 +12,14 @@ export const agReducer = createReducer<AppGlobalState>(
     getItems,
     (state, _p): AppGlobalState => ({
       ...state,
-      loading: true,
+      pendingRequest: true,
     })
   ),
   on(
     itemsLoaded,
     (state, _p): AppGlobalState => ({
       ...state,
-      loading: false,
+      pendingRequest: false,
     })
   )
 );
