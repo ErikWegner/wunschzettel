@@ -1308,7 +1308,7 @@
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ":host {\n  padding: 20px;\n}\nmat-card {\n  padding: 16px;\n  margin: 8px auto;\n  max-width: 520px;\n  text-align: center;\n}\n",
+                    "data": ":host {\n  padding: 20px;\n}\n",
                     "styleUrl": "./categories-page.component.scss"
                 }
             ],
@@ -1339,7 +1339,7 @@
                     }
                 ]
             },
-            "templateData": "<mat-spinner *ngIf=\"(hasRequestPending$ | async)\"></mat-spinner>\n<div class=\"categorieslist\">\n  <mat-card *ngFor=\"let category of (categories$ | async)\">{{ category }}</mat-card>\n  <app-empty-list *ngIf=\"(categories$ | async).length === 0\"></app-empty-list>\n</div>\n"
+            "templateData": "<mat-spinner *ngIf=\"(hasRequestPending$ | async)\"></mat-spinner>\n<ng-container *ngIf=\"false === (hasRequestPending$ | async)\">\n  <mat-card class=\"c\" *ngFor=\"let category of (categories$ | async)\">{{ category }}</mat-card>\n  <app-empty-list *ngIf=\"((categories$ | async)?.length ?? 0) === 0\"></app-empty-list>\n</ng-container>\n"
         },
         {
             "name": "EmptyListComponent",
@@ -1651,6 +1651,68 @@
             "stylesData": ""
         },
         {
+            "name": "ItemDisplayComponent",
+            "id": "component-ItemDisplayComponent-9db7da683c0f0ff17c2c582c2cb394ce55729371025cb49757951b4d3bf06acba2ed88da6a1ebc19f673a098930c179ff53742b357d0cdf432c8a7b0ec52b2cd",
+            "file": "src/app/components/item-display/item-display.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-item-display",
+            "styleUrls": [
+                "./item-display.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./item-display.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 12,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'app-item-display',\n  templateUrl: './item-display.component.html',\n  styleUrls: ['./item-display.component.scss']\n})\nexport class ItemDisplayComponent implements OnInit {\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "mat-card-content {\n    display: flex;\n\n    img {\n        margin-left: 3px;\n        max-width: 200px;\n        width: auto;\n        height: auto;\n    }\n}",
+                    "styleUrl": "./item-display.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [],
+                "line": 8
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<mat-card>\n    <mat-card-title-group>\n        <mat-card-title>Faust I + II</mat-card-title>\n        <mat-card-subtitle>Buch</mat-card-subtitle>\n    </mat-card-title-group>\n    <mat-card-content>\n        <p>\n            Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des Fauststoffs bezeichnet. Der Begriff kann\n            sich\n            auf den ersten Teil der durch Goethe geschaffenen Tragödie, auf deren ersten und zweiten Teil gemeinsam oder\n            insgesamt auf die Arbeiten am Fauststoff beziehen, die Goethe durch sechzig Jahre hindurch immer wieder neu\n            aufnahm. Er umfasst in diesem letzteren Sinne auch die Entwürfe, Fragmente, Kommentare und Paralipomena des\n            Dichters zu seinem Faustwerk und zum Fauststoff.\n        </p>\n        <div>\n            <img mat-card-lg-image\n                src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg\">\n        </div>\n    </mat-card-content>\n    <mat-card-actions>\n        <button mat-button>Reservierungsstatus</button>\n        Nicht reserviert\n        <button mat-button>Reservieren</button>\n        <button mat-button>zurück</button>\n    </mat-card-actions>\n</mat-card>"
+        },
+        {
             "name": "PageComponent",
             "id": "component-PageComponent-7126d8c2607c946741c651482413b43feb72b2d63cac9d3ac173fde206a5e635eb4cdbf7ca7ac9327c7d4d05cf7ef619144c34c11609ad677081d0ee4e855064",
             "file": "src/stories/page.component.ts",
@@ -1734,13 +1796,13 @@
     "modules": [
         {
             "name": "AppModule",
-            "id": "module-AppModule-ab5c4500d419d422eecc5bc656e36985a373182f20dafe1f7d5e61735cb805860a81a84e44444126dcacf7fa0e26061ccee243306940c1738aa04080e6453a03",
+            "id": "module-AppModule-f42664781e0d5238581270f3b84e316b5ecb9c8cc25cb33418570a10d41f1d93b103b1325e62886a50bacd4473529a718d3e2eca7a220f3d95ff938a52d38a28",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/app.module.ts",
             "methods": [],
-            "sourceCode": "import { LayoutModule } from '@angular/cdk/layout';\nimport { HttpClientModule } from '@angular/common/http';\nimport { NgModule } from '@angular/core';\nimport { MatButtonModule } from '@angular/material/button';\nimport { MatCardModule } from '@angular/material/card';\nimport { MatIconModule } from '@angular/material/icon';\nimport { MatListModule } from '@angular/material/list';\nimport { MatSidenavModule } from '@angular/material/sidenav';\nimport { MatToolbarModule } from '@angular/material/toolbar';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\nimport { EffectsModule } from '@ngrx/effects';\nimport { StoreModule } from '@ngrx/store';\nimport { StoreDevtoolsModule } from '@ngrx/store-devtools';\nimport { environment } from '../environments/environment';\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { FrameComponent } from './frame/frame.component';\nimport { AboutComponent } from './pages/about/about.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { agReducer } from './store/a.reducer';\nimport { AppState } from './store/app.state';\nimport { WishlistEffects } from './store/w.effects';\nimport { wReducer } from './store/w.reducer';\nimport { EmptyListComponent } from './components/empty-list/empty-list.component';\n\n@NgModule({\n  declarations: [\n    AppComponent,\n    FrameComponent,\n    AboutComponent,\n    CategoriesPageComponent,\n    EmptyListComponent,\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    BrowserAnimationsModule,\n    LayoutModule,\n    MatButtonModule,\n    MatCardModule,\n    MatIconModule,\n    MatListModule,\n    MatSidenavModule,\n    MatToolbarModule,\n    StoreModule.forRoot<AppState>({ ag: agReducer, wishlist: wReducer }),\n    EffectsModule.forRoot([WishlistEffects]),\n    // import HttpClientModule after BrowserModule.\n    HttpClientModule,\n    StoreDevtoolsModule.instrument({\n      maxAge: 25,\n      logOnly: environment.production,\n    }),\n  ],\n  providers: [],\n  bootstrap: [AppComponent],\n})\nexport class AppModule {}\n",
+            "sourceCode": "import { LayoutModule } from '@angular/cdk/layout';\nimport { HttpClientModule } from '@angular/common/http';\nimport { NgModule } from '@angular/core';\nimport { MatButtonModule } from '@angular/material/button';\nimport { MatCardModule } from '@angular/material/card';\nimport { MatIconModule } from '@angular/material/icon';\nimport { MatListModule } from '@angular/material/list';\nimport { MatSidenavModule } from '@angular/material/sidenav';\nimport { MatToolbarModule } from '@angular/material/toolbar';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\nimport { EffectsModule } from '@ngrx/effects';\nimport { StoreModule } from '@ngrx/store';\nimport { StoreDevtoolsModule } from '@ngrx/store-devtools';\nimport { environment } from '../environments/environment';\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { FrameComponent } from './frame/frame.component';\nimport { AboutComponent } from './pages/about/about.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { agReducer } from './store/a.reducer';\nimport { AppState } from './store/app.state';\nimport { WishlistEffects } from './store/w.effects';\nimport { wReducer } from './store/w.reducer';\nimport { EmptyListComponent } from './components/empty-list/empty-list.component';\nimport { MatProgressSpinnerModule } from '@angular/material/progress-spinner';\nimport { ItemDisplayComponent } from './components/item-display/item-display.component';\n\n@NgModule({\n  declarations: [\n    AppComponent,\n    FrameComponent,\n    AboutComponent,\n    CategoriesPageComponent,\n    EmptyListComponent,\n    ItemDisplayComponent,\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    BrowserAnimationsModule,\n    LayoutModule,\n    MatButtonModule,\n    MatCardModule,\n    MatIconModule,\n    MatListModule,\n    MatProgressSpinnerModule,\n    MatSidenavModule,\n    MatToolbarModule,\n    StoreModule.forRoot<AppState>({ ag: agReducer, wishlist: wReducer }),\n    EffectsModule.forRoot([WishlistEffects]),\n    // import HttpClientModule after BrowserModule.\n    HttpClientModule,\n    StoreDevtoolsModule.instrument({\n      maxAge: 25,\n      logOnly: environment.production,\n    }),\n  ],\n  providers: [],\n  bootstrap: [AppComponent],\n})\nexport class AppModule {}\n",
             "children": [
                 {
                     "type": "providers",
@@ -1763,6 +1825,9 @@
                         },
                         {
                             "name": "FrameComponent"
+                        },
+                        {
+                            "name": "ItemDisplayComponent"
                         }
                     ]
                 },
@@ -1896,6 +1961,16 @@
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "src/stories/EmptyList.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "() => ({\n  props: {},\n})"
+            },
+            {
+                "name": "Display",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/ItemDisplay.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
@@ -2470,6 +2545,18 @@
                     "defaultValue": "() => ({\n  props: {},\n})"
                 }
             ],
+            "src/stories/ItemDisplay.stories.ts": [
+                {
+                    "name": "Display",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/ItemDisplay.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "() => ({\n  props: {},\n})"
+                }
+            ],
             "src/environments/environment.prod.ts": [
                 {
                     "name": "environment",
@@ -2933,6 +3020,15 @@
                 "status": "low"
             },
             {
+                "filePath": "src/app/components/item-display/item-display.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ItemDisplayComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
                 "filePath": "src/app/frame/frame.component.ts",
                 "type": "component",
                 "linktype": "component",
@@ -3270,6 +3366,16 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/ItemDisplay.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Display",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"

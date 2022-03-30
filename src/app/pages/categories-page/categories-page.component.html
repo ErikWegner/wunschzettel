@@ -1,5 +1,5 @@
 <mat-spinner *ngIf="(hasRequestPending$ | async)"></mat-spinner>
 <ng-container *ngIf="false === (hasRequestPending$ | async)">
-  <mat-card *ngFor="let category of (categories$ | async)">{{ category }}</mat-card>
+  <mat-card class="c" *ngFor="let category of (categories$ | async)">{{ category }}</mat-card>
   <app-empty-list *ngIf="((categories$ | async)?.length ?? 0) === 0"></app-empty-list>
 </ng-container>

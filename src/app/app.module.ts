@@ -24,6 +24,7 @@ import { WishlistEffects } from './store/w.effects';
 import { wReducer } from './store/w.reducer';
 import { EmptyListComponent } from './components/empty-list/empty-list.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ItemDisplayComponent } from './components/item-display/item-display.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     AboutComponent,
     CategoriesPageComponent,
     EmptyListComponent,
+    ItemDisplayComponent,
   ],
   imports: [
     BrowserModule,
