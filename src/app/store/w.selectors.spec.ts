@@ -7,6 +7,7 @@ describe('Wishlist selectors', () => {
     wishlist: {
       categories: ['Book', 'Game', 'Everything else'],
       items: [],
+      activeItem: null,
     },
   };
 

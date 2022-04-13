@@ -170,13 +170,22 @@
         },
         {
             "name": "WishlistState",
-            "id": "interface-WishlistState-a832e7db2655a2614e0bb0697d3e1a48af88210921bfdb269d31bd1778f78ce8d0d88a475d46be1ce443f3caeb2f85cd9f1158019a9c074c7e102fdd5032a91d",
+            "id": "interface-WishlistState-c0f9e04d9d79ecd33f043f8b274c88914a331fa89d3f08c04e1a6a893cd037eb2d0cc3338ac31c6bd79cacfd138a03941a65e5cd7bbf6ee906cb4c5124c19e2c",
             "file": "src/app/store/w.state.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import { WishlistItem } from '../business/item';\n\nexport interface WishlistState {\n  categories: string[];\n  items: WishlistItem[];\n}\n",
+            "sourceCode": "import { WishlistItem } from '../business/item';\n\nexport interface WishlistState {\n  categories: string[];\n  items: WishlistItem[];\n  activeItem: WishlistItem | null;\n}\n",
             "properties": [
+                {
+                    "name": "activeItem",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "WishlistItem | null",
+                    "optional": false,
+                    "description": "",
+                    "line": 6
+                },
                 {
                     "name": "categories",
                     "deprecated": false,
@@ -579,12 +588,12 @@
     "classes": [
         {
             "name": "AppStateBuilder",
-            "id": "class-AppStateBuilder-fa0f1c3f5454a9cf1a5150ee2c6ea7671f703f2fe42d0b4405a6355dc6ac6c819f929ba398d860520c535c211a67c4cf2b27692ad401ae9f42a9fa05fc2a1584",
+            "id": "class-AppStateBuilder-c29e3cf67290f14f07b8b99cdc74b51b69d2ec6dd2b335f09664194030589b8ba01cd81f1b897ab4e1ee1cf3331895819c08332c7339ddf06be6ca4ebeb805b8",
             "file": "testing/app.state.builder.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "class",
-            "sourceCode": "import { AppGlobalState } from 'src/app/store/a.state';\nimport { AppState } from 'src/app/store/app.state';\nimport { WishlistState } from 'src/app/store/w.state';\nimport { ListBuilder } from './list-builder';\nimport { randomString } from './utils';\n\nexport const appStateStub = (): AppStateBuilder => new AppStateBuilder();\n\nexport class AppStateBuilder implements AppState {\n  ag: AppGlobalState = {\n    pendingRequest: false,\n  };\n  wishlist: WishlistState = {\n    categories: [],\n    items: [],\n  };\n\n  public static someCategories(): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.wishlist.categories = ListBuilder.with((i) =>\n      randomString(8, 'Category ')\n    )\n      .items(7)\n      .build();\n    return b;\n  }\n\n  public static pendingRequest(): any {\n    const b = new AppStateBuilder();\n    b.ag.pendingRequest = true;\n    return b;\n  }\n}\n",
+            "sourceCode": "import { AppGlobalState } from 'src/app/store/a.state';\nimport { AppState } from 'src/app/store/app.state';\nimport { WishlistState } from 'src/app/store/w.state';\nimport { ListBuilder } from './list-builder';\nimport { randomString } from './utils';\n\nexport const appStateStub = (): AppStateBuilder => new AppStateBuilder();\n\nexport class AppStateBuilder implements AppState {\n  ag: AppGlobalState = {\n    pendingRequest: false,\n  };\n  wishlist: WishlistState = {\n    categories: [],\n    items: [],\n    activeItem: null,\n  };\n\n  public static someCategories(): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.wishlist.categories = ListBuilder.with((i) =>\n      randomString(8, 'Category ')\n    )\n      .items(7)\n      .build();\n    return b;\n  }\n\n  public static pendingRequest(): any {\n    const b = new AppStateBuilder();\n    b.ag.pendingRequest = true;\n    return b;\n  }\n}\n",
             "properties": [
                 {
                     "name": "ag",
@@ -598,7 +607,7 @@
                 },
                 {
                     "name": "wishlist",
-                    "defaultValue": "{\n    categories: [],\n    items: [],\n  }",
+                    "defaultValue": "{\n    categories: [],\n    items: [],\n    activeItem: null,\n  }",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "WishlistState",
@@ -614,7 +623,7 @@
                     "optional": false,
                     "returnType": "any",
                     "typeParameters": [],
-                    "line": 28,
+                    "line": 29,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -627,7 +636,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 18,
+                    "line": 19,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1775,6 +1784,68 @@
             "templateData": "<mat-card>\n  <mat-card-title-group>\n    <mat-card-title>Faust I + II</mat-card-title>\n    <mat-card-subtitle>Buch</mat-card-subtitle>\n  </mat-card-title-group>\n  <mat-divider inset></mat-divider>\n  <mat-card-content>\n    <div class=\"f\">\n      <p>\n        Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des\n        Fauststoffs bezeichnet. Der Begriff kann sich auf den ersten Teil der\n        durch Goethe geschaffenen Tragödie, auf deren ersten und zweiten Teil\n        gemeinsam oder insgesamt auf die Arbeiten am Fauststoff beziehen, die\n        Goethe durch sechzig Jahre hindurch immer wieder neu aufnahm. Er umfasst\n        in diesem letzteren Sinne auch die Entwürfe, Fragmente, Kommentare und\n        Paralipomena des Dichters zu seinem Faustwerk und zum Fauststoff.\n      </p>\n      <div>\n        <img\n          mat-card-lg-image\n          src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg\"\n        />\n      </div>\n    </div>\n    <div>\n      Kauf-Adresse:\n      <a href=\"https://de.wikipedia.org/wiki/Goethes_Faust\">\n        https://de.wikipedia.org/wiki/Goethes_Faust\n      </a>\n    </div>\n  </mat-card-content>\n  <mat-divider inset></mat-divider>\n  <mat-card-actions>\n    <button mat-button>Reservierungsstatus</button>\n    Nicht reserviert\n    <button mat-button>Reservieren</button>\n    <button mat-button>zurück</button>\n  </mat-card-actions>\n</mat-card>\n"
         },
         {
+            "name": "ItemFormComponent",
+            "id": "component-ItemFormComponent-7737f86f2997c1e7590ff717e3dac52e072384ab59af3b5168cd8f69f05a2dbc6857f5f0d118acec7c3be0a0d26a7e941a68a74c2b25ce0941d259d3a56a9648",
+            "file": "src/app/components/item-form/item-form.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-item-form",
+            "styleUrls": [
+                "./item-form.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./item-form.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 12,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'app-item-form',\n  templateUrl: './item-form.component.html',\n  styleUrls: ['./item-form.component.scss']\n})\nexport class ItemFormComponent implements OnInit {\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "",
+                    "styleUrl": "./item-form.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [],
+                "line": 8
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<p>item-form works!</p>\n"
+        },
+        {
             "name": "PageComponent",
             "id": "component-PageComponent-7126d8c2607c946741c651482413b43feb72b2d63cac9d3ac173fde206a5e635eb4cdbf7ca7ac9327c7d4d05cf7ef619144c34c11609ad677081d0ee4e855064",
             "file": "src/stories/page.component.ts",
@@ -1858,13 +1929,13 @@
     "modules": [
         {
             "name": "AppModule",
-            "id": "module-AppModule-345029d2f2dfea216eaebe9814aa49c3317f8b203b0019746cfb125b17ce5e946328ee16e7b1deb728c798f77e5193ea815c1fc4319ba5f11e8446959077eac2",
+            "id": "module-AppModule-c9f66efca7332ae1851b4b80be7cb1f5c658253f963f1a89129f6212591e67b8d9dff0712fb9dade8815f1ba9dc78e2944ca18737b932aa8ff8022a492220e55",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/app.module.ts",
             "methods": [],
-            "sourceCode": "import { LayoutModule } from '@angular/cdk/layout';\nimport { HttpClientModule } from '@angular/common/http';\nimport { NgModule } from '@angular/core';\nimport { MatButtonModule } from '@angular/material/button';\nimport { MatCardModule } from '@angular/material/card';\nimport { MatDialogModule } from '@angular/material/dialog';\nimport { MatIconModule } from '@angular/material/icon';\nimport { MatListModule } from '@angular/material/list';\nimport { MatProgressSpinnerModule } from '@angular/material/progress-spinner';\nimport { MatSidenavModule } from '@angular/material/sidenav';\nimport { MatToolbarModule } from '@angular/material/toolbar';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\nimport { EffectsModule } from '@ngrx/effects';\nimport { StoreModule } from '@ngrx/store';\nimport { StoreDevtoolsModule } from '@ngrx/store-devtools';\nimport { environment } from '../environments/environment';\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { EditReservationDialogComponent } from './components/edit-reservation-dialog/edit-reservation-dialog.component';\nimport { EmptyListComponent } from './components/empty-list/empty-list.component';\nimport { ItemDisplayComponent } from './components/item-display/item-display.component';\nimport { FrameComponent } from './frame/frame.component';\nimport { AboutComponent } from './pages/about/about.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { agReducer } from './store/a.reducer';\nimport { AppState } from './store/app.state';\nimport { WishlistEffects } from './store/w.effects';\nimport { wReducer } from './store/w.reducer';\n\n@NgModule({\n  declarations: [\n    AppComponent,\n    FrameComponent,\n    AboutComponent,\n    CategoriesPageComponent,\n    EmptyListComponent,\n    ItemDisplayComponent,\n    EditReservationDialogComponent,\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    BrowserAnimationsModule,\n    LayoutModule,\n    MatButtonModule,\n    MatCardModule,\n    MatDialogModule,\n    MatIconModule,\n    MatListModule,\n    MatProgressSpinnerModule,\n    MatSidenavModule,\n    MatToolbarModule,\n    StoreModule.forRoot<AppState>({ ag: agReducer, wishlist: wReducer }),\n    EffectsModule.forRoot([WishlistEffects]),\n    // import HttpClientModule after BrowserModule.\n    HttpClientModule,\n    StoreDevtoolsModule.instrument({\n      maxAge: 25,\n      logOnly: environment.production,\n    }),\n  ],\n  providers: [],\n  bootstrap: [AppComponent],\n})\nexport class AppModule {}\n",
+            "sourceCode": "import { LayoutModule } from '@angular/cdk/layout';\nimport { HttpClientModule } from '@angular/common/http';\nimport { NgModule } from '@angular/core';\nimport { MatButtonModule } from '@angular/material/button';\nimport { MatCardModule } from '@angular/material/card';\nimport { MatDialogModule } from '@angular/material/dialog';\nimport { MatIconModule } from '@angular/material/icon';\nimport { MatListModule } from '@angular/material/list';\nimport { MatProgressSpinnerModule } from '@angular/material/progress-spinner';\nimport { MatSidenavModule } from '@angular/material/sidenav';\nimport { MatToolbarModule } from '@angular/material/toolbar';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\nimport { EffectsModule } from '@ngrx/effects';\nimport { StoreModule } from '@ngrx/store';\nimport { StoreDevtoolsModule } from '@ngrx/store-devtools';\nimport { environment } from '../environments/environment';\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { EditReservationDialogComponent } from './components/edit-reservation-dialog/edit-reservation-dialog.component';\nimport { EmptyListComponent } from './components/empty-list/empty-list.component';\nimport { ItemDisplayComponent } from './components/item-display/item-display.component';\nimport { FrameComponent } from './frame/frame.component';\nimport { AboutComponent } from './pages/about/about.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { agReducer } from './store/a.reducer';\nimport { AppState } from './store/app.state';\nimport { WishlistEffects } from './store/w.effects';\nimport { wReducer } from './store/w.reducer';\nimport { ItemFormComponent } from './components/item-form/item-form.component';\n\n@NgModule({\n  declarations: [\n    AppComponent,\n    FrameComponent,\n    AboutComponent,\n    CategoriesPageComponent,\n    EmptyListComponent,\n    ItemDisplayComponent,\n    EditReservationDialogComponent,\n    ItemFormComponent,\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    BrowserAnimationsModule,\n    LayoutModule,\n    MatButtonModule,\n    MatCardModule,\n    MatDialogModule,\n    MatIconModule,\n    MatListModule,\n    MatProgressSpinnerModule,\n    MatSidenavModule,\n    MatToolbarModule,\n    StoreModule.forRoot<AppState>({ ag: agReducer, wishlist: wReducer }),\n    EffectsModule.forRoot([WishlistEffects]),\n    // import HttpClientModule after BrowserModule.\n    HttpClientModule,\n    StoreDevtoolsModule.instrument({\n      maxAge: 25,\n      logOnly: environment.production,\n    }),\n  ],\n  providers: [],\n  bootstrap: [AppComponent],\n})\nexport class AppModule {}\n",
             "children": [
                 {
                     "type": "providers",
@@ -1893,6 +1964,9 @@
                         },
                         {
                             "name": "ItemDisplayComponent"
+                        },
+                        {
+                            "name": "ItemFormComponent"
                         }
                     ]
                 },
@@ -2065,21 +2139,21 @@
                 "name": "environment",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/environments/environment.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  production: false\n}"
-            },
-            {
-                "name": "environment",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/environments/environment.prod.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
                 "defaultValue": "{\n  production: true\n}"
+            },
+            {
+                "name": "environment",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/environments/environment.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  production: false\n}"
             },
             {
                 "name": "getItems",
@@ -2118,8 +2192,8 @@
                 "file": "src/app/store/w.reducer.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  categories: [],\n  items: [],\n}"
+                "type": "WishlistState",
+                "defaultValue": "{\n  categories: [],\n  items: [],\n  activeItem: null,\n}"
             },
             {
                 "name": "itemsLoaded",
@@ -2199,7 +2273,17 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "any[]",
-                "defaultValue": "[\n  MatButtonModule,\n  MatCardModule,\n  MatDialogModule,\n  MatIconModule,\n  MatListModule,\n  MatProgressSpinnerModule,\n  MatSidenavModule,\n  MatToolbarModule,\n]"
+                "defaultValue": "[\n  MatButtonModule,\n  MatCardModule,\n  MatDividerModule,\n  MatDialogModule,\n  MatIconModule,\n  MatListModule,\n  MatProgressSpinnerModule,\n  MatSidenavModule,\n  MatToolbarModule,\n]"
+            },
+            {
+                "name": "NewForm",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/ItemForm.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "() => ({\n  props: {},\n})"
             },
             {
                 "name": "Primary",
@@ -2319,6 +2403,16 @@
                 "deprecationMessage": "",
                 "type": "Story<Header>",
                 "defaultValue": "(args: Header) => ({\n  props: args,\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/ItemForm.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<ItemFormComponent>",
+                "defaultValue": "(args: ItemFormComponent) => ({\n  props: args,\n})"
             },
             {
                 "name": "Template",
@@ -2593,7 +2687,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "any[]",
-                    "defaultValue": "[\n  MatButtonModule,\n  MatCardModule,\n  MatDialogModule,\n  MatIconModule,\n  MatListModule,\n  MatProgressSpinnerModule,\n  MatSidenavModule,\n  MatToolbarModule,\n]"
+                    "defaultValue": "[\n  MatButtonModule,\n  MatCardModule,\n  MatDividerModule,\n  MatDialogModule,\n  MatIconModule,\n  MatListModule,\n  MatProgressSpinnerModule,\n  MatSidenavModule,\n  MatToolbarModule,\n]"
                 }
             ],
             "src/stories/About.stories.ts": [
@@ -2644,18 +2738,6 @@
                     "defaultValue": "() => ({\n  props: {},\n})"
                 }
             ],
-            "src/environments/environment.ts": [
-                {
-                    "name": "environment",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/environments/environment.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n  production: false\n}"
-                }
-            ],
             "src/environments/environment.prod.ts": [
                 {
                     "name": "environment",
@@ -2666,6 +2748,18 @@
                     "deprecationMessage": "",
                     "type": "object",
                     "defaultValue": "{\n  production: true\n}"
+                }
+            ],
+            "src/environments/environment.ts": [
+                {
+                    "name": "environment",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/environments/environment.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n  production: false\n}"
                 }
             ],
             "src/app/store/w.actions.ts": [
@@ -2698,8 +2792,8 @@
                     "file": "src/app/store/w.reducer.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n  categories: [],\n  items: [],\n}"
+                    "type": "WishlistState",
+                    "defaultValue": "{\n  categories: [],\n  items: [],\n  activeItem: null,\n}"
                 },
                 {
                     "name": "wReducer",
@@ -2826,6 +2920,28 @@
                     "deprecationMessage": "",
                     "type": "Story<Page>",
                     "defaultValue": "(args: Page) => ({\n  props: args,\n})"
+                }
+            ],
+            "src/stories/ItemForm.stories.ts": [
+                {
+                    "name": "NewForm",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/ItemForm.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "() => ({\n  props: {},\n})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/ItemForm.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<ItemFormComponent>",
+                    "defaultValue": "(args: ItemFormComponent) => ({\n  props: args,\n})"
                 }
             ],
             "src/app/store/w.selectors.ts": [
@@ -3125,6 +3241,15 @@
                 "status": "low"
             },
             {
+                "filePath": "src/app/components/item-form/item-form.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ItemFormComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
                 "filePath": "src/app/frame/frame.component.ts",
                 "type": "component",
                 "linktype": "component",
@@ -3293,7 +3418,7 @@
                 "linktype": "interface",
                 "name": "WishlistState",
                 "coveragePercent": 0,
-                "coverageCount": "0/3",
+                "coverageCount": "0/4",
                 "status": "low"
             },
             {
@@ -3472,6 +3597,26 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "Display",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/ItemForm.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "NewForm",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/ItemForm.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"

@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { EditReservationDialogComponent } from './edit-reservation-dialog.component';
 
@@ -8,9 +9,9 @@ describe('EditReservationDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EditReservationDialogComponent ]
-    })
-    .compileComponents();
+      declarations: [EditReservationDialogComponent],
+      imports: [MatDialogModule],
+    }).compileComponents();
   });
 
   beforeEach(() => {

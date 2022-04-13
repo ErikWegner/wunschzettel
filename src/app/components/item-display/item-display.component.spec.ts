@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
 
 import { ItemDisplayComponent } from './item-display.component';
 
@@ -8,9 +10,9 @@ describe('ItemDisplayComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ItemDisplayComponent ]
-    })
-    .compileComponents();
+      declarations: [ItemDisplayComponent],
+      imports: [MatCardModule, MatDividerModule],
+    }).compileComponents();
   });
 
   beforeEach(() => {

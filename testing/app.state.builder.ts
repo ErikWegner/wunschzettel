@@ -13,6 +13,7 @@ export class AppStateBuilder implements AppState {
   wishlist: WishlistState = {
     categories: [],
     items: [],
+    activeItem: null,
   };
 
   public static someCategories(): AppStateBuilder {

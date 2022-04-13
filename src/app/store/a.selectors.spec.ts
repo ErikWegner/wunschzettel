@@ -11,6 +11,7 @@ describe('AppGlobalState selectors', () => {
     wishlist: {
       categories: ['Book', 'Game', 'Everything else'],
       items: [],
+      activeItem: null,
     },
   };
 

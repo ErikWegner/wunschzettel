@@ -27,6 +27,7 @@ import { agReducer } from './store/a.reducer';
 import { AppState } from './store/app.state';
 import { WishlistEffects } from './store/w.effects';
 import { wReducer } from './store/w.reducer';
+import { ItemFormComponent } from './components/item-form/item-form.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { wReducer } from './store/w.reducer';
     EmptyListComponent,
     ItemDisplayComponent,
     EditReservationDialogComponent,
+    ItemFormComponent,
   ],
   imports: [
     BrowserModule,
