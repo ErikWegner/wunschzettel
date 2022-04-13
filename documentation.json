@@ -1342,6 +1342,68 @@
             "templateData": "<mat-spinner *ngIf=\"(hasRequestPending$ | async)\"></mat-spinner>\n<ng-container *ngIf=\"false === (hasRequestPending$ | async)\">\n  <mat-card class=\"c\" *ngFor=\"let category of (categories$ | async)\">{{ category }}</mat-card>\n  <app-empty-list *ngIf=\"((categories$ | async)?.length ?? 0) === 0\"></app-empty-list>\n</ng-container>\n"
         },
         {
+            "name": "EditReservationDialogComponent",
+            "id": "component-EditReservationDialogComponent-b7896b3fe49a4e5fda28732ddf8bfef82042f277243db727da23869e52dc3beb436cd7b1573fa0c94d08ad7f086cb0dfe6f978d9181b38ecf5c53cfcc697008e",
+            "file": "src/app/components/edit-reservation-dialog/edit-reservation-dialog.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-edit-reservation-dialog",
+            "styleUrls": [
+                "./edit-reservation-dialog.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./edit-reservation-dialog.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 12,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'app-edit-reservation-dialog',\n  templateUrl: './edit-reservation-dialog.component.html',\n  styleUrls: ['./edit-reservation-dialog.component.scss']\n})\nexport class EditReservationDialogComponent implements OnInit {\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "",
+                    "styleUrl": "./edit-reservation-dialog.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [],
+                "line": 8
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<h2 mat-dialog-title>Reservieren?</h2>\n<mat-dialog-content class=\"mat-typography\">\n  \n</mat-dialog-content>\n<mat-dialog-actions align=\"end\">\n  <button mat-button mat-dialog-close>zurück</button>\n  <button mat-button [mat-dialog-close]=\"true\" cdkFocusInitial>Reservieren</button>\n</mat-dialog-actions>\n"
+        },
+        {
             "name": "EmptyListComponent",
             "id": "component-EmptyListComponent-773f2b58636fc00eca1423c76063705e6960ef6fc62e4c31e2efbead0b8d5b2fa58f37f14925fcbf32b393453d125c2c06593a303504ce26d3b706065906a425",
             "file": "src/app/components/empty-list/empty-list.component.ts",
@@ -1694,7 +1756,7 @@
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": "mat-card-content {\n    display: flex;\n\n    img {\n        margin-left: 3px;\n        max-width: 200px;\n        width: auto;\n        height: auto;\n    }\n}",
+                    "data": "mat-card-content {\n  padding-top: 6px;\n\n  img {\n    margin-left: 3px;\n    max-width: 200px;\n    width: auto;\n    height: auto;\n  }\n}\n",
                     "styleUrl": "./item-display.component.scss"
                 }
             ],
@@ -1710,7 +1772,7 @@
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<mat-card>\n    <mat-card-title-group>\n        <mat-card-title>Faust I + II</mat-card-title>\n        <mat-card-subtitle>Buch</mat-card-subtitle>\n    </mat-card-title-group>\n    <mat-card-content>\n        <p>\n            Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des Fauststoffs bezeichnet. Der Begriff kann\n            sich\n            auf den ersten Teil der durch Goethe geschaffenen Tragödie, auf deren ersten und zweiten Teil gemeinsam oder\n            insgesamt auf die Arbeiten am Fauststoff beziehen, die Goethe durch sechzig Jahre hindurch immer wieder neu\n            aufnahm. Er umfasst in diesem letzteren Sinne auch die Entwürfe, Fragmente, Kommentare und Paralipomena des\n            Dichters zu seinem Faustwerk und zum Fauststoff.\n        </p>\n        <div>\n            <img mat-card-lg-image\n                src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg\">\n        </div>\n    </mat-card-content>\n    <mat-card-actions>\n        <button mat-button>Reservierungsstatus</button>\n        Nicht reserviert\n        <button mat-button>Reservieren</button>\n        <button mat-button>zurück</button>\n    </mat-card-actions>\n</mat-card>"
+            "templateData": "<mat-card>\n  <mat-card-title-group>\n    <mat-card-title>Faust I + II</mat-card-title>\n    <mat-card-subtitle>Buch</mat-card-subtitle>\n  </mat-card-title-group>\n  <mat-divider inset></mat-divider>\n  <mat-card-content>\n    <div class=\"f\">\n      <p>\n        Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des\n        Fauststoffs bezeichnet. Der Begriff kann sich auf den ersten Teil der\n        durch Goethe geschaffenen Tragödie, auf deren ersten und zweiten Teil\n        gemeinsam oder insgesamt auf die Arbeiten am Fauststoff beziehen, die\n        Goethe durch sechzig Jahre hindurch immer wieder neu aufnahm. Er umfasst\n        in diesem letzteren Sinne auch die Entwürfe, Fragmente, Kommentare und\n        Paralipomena des Dichters zu seinem Faustwerk und zum Fauststoff.\n      </p>\n      <div>\n        <img\n          mat-card-lg-image\n          src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg\"\n        />\n      </div>\n    </div>\n    <div>\n      Kauf-Adresse:\n      <a href=\"https://de.wikipedia.org/wiki/Goethes_Faust\">\n        https://de.wikipedia.org/wiki/Goethes_Faust\n      </a>\n    </div>\n  </mat-card-content>\n  <mat-divider inset></mat-divider>\n  <mat-card-actions>\n    <button mat-button>Reservierungsstatus</button>\n    Nicht reserviert\n    <button mat-button>Reservieren</button>\n    <button mat-button>zurück</button>\n  </mat-card-actions>\n</mat-card>\n"
         },
         {
             "name": "PageComponent",
@@ -1796,13 +1858,13 @@
     "modules": [
         {
             "name": "AppModule",
-            "id": "module-AppModule-f42664781e0d5238581270f3b84e316b5ecb9c8cc25cb33418570a10d41f1d93b103b1325e62886a50bacd4473529a718d3e2eca7a220f3d95ff938a52d38a28",
+            "id": "module-AppModule-345029d2f2dfea216eaebe9814aa49c3317f8b203b0019746cfb125b17ce5e946328ee16e7b1deb728c798f77e5193ea815c1fc4319ba5f11e8446959077eac2",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/app.module.ts",
             "methods": [],
-            "sourceCode": "import { LayoutModule } from '@angular/cdk/layout';\nimport { HttpClientModule } from '@angular/common/http';\nimport { NgModule } from '@angular/core';\nimport { MatButtonModule } from '@angular/material/button';\nimport { MatCardModule } from '@angular/material/card';\nimport { MatIconModule } from '@angular/material/icon';\nimport { MatListModule } from '@angular/material/list';\nimport { MatSidenavModule } from '@angular/material/sidenav';\nimport { MatToolbarModule } from '@angular/material/toolbar';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\nimport { EffectsModule } from '@ngrx/effects';\nimport { StoreModule } from '@ngrx/store';\nimport { StoreDevtoolsModule } from '@ngrx/store-devtools';\nimport { environment } from '../environments/environment';\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { FrameComponent } from './frame/frame.component';\nimport { AboutComponent } from './pages/about/about.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { agReducer } from './store/a.reducer';\nimport { AppState } from './store/app.state';\nimport { WishlistEffects } from './store/w.effects';\nimport { wReducer } from './store/w.reducer';\nimport { EmptyListComponent } from './components/empty-list/empty-list.component';\nimport { MatProgressSpinnerModule } from '@angular/material/progress-spinner';\nimport { ItemDisplayComponent } from './components/item-display/item-display.component';\n\n@NgModule({\n  declarations: [\n    AppComponent,\n    FrameComponent,\n    AboutComponent,\n    CategoriesPageComponent,\n    EmptyListComponent,\n    ItemDisplayComponent,\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    BrowserAnimationsModule,\n    LayoutModule,\n    MatButtonModule,\n    MatCardModule,\n    MatIconModule,\n    MatListModule,\n    MatProgressSpinnerModule,\n    MatSidenavModule,\n    MatToolbarModule,\n    StoreModule.forRoot<AppState>({ ag: agReducer, wishlist: wReducer }),\n    EffectsModule.forRoot([WishlistEffects]),\n    // import HttpClientModule after BrowserModule.\n    HttpClientModule,\n    StoreDevtoolsModule.instrument({\n      maxAge: 25,\n      logOnly: environment.production,\n    }),\n  ],\n  providers: [],\n  bootstrap: [AppComponent],\n})\nexport class AppModule {}\n",
+            "sourceCode": "import { LayoutModule } from '@angular/cdk/layout';\nimport { HttpClientModule } from '@angular/common/http';\nimport { NgModule } from '@angular/core';\nimport { MatButtonModule } from '@angular/material/button';\nimport { MatCardModule } from '@angular/material/card';\nimport { MatDialogModule } from '@angular/material/dialog';\nimport { MatIconModule } from '@angular/material/icon';\nimport { MatListModule } from '@angular/material/list';\nimport { MatProgressSpinnerModule } from '@angular/material/progress-spinner';\nimport { MatSidenavModule } from '@angular/material/sidenav';\nimport { MatToolbarModule } from '@angular/material/toolbar';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\nimport { EffectsModule } from '@ngrx/effects';\nimport { StoreModule } from '@ngrx/store';\nimport { StoreDevtoolsModule } from '@ngrx/store-devtools';\nimport { environment } from '../environments/environment';\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { EditReservationDialogComponent } from './components/edit-reservation-dialog/edit-reservation-dialog.component';\nimport { EmptyListComponent } from './components/empty-list/empty-list.component';\nimport { ItemDisplayComponent } from './components/item-display/item-display.component';\nimport { FrameComponent } from './frame/frame.component';\nimport { AboutComponent } from './pages/about/about.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { agReducer } from './store/a.reducer';\nimport { AppState } from './store/app.state';\nimport { WishlistEffects } from './store/w.effects';\nimport { wReducer } from './store/w.reducer';\n\n@NgModule({\n  declarations: [\n    AppComponent,\n    FrameComponent,\n    AboutComponent,\n    CategoriesPageComponent,\n    EmptyListComponent,\n    ItemDisplayComponent,\n    EditReservationDialogComponent,\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    BrowserAnimationsModule,\n    LayoutModule,\n    MatButtonModule,\n    MatCardModule,\n    MatDialogModule,\n    MatIconModule,\n    MatListModule,\n    MatProgressSpinnerModule,\n    MatSidenavModule,\n    MatToolbarModule,\n    StoreModule.forRoot<AppState>({ ag: agReducer, wishlist: wReducer }),\n    EffectsModule.forRoot([WishlistEffects]),\n    // import HttpClientModule after BrowserModule.\n    HttpClientModule,\n    StoreDevtoolsModule.instrument({\n      maxAge: 25,\n      logOnly: environment.production,\n    }),\n  ],\n  providers: [],\n  bootstrap: [AppComponent],\n})\nexport class AppModule {}\n",
             "children": [
                 {
                     "type": "providers",
@@ -1819,6 +1881,9 @@
                         },
                         {
                             "name": "CategoriesPageComponent"
+                        },
+                        {
+                            "name": "EditReservationDialogComponent"
                         },
                         {
                             "name": "EmptyListComponent"
@@ -1977,6 +2042,16 @@
                 "defaultValue": "() => ({\n  props: {},\n})"
             },
             {
+                "name": "Display",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Reservation.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "() => ({\n  props: {},\n})"
+            },
+            {
                 "name": "Empty",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -1990,21 +2065,21 @@
                 "name": "environment",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/environments/environment.prod.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  production: true\n}"
-            },
-            {
-                "name": "environment",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/environments/environment.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
                 "defaultValue": "{\n  production: false\n}"
+            },
+            {
+                "name": "environment",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/environments/environment.prod.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  production: true\n}"
             },
             {
                 "name": "getItems",
@@ -2124,7 +2199,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "any[]",
-                "defaultValue": "[\n  MatButtonModule,\n  MatCardModule,\n  MatIconModule,\n  MatListModule,\n  MatProgressSpinnerModule,\n  MatSidenavModule,\n  MatToolbarModule,\n]"
+                "defaultValue": "[\n  MatButtonModule,\n  MatCardModule,\n  MatDialogModule,\n  MatIconModule,\n  MatListModule,\n  MatProgressSpinnerModule,\n  MatSidenavModule,\n  MatToolbarModule,\n]"
             },
             {
                 "name": "Primary",
@@ -2518,7 +2593,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "any[]",
-                    "defaultValue": "[\n  MatButtonModule,\n  MatCardModule,\n  MatIconModule,\n  MatListModule,\n  MatProgressSpinnerModule,\n  MatSidenavModule,\n  MatToolbarModule,\n]"
+                    "defaultValue": "[\n  MatButtonModule,\n  MatCardModule,\n  MatDialogModule,\n  MatIconModule,\n  MatListModule,\n  MatProgressSpinnerModule,\n  MatSidenavModule,\n  MatToolbarModule,\n]"
                 }
             ],
             "src/stories/About.stories.ts": [
@@ -2557,16 +2632,16 @@
                     "defaultValue": "() => ({\n  props: {},\n})"
                 }
             ],
-            "src/environments/environment.prod.ts": [
+            "src/stories/Reservation.stories.ts": [
                 {
-                    "name": "environment",
+                    "name": "Display",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/environments/environment.prod.ts",
+                    "file": "src/stories/Reservation.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n  production: true\n}"
+                    "type": "Story",
+                    "defaultValue": "() => ({\n  props: {},\n})"
                 }
             ],
             "src/environments/environment.ts": [
@@ -2579,6 +2654,18 @@
                     "deprecationMessage": "",
                     "type": "object",
                     "defaultValue": "{\n  production: false\n}"
+                }
+            ],
+            "src/environments/environment.prod.ts": [
+                {
+                    "name": "environment",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/environments/environment.prod.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n  production: true\n}"
                 }
             ],
             "src/app/store/w.actions.ts": [
@@ -3011,6 +3098,15 @@
                 "status": "low"
             },
             {
+                "filePath": "src/app/components/edit-reservation-dialog/edit-reservation-dialog.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "EditReservationDialogComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
                 "filePath": "src/app/components/empty-list/empty-list.component.ts",
                 "type": "component",
                 "linktype": "component",
@@ -3406,6 +3502,16 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Reservation.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Display",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
