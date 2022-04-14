@@ -1785,7 +1785,7 @@
         },
         {
             "name": "ItemFormComponent",
-            "id": "component-ItemFormComponent-7737f86f2997c1e7590ff717e3dac52e072384ab59af3b5168cd8f69f05a2dbc6857f5f0d118acec7c3be0a0d26a7e941a68a74c2b25ce0941d259d3a56a9648",
+            "id": "component-ItemFormComponent-5045ce278d36ea59d5bdc17f245d4f13e36101f4b6ebabf8493fbee87ee80d4e00d9e9c667f1c984212a43657d2ca41c4ddfd3dfd7a0a0e207375b154bb50a30",
             "file": "src/app/components/item-form/item-form.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -1803,7 +1803,18 @@
             "viewProviders": [],
             "inputsClass": [],
             "outputsClass": [],
-            "propertiesClass": [],
+            "propertiesClass": [
+                {
+                    "name": "itemForm",
+                    "defaultValue": "this.fb.group({\n    title: ['', Validators.required],\n    description: [''],\n    category: ['', Validators.required],\n    imagesrc: [''],\n    buyurl: [''],\n    captchaResponse: ['', Validators.required],\n  })",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 10
+                }
+            ],
             "methodsClass": [
                 {
                     "name": "ngOnInit",
@@ -1811,7 +1822,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 12,
+                    "line": 21,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -1823,11 +1834,11 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'app-item-form',\n  templateUrl: './item-form.component.html',\n  styleUrls: ['./item-form.component.scss']\n})\nexport class ItemFormComponent implements OnInit {\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n}\n",
+            "sourceCode": "import { Component, OnInit } from '@angular/core';\nimport { FormBuilder, Validators } from '@angular/forms';\n\n@Component({\n  selector: 'app-item-form',\n  templateUrl: './item-form.component.html',\n  styleUrls: ['./item-form.component.scss'],\n})\nexport class ItemFormComponent implements OnInit {\n  itemForm = this.fb.group({\n    title: ['', Validators.required],\n    description: [''],\n    category: ['', Validators.required],\n    imagesrc: [''],\n    buyurl: [''],\n    captchaResponse: ['', Validators.required],\n  });\n\n  constructor(private fb: FormBuilder) {}\n\n  ngOnInit(): void {}\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": "",
+                    "data": ".mat-form-field {\n  width: 100%;\n}",
                     "styleUrl": "./item-form.component.scss"
                 }
             ],
@@ -1837,13 +1848,31 @@
                 "description": "",
                 "deprecated": false,
                 "deprecationMessage": "",
-                "args": [],
-                "line": 8
+                "args": [
+                    {
+                        "name": "fb",
+                        "type": "FormBuilder",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 17,
+                "jsdoctags": [
+                    {
+                        "name": "fb",
+                        "type": "FormBuilder",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
             },
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<p>item-form works!</p>\n"
+            "templateData": "<form [formGroup]=\"itemForm\">\n  <mat-card>\n    <mat-card-title>Wunschzetteleintrag</mat-card-title>\n\n    <mat-card-content>\n\n\n      <mat-form-field>\n        <mat-label>Bezeichnung</mat-label>\n        <input matInput formControlName=\"title\">\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-label>Beschreibung</mat-label>\n        <textarea matInput formControlName=\"description\"></textarea>\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-label>Kategorie</mat-label>\n        <input matInput formControlName=\"category\">\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-label>Bild-Adresse</mat-label>\n        <input matInput formControlName=\"imagesrc\">\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-label>Kauf-Adresse</mat-label>\n        <input matInput formControlName=\"buyurl\">\n      </mat-form-field>\n\n\n    </mat-card-content>\n\n    <mat-card-actions align=\"end\">\n      <button mat-button type=\"submit\" [disabled]=\"itemForm.invalid\">Speichern</button>\n      <button mat-button>zurück</button>\n    </mat-card-actions>\n  </mat-card>\n</form>\n"
         },
         {
             "name": "PageComponent",
@@ -1929,13 +1958,13 @@
     "modules": [
         {
             "name": "AppModule",
-            "id": "module-AppModule-c9f66efca7332ae1851b4b80be7cb1f5c658253f963f1a89129f6212591e67b8d9dff0712fb9dade8815f1ba9dc78e2944ca18737b932aa8ff8022a492220e55",
+            "id": "module-AppModule-34fefd7528720089a1e74feb32276038e4564cb7661226d3d8de6e692d6bff1587a6068eda6012889efecd662a37d03ae0c1684965966bc32508c07e059df31d",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/app.module.ts",
             "methods": [],
-            "sourceCode": "import { LayoutModule } from '@angular/cdk/layout';\nimport { HttpClientModule } from '@angular/common/http';\nimport { NgModule } from '@angular/core';\nimport { MatButtonModule } from '@angular/material/button';\nimport { MatCardModule } from '@angular/material/card';\nimport { MatDialogModule } from '@angular/material/dialog';\nimport { MatIconModule } from '@angular/material/icon';\nimport { MatListModule } from '@angular/material/list';\nimport { MatProgressSpinnerModule } from '@angular/material/progress-spinner';\nimport { MatSidenavModule } from '@angular/material/sidenav';\nimport { MatToolbarModule } from '@angular/material/toolbar';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\nimport { EffectsModule } from '@ngrx/effects';\nimport { StoreModule } from '@ngrx/store';\nimport { StoreDevtoolsModule } from '@ngrx/store-devtools';\nimport { environment } from '../environments/environment';\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { EditReservationDialogComponent } from './components/edit-reservation-dialog/edit-reservation-dialog.component';\nimport { EmptyListComponent } from './components/empty-list/empty-list.component';\nimport { ItemDisplayComponent } from './components/item-display/item-display.component';\nimport { FrameComponent } from './frame/frame.component';\nimport { AboutComponent } from './pages/about/about.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { agReducer } from './store/a.reducer';\nimport { AppState } from './store/app.state';\nimport { WishlistEffects } from './store/w.effects';\nimport { wReducer } from './store/w.reducer';\nimport { ItemFormComponent } from './components/item-form/item-form.component';\n\n@NgModule({\n  declarations: [\n    AppComponent,\n    FrameComponent,\n    AboutComponent,\n    CategoriesPageComponent,\n    EmptyListComponent,\n    ItemDisplayComponent,\n    EditReservationDialogComponent,\n    ItemFormComponent,\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    BrowserAnimationsModule,\n    LayoutModule,\n    MatButtonModule,\n    MatCardModule,\n    MatDialogModule,\n    MatIconModule,\n    MatListModule,\n    MatProgressSpinnerModule,\n    MatSidenavModule,\n    MatToolbarModule,\n    StoreModule.forRoot<AppState>({ ag: agReducer, wishlist: wReducer }),\n    EffectsModule.forRoot([WishlistEffects]),\n    // import HttpClientModule after BrowserModule.\n    HttpClientModule,\n    StoreDevtoolsModule.instrument({\n      maxAge: 25,\n      logOnly: environment.production,\n    }),\n  ],\n  providers: [],\n  bootstrap: [AppComponent],\n})\nexport class AppModule {}\n",
+            "sourceCode": "import { LayoutModule } from '@angular/cdk/layout';\nimport { HttpClientModule } from '@angular/common/http';\nimport { NgModule } from '@angular/core';\nimport { ReactiveFormsModule } from '@angular/forms';\nimport { MatButtonModule } from '@angular/material/button';\nimport { MatCardModule } from '@angular/material/card';\nimport { MatDialogModule } from '@angular/material/dialog';\nimport {\n  MatFormFieldModule,\n  MAT_FORM_FIELD_DEFAULT_OPTIONS,\n} from '@angular/material/form-field';\nimport { MatIconModule } from '@angular/material/icon';\nimport { MatInputModule } from '@angular/material/input';\nimport { MatListModule } from '@angular/material/list';\nimport { MatProgressSpinnerModule } from '@angular/material/progress-spinner';\nimport { MatSidenavModule } from '@angular/material/sidenav';\nimport { MatToolbarModule } from '@angular/material/toolbar';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\nimport { EffectsModule } from '@ngrx/effects';\nimport { StoreModule } from '@ngrx/store';\nimport { StoreDevtoolsModule } from '@ngrx/store-devtools';\nimport { environment } from '../environments/environment';\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { EditReservationDialogComponent } from './components/edit-reservation-dialog/edit-reservation-dialog.component';\nimport { EmptyListComponent } from './components/empty-list/empty-list.component';\nimport { ItemDisplayComponent } from './components/item-display/item-display.component';\nimport { ItemFormComponent } from './components/item-form/item-form.component';\nimport { FrameComponent } from './frame/frame.component';\nimport { AboutComponent } from './pages/about/about.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { agReducer } from './store/a.reducer';\nimport { AppState } from './store/app.state';\nimport { WishlistEffects } from './store/w.effects';\nimport { wReducer } from './store/w.reducer';\n\n@NgModule({\n  declarations: [\n    AppComponent,\n    FrameComponent,\n    AboutComponent,\n    CategoriesPageComponent,\n    EmptyListComponent,\n    ItemDisplayComponent,\n    EditReservationDialogComponent,\n    ItemFormComponent,\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    BrowserAnimationsModule,\n    LayoutModule,\n    ReactiveFormsModule,\n    MatButtonModule,\n    MatCardModule,\n    MatDialogModule,\n    MatFormFieldModule,\n    MatIconModule,\n    MatInputModule,\n    MatListModule,\n    MatProgressSpinnerModule,\n    MatSidenavModule,\n    MatToolbarModule,\n    StoreModule.forRoot<AppState>({ ag: agReducer, wishlist: wReducer }),\n    EffectsModule.forRoot([WishlistEffects]),\n    // import HttpClientModule after BrowserModule.\n    HttpClientModule,\n    StoreDevtoolsModule.instrument({\n      maxAge: 25,\n      logOnly: environment.production,\n    }),\n  ],\n  providers: [\n    {\n      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,\n      useValue: { appearance: 'fill' },\n    },\n  ],\n  bootstrap: [AppComponent],\n})\nexport class AppModule {}\n",
             "children": [
                 {
                     "type": "providers",
@@ -2083,7 +2112,17 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "[]",
-                "defaultValue": "[\n  moduleMetadata({\n    declarations: [],\n    imports: moduleImports,\n  }),\n]"
+                "defaultValue": "[\n  moduleMetadata({\n    declarations: [],\n    imports: moduleImports,\n    providers: defaultProviders,\n  }),\n]"
+            },
+            {
+                "name": "defaultProviders",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/matmetadata.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "any[]",
+                "defaultValue": "[\n  { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },\n]"
             },
             {
                 "name": "Display",
@@ -2273,7 +2312,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "any[]",
-                "defaultValue": "[\n  MatButtonModule,\n  MatCardModule,\n  MatDividerModule,\n  MatDialogModule,\n  MatIconModule,\n  MatListModule,\n  MatProgressSpinnerModule,\n  MatSidenavModule,\n  MatToolbarModule,\n]"
+                "defaultValue": "[\n  BrowserAnimationsModule,\n  ReactiveFormsModule,\n  MatButtonModule,\n  MatCardModule,\n  MatDividerModule,\n  MatDialogModule,\n  MatFormFieldModule,\n  MatIconModule,\n  MatInputModule,\n  MatListModule,\n  MatProgressSpinnerModule,\n  MatSidenavModule,\n  MatToolbarModule,\n]"
             },
             {
                 "name": "NewForm",
@@ -2378,21 +2417,21 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/stories/Button.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<Button>",
-                "defaultValue": "(args: Button) => ({\n  props: args,\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/stories/Categories.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story<CategoriesPageComponent>",
                 "defaultValue": "(\n  args: CategoriesPageComponent\n) => ({\n  props: args,\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<Button>",
+                "defaultValue": "(args: Button) => ({\n  props: args,\n})"
             },
             {
                 "name": "Template",
@@ -2677,7 +2716,17 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "[]",
-                    "defaultValue": "[\n  moduleMetadata({\n    declarations: [],\n    imports: moduleImports,\n  }),\n]"
+                    "defaultValue": "[\n  moduleMetadata({\n    declarations: [],\n    imports: moduleImports,\n    providers: defaultProviders,\n  }),\n]"
+                },
+                {
+                    "name": "defaultProviders",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/matmetadata.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "any[]",
+                    "defaultValue": "[\n  { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },\n]"
                 },
                 {
                     "name": "moduleImports",
@@ -2687,7 +2736,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "any[]",
-                    "defaultValue": "[\n  MatButtonModule,\n  MatCardModule,\n  MatDividerModule,\n  MatDialogModule,\n  MatIconModule,\n  MatListModule,\n  MatProgressSpinnerModule,\n  MatSidenavModule,\n  MatToolbarModule,\n]"
+                    "defaultValue": "[\n  BrowserAnimationsModule,\n  ReactiveFormsModule,\n  MatButtonModule,\n  MatCardModule,\n  MatDividerModule,\n  MatDialogModule,\n  MatFormFieldModule,\n  MatIconModule,\n  MatInputModule,\n  MatListModule,\n  MatProgressSpinnerModule,\n  MatSidenavModule,\n  MatToolbarModule,\n]"
                 }
             ],
             "src/stories/About.stories.ts": [
@@ -3246,7 +3295,7 @@
                 "linktype": "component",
                 "name": "ItemFormComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/3",
+                "coverageCount": "0/4",
                 "status": "low"
             },
             {
@@ -3694,6 +3743,16 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "decorators",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/matmetadata.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "defaultProviders",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"

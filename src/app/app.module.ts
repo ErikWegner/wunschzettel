@@ -1,10 +1,16 @@
 import { LayoutModule } from '@angular/cdk/layout';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
+import {
+  MatFormFieldModule,
+  MAT_FORM_FIELD_DEFAULT_OPTIONS,
+} from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -20,6 +26,7 @@ import { AppComponent } from './app.component';
 import { EditReservationDialogComponent } from './components/edit-reservation-dialog/edit-reservation-dialog.component';
 import { EmptyListComponent } from './components/empty-list/empty-list.component';
 import { ItemDisplayComponent } from './components/item-display/item-display.component';
+import { ItemFormComponent } from './components/item-form/item-form.component';
 import { FrameComponent } from './frame/frame.component';
 import { AboutComponent } from './pages/about/about.component';
 import { CategoriesPageComponent } from './pages/categories-page/categories-page.component';
@@ -27,7 +34,6 @@ import { agReducer } from './store/a.reducer';
 import { AppState } from './store/app.state';
 import { WishlistEffects } from './store/w.effects';
 import { wReducer } from './store/w.reducer';
-import { ItemFormComponent } from './components/item-form/item-form.component';
 
 @NgModule({
   declarations: [
@@ -45,10 +51,13 @@ import { ItemFormComponent } from './components/item-form/item-form.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     LayoutModule,
+    ReactiveFormsModule,
     MatButtonModule,
     MatCardModule,
     MatDialogModule,
+    MatFormFieldModule,
     MatIconModule,
+    MatInputModule,
     MatListModule,
     MatProgressSpinnerModule,
     MatSidenavModule,
@@ -62,7 +71,12 @@ import { ItemFormComponent } from './components/item-form/item-form.component';
       logOnly: environment.production,
     }),
   ],
-  providers: [],
+  providers: [
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: { appearance: 'fill' },
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

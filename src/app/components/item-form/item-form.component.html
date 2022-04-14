@@ -1,1 +1,41 @@
-<p>item-form works!</p>
+<form [formGroup]="itemForm">
+  <mat-card>
+    <mat-card-title>Wunschzetteleintrag</mat-card-title>
+
+    <mat-card-content>
+
+
+      <mat-form-field>
+        <mat-label>Bezeichnung</mat-label>
+        <input matInput formControlName="title">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Beschreibung</mat-label>
+        <textarea matInput formControlName="description"></textarea>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Kategorie</mat-label>
+        <input matInput formControlName="category">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Bild-Adresse</mat-label>
+        <input matInput formControlName="imagesrc">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Kauf-Adresse</mat-label>
+        <input matInput formControlName="buyurl">
+      </mat-form-field>
+
+
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+      <button mat-button type="submit" [disabled]="itemForm.invalid">Speichern</button>
+      <button mat-button>zurück</button>
+    </mat-card-actions>
+  </mat-card>
+</form>
