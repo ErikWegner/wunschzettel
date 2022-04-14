@@ -1,18 +1,22 @@
 import { provideMockStore } from '@ngrx/store/testing';
 import { Meta, moduleMetadata, Story } from '@storybook/angular';
 import { ItemFormComponent } from 'src/app/components/item-form/item-form.component';
+import { ConnectFormDirective } from 'src/app/directives/connect-form.directive';
+import { FormEnabledDirective } from 'src/app/directives/form-enabled.directive';
 import { AppState } from 'src/app/store/app.state';
 import { AppStateBuilder, appStateStub } from 'testing/app.state.builder';
-import { decorators, defaultProviders, moduleImports } from './matmetadata';
+import { defaultProviders, moduleImports } from './matmetadata';
 
 const initialState: AppState = appStateStub();
+
+const declarations = [ConnectFormDirective, FormEnabledDirective];
 
 export default {
   title: 'Item form',
   component: ItemFormComponent,
   decorators: [
     moduleMetadata({
-      declarations: [],
+      declarations,
       imports: moduleImports,
       providers: [...defaultProviders, provideMockStore({ initialState })],
     }),
@@ -31,7 +35,17 @@ NewForm.storyName = 'New form';
 export const EditForm: Story = () => ({
   props: {},
 });
-EditForm.storyName = 'Edit form (TODO)';
+EditForm.storyName = 'Edit form';
+EditForm.decorators = [
+  moduleMetadata({
+    declarations,
+    imports: moduleImports,
+    providers: [
+      ...defaultProviders,
+      provideMockStore({ initialState: AppStateBuilder.hasActiveItem() }),
+    ],
+  }),
+];
 
 export const SaveError: Story = () => ({
   props: {},
@@ -41,10 +55,9 @@ SaveError.storyName = 'Save error (TODO)';
 export const Saving: Story = () => ({
   props: {},
 });
-Saving.storyName = 'Saving (TODO)';
 Saving.decorators = [
   moduleMetadata({
-    declarations: [],
+    declarations,
     imports: moduleImports,
     providers: [
       ...defaultProviders,

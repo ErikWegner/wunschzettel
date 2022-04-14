@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { selectHasPendingRequest } from 'src/app/store/a.selectors';
+import { selectActiveItemAsFormData } from 'src/app/store/w.selectors';
 
 @Component({
   selector: 'app-item-form',
@@ -19,6 +20,7 @@ export class ItemFormComponent {
   });
 
   hasRequestPending$ = this.store.select(selectHasPendingRequest);
+  formData$ = this.store.select(selectActiveItemAsFormData);
 
   constructor(private fb: FormBuilder, private store: Store) {}
 }

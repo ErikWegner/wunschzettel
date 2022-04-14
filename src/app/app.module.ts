@@ -28,6 +28,8 @@ import { EditReservationDialogComponent } from './components/edit-reservation-di
 import { EmptyListComponent } from './components/empty-list/empty-list.component';
 import { ItemDisplayComponent } from './components/item-display/item-display.component';
 import { ItemFormComponent } from './components/item-form/item-form.component';
+import { ConnectFormDirective } from './directives/connect-form.directive';
+import { FormEnabledDirective } from './directives/form-enabled.directive';
 import { FrameComponent } from './frame/frame.component';
 import { AboutComponent } from './pages/about/about.component';
 import { CategoriesPageComponent } from './pages/categories-page/categories-page.component';
@@ -41,8 +43,10 @@ import { wReducer } from './store/w.reducer';
     AboutComponent,
     AppComponent,
     CategoriesPageComponent,
+    ConnectFormDirective,
     EditReservationDialogComponent,
     EmptyListComponent,
+    FormEnabledDirective,
     FrameComponent,
     ItemDisplayComponent,
     ItemFormComponent,

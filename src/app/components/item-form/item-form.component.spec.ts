@@ -7,8 +7,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { ConnectFormDirective } from 'src/app/directives/connect-form.directive';
+import { FormEnabledDirective } from 'src/app/directives/form-enabled.directive';
 import { AppState } from 'src/app/store/app.state';
 import { AppStateBuilder, appStateStub } from 'testing/app.state.builder';
+import { randomString } from 'testing/utils';
 
 import { ItemFormComponent } from './item-form.component';
 
@@ -20,7 +23,11 @@ describe('ItemFormComponent', () => {
   beforeEach(async () => {
     const initialState: AppState = appStateStub();
     await TestBed.configureTestingModule({
-      declarations: [ItemFormComponent],
+      declarations: [
+        ItemFormComponent,
+        ConnectFormDirective,
+        FormEnabledDirective,
+      ],
       imports: [
         NoopAnimationsModule,
         ReactiveFormsModule,
@@ -51,7 +58,7 @@ describe('ItemFormComponent', () => {
 
     // Asset
     const el: HTMLElement = fixture.nativeElement;
-    const fieldset = el.querySelector('fieldset')!;
+    const fieldset = el.querySelector('input')!;
     expect(fieldset.disabled)
       .withContext('itemForm must be enabled')
       .toBeFalse();
@@ -67,9 +74,90 @@ describe('ItemFormComponent', () => {
 
     // Asset
     const el: HTMLElement = fixture.nativeElement;
-    const fieldset = el.querySelector('fieldset')!;
-    expect(fieldset.disabled)
-      .withContext('itemForm must be disabled')
+    const input = el.querySelector('input')!;
+    expect(input.disabled)
+      .withContext('input in itemForm must be disabled')
       .toBeTrue();
+  });
+
+  it('should show title when editing an item', () => {
+    // Arrange
+    const title = randomString(20, 'item title ');
+    const nextState = AppStateBuilder.hasActiveItem({ Title: title });
+    store.setState(nextState);
+
+    // Act
+    fixture.detectChanges();
+
+    // Asset
+    expect(fixture.componentInstance.itemForm.get('title')?.value).toBe(title);
+  });
+
+  it('should show description when editing an item', () => {
+    // Arrange
+    const descriptionText = randomString(20, 'Description text ');
+    const nextState = AppStateBuilder.hasActiveItem({
+      Description: descriptionText,
+    });
+    store.setState(nextState);
+
+    // Act
+    fixture.detectChanges();
+
+    // Asset
+    expect(fixture.componentInstance.itemForm.get('description')?.value).toBe(
+      descriptionText
+    );
+  });
+
+  it('should show category when editing an item', () => {
+    // Arrange
+    const category = randomString(20, 'Category ');
+    const nextState = AppStateBuilder.hasActiveItem({
+      Category: category,
+    });
+    store.setState(nextState);
+
+    // Act
+    fixture.detectChanges();
+
+    // Asset
+    expect(fixture.componentInstance.itemForm.get('category')?.value).toBe(
+      category
+    );
+  });
+
+  it('should show image url when editing an item', () => {
+    // Arrange
+    const imgurl = randomString(20, 'Image at ');
+    const nextState = AppStateBuilder.hasActiveItem({
+      ImgageUrl: imgurl,
+    });
+    store.setState(nextState);
+
+    // Act
+    fixture.detectChanges();
+
+    // Asset
+    expect(fixture.componentInstance.itemForm.get('imagesrc')?.value).toBe(
+      imgurl
+    );
+  });
+
+  it('should show shop url when editing an item', () => {
+    // Arrange
+    const shopurl = randomString(20, 'Shopping at ');
+    const nextState = AppStateBuilder.hasActiveItem({
+      BuyUrl: shopurl,
+    });
+    store.setState(nextState);
+
+    // Act
+    fixture.detectChanges();
+
+    // Asset
+    expect(fixture.componentInstance.itemForm.get('buyurl')?.value).toBe(
+      shopurl
+    );
   });
 });

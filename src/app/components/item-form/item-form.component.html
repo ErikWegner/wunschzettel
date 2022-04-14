@@ -1,5 +1,5 @@
-<form [formGroup]="itemForm">
-  <fieldset [disabled]="hasRequestPending$ | async">
+<form [formGroup]="itemForm" [appFormEnabled]="(hasRequestPending$ | async) === false"
+  [appConnectForm]="formData$ | async">
   <mat-card>
     <mat-card-title>Wunschzetteleintrag</mat-card-title>
 
@@ -39,5 +39,4 @@
       <button mat-button>zurück</button>
     </mat-card-actions>
   </mat-card>
-</fieldset>
 </form>
