@@ -69,6 +69,7 @@ describe('CategoriesPageComponent', () => {
   };
 
   it('should display spinner while request is pending', async () => {
+    // Arrange
     const nextState = AppStateBuilder.pendingRequest();
     store.setState(nextState);
 

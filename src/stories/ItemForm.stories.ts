@@ -1,12 +1,22 @@
-import { Meta, Story } from '@storybook/angular';
-import { title } from 'process';
+import { provideMockStore } from '@ngrx/store/testing';
+import { Meta, moduleMetadata, Story } from '@storybook/angular';
 import { ItemFormComponent } from 'src/app/components/item-form/item-form.component';
-import { decorators } from './matmetadata';
+import { AppState } from 'src/app/store/app.state';
+import { AppStateBuilder, appStateStub } from 'testing/app.state.builder';
+import { decorators, defaultProviders, moduleImports } from './matmetadata';
+
+const initialState: AppState = appStateStub();
 
 export default {
   title: 'Item form',
   component: ItemFormComponent,
-  decorators,
+  decorators: [
+    moduleMetadata({
+      declarations: [],
+      imports: moduleImports,
+      providers: [...defaultProviders, provideMockStore({ initialState })],
+    }),
+  ],
 } as Meta;
 
 const Template: Story<ItemFormComponent> = (args: ItemFormComponent) => ({
@@ -32,3 +42,13 @@ export const Saving: Story = () => ({
   props: {},
 });
 Saving.storyName = 'Saving (TODO)';
+Saving.decorators = [
+  moduleMetadata({
+    declarations: [],
+    imports: moduleImports,
+    providers: [
+      ...defaultProviders,
+      provideMockStore({ initialState: AppStateBuilder.pendingRequest() }),
+    ],
+  }),
+];

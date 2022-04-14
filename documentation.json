@@ -588,12 +588,12 @@
     "classes": [
         {
             "name": "AppStateBuilder",
-            "id": "class-AppStateBuilder-c29e3cf67290f14f07b8b99cdc74b51b69d2ec6dd2b335f09664194030589b8ba01cd81f1b897ab4e1ee1cf3331895819c08332c7339ddf06be6ca4ebeb805b8",
+            "id": "class-AppStateBuilder-6b6d8da0016dd4b01f3751f634199b03cc8480826e96bf106cd9313337cfdc69bb02e82ce5f4e40dc37242a5194e854d9e6d214e919015e763bca13b0fd5a783",
             "file": "testing/app.state.builder.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "class",
-            "sourceCode": "import { AppGlobalState } from 'src/app/store/a.state';\nimport { AppState } from 'src/app/store/app.state';\nimport { WishlistState } from 'src/app/store/w.state';\nimport { ListBuilder } from './list-builder';\nimport { randomString } from './utils';\n\nexport const appStateStub = (): AppStateBuilder => new AppStateBuilder();\n\nexport class AppStateBuilder implements AppState {\n  ag: AppGlobalState = {\n    pendingRequest: false,\n  };\n  wishlist: WishlistState = {\n    categories: [],\n    items: [],\n    activeItem: null,\n  };\n\n  public static someCategories(): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.wishlist.categories = ListBuilder.with((i) =>\n      randomString(8, 'Category ')\n    )\n      .items(7)\n      .build();\n    return b;\n  }\n\n  public static pendingRequest(): any {\n    const b = new AppStateBuilder();\n    b.ag.pendingRequest = true;\n    return b;\n  }\n}\n",
+            "sourceCode": "import { AppGlobalState } from 'src/app/store/a.state';\nimport { AppState } from 'src/app/store/app.state';\nimport { WishlistState } from 'src/app/store/w.state';\nimport { ListBuilder } from './list-builder';\nimport { randomString } from './utils';\n\nexport const appStateStub = (): AppStateBuilder => new AppStateBuilder();\n\nexport class AppStateBuilder implements AppState {\n  ag: AppGlobalState = {\n    pendingRequest: false,\n  };\n  wishlist: WishlistState = {\n    categories: [],\n    items: [],\n    activeItem: null,\n  };\n\n  public static someCategories(): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.wishlist.categories = ListBuilder.with((i) =>\n      randomString(8, 'Category ')\n    )\n      .items(7)\n      .build();\n    return b;\n  }\n\n  public static pendingRequest(): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.ag.pendingRequest = true;\n    return b;\n  }\n}\n",
             "properties": [
                 {
                     "name": "ag",
@@ -621,7 +621,7 @@
                     "name": "pendingRequest",
                     "args": [],
                     "optional": false,
-                    "returnType": "any",
+                    "returnType": "AppStateBuilder",
                     "typeParameters": [],
                     "line": 29,
                     "deprecated": false,
@@ -1785,7 +1785,7 @@
         },
         {
             "name": "ItemFormComponent",
-            "id": "component-ItemFormComponent-5045ce278d36ea59d5bdc17f245d4f13e36101f4b6ebabf8493fbee87ee80d4e00d9e9c667f1c984212a43657d2ca41c4ddfd3dfd7a0a0e207375b154bb50a30",
+            "id": "component-ItemFormComponent-24f7ce368f6e96287bec5e9c9cb583303d659d272afbd5876631a7f759bb994ff03c2ce5d476c88b94b9df334ce38edc65756e5fc4affb11358d70b39788e775",
             "file": "src/app/components/item-form/item-form.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -1805,6 +1805,16 @@
             "outputsClass": [],
             "propertiesClass": [
                 {
+                    "name": "hasRequestPending$",
+                    "defaultValue": "this.store.select(selectHasPendingRequest)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 21
+                },
+                {
                     "name": "itemForm",
                     "defaultValue": "this.fb.group({\n    title: ['', Validators.required],\n    description: [''],\n    category: ['', Validators.required],\n    imagesrc: [''],\n    buyurl: [''],\n    captchaResponse: ['', Validators.required],\n  })",
                     "deprecated": false,
@@ -1812,21 +1822,10 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 10
+                    "line": 12
                 }
             ],
-            "methodsClass": [
-                {
-                    "name": "ngOnInit",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 21,
-                    "deprecated": false,
-                    "deprecationMessage": ""
-                }
-            ],
+            "methodsClass": [],
             "deprecated": false,
             "deprecationMessage": "",
             "hostBindings": [],
@@ -1834,7 +1833,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, OnInit } from '@angular/core';\nimport { FormBuilder, Validators } from '@angular/forms';\n\n@Component({\n  selector: 'app-item-form',\n  templateUrl: './item-form.component.html',\n  styleUrls: ['./item-form.component.scss'],\n})\nexport class ItemFormComponent implements OnInit {\n  itemForm = this.fb.group({\n    title: ['', Validators.required],\n    description: [''],\n    category: ['', Validators.required],\n    imagesrc: [''],\n    buyurl: [''],\n    captchaResponse: ['', Validators.required],\n  });\n\n  constructor(private fb: FormBuilder) {}\n\n  ngOnInit(): void {}\n}\n",
+            "sourceCode": "import { Component } from '@angular/core';\nimport { FormBuilder, Validators } from '@angular/forms';\nimport { Store } from '@ngrx/store';\nimport { selectHasPendingRequest } from 'src/app/store/a.selectors';\n\n@Component({\n  selector: 'app-item-form',\n  templateUrl: './item-form.component.html',\n  styleUrls: ['./item-form.component.scss'],\n})\nexport class ItemFormComponent {\n  itemForm = this.fb.group({\n    title: ['', Validators.required],\n    description: [''],\n    category: ['', Validators.required],\n    imagesrc: [''],\n    buyurl: [''],\n    captchaResponse: ['', Validators.required],\n  });\n\n  hasRequestPending$ = this.store.select(selectHasPendingRequest);\n\n  constructor(private fb: FormBuilder, private store: Store) {}\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -1854,9 +1853,15 @@
                         "type": "FormBuilder",
                         "deprecated": false,
                         "deprecationMessage": ""
+                    },
+                    {
+                        "name": "store",
+                        "type": "Store",
+                        "deprecated": false,
+                        "deprecationMessage": ""
                     }
                 ],
-                "line": 17,
+                "line": 21,
                 "jsdoctags": [
                     {
                         "name": "fb",
@@ -1866,13 +1871,19 @@
                         "tagName": {
                             "text": "param"
                         }
+                    },
+                    {
+                        "name": "store",
+                        "type": "Store",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
                     }
                 ]
             },
-            "implements": [
-                "OnInit"
-            ],
-            "templateData": "<form [formGroup]=\"itemForm\">\n  <mat-card>\n    <mat-card-title>Wunschzetteleintrag</mat-card-title>\n\n    <mat-card-content>\n\n\n      <mat-form-field>\n        <mat-label>Bezeichnung</mat-label>\n        <input matInput formControlName=\"title\">\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-label>Beschreibung</mat-label>\n        <textarea matInput formControlName=\"description\"></textarea>\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-label>Kategorie</mat-label>\n        <input matInput formControlName=\"category\">\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-label>Bild-Adresse</mat-label>\n        <input matInput formControlName=\"imagesrc\">\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-label>Kauf-Adresse</mat-label>\n        <input matInput formControlName=\"buyurl\">\n      </mat-form-field>\n\n\n    </mat-card-content>\n\n    <mat-card-actions align=\"end\">\n      <button mat-button type=\"submit\" [disabled]=\"itemForm.invalid\">Speichern</button>\n      <button mat-button>zurück</button>\n    </mat-card-actions>\n  </mat-card>\n</form>\n"
+            "templateData": "<form [formGroup]=\"itemForm\">\n  <fieldset [disabled]=\"hasRequestPending$ | async\">\n  <mat-card>\n    <mat-card-title>Wunschzetteleintrag</mat-card-title>\n\n    <mat-card-content>\n\n\n      <mat-form-field>\n        <mat-label>Bezeichnung</mat-label>\n        <input matInput formControlName=\"title\">\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-label>Beschreibung</mat-label>\n        <textarea matInput formControlName=\"description\"></textarea>\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-label>Kategorie</mat-label>\n        <input matInput formControlName=\"category\">\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-label>Bild-Adresse</mat-label>\n        <input matInput formControlName=\"imagesrc\">\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-label>Kauf-Adresse</mat-label>\n        <input matInput formControlName=\"buyurl\">\n      </mat-form-field>\n\n      <mat-progress-bar mode=\"indeterminate\" *ngIf=\"hasRequestPending$ | async\"></mat-progress-bar>\n    </mat-card-content>\n\n    <mat-card-actions align=\"end\">\n      <button mat-button type=\"submit\" [disabled]=\"itemForm.invalid\">Speichern</button>\n      <button mat-button>zurück</button>\n    </mat-card-actions>\n  </mat-card>\n</fieldset>\n</form>\n"
         },
         {
             "name": "PageComponent",
@@ -1958,13 +1969,13 @@
     "modules": [
         {
             "name": "AppModule",
-            "id": "module-AppModule-34fefd7528720089a1e74feb32276038e4564cb7661226d3d8de6e692d6bff1587a6068eda6012889efecd662a37d03ae0c1684965966bc32508c07e059df31d",
+            "id": "module-AppModule-418a4d2b21848ade96bd1255997b128b737aa6f3dfb1ec17b392969b7da189461b9bbc1cfc75400f7a02aecbc1168d16e6b5cbfd96db54c0f4c3ba1b41ad5c77",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/app.module.ts",
             "methods": [],
-            "sourceCode": "import { LayoutModule } from '@angular/cdk/layout';\nimport { HttpClientModule } from '@angular/common/http';\nimport { NgModule } from '@angular/core';\nimport { ReactiveFormsModule } from '@angular/forms';\nimport { MatButtonModule } from '@angular/material/button';\nimport { MatCardModule } from '@angular/material/card';\nimport { MatDialogModule } from '@angular/material/dialog';\nimport {\n  MatFormFieldModule,\n  MAT_FORM_FIELD_DEFAULT_OPTIONS,\n} from '@angular/material/form-field';\nimport { MatIconModule } from '@angular/material/icon';\nimport { MatInputModule } from '@angular/material/input';\nimport { MatListModule } from '@angular/material/list';\nimport { MatProgressSpinnerModule } from '@angular/material/progress-spinner';\nimport { MatSidenavModule } from '@angular/material/sidenav';\nimport { MatToolbarModule } from '@angular/material/toolbar';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\nimport { EffectsModule } from '@ngrx/effects';\nimport { StoreModule } from '@ngrx/store';\nimport { StoreDevtoolsModule } from '@ngrx/store-devtools';\nimport { environment } from '../environments/environment';\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { EditReservationDialogComponent } from './components/edit-reservation-dialog/edit-reservation-dialog.component';\nimport { EmptyListComponent } from './components/empty-list/empty-list.component';\nimport { ItemDisplayComponent } from './components/item-display/item-display.component';\nimport { ItemFormComponent } from './components/item-form/item-form.component';\nimport { FrameComponent } from './frame/frame.component';\nimport { AboutComponent } from './pages/about/about.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { agReducer } from './store/a.reducer';\nimport { AppState } from './store/app.state';\nimport { WishlistEffects } from './store/w.effects';\nimport { wReducer } from './store/w.reducer';\n\n@NgModule({\n  declarations: [\n    AppComponent,\n    FrameComponent,\n    AboutComponent,\n    CategoriesPageComponent,\n    EmptyListComponent,\n    ItemDisplayComponent,\n    EditReservationDialogComponent,\n    ItemFormComponent,\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    BrowserAnimationsModule,\n    LayoutModule,\n    ReactiveFormsModule,\n    MatButtonModule,\n    MatCardModule,\n    MatDialogModule,\n    MatFormFieldModule,\n    MatIconModule,\n    MatInputModule,\n    MatListModule,\n    MatProgressSpinnerModule,\n    MatSidenavModule,\n    MatToolbarModule,\n    StoreModule.forRoot<AppState>({ ag: agReducer, wishlist: wReducer }),\n    EffectsModule.forRoot([WishlistEffects]),\n    // import HttpClientModule after BrowserModule.\n    HttpClientModule,\n    StoreDevtoolsModule.instrument({\n      maxAge: 25,\n      logOnly: environment.production,\n    }),\n  ],\n  providers: [\n    {\n      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,\n      useValue: { appearance: 'fill' },\n    },\n  ],\n  bootstrap: [AppComponent],\n})\nexport class AppModule {}\n",
+            "sourceCode": "import { LayoutModule } from '@angular/cdk/layout';\nimport { HttpClientModule } from '@angular/common/http';\nimport { NgModule } from '@angular/core';\nimport { ReactiveFormsModule } from '@angular/forms';\nimport { MatButtonModule } from '@angular/material/button';\nimport { MatCardModule } from '@angular/material/card';\nimport { MatDialogModule } from '@angular/material/dialog';\nimport {\n  MatFormFieldModule,\n  MAT_FORM_FIELD_DEFAULT_OPTIONS,\n} from '@angular/material/form-field';\nimport { MatIconModule } from '@angular/material/icon';\nimport { MatInputModule } from '@angular/material/input';\nimport { MatListModule } from '@angular/material/list';\nimport { MatProgressBarModule } from '@angular/material/progress-bar';\nimport { MatProgressSpinnerModule } from '@angular/material/progress-spinner';\nimport { MatSidenavModule } from '@angular/material/sidenav';\nimport { MatToolbarModule } from '@angular/material/toolbar';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\nimport { EffectsModule } from '@ngrx/effects';\nimport { StoreModule } from '@ngrx/store';\nimport { StoreDevtoolsModule } from '@ngrx/store-devtools';\nimport { environment } from '../environments/environment';\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { EditReservationDialogComponent } from './components/edit-reservation-dialog/edit-reservation-dialog.component';\nimport { EmptyListComponent } from './components/empty-list/empty-list.component';\nimport { ItemDisplayComponent } from './components/item-display/item-display.component';\nimport { ItemFormComponent } from './components/item-form/item-form.component';\nimport { FrameComponent } from './frame/frame.component';\nimport { AboutComponent } from './pages/about/about.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { agReducer } from './store/a.reducer';\nimport { AppState } from './store/app.state';\nimport { WishlistEffects } from './store/w.effects';\nimport { wReducer } from './store/w.reducer';\n\n@NgModule({\n  declarations: [\n    AboutComponent,\n    AppComponent,\n    CategoriesPageComponent,\n    EditReservationDialogComponent,\n    EmptyListComponent,\n    FrameComponent,\n    ItemDisplayComponent,\n    ItemFormComponent,\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    BrowserAnimationsModule,\n    LayoutModule,\n    ReactiveFormsModule,\n    MatButtonModule,\n    MatCardModule,\n    MatDialogModule,\n    MatFormFieldModule,\n    MatIconModule,\n    MatInputModule,\n    MatListModule,\n    MatProgressBarModule,\n    MatProgressSpinnerModule,\n    MatSidenavModule,\n    MatToolbarModule,\n    StoreModule.forRoot<AppState>({ ag: agReducer, wishlist: wReducer }),\n    EffectsModule.forRoot([WishlistEffects]),\n    // import HttpClientModule after BrowserModule.\n    HttpClientModule,\n    StoreDevtoolsModule.instrument({\n      maxAge: 25,\n      logOnly: environment.production,\n    }),\n  ],\n  providers: [\n    {\n      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,\n      useValue: { appearance: 'fill' },\n    },\n  ],\n  bootstrap: [AppComponent],\n})\nexport class AppModule {}\n",
             "children": [
                 {
                     "type": "providers",
@@ -2188,21 +2199,21 @@
                 "name": "environment",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/environments/environment.prod.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  production: true\n}"
-            },
-            {
-                "name": "environment",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/environments/environment.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
                 "defaultValue": "{\n  production: false\n}"
+            },
+            {
+                "name": "environment",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/environments/environment.prod.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  production: true\n}"
             },
             {
                 "name": "getItems",
@@ -2219,6 +2230,16 @@
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "src/stories/Categories.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "AppState",
+                "defaultValue": "appStateStub()"
+            },
+            {
+                "name": "initialState",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/ItemForm.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "AppState",
@@ -2322,7 +2343,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "any[]",
-                "defaultValue": "[\n  BrowserAnimationsModule,\n  ReactiveFormsModule,\n  MatButtonModule,\n  MatCardModule,\n  MatDividerModule,\n  MatDialogModule,\n  MatFormFieldModule,\n  MatIconModule,\n  MatInputModule,\n  MatListModule,\n  MatProgressSpinnerModule,\n  MatSidenavModule,\n  MatToolbarModule,\n]"
+                "defaultValue": "[\n  BrowserAnimationsModule,\n  ReactiveFormsModule,\n  MatButtonModule,\n  MatCardModule,\n  MatDividerModule,\n  MatDialogModule,\n  MatFormFieldModule,\n  MatIconModule,\n  MatInputModule,\n  MatListModule,\n  MatProgressBarModule,\n  MatProgressSpinnerModule,\n  MatSidenavModule,\n  MatToolbarModule,\n]"
             },
             {
                 "name": "NewForm",
@@ -2766,7 +2787,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "any[]",
-                    "defaultValue": "[\n  BrowserAnimationsModule,\n  ReactiveFormsModule,\n  MatButtonModule,\n  MatCardModule,\n  MatDividerModule,\n  MatDialogModule,\n  MatFormFieldModule,\n  MatIconModule,\n  MatInputModule,\n  MatListModule,\n  MatProgressSpinnerModule,\n  MatSidenavModule,\n  MatToolbarModule,\n]"
+                    "defaultValue": "[\n  BrowserAnimationsModule,\n  ReactiveFormsModule,\n  MatButtonModule,\n  MatCardModule,\n  MatDividerModule,\n  MatDialogModule,\n  MatFormFieldModule,\n  MatIconModule,\n  MatInputModule,\n  MatListModule,\n  MatProgressBarModule,\n  MatProgressSpinnerModule,\n  MatSidenavModule,\n  MatToolbarModule,\n]"
                 }
             ],
             "src/stories/About.stories.ts": [
@@ -2829,6 +2850,16 @@
                     "defaultValue": "() => ({\n  props: {},\n})"
                 },
                 {
+                    "name": "initialState",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/ItemForm.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "AppState",
+                    "defaultValue": "appStateStub()"
+                },
+                {
                     "name": "NewForm",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
@@ -2869,18 +2900,6 @@
                     "defaultValue": "(args: ItemFormComponent) => ({\n  props: args,\n})"
                 }
             ],
-            "src/environments/environment.prod.ts": [
-                {
-                    "name": "environment",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/environments/environment.prod.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n  production: true\n}"
-                }
-            ],
             "src/environments/environment.ts": [
                 {
                     "name": "environment",
@@ -2891,6 +2910,18 @@
                     "deprecationMessage": "",
                     "type": "object",
                     "defaultValue": "{\n  production: false\n}"
+                }
+            ],
+            "src/environments/environment.prod.ts": [
+                {
+                    "name": "environment",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/environments/environment.prod.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n  production: true\n}"
                 }
             ],
             "src/app/store/w.actions.ts": [
@@ -3716,6 +3747,16 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "EditForm",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/ItemForm.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "initialState",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"

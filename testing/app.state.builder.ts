@@ -26,7 +26,7 @@ export class AppStateBuilder implements AppState {
     return b;
   }
 
-  public static pendingRequest(): any {
+  public static pendingRequest(): AppStateBuilder {
     const b = new AppStateBuilder();
     b.ag.pendingRequest = true;
     return b;
