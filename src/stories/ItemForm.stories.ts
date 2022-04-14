@@ -17,3 +17,18 @@ export const NewForm: Story = () => ({
   props: {},
 });
 NewForm.storyName = 'New form';
+
+export const EditForm: Story = () => ({
+  props: {},
+});
+EditForm.storyName = 'Edit form (TODO)';
+
+export const SaveError: Story = () => ({
+  props: {},
+});
+SaveError.storyName = 'Save error (TODO)';
+
+export const Saving: Story = () => ({
+  props: {},
+});
+Saving.storyName = 'Saving (TODO)';
