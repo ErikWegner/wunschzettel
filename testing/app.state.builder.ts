@@ -10,12 +10,25 @@ export const appStateStub = (): AppStateBuilder => new AppStateBuilder();
 export class AppStateBuilder implements AppState {
   ag: AppGlobalState = {
     pendingRequest: false,
+    requestErrorText: null,
   };
   wishlist: WishlistState = {
     categories: [],
     items: [],
     activeItem: null,
   };
+
+  public static hasError(errorText: string): any {
+    const b = new AppStateBuilder();
+    b.ag.requestErrorText = errorText;
+    return b;
+  }
+
+  public static givenCategories(...categories: string[]): AppStateBuilder {
+    const b = new AppStateBuilder();
+    b.wishlist.categories = [...categories];
+    return b;
+  }
 
   public static someCategories(): AppStateBuilder {
     const b = new AppStateBuilder();
@@ -35,7 +48,11 @@ export class AppStateBuilder implements AppState {
 
   static hasActiveItem(values?: Partial<WishlistItem>): AppStateBuilder {
     const b = new AppStateBuilder();
-    b.wishlist.activeItem = {
+    return b.withActiveItem(values);
+  }
+
+  withActiveItem(values?: Partial<WishlistItem>): AppStateBuilder {
+    this.wishlist.activeItem = {
       Title: 'Faust I + II',
       Category: 'Buch',
       Description: `Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des
@@ -51,6 +68,6 @@ export class AppStateBuilder implements AppState {
       id: 1,
       ...values,
     };
-    return b;
+    return this;
   }
 }

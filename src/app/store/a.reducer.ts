@@ -4,6 +4,7 @@ import { getItems, itemsLoaded } from './w.actions';
 
 export const initialState: AppGlobalState = {
   pendingRequest: true,
+  requestErrorText: null,
 };
 
 export const agReducer = createReducer<AppGlobalState>(

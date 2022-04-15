@@ -3,14 +3,11 @@ import { AppState } from './app.state';
 import { selectActiveItemAsFormData, selectCategories } from './w.selectors';
 
 describe('Wishlist selectors', () => {
-  const initialState: AppState = {
-    ag: { pendingRequest: false },
-    wishlist: {
-      categories: ['Book', 'Game', 'Everything else'],
-      items: [],
-      activeItem: null,
-    },
-  };
+  const initialState: AppState = AppStateBuilder.givenCategories(
+    'Book',
+    'Game',
+    'Everything else'
+  );
 
   it('should select the categories', () => {
     const result = selectCategories.projector(initialState.wishlist);

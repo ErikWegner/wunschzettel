@@ -1,4 +1,6 @@
-import { selectHasPendingRequest } from './a.selectors';
+import { AppStateBuilder } from 'testing/app.state.builder';
+import { randomString } from 'testing/utils';
+import { selectHasPendingRequest, selectRequestErrorText } from './a.selectors';
 import { AppState } from './app.state';
 
 describe('AppGlobalState selectors', () => {
@@ -6,14 +8,11 @@ describe('AppGlobalState selectors', () => {
     selectHasPendingRequest.release();
   });
 
-  const initialState: AppState = {
-    ag: { pendingRequest: false },
-    wishlist: {
-      categories: ['Book', 'Game', 'Everything else'],
-      items: [],
-      activeItem: null,
-    },
-  };
+  const initialState: AppState = AppStateBuilder.givenCategories(
+    'Book',
+    'Game',
+    'Everything else'
+  );
 
   [true, false].forEach((testValue) => {
     it('should select the value ' + testValue, () => {
@@ -21,5 +20,12 @@ describe('AppGlobalState selectors', () => {
       const result = selectHasPendingRequest.projector(initialState.ag);
       expect(result).toEqual(testValue);
     });
+  });
+
+  it('should select error text', () => {
+    const randomErrorText = randomString(25, 'Server error ');
+    initialState.ag.requestErrorText = randomErrorText;
+    const result = selectRequestErrorText.projector(initialState.ag);
+    expect(result).toBe(randomErrorText);
   });
 });

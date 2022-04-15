@@ -8,3 +8,8 @@ export const selectHasPendingRequest = createSelector(
   selectFeature,
   (state: AppGlobalState) => state.pendingRequest
 );
+
+export const selectRequestErrorText = createSelector(
+  selectFeature,
+  (state: AppGlobalState) => state.requestErrorText
+);

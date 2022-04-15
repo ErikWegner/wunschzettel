@@ -50,7 +50,22 @@ EditForm.decorators = [
 export const SaveError: Story = () => ({
   props: {},
 });
-SaveError.storyName = 'Save error (TODO)';
+SaveError.decorators = [
+  moduleMetadata({
+    declarations,
+    imports: moduleImports,
+    providers: [
+      ...defaultProviders,
+      provideMockStore({
+        initialState: AppStateBuilder.hasError(
+          'Server refused request'
+        ).withActiveItem(),
+      }),
+    ],
+  }),
+];
+
+SaveError.storyName = 'Save error';
 
 export const Saving: Story = () => ({
   props: {},
@@ -61,7 +76,9 @@ Saving.decorators = [
     imports: moduleImports,
     providers: [
       ...defaultProviders,
-      provideMockStore({ initialState: AppStateBuilder.pendingRequest() }),
+      provideMockStore({
+        initialState: AppStateBuilder.pendingRequest().withActiveItem(),
+      }),
     ],
   }),
 ];

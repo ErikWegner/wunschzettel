@@ -4,11 +4,9 @@
     <mat-card-title>Wunschzetteleintrag</mat-card-title>
 
     <mat-card-content>
-
-
       <mat-form-field>
         <mat-label>Bezeichnung</mat-label>
-        <input matInput formControlName="title">
+        <input matInput formControlName="title" />
       </mat-form-field>
 
       <mat-form-field>
@@ -18,24 +16,30 @@
 
       <mat-form-field>
         <mat-label>Kategorie</mat-label>
-        <input matInput formControlName="category">
+        <input matInput formControlName="category" />
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Bild-Adresse</mat-label>
-        <input matInput formControlName="imagesrc">
+        <input matInput formControlName="imagesrc" />
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Kauf-Adresse</mat-label>
-        <input matInput formControlName="buyurl">
+        <input matInput formControlName="buyurl" />
       </mat-form-field>
 
       <mat-progress-bar mode="indeterminate" *ngIf="hasRequestPending$ | async"></mat-progress-bar>
+      <div @alertHighlightTrigger *ngIf="requestError$ | async" class="error">
+        {{ requestError$ | async }}
+      </div>
+
     </mat-card-content>
 
     <mat-card-actions align="end">
-      <button mat-button type="submit" [disabled]="itemForm.invalid">Speichern</button>
+      <button mat-button type="submit" [disabled]="itemForm.invalid">
+        Speichern
+      </button>
       <button mat-button>zurück</button>
     </mat-card-actions>
   </mat-card>

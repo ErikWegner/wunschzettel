@@ -35,12 +35,12 @@
         },
         {
             "name": "AppGlobalState",
-            "id": "interface-AppGlobalState-78b0e273835ebf93d6849518f017fbfb3baa8b6c99d681f14c475520ee78ab5384213d6a98c2f840b7cd5c8dd6b60e47ecc050de4b72c6bb054133f1b313008a",
+            "id": "interface-AppGlobalState-553651d3b8655f57b302b0e22aa319e48b9d9562ddcba97c061e9eef2737db2bdd62a4ef9cd83bc8ab83fb540d3966e98b8bd46f609c550af5c156dce52c2aec",
             "file": "src/app/store/a.state.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "export interface AppGlobalState {\n  pendingRequest: boolean;\n}\n",
+            "sourceCode": "export interface AppGlobalState {\n  pendingRequest: boolean;\n  requestErrorText: string | null;\n}\n",
             "properties": [
                 {
                     "name": "pendingRequest",
@@ -50,6 +50,15 @@
                     "optional": false,
                     "description": "",
                     "line": 2
+                },
+                {
+                    "name": "requestErrorText",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string | null",
+                    "optional": false,
+                    "description": "",
+                    "line": 3
                 }
             ],
             "indexSignatures": [],
@@ -588,16 +597,16 @@
     "classes": [
         {
             "name": "AppStateBuilder",
-            "id": "class-AppStateBuilder-4ff45d2464862e9f4c1ccdffa18c90607589bb0c6b35068c28d5ffaff53275a52998b01d0745bef6cca573cba42e0b8e507bc251a9c49ab480dbe78bb1d1f666",
+            "id": "class-AppStateBuilder-de89851c18117a1bbe49c0e727b12de9e6e43b27eaed3bf68cf70fbaca9d83a88f4f2f04b9644fd91ffb57fa4a2891e8b54642b2b0ab6a13b49c2c22069e96a4",
             "file": "testing/app.state.builder.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "class",
-            "sourceCode": "import { WishlistItem } from 'src/app/business/item';\nimport { AppGlobalState } from 'src/app/store/a.state';\nimport { AppState } from 'src/app/store/app.state';\nimport { WishlistState } from 'src/app/store/w.state';\nimport { ListBuilder } from './list-builder';\nimport { randomString } from './utils';\n\nexport const appStateStub = (): AppStateBuilder => new AppStateBuilder();\n\nexport class AppStateBuilder implements AppState {\n  ag: AppGlobalState = {\n    pendingRequest: false,\n  };\n  wishlist: WishlistState = {\n    categories: [],\n    items: [],\n    activeItem: null,\n  };\n\n  public static someCategories(): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.wishlist.categories = ListBuilder.with((i) =>\n      randomString(8, 'Category ')\n    )\n      .items(7)\n      .build();\n    return b;\n  }\n\n  public static pendingRequest(): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.ag.pendingRequest = true;\n    return b;\n  }\n\n  static hasActiveItem(values?: Partial<WishlistItem>): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.wishlist.activeItem = {\n      Title: 'Faust I + II',\n      Category: 'Buch',\n      Description: `Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des\n      Fauststoffs bezeichnet. Der Begriff kann sich auf den ersten Teil der\n      durch Goethe geschaffenen Tragödie, auf deren ersten und zweiten Teil\n      gemeinsam oder insgesamt auf die Arbeiten am Fauststoff beziehen, die\n      Goethe durch sechzig Jahre hindurch immer wieder neu aufnahm. Er umfasst\n      in diesem letzteren Sinne auch die Entwürfe, Fragmente, Kommentare und\n      Paralipomena des Dichters zu seinem Faustwerk und zum Fauststoff.`,\n      BuyUrl: 'https://de.wikipedia.org/wiki/Goethes_Faust',\n      ImgageUrl:\n        'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg',\n      id: 1,\n      ...values,\n    };\n    return b;\n  }\n}\n",
+            "sourceCode": "import { WishlistItem } from 'src/app/business/item';\nimport { AppGlobalState } from 'src/app/store/a.state';\nimport { AppState } from 'src/app/store/app.state';\nimport { WishlistState } from 'src/app/store/w.state';\nimport { ListBuilder } from './list-builder';\nimport { randomString } from './utils';\n\nexport const appStateStub = (): AppStateBuilder => new AppStateBuilder();\n\nexport class AppStateBuilder implements AppState {\n  ag: AppGlobalState = {\n    pendingRequest: false,\n    requestErrorText: null,\n  };\n  wishlist: WishlistState = {\n    categories: [],\n    items: [],\n    activeItem: null,\n  };\n\n  public static hasError(errorText: string): any {\n    const b = new AppStateBuilder();\n    b.ag.requestErrorText = errorText;\n    return b;\n  }\n\n  public static givenCategories(...categories: string[]): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.wishlist.categories = [...categories];\n    return b;\n  }\n\n  public static someCategories(): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.wishlist.categories = ListBuilder.with((i) =>\n      randomString(8, 'Category ')\n    )\n      .items(7)\n      .build();\n    return b;\n  }\n\n  public static pendingRequest(): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.ag.pendingRequest = true;\n    return b;\n  }\n\n  static hasActiveItem(values?: Partial<WishlistItem>): AppStateBuilder {\n    const b = new AppStateBuilder();\n    return b.withActiveItem(values);\n  }\n\n  withActiveItem(values?: Partial<WishlistItem>): AppStateBuilder {\n    this.wishlist.activeItem = {\n      Title: 'Faust I + II',\n      Category: 'Buch',\n      Description: `Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des\n      Fauststoffs bezeichnet. Der Begriff kann sich auf den ersten Teil der\n      durch Goethe geschaffenen Tragödie, auf deren ersten und zweiten Teil\n      gemeinsam oder insgesamt auf die Arbeiten am Fauststoff beziehen, die\n      Goethe durch sechzig Jahre hindurch immer wieder neu aufnahm. Er umfasst\n      in diesem letzteren Sinne auch die Entwürfe, Fragmente, Kommentare und\n      Paralipomena des Dichters zu seinem Faustwerk und zum Fauststoff.`,\n      BuyUrl: 'https://de.wikipedia.org/wiki/Goethes_Faust',\n      ImgageUrl:\n        'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg',\n      id: 1,\n      ...values,\n    };\n    return this;\n  }\n}\n",
             "properties": [
                 {
                     "name": "ag",
-                    "defaultValue": "{\n    pendingRequest: false,\n  }",
+                    "defaultValue": "{\n    pendingRequest: false,\n    requestErrorText: null,\n  }",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "AppGlobalState",
@@ -613,10 +622,43 @@
                     "type": "WishlistState",
                     "optional": false,
                     "description": "",
-                    "line": 14
+                    "line": 15
                 }
             ],
             "methods": [
+                {
+                    "name": "givenCategories",
+                    "args": [
+                        {
+                            "name": "categories",
+                            "type": "string[]",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "dotDotDotToken": true
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "AppStateBuilder",
+                    "typeParameters": [],
+                    "line": 27,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        124
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "categories",
+                            "type": "string[]",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "dotDotDotToken": true,
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
                 {
                     "name": "hasActiveItem",
                     "args": [
@@ -631,7 +673,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 36,
+                    "line": 49,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -651,12 +693,43 @@
                     ]
                 },
                 {
+                    "name": "hasError",
+                    "args": [
+                        {
+                            "name": "errorText",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "any",
+                    "typeParameters": [],
+                    "line": 21,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        124
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "errorText",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
                     "name": "pendingRequest",
                     "args": [],
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 30,
+                    "line": 43,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -669,11 +742,41 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 20,
+                    "line": 33,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
                         124
+                    ]
+                },
+                {
+                    "name": "withActiveItem",
+                    "args": [
+                        {
+                            "name": "values",
+                            "type": "Partial<WishlistItem>",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "optional": true
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "AppStateBuilder",
+                    "typeParameters": [],
+                    "line": 54,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "values",
+                            "type": "Partial<WishlistItem>",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "optional": true,
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
                     ]
                 }
             ],
@@ -1991,7 +2094,7 @@
         },
         {
             "name": "ItemFormComponent",
-            "id": "component-ItemFormComponent-4e28c768a408b67a2537887c6131ba8f62e0ebee49da018b0fdd77642dd4b76281ca3cbbcd6fba6936abb47bd151a94c0efd77b7ba96478fd9e469bcd399c4f1",
+            "id": "component-ItemFormComponent-2fd3d9ecd336274a16038c0438d9ba4ac2d7109a3892e90c90ef171b48c8d29f2ebef9de3ac99d8f19d109e4bcc21e30a0e635bb2d0a8d5d1d9da43fc84db801",
             "file": "src/app/components/item-form/item-form.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -2018,7 +2121,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 23
+                    "line": 41
                 },
                 {
                     "name": "hasRequestPending$",
@@ -2028,7 +2131,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 22
+                    "line": 40
                 },
                 {
                     "name": "itemForm",
@@ -2038,7 +2141,17 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 13
+                    "line": 31
+                },
+                {
+                    "name": "requestError$",
+                    "defaultValue": "this.store.select(selectRequestErrorText)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 42
                 }
             ],
             "methodsClass": [],
@@ -2049,7 +2162,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component } from '@angular/core';\nimport { FormBuilder, Validators } from '@angular/forms';\nimport { Store } from '@ngrx/store';\nimport { selectHasPendingRequest } from 'src/app/store/a.selectors';\nimport { selectActiveItemAsFormData } from 'src/app/store/w.selectors';\n\n@Component({\n  selector: 'app-item-form',\n  templateUrl: './item-form.component.html',\n  styleUrls: ['./item-form.component.scss'],\n})\nexport class ItemFormComponent {\n  itemForm = this.fb.group({\n    title: ['', Validators.required],\n    description: [''],\n    category: ['', Validators.required],\n    imagesrc: [''],\n    buyurl: [''],\n    captchaResponse: ['', Validators.required],\n  });\n\n  hasRequestPending$ = this.store.select(selectHasPendingRequest);\n  formData$ = this.store.select(selectActiveItemAsFormData);\n\n  constructor(private fb: FormBuilder, private store: Store) {}\n}\n",
+            "sourceCode": "import { animate, style, transition, trigger } from '@angular/animations';\nimport { Component } from '@angular/core';\nimport { FormBuilder, Validators } from '@angular/forms';\nimport { Store } from '@ngrx/store';\nimport {\n  selectHasPendingRequest,\n  selectRequestErrorText,\n} from 'src/app/store/a.selectors';\nimport { selectActiveItemAsFormData } from 'src/app/store/w.selectors';\n\n@Component({\n  selector: 'app-item-form',\n  templateUrl: './item-form.component.html',\n  styleUrls: ['./item-form.component.scss'],\n  animations: [\n    trigger('alertHighlightTrigger', [\n      transition(':enter', [\n        style({ opacity: 0 }),\n        animate('80ms', style({ opacity: 1 })),\n        animate('80ms', style({ opacity: 0 })),\n        animate('80ms', style({ opacity: 1 })),\n        animate('80ms', style({ opacity: 0 })),\n        animate('80ms', style({ opacity: 1 })),\n        animate('80ms', style({ opacity: 0 })),\n        animate('80ms', style({ opacity: 1 })),\n      ]),\n    ]),\n  ],\n})\nexport class ItemFormComponent {\n  itemForm = this.fb.group({\n    title: ['', Validators.required],\n    description: [''],\n    category: ['', Validators.required],\n    imagesrc: [''],\n    buyurl: [''],\n    captchaResponse: ['', Validators.required],\n  });\n\n  hasRequestPending$ = this.store.select(selectHasPendingRequest);\n  formData$ = this.store.select(selectActiveItemAsFormData);\n  requestError$ = this.store.select(selectRequestErrorText);\n\n  constructor(private fb: FormBuilder, private store: Store) {}\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -2077,7 +2190,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 23,
+                "line": 42,
                 "jsdoctags": [
                     {
                         "name": "fb",
@@ -2099,7 +2212,7 @@
                     }
                 ]
             },
-            "templateData": "<form [formGroup]=\"itemForm\" [appFormEnabled]=\"(hasRequestPending$ | async) === false\"\n  [appConnectForm]=\"formData$ | async\">\n  <mat-card>\n    <mat-card-title>Wunschzetteleintrag</mat-card-title>\n\n    <mat-card-content>\n\n\n      <mat-form-field>\n        <mat-label>Bezeichnung</mat-label>\n        <input matInput formControlName=\"title\">\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-label>Beschreibung</mat-label>\n        <textarea matInput formControlName=\"description\"></textarea>\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-label>Kategorie</mat-label>\n        <input matInput formControlName=\"category\">\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-label>Bild-Adresse</mat-label>\n        <input matInput formControlName=\"imagesrc\">\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-label>Kauf-Adresse</mat-label>\n        <input matInput formControlName=\"buyurl\">\n      </mat-form-field>\n\n      <mat-progress-bar mode=\"indeterminate\" *ngIf=\"hasRequestPending$ | async\"></mat-progress-bar>\n    </mat-card-content>\n\n    <mat-card-actions align=\"end\">\n      <button mat-button type=\"submit\" [disabled]=\"itemForm.invalid\">Speichern</button>\n      <button mat-button>zurück</button>\n    </mat-card-actions>\n  </mat-card>\n</form>\n"
+            "templateData": "<form [formGroup]=\"itemForm\" [appFormEnabled]=\"(hasRequestPending$ | async) === false\"\n  [appConnectForm]=\"formData$ | async\">\n  <mat-card>\n    <mat-card-title>Wunschzetteleintrag</mat-card-title>\n\n    <mat-card-content>\n      <mat-form-field>\n        <mat-label>Bezeichnung</mat-label>\n        <input matInput formControlName=\"title\" />\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-label>Beschreibung</mat-label>\n        <textarea matInput formControlName=\"description\"></textarea>\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-label>Kategorie</mat-label>\n        <input matInput formControlName=\"category\" />\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-label>Bild-Adresse</mat-label>\n        <input matInput formControlName=\"imagesrc\" />\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-label>Kauf-Adresse</mat-label>\n        <input matInput formControlName=\"buyurl\" />\n      </mat-form-field>\n\n      <mat-progress-bar mode=\"indeterminate\" *ngIf=\"hasRequestPending$ | async\"></mat-progress-bar>\n      <div @alertHighlightTrigger *ngIf=\"requestError$ | async\" class=\"error\">\n        {{ requestError$ | async }}\n      </div>\n\n    </mat-card-content>\n\n    <mat-card-actions align=\"end\">\n      <button mat-button type=\"submit\" [disabled]=\"itemForm.invalid\">\n        Speichern\n      </button>\n      <button mat-button>zurück</button>\n    </mat-card-actions>\n  </mat-card>\n</form>\n"
         },
         {
             "name": "PageComponent",
@@ -2461,7 +2574,7 @@
                 "name": "initialState",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/stories/ItemForm.stories.ts",
+                "file": "src/stories/Categories.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "AppState",
@@ -2471,7 +2584,7 @@
                 "name": "initialState",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/stories/Categories.stories.ts",
+                "file": "src/stories/ItemForm.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "AppState",
@@ -2485,7 +2598,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "AppGlobalState",
-                "defaultValue": "{\n  pendingRequest: true,\n}"
+                "defaultValue": "{\n  pendingRequest: true,\n  requestErrorText: null,\n}"
             },
             {
                 "name": "initialState",
@@ -2687,6 +2800,16 @@
                 "defaultValue": "createSelector(\n  selectFeature,\n  (state: AppGlobalState) => state.pendingRequest\n)"
             },
             {
+                "name": "selectRequestErrorText",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/a.selectors.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createSelector(\n  selectFeature,\n  (state: AppGlobalState) => state.requestErrorText\n)"
+            },
+            {
                 "name": "slideInAnimation",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -2720,6 +2843,16 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "src/stories/Categories.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<CategoriesPageComponent>",
+                "defaultValue": "(\n  args: CategoriesPageComponent\n) => ({\n  props: args,\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "src/stories/Header.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -2735,16 +2868,6 @@
                 "deprecationMessage": "",
                 "type": "Story<ItemFormComponent>",
                 "defaultValue": "(args: ItemFormComponent) => ({\n  props: args,\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/stories/Categories.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<CategoriesPageComponent>",
-                "defaultValue": "(\n  args: CategoriesPageComponent\n) => ({\n  props: args,\n})"
             },
             {
                 "name": "Template",
@@ -2912,7 +3035,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "AppGlobalState",
-                    "defaultValue": "{\n  pendingRequest: true,\n}"
+                    "defaultValue": "{\n  pendingRequest: true,\n  requestErrorText: null,\n}"
                 }
             ],
             "testing/app.state.builder.ts": [
@@ -3388,6 +3511,16 @@
                     "deprecationMessage": "",
                     "type": "",
                     "defaultValue": "createSelector(\n  selectFeature,\n  (state: AppGlobalState) => state.pendingRequest\n)"
+                },
+                {
+                    "name": "selectRequestErrorText",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/a.selectors.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createSelector(\n  selectFeature,\n  (state: AppGlobalState) => state.requestErrorText\n)"
                 }
             ],
             "src/app/animations.ts": [
@@ -3648,7 +3781,7 @@
                 "linktype": "component",
                 "name": "ItemFormComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/5",
+                "coverageCount": "0/6",
                 "status": "low"
             },
             {
@@ -3746,12 +3879,22 @@
                 "status": "low"
             },
             {
+                "filePath": "src/app/store/a.selectors.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "selectRequestErrorText",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
                 "filePath": "src/app/store/a.state.ts",
                 "type": "interface",
                 "linktype": "interface",
                 "name": "AppGlobalState",
                 "coveragePercent": 0,
-                "coverageCount": "0/2",
+                "coverageCount": "0/3",
                 "status": "low"
             },
             {
@@ -4233,7 +4376,7 @@
                 "linktype": "classe",
                 "name": "AppStateBuilder",
                 "coveragePercent": 0,
-                "coverageCount": "0/6",
+                "coverageCount": "0/9",
                 "status": "low"
             },
             {
