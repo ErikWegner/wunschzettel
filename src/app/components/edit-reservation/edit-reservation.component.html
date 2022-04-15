@@ -1,0 +1,3 @@
+<div [ngSwitch]="reservationStatus$ | async">
+  <mat-spinner *ngSwitchCase="'requestPending'" mode="indeterminate"></mat-spinner>
+</div>

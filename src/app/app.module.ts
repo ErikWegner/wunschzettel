@@ -37,6 +37,8 @@ import { agReducer } from './store/a.reducer';
 import { AppState } from './store/app.state';
 import { WishlistEffects } from './store/w.effects';
 import { wReducer } from './store/w.reducer';
+import { EditReservationComponent } from './components/edit-reservation/edit-reservation.component';
+import { rReducer } from './store/r.reducer';
 
 @NgModule({
   declarations: [
@@ -49,6 +51,7 @@ import { wReducer } from './store/w.reducer';
     FrameComponent,
     ItemDisplayComponent,
     ItemFormComponent,
+    EditReservationComponent,
   ],
   imports: [
     BrowserModule,
@@ -68,7 +71,11 @@ import { wReducer } from './store/w.reducer';
     MatProgressSpinnerModule,
     MatSidenavModule,
     MatToolbarModule,
-    StoreModule.forRoot<AppState>({ ag: agReducer, wishlist: wReducer }),
+    StoreModule.forRoot<AppState>({
+      ag: agReducer,
+      wishlist: wReducer,
+      reservation: rReducer,
+    }),
     EffectsModule.forRoot([WishlistEffects]),
     // import HttpClientModule after BrowserModule.
     HttpClientModule,

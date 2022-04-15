@@ -1,6 +1,7 @@
 import { WishlistItem } from 'src/app/business/item';
 import { AppGlobalState } from 'src/app/store/a.state';
 import { AppState } from 'src/app/store/app.state';
+import { ReservationState, ReservationStatus } from 'src/app/store/r.state';
 import { WishlistState } from 'src/app/store/w.state';
 import { ListBuilder } from './list-builder';
 import { randomString } from './utils';
@@ -17,6 +18,10 @@ export class AppStateBuilder implements AppState {
     categories: [],
     items: [],
     activeItem: null,
+  };
+  reservation: ReservationState = {
+    itemid: null,
+    status: 'unknown',
   };
 
   public static hasError(errorText: string): any {
@@ -47,9 +52,15 @@ export class AppStateBuilder implements AppState {
     return b;
   }
 
-  static hasActiveItem(values?: Partial<WishlistItem>): AppStateBuilder {
+  public static hasActiveItem(values?: Partial<WishlistItem>): AppStateBuilder {
     const b = new AppStateBuilder();
     return b.withActiveItem(values);
+  }
+
+  public static reservationStatus(status: ReservationStatus): AppStateBuilder {
+    const b = new AppStateBuilder();
+    b.reservation.status = status;
+    return b;
   }
 
   withActiveItem(values?: Partial<WishlistItem>): AppStateBuilder {

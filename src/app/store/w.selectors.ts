@@ -1,5 +1,4 @@
 import { createSelector } from '@ngrx/store';
-import { WishlistItem } from '../business/item';
 import { AppState } from './app.state';
 import { WishlistState } from './w.state';
 
