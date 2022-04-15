@@ -25,7 +25,6 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { EditReservationDialogComponent } from './components/edit-reservation-dialog/edit-reservation-dialog.component';
 import { EmptyListComponent } from './components/empty-list/empty-list.component';
 import { ItemDisplayComponent } from './components/item-display/item-display.component';
 import { ItemFormComponent } from './components/item-form/item-form.component';
@@ -45,7 +44,6 @@ import { wReducer } from './store/w.reducer';
     AppComponent,
     CategoriesPageComponent,
     ConnectFormDirective,
-    EditReservationDialogComponent,
     EmptyListComponent,
     FormEnabledDirective,
     FrameComponent,
