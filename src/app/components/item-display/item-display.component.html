@@ -16,10 +16,8 @@
         Paralipomena des Dichters zu seinem Faustwerk und zum Fauststoff.
       </p>
       <div>
-        <img
-          mat-card-lg-image
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg"
-        />
+        <img mat-card-lg-image
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg" />
       </div>
     </div>
     <div>
@@ -31,9 +29,19 @@
   </mat-card-content>
   <mat-divider inset></mat-divider>
   <mat-card-actions>
-    <button mat-button>Reservierungsstatus</button>
-    Nicht reserviert
-    <button mat-button>Reservieren</button>
-    <button mat-button>zurück</button>
-  </mat-card-actions>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Reservieren und Status</mat-panel-title>
+      </mat-expansion-panel-header>
+      <p>Nicht reserviert</p>
+      <button mat-button>Reservieren</button>
+    </mat-expansion-panel>
+    <div class="f mt24">
+      <button mat-flat-button color="accent">Bearbeiten</button>
+      <div class="spacer"></div>
+      <button mat-flat-button color="primary">Zurück</button>
+    </div>
+    </mat-card-actions>
+    <mat-card-footer>
+  </mat-card-footer>
 </mat-card>

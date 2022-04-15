@@ -40,16 +40,19 @@
         <p @alertHighlightTrigger class="error">
           Fehler: {{ requestError$ | async }}
         </p>
-        <button mat-raised-button color="primary">Neue Aufgabe abrufen</button>
+        <button mat-flat-button color="primary">Neue Aufgabe abrufen</button>
       </div>
 
     </mat-card-content>
 
-    <mat-card-actions align="end">
-      <button mat-button type="submit" [disabled]="itemForm.invalid">
-        Speichern
-      </button>
-      <button mat-button>zurück</button>
+    <mat-card-actions>
+      <div class="f">
+        <button mat-flat-button color="accent">zurück</button>
+        <div class="spacer"></div>
+        <button mat-flat-button color="primary" type="submit" [disabled]="itemForm.invalid">
+          Speichern
+        </button>
+      </div>
     </mat-card-actions>
   </mat-card>
 </form>

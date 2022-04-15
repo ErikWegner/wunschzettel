@@ -35,13 +35,22 @@
         },
         {
             "name": "AppGlobalState",
-            "id": "interface-AppGlobalState-553651d3b8655f57b302b0e22aa319e48b9d9562ddcba97c061e9eef2737db2bdd62a4ef9cd83bc8ab83fb540d3966e98b8bd46f609c550af5c156dce52c2aec",
+            "id": "interface-AppGlobalState-e1e514fe6a341b4d6ed01d3d0ccebcfcec676c3e22b179ec4f4d4dff19f0eb2ec940f2f300250df36b994a09378644021b331cbfc63a993732fecfcab1c925be",
             "file": "src/app/store/a.state.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "export interface AppGlobalState {\n  pendingRequest: boolean;\n  requestErrorText: string | null;\n}\n",
+            "sourceCode": "export interface AppGlobalState {\n  pendingRequest: boolean;\n  requestErrorText: string | null;\n  captchaRequest: string | null;\n}\n",
             "properties": [
+                {
+                    "name": "captchaRequest",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string | null",
+                    "optional": false,
+                    "description": "",
+                    "line": 4
+                },
                 {
                     "name": "pendingRequest",
                     "deprecated": false,
@@ -597,16 +606,16 @@
     "classes": [
         {
             "name": "AppStateBuilder",
-            "id": "class-AppStateBuilder-de89851c18117a1bbe49c0e727b12de9e6e43b27eaed3bf68cf70fbaca9d83a88f4f2f04b9644fd91ffb57fa4a2891e8b54642b2b0ab6a13b49c2c22069e96a4",
+            "id": "class-AppStateBuilder-9822164c7d3071bdc365158c32f708e7e0d511b400e6a0d8ba8b9e8201eed51e07e06a941387770caf4243a27539ba590af8c5d24cc65f10c1151c49ad69568c",
             "file": "testing/app.state.builder.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "class",
-            "sourceCode": "import { WishlistItem } from 'src/app/business/item';\nimport { AppGlobalState } from 'src/app/store/a.state';\nimport { AppState } from 'src/app/store/app.state';\nimport { WishlistState } from 'src/app/store/w.state';\nimport { ListBuilder } from './list-builder';\nimport { randomString } from './utils';\n\nexport const appStateStub = (): AppStateBuilder => new AppStateBuilder();\n\nexport class AppStateBuilder implements AppState {\n  ag: AppGlobalState = {\n    pendingRequest: false,\n    requestErrorText: null,\n  };\n  wishlist: WishlistState = {\n    categories: [],\n    items: [],\n    activeItem: null,\n  };\n\n  public static hasError(errorText: string): any {\n    const b = new AppStateBuilder();\n    b.ag.requestErrorText = errorText;\n    return b;\n  }\n\n  public static givenCategories(...categories: string[]): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.wishlist.categories = [...categories];\n    return b;\n  }\n\n  public static someCategories(): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.wishlist.categories = ListBuilder.with((i) =>\n      randomString(8, 'Category ')\n    )\n      .items(7)\n      .build();\n    return b;\n  }\n\n  public static pendingRequest(): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.ag.pendingRequest = true;\n    return b;\n  }\n\n  static hasActiveItem(values?: Partial<WishlistItem>): AppStateBuilder {\n    const b = new AppStateBuilder();\n    return b.withActiveItem(values);\n  }\n\n  withActiveItem(values?: Partial<WishlistItem>): AppStateBuilder {\n    this.wishlist.activeItem = {\n      Title: 'Faust I + II',\n      Category: 'Buch',\n      Description: `Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des\n      Fauststoffs bezeichnet. Der Begriff kann sich auf den ersten Teil der\n      durch Goethe geschaffenen Tragödie, auf deren ersten und zweiten Teil\n      gemeinsam oder insgesamt auf die Arbeiten am Fauststoff beziehen, die\n      Goethe durch sechzig Jahre hindurch immer wieder neu aufnahm. Er umfasst\n      in diesem letzteren Sinne auch die Entwürfe, Fragmente, Kommentare und\n      Paralipomena des Dichters zu seinem Faustwerk und zum Fauststoff.`,\n      BuyUrl: 'https://de.wikipedia.org/wiki/Goethes_Faust',\n      ImgageUrl:\n        'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg',\n      id: 1,\n      ...values,\n    };\n    return this;\n  }\n}\n",
+            "sourceCode": "import { WishlistItem } from 'src/app/business/item';\nimport { AppGlobalState } from 'src/app/store/a.state';\nimport { AppState } from 'src/app/store/app.state';\nimport { WishlistState } from 'src/app/store/w.state';\nimport { ListBuilder } from './list-builder';\nimport { randomString } from './utils';\n\nexport const appStateStub = (): AppStateBuilder => new AppStateBuilder();\n\nexport class AppStateBuilder implements AppState {\n  ag: AppGlobalState = {\n    pendingRequest: false,\n    requestErrorText: null,\n    captchaRequest: 'Sieben plus zwei',\n  };\n  wishlist: WishlistState = {\n    categories: [],\n    items: [],\n    activeItem: null,\n  };\n\n  public static hasError(errorText: string): any {\n    const b = new AppStateBuilder();\n    b.ag.requestErrorText = errorText;\n    return b;\n  }\n\n  public static givenCategories(...categories: string[]): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.wishlist.categories = [...categories];\n    return b;\n  }\n\n  public static someCategories(): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.wishlist.categories = ListBuilder.with((i) =>\n      randomString(8, 'Category ')\n    )\n      .items(7)\n      .build();\n    return b;\n  }\n\n  public static pendingRequest(): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.ag.pendingRequest = true;\n    return b;\n  }\n\n  static hasActiveItem(values?: Partial<WishlistItem>): AppStateBuilder {\n    const b = new AppStateBuilder();\n    return b.withActiveItem(values);\n  }\n\n  withActiveItem(values?: Partial<WishlistItem>): AppStateBuilder {\n    this.wishlist.activeItem = {\n      Title: 'Faust I + II',\n      Category: 'Buch',\n      Description: `Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des\n      Fauststoffs bezeichnet. Der Begriff kann sich auf den ersten Teil der\n      durch Goethe geschaffenen Tragödie, auf deren ersten und zweiten Teil\n      gemeinsam oder insgesamt auf die Arbeiten am Fauststoff beziehen, die\n      Goethe durch sechzig Jahre hindurch immer wieder neu aufnahm. Er umfasst\n      in diesem letzteren Sinne auch die Entwürfe, Fragmente, Kommentare und\n      Paralipomena des Dichters zu seinem Faustwerk und zum Fauststoff.`,\n      BuyUrl: 'https://de.wikipedia.org/wiki/Goethes_Faust',\n      ImgageUrl:\n        'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg',\n      id: 1,\n      ...values,\n    };\n    return this;\n  }\n\n  withCaptcha(challenge: string): AppStateBuilder {\n    this.ag.captchaRequest = challenge;\n    return this;\n  }\n}\n",
             "properties": [
                 {
                     "name": "ag",
-                    "defaultValue": "{\n    pendingRequest: false,\n    requestErrorText: null,\n  }",
+                    "defaultValue": "{\n    pendingRequest: false,\n    requestErrorText: null,\n    captchaRequest: 'Sieben plus zwei',\n  }",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "AppGlobalState",
@@ -622,7 +631,7 @@
                     "type": "WishlistState",
                     "optional": false,
                     "description": "",
-                    "line": 15
+                    "line": 16
                 }
             ],
             "methods": [
@@ -640,7 +649,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 27,
+                    "line": 28,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -673,7 +682,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 49,
+                    "line": 50,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -705,7 +714,7 @@
                     "optional": false,
                     "returnType": "any",
                     "typeParameters": [],
-                    "line": 21,
+                    "line": 22,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -729,7 +738,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 43,
+                    "line": 44,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -742,7 +751,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 33,
+                    "line": 34,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -763,7 +772,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 54,
+                    "line": 55,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -773,6 +782,34 @@
                             "deprecated": false,
                             "deprecationMessage": "",
                             "optional": true,
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "withCaptcha",
+                    "args": [
+                        {
+                            "name": "challenge",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "AppStateBuilder",
+                    "typeParameters": [],
+                    "line": 75,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "challenge",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
                             "tagName": {
                                 "text": "param"
                             }
@@ -1406,7 +1443,7 @@
                 "args": [],
                 "line": 8
             },
-            "templateData": "<mat-card>\n  <mat-card-header>\n    <mat-card-title>Wunschzettel</mat-card-title>\n  </mat-card-header>\n  <mat-card-content>\n    <p>\n      Version 28\n    </p>\n    <p>\n      powered by<br>\n      <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"64\" height=\"64\">\n        <g fill=\"#2e2e2e\">\n          <path\n            d=\"M12.159 19.592c-2.476-2.171-4.574-3.977-4.663-4.012-.09-.036-1.496.103-3.127.308-1.63.205-3.114.373-3.297.373-.33 0-.335-.023-.722-3.65-.213-2.007-.37-3.667-.348-3.688.076-.073 8.792-1.23 9.267-1.23.37 0 .674.177 1.406.82.513.452 3.073 2.678 5.69 4.948 2.616 2.27 4.793 4.187 4.837 4.26.06.1-3.255 4.366-4.375 5.628-.135.152-1.058-.59-4.668-3.757zM28.73 14.5a583.493 583.493 0 0 1-4.583-4.434l-2.41-2.36-4.042-.102-4.043-.102V5.15c0-1.294.042-2.959.093-3.701L13.838.1l5.617.07 5.616.07.3.422c.457.643 5.453 5.667 8.074 8.12 1.28 1.198 2.333 2.219 2.339 2.269.009.073-3.37 3.91-4.565 5.184l-.316.337-2.173-2.073zM48.055 12.757a601.664 601.664 0 0 1-3.94-4.494l-.352-.426-2.962-.216a312.396 312.396 0 0 0-3.107-.217c-.136-.002.29-7.242.435-7.392.11-.114 9.023.6 9.187.736.25.209 9.557 10.856 9.6 10.983.031.093-3.737 3.76-4.893 4.762l-.382.331-3.586-4.067zM34.244 22.456c-3.137.01-5.328.245-7.968.859-6.78 1.575-13.096 5.623-16.91 10.842-4.482 6.132-5.377 13.467-2.415 19.828 1.66 3.567 3.525 5.58 6.685 7.217 2.525 1.309 7.143 2.411 11.51 2.749 1.789.138 10.116-.038 11.918-.253C45.24 62.696 55.509 60.338 64 56.86c.001-.123-2.248-6.775-2.323-6.87-.017-.021-1.231.382-2.697.896-6.467 2.267-12.933 3.934-18.91 4.877-10.646 1.679-19.683.849-24.53-2.255-1.068-.684-1.393-1.096-2.225-2.797-.855-1.748-1.116-3.003-1.034-4.96.11-2.631.85-4.437 2.922-7.114 2.947-3.806 6.99-6.485 11.737-7.777 4.773-1.3 10.613-1.223 16.042.212 2.388.631 3.572 1.137 4.688 2.005.597.463 1.63 1.724 1.504 1.835-.028.024-6.746 1.894-14.93 4.153a6779.731 6779.731 0 0 0-14.902 4.121c-.011.01.402 1.655.918 3.66l.937 3.644 16.854-4.765c9.27-2.621 17.373-4.88 18.009-5.017l1.154-.25.115-.95c.222-1.86.129-4.194-.218-5.455-1.373-4.992-6.14-8.808-13.066-10.457-3.408-.811-6.32-1.15-9.801-1.14zM58.796 53.54l1.258 4.012-.46.152-.137-.433a1.062 1.062 0 0 1-.249.508c-.12.131-.283.23-.49.299a1.032 1.032 0 0 1-.96-.141c-.3-.208-.521-.54-.664-.994-.142-.454-.15-.854-.025-1.203.127-.35.359-.583.698-.695.207-.07.395-.084.569-.05a.983.983 0 0 1 .488.26l-.488-1.563.46-.152zm2.78.244c.217-.012.42.034.608.14.303.17.525.467.67.894l.078.23-2.1.755c.13.317.306.53.532.64.228.108.495.106.798 0 .176-.063.336-.143.485-.246.151-.104.292-.23.424-.377l.15.445c-.139.13-.289.246-.448.345a2.65 2.65 0 0 1-.505.244c-.444.16-.84.153-1.19-.02s-.6-.488-.754-.942c-.159-.469-.16-.884-.008-1.246.153-.365.438-.623.856-.773.14-.05.274-.079.404-.086zm-.02.43c-.078 0-.16.022-.245.053-.255.09-.434.238-.538.442-.102.203-.12.446-.053.724l1.632-.589c-.09-.256-.232-.436-.421-.54a.684.684 0 0 0-.374-.089zm-3.287 1.15a.842.842 0 0 0-.265.043.715.715 0 0 0-.483.488c-.076.244-.06.541.05.89.11.35.265.6.466.753a.694.694 0 0 0 .67.106.72.72 0 0 0 .482-.488c.078-.246.062-.545-.047-.894-.11-.349-.267-.598-.469-.75a.7.7 0 0 0-.404-.149zm-4.058.901c.075 0 .149 0 .22.01l.125.454a1.836 1.836 0 0 0-.909.041c-.231.068-.394.154-.49.261a.384.384 0 0 0-.082.38c.031.11.098.186.198.226.1.038.282.05.547.034l.17-.01c.351-.024.614.01.79.104.176.09.296.256.362.494a.805.805 0 0 1-.137.735c-.163.219-.427.382-.792.488a2.688 2.688 0 0 1-.488.092 3.832 3.832 0 0 1-.555.017l-.136-.496c.197.042.386.062.566.06.18 0 .35-.03.513-.078.22-.064.377-.15.474-.262a.396.396 0 0 0 .087-.382c-.036-.13-.107-.217-.212-.261-.104-.045-.308-.057-.614-.037l-.173.01c-.306.022-.542-.012-.706-.103-.164-.093-.275-.254-.337-.48-.076-.275-.042-.513.106-.718.148-.205.397-.358.745-.46.172-.05.337-.085.496-.103.08-.01.156-.013.232-.014zm-2.508.707l.737 2.938-.469.126-.114-.45c-.07.208-.167.374-.296.502a1.083 1.083 0 0 1-.49.267c-.329.087-.604.047-.826-.118-.223-.164-.385-.448-.486-.853l-.446-1.777.469-.127.44 1.764c.07.278.175.47.315.583.14.11.317.139.528.083.253-.067.43-.203.535-.408.106-.206.125-.451.053-.738l-.418-1.669.468-.123zm-2.956.79l-.114 3.133-.558.126-1.144-2.286-.097 2.57-.558.127-1.392-2.789.474-.109 1.088 2.177.092-2.447.555-.126 1.09 2.177.09-2.447.474-.106zm7.762.227l.192.657-.53.167-.195-.66.533-.164zm-13.022.867c.27 0 .51.079.714.241.273.215.45.544.53.988l.042.241-2.19.414c.081.334.225.574.432.718.21.142.471.183.787.124.183-.035.356-.091.519-.17.164-.079.324-.183.477-.307l.08.465a2.865 2.865 0 0 1-.493.27c-.173.073-.351.126-.536.16-.462.088-.853.02-1.174-.206-.318-.226-.52-.576-.605-1.048-.087-.489-.029-.9.176-1.235.205-.337.527-.547.962-.63a1.52 1.52 0 0 1 .279-.025zm-.03.425c-.055 0-.112.01-.171.017-.266.05-.464.168-.597.353-.131.185-.185.419-.159.704l1.699-.325c-.052-.267-.163-.467-.335-.6a.69.69 0 0 0-.438-.15z\" />\n          <path\n            d=\"M42.564 60.13c0-.25.543-.735.825-.735.29 0 .81.513.63.62-.283.17-1.455.261-1.455.115zM58.114 57.43c-.17-.123-.385-.483-.477-.8-.147-.504-.135-.61.094-.872.335-.382.738-.315 1.097.182.36.5.372 1.252.022 1.515-.328.247-.36.246-.736-.026zM60.781 55.023c.062-.447.73-.842 1.06-.628.41.266.355.443-.198.628-.293.098-.617.215-.72.259-.132.055-.175-.022-.142-.26z\" />\n        </g>\n        <path d=\"M326.25 25.7c103.294 4.702 242.479-14.123 417.625-77.25\"\n          style=\"line-height:normal;-inkscape-font-specification:Sans;text-indent:0;text-align:start;text-decoration-line:none;text-transform:none;block-progression:tb;marker:none\"\n          color=\"#000\" font-weight=\"400\" font-family=\"Sans\" overflow=\"visible\" fill=\"none\" />\n      </svg>\n    </p>\n  </mat-card-content>\n  <mat-card-actions>\n    <a mat-button routerLink=\"/\">Zur Startseite</a>\n  </mat-card-actions>\n</mat-card>\n"
+            "templateData": "<mat-card>\n  <mat-card-header>\n    <mat-card-title>Wunschzettel</mat-card-title>\n  </mat-card-header>\n  <mat-card-content>\n    <p>\n      Version 28\n    </p>\n    <p>\n      powered by<br>\n      <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"64\" height=\"64\">\n        <g fill=\"#2e2e2e\">\n          <path\n            d=\"M12.159 19.592c-2.476-2.171-4.574-3.977-4.663-4.012-.09-.036-1.496.103-3.127.308-1.63.205-3.114.373-3.297.373-.33 0-.335-.023-.722-3.65-.213-2.007-.37-3.667-.348-3.688.076-.073 8.792-1.23 9.267-1.23.37 0 .674.177 1.406.82.513.452 3.073 2.678 5.69 4.948 2.616 2.27 4.793 4.187 4.837 4.26.06.1-3.255 4.366-4.375 5.628-.135.152-1.058-.59-4.668-3.757zM28.73 14.5a583.493 583.493 0 0 1-4.583-4.434l-2.41-2.36-4.042-.102-4.043-.102V5.15c0-1.294.042-2.959.093-3.701L13.838.1l5.617.07 5.616.07.3.422c.457.643 5.453 5.667 8.074 8.12 1.28 1.198 2.333 2.219 2.339 2.269.009.073-3.37 3.91-4.565 5.184l-.316.337-2.173-2.073zM48.055 12.757a601.664 601.664 0 0 1-3.94-4.494l-.352-.426-2.962-.216a312.396 312.396 0 0 0-3.107-.217c-.136-.002.29-7.242.435-7.392.11-.114 9.023.6 9.187.736.25.209 9.557 10.856 9.6 10.983.031.093-3.737 3.76-4.893 4.762l-.382.331-3.586-4.067zM34.244 22.456c-3.137.01-5.328.245-7.968.859-6.78 1.575-13.096 5.623-16.91 10.842-4.482 6.132-5.377 13.467-2.415 19.828 1.66 3.567 3.525 5.58 6.685 7.217 2.525 1.309 7.143 2.411 11.51 2.749 1.789.138 10.116-.038 11.918-.253C45.24 62.696 55.509 60.338 64 56.86c.001-.123-2.248-6.775-2.323-6.87-.017-.021-1.231.382-2.697.896-6.467 2.267-12.933 3.934-18.91 4.877-10.646 1.679-19.683.849-24.53-2.255-1.068-.684-1.393-1.096-2.225-2.797-.855-1.748-1.116-3.003-1.034-4.96.11-2.631.85-4.437 2.922-7.114 2.947-3.806 6.99-6.485 11.737-7.777 4.773-1.3 10.613-1.223 16.042.212 2.388.631 3.572 1.137 4.688 2.005.597.463 1.63 1.724 1.504 1.835-.028.024-6.746 1.894-14.93 4.153a6779.731 6779.731 0 0 0-14.902 4.121c-.011.01.402 1.655.918 3.66l.937 3.644 16.854-4.765c9.27-2.621 17.373-4.88 18.009-5.017l1.154-.25.115-.95c.222-1.86.129-4.194-.218-5.455-1.373-4.992-6.14-8.808-13.066-10.457-3.408-.811-6.32-1.15-9.801-1.14zM58.796 53.54l1.258 4.012-.46.152-.137-.433a1.062 1.062 0 0 1-.249.508c-.12.131-.283.23-.49.299a1.032 1.032 0 0 1-.96-.141c-.3-.208-.521-.54-.664-.994-.142-.454-.15-.854-.025-1.203.127-.35.359-.583.698-.695.207-.07.395-.084.569-.05a.983.983 0 0 1 .488.26l-.488-1.563.46-.152zm2.78.244c.217-.012.42.034.608.14.303.17.525.467.67.894l.078.23-2.1.755c.13.317.306.53.532.64.228.108.495.106.798 0 .176-.063.336-.143.485-.246.151-.104.292-.23.424-.377l.15.445c-.139.13-.289.246-.448.345a2.65 2.65 0 0 1-.505.244c-.444.16-.84.153-1.19-.02s-.6-.488-.754-.942c-.159-.469-.16-.884-.008-1.246.153-.365.438-.623.856-.773.14-.05.274-.079.404-.086zm-.02.43c-.078 0-.16.022-.245.053-.255.09-.434.238-.538.442-.102.203-.12.446-.053.724l1.632-.589c-.09-.256-.232-.436-.421-.54a.684.684 0 0 0-.374-.089zm-3.287 1.15a.842.842 0 0 0-.265.043.715.715 0 0 0-.483.488c-.076.244-.06.541.05.89.11.35.265.6.466.753a.694.694 0 0 0 .67.106.72.72 0 0 0 .482-.488c.078-.246.062-.545-.047-.894-.11-.349-.267-.598-.469-.75a.7.7 0 0 0-.404-.149zm-4.058.901c.075 0 .149 0 .22.01l.125.454a1.836 1.836 0 0 0-.909.041c-.231.068-.394.154-.49.261a.384.384 0 0 0-.082.38c.031.11.098.186.198.226.1.038.282.05.547.034l.17-.01c.351-.024.614.01.79.104.176.09.296.256.362.494a.805.805 0 0 1-.137.735c-.163.219-.427.382-.792.488a2.688 2.688 0 0 1-.488.092 3.832 3.832 0 0 1-.555.017l-.136-.496c.197.042.386.062.566.06.18 0 .35-.03.513-.078.22-.064.377-.15.474-.262a.396.396 0 0 0 .087-.382c-.036-.13-.107-.217-.212-.261-.104-.045-.308-.057-.614-.037l-.173.01c-.306.022-.542-.012-.706-.103-.164-.093-.275-.254-.337-.48-.076-.275-.042-.513.106-.718.148-.205.397-.358.745-.46.172-.05.337-.085.496-.103.08-.01.156-.013.232-.014zm-2.508.707l.737 2.938-.469.126-.114-.45c-.07.208-.167.374-.296.502a1.083 1.083 0 0 1-.49.267c-.329.087-.604.047-.826-.118-.223-.164-.385-.448-.486-.853l-.446-1.777.469-.127.44 1.764c.07.278.175.47.315.583.14.11.317.139.528.083.253-.067.43-.203.535-.408.106-.206.125-.451.053-.738l-.418-1.669.468-.123zm-2.956.79l-.114 3.133-.558.126-1.144-2.286-.097 2.57-.558.127-1.392-2.789.474-.109 1.088 2.177.092-2.447.555-.126 1.09 2.177.09-2.447.474-.106zm7.762.227l.192.657-.53.167-.195-.66.533-.164zm-13.022.867c.27 0 .51.079.714.241.273.215.45.544.53.988l.042.241-2.19.414c.081.334.225.574.432.718.21.142.471.183.787.124.183-.035.356-.091.519-.17.164-.079.324-.183.477-.307l.08.465a2.865 2.865 0 0 1-.493.27c-.173.073-.351.126-.536.16-.462.088-.853.02-1.174-.206-.318-.226-.52-.576-.605-1.048-.087-.489-.029-.9.176-1.235.205-.337.527-.547.962-.63a1.52 1.52 0 0 1 .279-.025zm-.03.425c-.055 0-.112.01-.171.017-.266.05-.464.168-.597.353-.131.185-.185.419-.159.704l1.699-.325c-.052-.267-.163-.467-.335-.6a.69.69 0 0 0-.438-.15z\" />\n          <path\n            d=\"M42.564 60.13c0-.25.543-.735.825-.735.29 0 .81.513.63.62-.283.17-1.455.261-1.455.115zM58.114 57.43c-.17-.123-.385-.483-.477-.8-.147-.504-.135-.61.094-.872.335-.382.738-.315 1.097.182.36.5.372 1.252.022 1.515-.328.247-.36.246-.736-.026zM60.781 55.023c.062-.447.73-.842 1.06-.628.41.266.355.443-.198.628-.293.098-.617.215-.72.259-.132.055-.175-.022-.142-.26z\" />\n        </g>\n        <path d=\"M326.25 25.7c103.294 4.702 242.479-14.123 417.625-77.25\"\n          style=\"line-height:normal;-inkscape-font-specification:Sans;text-indent:0;text-align:start;text-decoration-line:none;text-transform:none;block-progression:tb;marker:none\"\n          color=\"#000\" font-weight=\"400\" font-family=\"Sans\" overflow=\"visible\" fill=\"none\" />\n      </svg>\n    </p>\n  </mat-card-content>\n  <mat-card-actions align=\"end\">\n    <a mat-flat-button color=\"primary\" routerLink=\"/\">Zur Startseite</a>\n  </mat-card-actions>\n</mat-card>\n"
         },
         {
             "name": "AppComponent",
@@ -1767,7 +1804,7 @@
                 "args": [],
                 "line": 8
             },
-            "templateData": "<mat-card class=\"empty\">\n  Alle Wünsche erfüllt?\n  <mat-card-actions>\n    <a [routerLink]=\"['/add']\" mat-stroked-button color=\"primary\">\n      Neuer Eintrag\n    </a>\n  </mat-card-actions>\n</mat-card>"
+            "templateData": "<mat-card class=\"empty\">\n  Alle Wünsche erfüllt?\n  <mat-card-actions>\n    <a [routerLink]=\"['/add']\" mat-flat-button color=\"primary\">\n      Neuer Eintrag\n    </a>\n  </mat-card-actions>\n</mat-card>"
         },
         {
             "name": "EmptyListStubComponent",
@@ -2090,11 +2127,11 @@
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<mat-card>\n  <mat-card-title-group>\n    <mat-card-title>Faust I + II</mat-card-title>\n    <mat-card-subtitle>Buch</mat-card-subtitle>\n  </mat-card-title-group>\n  <mat-divider inset></mat-divider>\n  <mat-card-content>\n    <div class=\"f\">\n      <p>\n        Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des\n        Fauststoffs bezeichnet. Der Begriff kann sich auf den ersten Teil der\n        durch Goethe geschaffenen Tragödie, auf deren ersten und zweiten Teil\n        gemeinsam oder insgesamt auf die Arbeiten am Fauststoff beziehen, die\n        Goethe durch sechzig Jahre hindurch immer wieder neu aufnahm. Er umfasst\n        in diesem letzteren Sinne auch die Entwürfe, Fragmente, Kommentare und\n        Paralipomena des Dichters zu seinem Faustwerk und zum Fauststoff.\n      </p>\n      <div>\n        <img\n          mat-card-lg-image\n          src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg\"\n        />\n      </div>\n    </div>\n    <div>\n      Kauf-Adresse:\n      <a href=\"https://de.wikipedia.org/wiki/Goethes_Faust\">\n        https://de.wikipedia.org/wiki/Goethes_Faust\n      </a>\n    </div>\n  </mat-card-content>\n  <mat-divider inset></mat-divider>\n  <mat-card-actions>\n    <button mat-button>Reservierungsstatus</button>\n    Nicht reserviert\n    <button mat-button>Reservieren</button>\n    <button mat-button>zurück</button>\n  </mat-card-actions>\n</mat-card>\n"
+            "templateData": "<mat-card>\n  <mat-card-title-group>\n    <mat-card-title>Faust I + II</mat-card-title>\n    <mat-card-subtitle>Buch</mat-card-subtitle>\n  </mat-card-title-group>\n  <mat-divider inset></mat-divider>\n  <mat-card-content>\n    <div class=\"f\">\n      <p>\n        Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des\n        Fauststoffs bezeichnet. Der Begriff kann sich auf den ersten Teil der\n        durch Goethe geschaffenen Tragödie, auf deren ersten und zweiten Teil\n        gemeinsam oder insgesamt auf die Arbeiten am Fauststoff beziehen, die\n        Goethe durch sechzig Jahre hindurch immer wieder neu aufnahm. Er umfasst\n        in diesem letzteren Sinne auch die Entwürfe, Fragmente, Kommentare und\n        Paralipomena des Dichters zu seinem Faustwerk und zum Fauststoff.\n      </p>\n      <div>\n        <img mat-card-lg-image\n          src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg\" />\n      </div>\n    </div>\n    <div>\n      Kauf-Adresse:\n      <a href=\"https://de.wikipedia.org/wiki/Goethes_Faust\">\n        https://de.wikipedia.org/wiki/Goethes_Faust\n      </a>\n    </div>\n  </mat-card-content>\n  <mat-divider inset></mat-divider>\n  <mat-card-actions>\n    <mat-expansion-panel>\n      <mat-expansion-panel-header>\n        <mat-panel-title>Reservieren und Status</mat-panel-title>\n      </mat-expansion-panel-header>\n      <p>Nicht reserviert</p>\n      <button mat-button>Reservieren</button>\n    </mat-expansion-panel>\n    <div class=\"f mt24\">\n      <button mat-flat-button color=\"accent\">Bearbeiten</button>\n      <div class=\"spacer\"></div>\n      <button mat-flat-button color=\"primary\">Zurück</button>\n    </div>\n    </mat-card-actions>\n    <mat-card-footer>\n  </mat-card-footer>\n</mat-card>"
         },
         {
             "name": "ItemFormComponent",
-            "id": "component-ItemFormComponent-2fd3d9ecd336274a16038c0438d9ba4ac2d7109a3892e90c90ef171b48c8d29f2ebef9de3ac99d8f19d109e4bcc21e30a0e635bb2d0a8d5d1d9da43fc84db801",
+            "id": "component-ItemFormComponent-e8c35b593f8fdc1aa0eab9bbd7cb62e1244aeb084666b7767196b4174f73202c53269084251d8c3bd83cc67933a82fb664082730fc4b5052e4cf88c5e8e289c5",
             "file": "src/app/components/item-form/item-form.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -2114,6 +2151,16 @@
             "outputsClass": [],
             "propertiesClass": [
                 {
+                    "name": "captchaChallengeText$",
+                    "defaultValue": "this.store.select(selectCaptchaRequestText)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 44
+                },
+                {
                     "name": "formData$",
                     "defaultValue": "this.store.select(selectActiveItemAsFormData)",
                     "deprecated": false,
@@ -2121,7 +2168,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 41
+                    "line": 42
                 },
                 {
                     "name": "hasRequestPending$",
@@ -2131,7 +2178,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 40
+                    "line": 41
                 },
                 {
                     "name": "itemForm",
@@ -2141,7 +2188,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 31
+                    "line": 32
                 },
                 {
                     "name": "requestError$",
@@ -2151,7 +2198,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 42
+                    "line": 43
                 }
             ],
             "methodsClass": [],
@@ -2162,7 +2209,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { animate, style, transition, trigger } from '@angular/animations';\nimport { Component } from '@angular/core';\nimport { FormBuilder, Validators } from '@angular/forms';\nimport { Store } from '@ngrx/store';\nimport {\n  selectHasPendingRequest,\n  selectRequestErrorText,\n} from 'src/app/store/a.selectors';\nimport { selectActiveItemAsFormData } from 'src/app/store/w.selectors';\n\n@Component({\n  selector: 'app-item-form',\n  templateUrl: './item-form.component.html',\n  styleUrls: ['./item-form.component.scss'],\n  animations: [\n    trigger('alertHighlightTrigger', [\n      transition(':enter', [\n        style({ opacity: 0 }),\n        animate('80ms', style({ opacity: 1 })),\n        animate('80ms', style({ opacity: 0 })),\n        animate('80ms', style({ opacity: 1 })),\n        animate('80ms', style({ opacity: 0 })),\n        animate('80ms', style({ opacity: 1 })),\n        animate('80ms', style({ opacity: 0 })),\n        animate('80ms', style({ opacity: 1 })),\n      ]),\n    ]),\n  ],\n})\nexport class ItemFormComponent {\n  itemForm = this.fb.group({\n    title: ['', Validators.required],\n    description: [''],\n    category: ['', Validators.required],\n    imagesrc: [''],\n    buyurl: [''],\n    captchaResponse: ['', Validators.required],\n  });\n\n  hasRequestPending$ = this.store.select(selectHasPendingRequest);\n  formData$ = this.store.select(selectActiveItemAsFormData);\n  requestError$ = this.store.select(selectRequestErrorText);\n\n  constructor(private fb: FormBuilder, private store: Store) {}\n}\n",
+            "sourceCode": "import { animate, style, transition, trigger } from '@angular/animations';\nimport { Component } from '@angular/core';\nimport { FormBuilder, Validators } from '@angular/forms';\nimport { Store } from '@ngrx/store';\nimport {\n  selectCaptchaRequestText,\n  selectHasPendingRequest,\n  selectRequestErrorText,\n} from 'src/app/store/a.selectors';\nimport { selectActiveItemAsFormData } from 'src/app/store/w.selectors';\n\n@Component({\n  selector: 'app-item-form',\n  templateUrl: './item-form.component.html',\n  styleUrls: ['./item-form.component.scss'],\n  animations: [\n    trigger('alertHighlightTrigger', [\n      transition(':enter', [\n        style({ opacity: 0 }),\n        animate('80ms', style({ opacity: 1 })),\n        animate('80ms', style({ opacity: 0 })),\n        animate('80ms', style({ opacity: 1 })),\n        animate('80ms', style({ opacity: 0 })),\n        animate('80ms', style({ opacity: 1 })),\n        animate('80ms', style({ opacity: 0 })),\n        animate('80ms', style({ opacity: 1 })),\n      ]),\n    ]),\n  ],\n})\nexport class ItemFormComponent {\n  itemForm = this.fb.group({\n    title: ['', Validators.required],\n    description: [''],\n    category: ['', Validators.required],\n    imagesrc: [''],\n    buyurl: [''],\n    captchaResponse: ['', Validators.required],\n  });\n\n  hasRequestPending$ = this.store.select(selectHasPendingRequest);\n  formData$ = this.store.select(selectActiveItemAsFormData);\n  requestError$ = this.store.select(selectRequestErrorText);\n  captchaChallengeText$ = this.store.select(selectCaptchaRequestText);\n\n  constructor(private fb: FormBuilder, private store: Store) {}\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -2190,7 +2237,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 42,
+                "line": 44,
                 "jsdoctags": [
                     {
                         "name": "fb",
@@ -2212,7 +2259,7 @@
                     }
                 ]
             },
-            "templateData": "<form [formGroup]=\"itemForm\" [appFormEnabled]=\"(hasRequestPending$ | async) === false\"\n  [appConnectForm]=\"formData$ | async\">\n  <mat-card>\n    <mat-card-title>Wunschzetteleintrag</mat-card-title>\n\n    <mat-card-content>\n      <mat-form-field>\n        <mat-label>Bezeichnung</mat-label>\n        <input matInput formControlName=\"title\" />\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-label>Beschreibung</mat-label>\n        <textarea matInput formControlName=\"description\"></textarea>\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-label>Kategorie</mat-label>\n        <input matInput formControlName=\"category\" />\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-label>Bild-Adresse</mat-label>\n        <input matInput formControlName=\"imagesrc\" />\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-label>Kauf-Adresse</mat-label>\n        <input matInput formControlName=\"buyurl\" />\n      </mat-form-field>\n\n      <mat-progress-bar mode=\"indeterminate\" *ngIf=\"hasRequestPending$ | async\"></mat-progress-bar>\n      <div @alertHighlightTrigger *ngIf=\"requestError$ | async\" class=\"error\">\n        {{ requestError$ | async }}\n      </div>\n\n    </mat-card-content>\n\n    <mat-card-actions align=\"end\">\n      <button mat-button type=\"submit\" [disabled]=\"itemForm.invalid\">\n        Speichern\n      </button>\n      <button mat-button>zurück</button>\n    </mat-card-actions>\n  </mat-card>\n</form>\n"
+            "templateData": "<form [formGroup]=\"itemForm\" [appFormEnabled]=\"(hasRequestPending$ | async) === false\"\n  [appConnectForm]=\"formData$ | async\">\n  <mat-card>\n    <mat-card-title>Wunschzetteleintrag</mat-card-title>\n\n    <mat-card-content>\n      <mat-form-field>\n        <mat-label>Bezeichnung</mat-label>\n        <input matInput formControlName=\"title\" />\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-label>Beschreibung</mat-label>\n        <textarea matInput formControlName=\"description\"></textarea>\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-label>Kategorie</mat-label>\n        <input matInput formControlName=\"category\" />\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-label>Bild-Adresse</mat-label>\n        <input matInput formControlName=\"imagesrc\" />\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-label>Kauf-Adresse</mat-label>\n        <input matInput formControlName=\"buyurl\" />\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-label>{{ captchaChallengeText$ | async }}</mat-label>\n        <input matInput formControlName=\"captchaResponse\" />\n        <mat-hint align=\"start\">Bitte als Zahl eingeben.</mat-hint>\n      </mat-form-field>\n\n      <mat-progress-bar mode=\"indeterminate\" *ngIf=\"hasRequestPending$ | async\"></mat-progress-bar>\n      <div *ngIf=\"requestError$ | async\">\n        <p @alertHighlightTrigger class=\"error\">\n          Fehler: {{ requestError$ | async }}\n        </p>\n        <button mat-flat-button color=\"primary\">Neue Aufgabe abrufen</button>\n      </div>\n\n    </mat-card-content>\n\n    <mat-card-actions>\n      <div class=\"f\">\n        <button mat-flat-button color=\"accent\">zurück</button>\n        <div class=\"spacer\"></div>\n        <button mat-flat-button color=\"primary\" type=\"submit\" [disabled]=\"itemForm.invalid\">\n          Speichern\n        </button>\n      </div>\n    </mat-card-actions>\n  </mat-card>\n</form>\n"
         },
         {
             "name": "PageComponent",
@@ -2298,13 +2345,13 @@
     "modules": [
         {
             "name": "AppModule",
-            "id": "module-AppModule-d91ca349e2f8d0b72c1fb1686d9c79ebd7b5b7a7c807f554390020523bd612d0551f2c7ab8285415bd3effee2d4a28f03976ab7306d6819fd9ca50fe2caad620",
+            "id": "module-AppModule-f53dc93d290e0a2d21388e89ca5cd84e8f98b37eaf9e4f0c761bcc42b6d6dc6b7718413c7905fc3e3933543ea7b0b736cc8cbbf4392a6c1edabab87f416c2d46",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/app.module.ts",
             "methods": [],
-            "sourceCode": "import { LayoutModule } from '@angular/cdk/layout';\nimport { HttpClientModule } from '@angular/common/http';\nimport { NgModule } from '@angular/core';\nimport { ReactiveFormsModule } from '@angular/forms';\nimport { MatButtonModule } from '@angular/material/button';\nimport { MatCardModule } from '@angular/material/card';\nimport { MatDialogModule } from '@angular/material/dialog';\nimport {\n  MatFormFieldModule,\n  MAT_FORM_FIELD_DEFAULT_OPTIONS,\n} from '@angular/material/form-field';\nimport { MatIconModule } from '@angular/material/icon';\nimport { MatInputModule } from '@angular/material/input';\nimport { MatListModule } from '@angular/material/list';\nimport { MatProgressBarModule } from '@angular/material/progress-bar';\nimport { MatProgressSpinnerModule } from '@angular/material/progress-spinner';\nimport { MatSidenavModule } from '@angular/material/sidenav';\nimport { MatToolbarModule } from '@angular/material/toolbar';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\nimport { EffectsModule } from '@ngrx/effects';\nimport { StoreModule } from '@ngrx/store';\nimport { StoreDevtoolsModule } from '@ngrx/store-devtools';\nimport { environment } from '../environments/environment';\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { EditReservationDialogComponent } from './components/edit-reservation-dialog/edit-reservation-dialog.component';\nimport { EmptyListComponent } from './components/empty-list/empty-list.component';\nimport { ItemDisplayComponent } from './components/item-display/item-display.component';\nimport { ItemFormComponent } from './components/item-form/item-form.component';\nimport { ConnectFormDirective } from './directives/connect-form.directive';\nimport { FormEnabledDirective } from './directives/form-enabled.directive';\nimport { FrameComponent } from './frame/frame.component';\nimport { AboutComponent } from './pages/about/about.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { agReducer } from './store/a.reducer';\nimport { AppState } from './store/app.state';\nimport { WishlistEffects } from './store/w.effects';\nimport { wReducer } from './store/w.reducer';\n\n@NgModule({\n  declarations: [\n    AboutComponent,\n    AppComponent,\n    CategoriesPageComponent,\n    ConnectFormDirective,\n    EditReservationDialogComponent,\n    EmptyListComponent,\n    FormEnabledDirective,\n    FrameComponent,\n    ItemDisplayComponent,\n    ItemFormComponent,\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    BrowserAnimationsModule,\n    LayoutModule,\n    ReactiveFormsModule,\n    MatButtonModule,\n    MatCardModule,\n    MatDialogModule,\n    MatFormFieldModule,\n    MatIconModule,\n    MatInputModule,\n    MatListModule,\n    MatProgressBarModule,\n    MatProgressSpinnerModule,\n    MatSidenavModule,\n    MatToolbarModule,\n    StoreModule.forRoot<AppState>({ ag: agReducer, wishlist: wReducer }),\n    EffectsModule.forRoot([WishlistEffects]),\n    // import HttpClientModule after BrowserModule.\n    HttpClientModule,\n    StoreDevtoolsModule.instrument({\n      maxAge: 25,\n      logOnly: environment.production,\n    }),\n  ],\n  providers: [\n    {\n      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,\n      useValue: { appearance: 'fill' },\n    },\n  ],\n  bootstrap: [AppComponent],\n})\nexport class AppModule {}\n",
+            "sourceCode": "import { LayoutModule } from '@angular/cdk/layout';\nimport { HttpClientModule } from '@angular/common/http';\nimport { NgModule } from '@angular/core';\nimport { ReactiveFormsModule } from '@angular/forms';\nimport { MatButtonModule } from '@angular/material/button';\nimport { MatCardModule } from '@angular/material/card';\nimport { MatDialogModule } from '@angular/material/dialog';\nimport { MatExpansionModule } from '@angular/material/expansion';\nimport {\n  MatFormFieldModule,\n  MAT_FORM_FIELD_DEFAULT_OPTIONS,\n} from '@angular/material/form-field';\nimport { MatIconModule } from '@angular/material/icon';\nimport { MatInputModule } from '@angular/material/input';\nimport { MatListModule } from '@angular/material/list';\nimport { MatProgressBarModule } from '@angular/material/progress-bar';\nimport { MatProgressSpinnerModule } from '@angular/material/progress-spinner';\nimport { MatSidenavModule } from '@angular/material/sidenav';\nimport { MatToolbarModule } from '@angular/material/toolbar';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\nimport { EffectsModule } from '@ngrx/effects';\nimport { StoreModule } from '@ngrx/store';\nimport { StoreDevtoolsModule } from '@ngrx/store-devtools';\nimport { environment } from '../environments/environment';\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { EditReservationDialogComponent } from './components/edit-reservation-dialog/edit-reservation-dialog.component';\nimport { EmptyListComponent } from './components/empty-list/empty-list.component';\nimport { ItemDisplayComponent } from './components/item-display/item-display.component';\nimport { ItemFormComponent } from './components/item-form/item-form.component';\nimport { ConnectFormDirective } from './directives/connect-form.directive';\nimport { FormEnabledDirective } from './directives/form-enabled.directive';\nimport { FrameComponent } from './frame/frame.component';\nimport { AboutComponent } from './pages/about/about.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { agReducer } from './store/a.reducer';\nimport { AppState } from './store/app.state';\nimport { WishlistEffects } from './store/w.effects';\nimport { wReducer } from './store/w.reducer';\n\n@NgModule({\n  declarations: [\n    AboutComponent,\n    AppComponent,\n    CategoriesPageComponent,\n    ConnectFormDirective,\n    EditReservationDialogComponent,\n    EmptyListComponent,\n    FormEnabledDirective,\n    FrameComponent,\n    ItemDisplayComponent,\n    ItemFormComponent,\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    BrowserAnimationsModule,\n    LayoutModule,\n    ReactiveFormsModule,\n    MatButtonModule,\n    MatCardModule,\n    MatDialogModule,\n    MatExpansionModule,\n    MatFormFieldModule,\n    MatIconModule,\n    MatInputModule,\n    MatListModule,\n    MatProgressBarModule,\n    MatProgressSpinnerModule,\n    MatSidenavModule,\n    MatToolbarModule,\n    StoreModule.forRoot<AppState>({ ag: agReducer, wishlist: wReducer }),\n    EffectsModule.forRoot([WishlistEffects]),\n    // import HttpClientModule after BrowserModule.\n    HttpClientModule,\n    StoreDevtoolsModule.instrument({\n      maxAge: 25,\n      logOnly: environment.production,\n    }),\n  ],\n  providers: [\n    {\n      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,\n      useValue: { appearance: 'fill' },\n    },\n  ],\n  bootstrap: [AppComponent],\n})\nexport class AppModule {}\n",
             "children": [
                 {
                     "type": "providers",
@@ -2598,7 +2645,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "AppGlobalState",
-                "defaultValue": "{\n  pendingRequest: true,\n  requestErrorText: null,\n}"
+                "defaultValue": "{\n  pendingRequest: true,\n  requestErrorText: null,\n  captchaRequest: null,\n}"
             },
             {
                 "name": "initialState",
@@ -2688,7 +2735,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "any[]",
-                "defaultValue": "[\n  BrowserAnimationsModule,\n  ReactiveFormsModule,\n  MatButtonModule,\n  MatCardModule,\n  MatDividerModule,\n  MatDialogModule,\n  MatFormFieldModule,\n  MatIconModule,\n  MatInputModule,\n  MatListModule,\n  MatProgressBarModule,\n  MatProgressSpinnerModule,\n  MatSidenavModule,\n  MatToolbarModule,\n]"
+                "defaultValue": "[\n  BrowserAnimationsModule,\n  ReactiveFormsModule,\n  MatButtonModule,\n  MatCardModule,\n  MatDividerModule,\n  MatDialogModule,\n  MatExpansionModule,\n  MatFormFieldModule,\n  MatIconModule,\n  MatInputModule,\n  MatListModule,\n  MatProgressBarModule,\n  MatProgressSpinnerModule,\n  MatSidenavModule,\n  MatToolbarModule,\n]"
             },
             {
                 "name": "NewForm",
@@ -2758,6 +2805,16 @@
                 "deprecationMessage": "",
                 "type": "",
                 "defaultValue": "createSelector(\n  selectFeature,\n  (state: WishlistState) => ({\n    title: state.activeItem?.Title,\n    description: state.activeItem?.Description,\n    category: state.activeItem?.Category,\n    imagesrc: state.activeItem?.ImgageUrl,\n    buyurl: state.activeItem?.BuyUrl,\n    id: state.activeItem?.id,\n  })\n)"
+            },
+            {
+                "name": "selectCaptchaRequestText",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/a.selectors.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createSelector(\n  selectFeature,\n  (state: AppGlobalState) => state.captchaRequest\n)"
             },
             {
                 "name": "selectCategories",
@@ -2833,21 +2890,21 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/stories/Button.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<Button>",
-                "defaultValue": "(args: Button) => ({\n  props: args,\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/stories/Categories.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story<CategoriesPageComponent>",
                 "defaultValue": "(\n  args: CategoriesPageComponent\n) => ({\n  props: args,\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<Button>",
+                "defaultValue": "(args: Button) => ({\n  props: args,\n})"
             },
             {
                 "name": "Template",
@@ -3035,7 +3092,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "AppGlobalState",
-                    "defaultValue": "{\n  pendingRequest: true,\n  requestErrorText: null,\n}"
+                    "defaultValue": "{\n  pendingRequest: true,\n  requestErrorText: null,\n  captchaRequest: null,\n}"
                 }
             ],
             "testing/app.state.builder.ts": [
@@ -3224,7 +3281,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "any[]",
-                    "defaultValue": "[\n  BrowserAnimationsModule,\n  ReactiveFormsModule,\n  MatButtonModule,\n  MatCardModule,\n  MatDividerModule,\n  MatDialogModule,\n  MatFormFieldModule,\n  MatIconModule,\n  MatInputModule,\n  MatListModule,\n  MatProgressBarModule,\n  MatProgressSpinnerModule,\n  MatSidenavModule,\n  MatToolbarModule,\n]"
+                    "defaultValue": "[\n  BrowserAnimationsModule,\n  ReactiveFormsModule,\n  MatButtonModule,\n  MatCardModule,\n  MatDividerModule,\n  MatDialogModule,\n  MatExpansionModule,\n  MatFormFieldModule,\n  MatIconModule,\n  MatInputModule,\n  MatListModule,\n  MatProgressBarModule,\n  MatProgressSpinnerModule,\n  MatSidenavModule,\n  MatToolbarModule,\n]"
                 }
             ],
             "src/stories/About.stories.ts": [
@@ -3492,6 +3549,16 @@
                 }
             ],
             "src/app/store/a.selectors.ts": [
+                {
+                    "name": "selectCaptchaRequestText",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/a.selectors.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createSelector(\n  selectFeature,\n  (state: AppGlobalState) => state.captchaRequest\n)"
+                },
                 {
                     "name": "selectFeature",
                     "ctype": "miscellaneous",
@@ -3781,7 +3848,7 @@
                 "linktype": "component",
                 "name": "ItemFormComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/6",
+                "coverageCount": "0/7",
                 "status": "low"
             },
             {
@@ -3863,6 +3930,16 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
+                "name": "selectCaptchaRequestText",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/a.selectors.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
                 "name": "selectFeature",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
@@ -3894,7 +3971,7 @@
                 "linktype": "interface",
                 "name": "AppGlobalState",
                 "coveragePercent": 0,
-                "coverageCount": "0/3",
+                "coverageCount": "0/4",
                 "status": "low"
             },
             {
@@ -4376,7 +4453,7 @@
                 "linktype": "classe",
                 "name": "AppStateBuilder",
                 "coveragePercent": 0,
-                "coverageCount": "0/9",
+                "coverageCount": "0/10",
                 "status": "low"
             },
             {
