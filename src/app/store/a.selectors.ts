@@ -13,3 +13,8 @@ export const selectRequestErrorText = createSelector(
   selectFeature,
   (state: AppGlobalState) => state.requestErrorText
 );
+
+export const selectCaptchaRequestText = createSelector(
+  selectFeature,
+  (state: AppGlobalState) => state.captchaRequest
+);

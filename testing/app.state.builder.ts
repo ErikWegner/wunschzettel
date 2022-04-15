@@ -11,6 +11,7 @@ export class AppStateBuilder implements AppState {
   ag: AppGlobalState = {
     pendingRequest: false,
     requestErrorText: null,
+    captchaRequest: 'Sieben plus zwei',
   };
   wishlist: WishlistState = {
     categories: [],
@@ -68,6 +69,11 @@ export class AppStateBuilder implements AppState {
       id: 1,
       ...values,
     };
+    return this;
+  }
+
+  withCaptcha(challenge: string): AppStateBuilder {
+    this.ag.captchaRequest = challenge;
     return this;
   }
 }

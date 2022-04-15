@@ -29,9 +29,18 @@
         <input matInput formControlName="buyurl" />
       </mat-form-field>
 
+      <mat-form-field>
+        <mat-label>{{ captchaChallengeText$ | async }}</mat-label>
+        <input matInput formControlName="captchaResponse" />
+        <mat-hint align="start">Bitte als Zahl eingeben.</mat-hint>
+      </mat-form-field>
+
       <mat-progress-bar mode="indeterminate" *ngIf="hasRequestPending$ | async"></mat-progress-bar>
-      <div @alertHighlightTrigger *ngIf="requestError$ | async" class="error">
-        {{ requestError$ | async }}
+      <div *ngIf="requestError$ | async">
+        <p @alertHighlightTrigger class="error">
+          Fehler: {{ requestError$ | async }}
+        </p>
+        <button mat-raised-button color="primary">Neue Aufgabe abrufen</button>
       </div>
 
     </mat-card-content>

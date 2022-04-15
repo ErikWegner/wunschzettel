@@ -5,6 +5,7 @@ import { getItems, itemsLoaded } from './w.actions';
 export const initialState: AppGlobalState = {
   pendingRequest: true,
   requestErrorText: null,
+  captchaRequest: null,
 };
 
 export const agReducer = createReducer<AppGlobalState>(

@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import {
+  selectCaptchaRequestText,
   selectHasPendingRequest,
   selectRequestErrorText,
 } from 'src/app/store/a.selectors';
@@ -40,6 +41,7 @@ export class ItemFormComponent {
   hasRequestPending$ = this.store.select(selectHasPendingRequest);
   formData$ = this.store.select(selectActiveItemAsFormData);
   requestError$ = this.store.select(selectRequestErrorText);
+  captchaChallengeText$ = this.store.select(selectCaptchaRequestText);
 
   constructor(private fb: FormBuilder, private store: Store) {}
 }

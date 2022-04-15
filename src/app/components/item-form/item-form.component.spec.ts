@@ -56,7 +56,7 @@ describe('ItemFormComponent', () => {
     // Act
     fixture.detectChanges();
 
-    // Asset
+    // Assert
     const el: HTMLElement = fixture.nativeElement;
     const fieldset = el.querySelector('input')!;
     expect(fieldset.disabled)
@@ -72,7 +72,7 @@ describe('ItemFormComponent', () => {
     // Act
     fixture.detectChanges();
 
-    // Asset
+    // Assert
     const el: HTMLElement = fixture.nativeElement;
     const input = el.querySelector('input')!;
     expect(input.disabled)
@@ -89,7 +89,7 @@ describe('ItemFormComponent', () => {
     // Act
     fixture.detectChanges();
 
-    // Asset
+    // Assert
     expect(fixture.componentInstance.itemForm.get('title')?.value).toBe(title);
   });
 
@@ -104,7 +104,7 @@ describe('ItemFormComponent', () => {
     // Act
     fixture.detectChanges();
 
-    // Asset
+    // Assert
     expect(fixture.componentInstance.itemForm.get('description')?.value).toBe(
       descriptionText
     );
@@ -121,7 +121,7 @@ describe('ItemFormComponent', () => {
     // Act
     fixture.detectChanges();
 
-    // Asset
+    // Assert
     expect(fixture.componentInstance.itemForm.get('category')?.value).toBe(
       category
     );
@@ -138,7 +138,7 @@ describe('ItemFormComponent', () => {
     // Act
     fixture.detectChanges();
 
-    // Asset
+    // Assert
     expect(fixture.componentInstance.itemForm.get('imagesrc')?.value).toBe(
       imgurl
     );
@@ -155,9 +155,25 @@ describe('ItemFormComponent', () => {
     // Act
     fixture.detectChanges();
 
-    // Asset
+    // Assert
     expect(fixture.componentInstance.itemForm.get('buyurl')?.value).toBe(
       shopurl
     );
+  });
+
+  it('should show captcha request text', () => {
+    // Arrange
+    const challenge = randomString(20, 'Your captcha challenge: ');
+    const nextState = AppStateBuilder.hasActiveItem().withCaptcha(challenge);
+    store.setState(nextState);
+
+    // Act
+    fixture.detectChanges();
+
+    // Assert
+    const el: HTMLElement = fixture.nativeElement;
+    const labels = el.querySelectorAll('mat-label');
+    expect(labels.length).withContext('There should be six labels').toBe(6);
+    expect(labels[5].textContent).toBe(challenge);
   });
 });

@@ -1,6 +1,10 @@
 import { AppStateBuilder } from 'testing/app.state.builder';
 import { randomString } from 'testing/utils';
-import { selectHasPendingRequest, selectRequestErrorText } from './a.selectors';
+import {
+  selectCaptchaRequestText,
+  selectHasPendingRequest,
+  selectRequestErrorText,
+} from './a.selectors';
 import { AppState } from './app.state';
 
 describe('AppGlobalState selectors', () => {
@@ -27,5 +31,12 @@ describe('AppGlobalState selectors', () => {
     initialState.ag.requestErrorText = randomErrorText;
     const result = selectRequestErrorText.projector(initialState.ag);
     expect(result).toBe(randomErrorText);
+  });
+
+  it('should select captcha request', () => {
+    const captchaPuzzleText = randomString(25, 'Solve this ');
+    initialState.ag.captchaRequest = captchaPuzzleText;
+    const result = selectCaptchaRequestText.projector(initialState.ag);
+    expect(result).toBe(captchaPuzzleText);
   });
 });
