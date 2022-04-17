@@ -22,6 +22,7 @@ export class AppStateBuilder implements AppState {
   reservation: ReservationState = {
     itemid: null,
     status: 'unknown',
+    errorText: null,
   };
 
   public static hasError(errorText: string): any {
@@ -57,9 +58,13 @@ export class AppStateBuilder implements AppState {
     return b.withActiveItem(values);
   }
 
-  public static reservationStatus(status: ReservationStatus): AppStateBuilder {
+  public static reservationStatus(
+    status: ReservationStatus,
+    opt?: { errorText?: string }
+  ): AppStateBuilder {
     const b = new AppStateBuilder();
     b.reservation.status = status;
+    b.reservation.errorText = opt?.errorText || null;
     return b;
   }
 

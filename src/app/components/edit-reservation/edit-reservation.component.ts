@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { selectReservationState } from 'src/app/store/r.selectors';
+import {
+  selectReservationErrorText,
+  selectReservationState,
+} from 'src/app/store/r.selectors';
 
 @Component({
   selector: 'app-edit-reservation',
@@ -9,6 +12,7 @@ import { selectReservationState } from 'src/app/store/r.selectors';
 })
 export class EditReservationComponent {
   reservationStatus$ = this.store.select(selectReservationState);
+  reservationErrorText$ = this.store.select(selectReservationErrorText);
 
   constructor(private store: Store) {}
 }

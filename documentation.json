@@ -76,12 +76,12 @@
         },
         {
             "name": "AppState",
-            "id": "interface-AppState-238f8c3b637cc225c3f7b9283137e1cea6f73bb2d863489a86a7a148ee2b76650b85bf51400674d15d890661edf7a1973711ac1ee43c7253177e8fd33758f381",
+            "id": "interface-AppState-04a4baa98dd5295537ab806cf95c63c9ea07bffe33be8a7740035f75a4244efb0f0354b31add1269253418ff185b7f4bfdbeb7bacc7982019be95f631ae1e805",
             "file": "src/app/store/app.state.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import { AppGlobalState } from './a.state';\nimport { WishlistState } from './w.state';\n\nexport interface AppState {\n  ag: AppGlobalState;\n  wishlist: WishlistState;\n}\n",
+            "sourceCode": "import { AppGlobalState } from './a.state';\nimport { ReservationState } from './r.state';\nimport { WishlistState } from './w.state';\n\nexport interface AppState {\n  ag: AppGlobalState;\n  wishlist: WishlistState;\n  reservation: ReservationState;\n}\n",
             "properties": [
                 {
                     "name": "ag",
@@ -90,7 +90,16 @@
                     "type": "AppGlobalState",
                     "optional": false,
                     "description": "",
-                    "line": 5
+                    "line": 6
+                },
+                {
+                    "name": "reservation",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ReservationState",
+                    "optional": false,
+                    "description": "",
+                    "line": 8
                 },
                 {
                     "name": "wishlist",
@@ -99,7 +108,48 @@
                     "type": "WishlistState",
                     "optional": false,
                     "description": "",
-                    "line": 6
+                    "line": 7
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 165,
+            "methods": []
+        },
+        {
+            "name": "ReservationState",
+            "id": "interface-ReservationState-9f9f1cb10005b9c8353b75f71e441a2ff4ec73710792a55c09dc7ef7cae89ddae2312216928dedd3bbd868bdca89b36d37b2eaf03f4fdf28ff278157cffc9592",
+            "file": "src/app/store/r.state.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "export type ReservationStatus =\n  | 'unknown'\n  | 'requestPending'\n  | 'reserved'\n  | 'free'\n  | 'updateFailed';\n\nexport interface ReservationState {\n  itemid: number | null;\n  status: ReservationStatus;\n  errorText: string | null;\n}\n",
+            "properties": [
+                {
+                    "name": "errorText",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string | null",
+                    "optional": false,
+                    "description": "",
+                    "line": 11
+                },
+                {
+                    "name": "itemid",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number | null",
+                    "optional": false,
+                    "description": "",
+                    "line": 9
+                },
+                {
+                    "name": "status",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ReservationStatus",
+                    "optional": false,
+                    "description": "",
+                    "line": 10
                 }
             ],
             "indexSignatures": [],
@@ -606,12 +656,12 @@
     "classes": [
         {
             "name": "AppStateBuilder",
-            "id": "class-AppStateBuilder-9822164c7d3071bdc365158c32f708e7e0d511b400e6a0d8ba8b9e8201eed51e07e06a941387770caf4243a27539ba590af8c5d24cc65f10c1151c49ad69568c",
+            "id": "class-AppStateBuilder-d7898575b213380a39f44e8cbdcf1ce52100fc3de3da4b8d7daf15b8e4624b91aac9eccfcc27fc0aaec92b60fe49ff161b32e7cf1e7de962307e390c70673e14",
             "file": "testing/app.state.builder.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "class",
-            "sourceCode": "import { WishlistItem } from 'src/app/business/item';\nimport { AppGlobalState } from 'src/app/store/a.state';\nimport { AppState } from 'src/app/store/app.state';\nimport { WishlistState } from 'src/app/store/w.state';\nimport { ListBuilder } from './list-builder';\nimport { randomString } from './utils';\n\nexport const appStateStub = (): AppStateBuilder => new AppStateBuilder();\n\nexport class AppStateBuilder implements AppState {\n  ag: AppGlobalState = {\n    pendingRequest: false,\n    requestErrorText: null,\n    captchaRequest: 'Sieben plus zwei',\n  };\n  wishlist: WishlistState = {\n    categories: [],\n    items: [],\n    activeItem: null,\n  };\n\n  public static hasError(errorText: string): any {\n    const b = new AppStateBuilder();\n    b.ag.requestErrorText = errorText;\n    return b;\n  }\n\n  public static givenCategories(...categories: string[]): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.wishlist.categories = [...categories];\n    return b;\n  }\n\n  public static someCategories(): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.wishlist.categories = ListBuilder.with((i) =>\n      randomString(8, 'Category ')\n    )\n      .items(7)\n      .build();\n    return b;\n  }\n\n  public static pendingRequest(): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.ag.pendingRequest = true;\n    return b;\n  }\n\n  static hasActiveItem(values?: Partial<WishlistItem>): AppStateBuilder {\n    const b = new AppStateBuilder();\n    return b.withActiveItem(values);\n  }\n\n  withActiveItem(values?: Partial<WishlistItem>): AppStateBuilder {\n    this.wishlist.activeItem = {\n      Title: 'Faust I + II',\n      Category: 'Buch',\n      Description: `Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des\n      Fauststoffs bezeichnet. Der Begriff kann sich auf den ersten Teil der\n      durch Goethe geschaffenen Tragödie, auf deren ersten und zweiten Teil\n      gemeinsam oder insgesamt auf die Arbeiten am Fauststoff beziehen, die\n      Goethe durch sechzig Jahre hindurch immer wieder neu aufnahm. Er umfasst\n      in diesem letzteren Sinne auch die Entwürfe, Fragmente, Kommentare und\n      Paralipomena des Dichters zu seinem Faustwerk und zum Fauststoff.`,\n      BuyUrl: 'https://de.wikipedia.org/wiki/Goethes_Faust',\n      ImgageUrl:\n        'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg',\n      id: 1,\n      ...values,\n    };\n    return this;\n  }\n\n  withCaptcha(challenge: string): AppStateBuilder {\n    this.ag.captchaRequest = challenge;\n    return this;\n  }\n}\n",
+            "sourceCode": "import { WishlistItem } from 'src/app/business/item';\nimport { AppGlobalState } from 'src/app/store/a.state';\nimport { AppState } from 'src/app/store/app.state';\nimport { ReservationState, ReservationStatus } from 'src/app/store/r.state';\nimport { WishlistState } from 'src/app/store/w.state';\nimport { ListBuilder } from './list-builder';\nimport { randomString } from './utils';\n\nexport const appStateStub = (): AppStateBuilder => new AppStateBuilder();\n\nexport class AppStateBuilder implements AppState {\n  ag: AppGlobalState = {\n    pendingRequest: false,\n    requestErrorText: null,\n    captchaRequest: 'Sieben plus zwei',\n  };\n  wishlist: WishlistState = {\n    categories: [],\n    items: [],\n    activeItem: null,\n  };\n  reservation: ReservationState = {\n    itemid: null,\n    status: 'unknown',\n    errorText: null,\n  };\n\n  public static hasError(errorText: string): any {\n    const b = new AppStateBuilder();\n    b.ag.requestErrorText = errorText;\n    return b;\n  }\n\n  public static givenCategories(...categories: string[]): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.wishlist.categories = [...categories];\n    return b;\n  }\n\n  public static someCategories(): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.wishlist.categories = ListBuilder.with((i) =>\n      randomString(8, 'Category ')\n    )\n      .items(7)\n      .build();\n    return b;\n  }\n\n  public static pendingRequest(): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.ag.pendingRequest = true;\n    return b;\n  }\n\n  public static hasActiveItem(values?: Partial<WishlistItem>): AppStateBuilder {\n    const b = new AppStateBuilder();\n    return b.withActiveItem(values);\n  }\n\n  public static reservationStatus(\n    status: ReservationStatus,\n    opt?: { errorText?: string }\n  ): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.reservation.status = status;\n    b.reservation.errorText = opt?.errorText || null;\n    return b;\n  }\n\n  withActiveItem(values?: Partial<WishlistItem>): AppStateBuilder {\n    this.wishlist.activeItem = {\n      Title: 'Faust I + II',\n      Category: 'Buch',\n      Description: `Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des\n      Fauststoffs bezeichnet. Der Begriff kann sich auf den ersten Teil der\n      durch Goethe geschaffenen Tragödie, auf deren ersten und zweiten Teil\n      gemeinsam oder insgesamt auf die Arbeiten am Fauststoff beziehen, die\n      Goethe durch sechzig Jahre hindurch immer wieder neu aufnahm. Er umfasst\n      in diesem letzteren Sinne auch die Entwürfe, Fragmente, Kommentare und\n      Paralipomena des Dichters zu seinem Faustwerk und zum Fauststoff.`,\n      BuyUrl: 'https://de.wikipedia.org/wiki/Goethes_Faust',\n      ImgageUrl:\n        'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg',\n      id: 1,\n      ...values,\n    };\n    return this;\n  }\n\n  withCaptcha(challenge: string): AppStateBuilder {\n    this.ag.captchaRequest = challenge;\n    return this;\n  }\n}\n",
             "properties": [
                 {
                     "name": "ag",
@@ -621,7 +671,17 @@
                     "type": "AppGlobalState",
                     "optional": false,
                     "description": "",
-                    "line": 11
+                    "line": 12
+                },
+                {
+                    "name": "reservation",
+                    "defaultValue": "{\n    itemid: null,\n    status: 'unknown',\n    errorText: null,\n  }",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ReservationState",
+                    "optional": false,
+                    "description": "",
+                    "line": 22
                 },
                 {
                     "name": "wishlist",
@@ -631,7 +691,7 @@
                     "type": "WishlistState",
                     "optional": false,
                     "description": "",
-                    "line": 16
+                    "line": 17
                 }
             ],
             "methods": [
@@ -649,7 +709,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 28,
+                    "line": 34,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -682,7 +742,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 50,
+                    "line": 56,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -714,7 +774,7 @@
                     "optional": false,
                     "returnType": "any",
                     "typeParameters": [],
-                    "line": 22,
+                    "line": 28,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -738,11 +798,59 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 44,
+                    "line": 50,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
                         124
+                    ]
+                },
+                {
+                    "name": "reservationStatus",
+                    "args": [
+                        {
+                            "name": "status",
+                            "type": "ReservationStatus",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "opt",
+                            "type": "literal type",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "optional": true
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "AppStateBuilder",
+                    "typeParameters": [],
+                    "line": 61,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        124
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "status",
+                            "type": "ReservationStatus",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "opt",
+                            "type": "literal type",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "optional": true,
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
                     ]
                 },
                 {
@@ -751,7 +859,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 34,
+                    "line": 40,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -772,7 +880,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 55,
+                    "line": 71,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -801,7 +909,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 75,
+                    "line": 91,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -1697,38 +1805,48 @@
             "templateData": "<mat-spinner *ngIf=\"(hasRequestPending$ | async)\"></mat-spinner>\n<ng-container *ngIf=\"false === (hasRequestPending$ | async)\">\n  <mat-card class=\"c\" *ngFor=\"let category of (categories$ | async)\">{{ category }}</mat-card>\n  <app-empty-list *ngIf=\"((categories$ | async)?.length ?? 0) === 0\"></app-empty-list>\n</ng-container>\n"
         },
         {
-            "name": "EditReservationDialogComponent",
-            "id": "component-EditReservationDialogComponent-b7896b3fe49a4e5fda28732ddf8bfef82042f277243db727da23869e52dc3beb436cd7b1573fa0c94d08ad7f086cb0dfe6f978d9181b38ecf5c53cfcc697008e",
-            "file": "src/app/components/edit-reservation-dialog/edit-reservation-dialog.component.ts",
+            "name": "EditReservationComponent",
+            "id": "component-EditReservationComponent-2e17a2f5ffe358bf2a3a36e130129b22dc1b10288b23690a9bf35993063149a022162d140293cc7af8cbbc5a1926f77e75e7252ec0bb13ef744b1a5923415890",
+            "file": "src/app/components/edit-reservation/edit-reservation.component.ts",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
             "outputs": [],
             "providers": [],
-            "selector": "app-edit-reservation-dialog",
+            "selector": "app-edit-reservation",
             "styleUrls": [
-                "./edit-reservation-dialog.component.scss"
+                "./edit-reservation.component.scss"
             ],
             "styles": [],
             "templateUrl": [
-                "./edit-reservation-dialog.component.html"
+                "./edit-reservation.component.html"
             ],
             "viewProviders": [],
             "inputsClass": [],
             "outputsClass": [],
-            "propertiesClass": [],
-            "methodsClass": [
+            "propertiesClass": [
                 {
-                    "name": "ngOnInit",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 12,
+                    "name": "reservationErrorText$",
+                    "defaultValue": "this.store.select(selectReservationErrorText)",
                     "deprecated": false,
-                    "deprecationMessage": ""
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 15
+                },
+                {
+                    "name": "reservationStatus$",
+                    "defaultValue": "this.store.select(selectReservationState)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 14
                 }
             ],
+            "methodsClass": [],
             "deprecated": false,
             "deprecationMessage": "",
             "hostBindings": [],
@@ -1736,12 +1854,12 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'app-edit-reservation-dialog',\n  templateUrl: './edit-reservation-dialog.component.html',\n  styleUrls: ['./edit-reservation-dialog.component.scss']\n})\nexport class EditReservationDialogComponent implements OnInit {\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n}\n",
+            "sourceCode": "import { Component } from '@angular/core';\nimport { Store } from '@ngrx/store';\nimport {\n  selectReservationErrorText,\n  selectReservationState,\n} from 'src/app/store/r.selectors';\n\n@Component({\n  selector: 'app-edit-reservation',\n  templateUrl: './edit-reservation.component.html',\n  styleUrls: ['./edit-reservation.component.scss'],\n})\nexport class EditReservationComponent {\n  reservationStatus$ = this.store.select(selectReservationState);\n  reservationErrorText$ = this.store.select(selectReservationErrorText);\n\n  constructor(private store: Store) {}\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": "",
-                    "styleUrl": "./edit-reservation-dialog.component.scss"
+                    "data": ".amber {\n  background-color: #f7e3aa;\n  color: #553102;\n}\n\n.green {\n  background-color: rgb(162, 253, 162);\n  color: rgb(3, 119, 3);\n}",
+                    "styleUrl": "./edit-reservation.component.scss"
                 }
             ],
             "stylesData": "",
@@ -1750,13 +1868,67 @@
                 "description": "",
                 "deprecated": false,
                 "deprecationMessage": "",
-                "args": [],
-                "line": 8
+                "args": [
+                    {
+                        "name": "store",
+                        "type": "Store",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 15,
+                "jsdoctags": [
+                    {
+                        "name": "store",
+                        "type": "Store",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
             },
-            "implements": [
-                "OnInit"
-            ],
-            "templateData": "<h2 mat-dialog-title>Reservieren?</h2>\n<mat-dialog-content class=\"mat-typography\">\n  \n</mat-dialog-content>\n<mat-dialog-actions align=\"end\">\n  <button mat-button mat-dialog-close>zurück</button>\n  <button mat-button [mat-dialog-close]=\"true\" cdkFocusInitial>Reservieren</button>\n</mat-dialog-actions>\n"
+            "templateData": "<div [ngSwitch]=\"reservationStatus$ | async\">\n  <!-- requestPending -->\n  <mat-spinner *ngSwitchCase=\"'requestPending'\" mode=\"indeterminate\"></mat-spinner>\n  <!-- Fehler -->\n  <div *ngSwitchCase=\"'updateFailed'\" class=\"error\">\n    <p>\n      <mat-icon aria-hidden=\"false\" aria-label=\"Reserviert\">heart_broken</mat-icon>\n      Da ist etwas schiefgelaufen.\n    </p>\n    <p>\n      {{ reservationErrorText$ | async }}\n    </p>\n  </div>\n  <!-- reserved -->\n  <div *ngSwitchCase=\"'reserved'\" class=\"amber\">\n    <mat-icon aria-hidden=\"false\" aria-label=\"Reserviert\">warning_amber</mat-icon>\n    Es liegt bereits eine Reservierung vor.\n  </div>\n  <!-- free / unreserved / clear -->\n  <div *ngSwitchCase=\"'free'\" class=\"green\">\n    <mat-icon aria-hidden=\"false\" aria-label=\"Frei\">check_circle</mat-icon>\n    Es liegt keine Reservierung vor.\n  </div>\n</div>"
+        },
+        {
+            "name": "EditReservationStubComponent",
+            "id": "component-EditReservationStubComponent-a333109f8e7c79e6cd941d5b9fa4dafc3dd32fa1ebbe1eaf9c0fa58df5889becc5acc98e9cb6b6c50fc66aede2bc2054d4da9f84655bcf000d43d7424b117eee",
+            "file": "testing/stubs/edit-reservation.stub.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-edit-reservation",
+            "styleUrls": [],
+            "styles": [],
+            "template": "<div>app-edit-reservation</div>",
+            "templateUrl": [],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component } from '@angular/core';\n\n@Component({\n  selector: 'app-edit-reservation',\n  template: '<div>app-edit-reservation</div>',\n})\nexport class EditReservationStubComponent {\n  constructor() {}\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [],
+                "line": 7
+            }
         },
         {
             "name": "EmptyListComponent",
@@ -2127,7 +2299,7 @@
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<mat-card>\n  <mat-card-title-group>\n    <mat-card-title>Faust I + II</mat-card-title>\n    <mat-card-subtitle>Buch</mat-card-subtitle>\n  </mat-card-title-group>\n  <mat-divider inset></mat-divider>\n  <mat-card-content>\n    <div class=\"f\">\n      <p>\n        Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des\n        Fauststoffs bezeichnet. Der Begriff kann sich auf den ersten Teil der\n        durch Goethe geschaffenen Tragödie, auf deren ersten und zweiten Teil\n        gemeinsam oder insgesamt auf die Arbeiten am Fauststoff beziehen, die\n        Goethe durch sechzig Jahre hindurch immer wieder neu aufnahm. Er umfasst\n        in diesem letzteren Sinne auch die Entwürfe, Fragmente, Kommentare und\n        Paralipomena des Dichters zu seinem Faustwerk und zum Fauststoff.\n      </p>\n      <div>\n        <img mat-card-lg-image\n          src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg\" />\n      </div>\n    </div>\n    <div>\n      Kauf-Adresse:\n      <a href=\"https://de.wikipedia.org/wiki/Goethes_Faust\">\n        https://de.wikipedia.org/wiki/Goethes_Faust\n      </a>\n    </div>\n  </mat-card-content>\n  <mat-divider inset></mat-divider>\n  <mat-card-actions>\n    <mat-expansion-panel>\n      <mat-expansion-panel-header>\n        <mat-panel-title>Reservieren und Status</mat-panel-title>\n      </mat-expansion-panel-header>\n      <p>Nicht reserviert</p>\n      <button mat-button>Reservieren</button>\n    </mat-expansion-panel>\n    <div class=\"f mt24\">\n      <button mat-flat-button color=\"accent\">Bearbeiten</button>\n      <div class=\"spacer\"></div>\n      <button mat-flat-button color=\"primary\">Zurück</button>\n    </div>\n    </mat-card-actions>\n    <mat-card-footer>\n  </mat-card-footer>\n</mat-card>"
+            "templateData": "<mat-card>\n  <mat-card-title-group>\n    <mat-card-title>Faust I + II</mat-card-title>\n    <mat-card-subtitle>Buch</mat-card-subtitle>\n  </mat-card-title-group>\n  <mat-divider inset></mat-divider>\n  <mat-card-content>\n    <div class=\"f\">\n      <p>\n        Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des\n        Fauststoffs bezeichnet. Der Begriff kann sich auf den ersten Teil der\n        durch Goethe geschaffenen Tragödie, auf deren ersten und zweiten Teil\n        gemeinsam oder insgesamt auf die Arbeiten am Fauststoff beziehen, die\n        Goethe durch sechzig Jahre hindurch immer wieder neu aufnahm. Er umfasst\n        in diesem letzteren Sinne auch die Entwürfe, Fragmente, Kommentare und\n        Paralipomena des Dichters zu seinem Faustwerk und zum Fauststoff.\n      </p>\n      <div>\n        <img mat-card-lg-image\n          src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg\" />\n      </div>\n    </div>\n    <div>\n      Kauf-Adresse:\n      <a href=\"https://de.wikipedia.org/wiki/Goethes_Faust\">\n        https://de.wikipedia.org/wiki/Goethes_Faust\n      </a>\n    </div>\n  </mat-card-content>\n  <mat-divider inset></mat-divider>\n  <mat-card-actions>\n    <mat-expansion-panel>\n      <mat-expansion-panel-header>\n        <mat-panel-title>Reservieren und Status</mat-panel-title>\n      </mat-expansion-panel-header>\n      <app-edit-reservation></app-edit-reservation>\n    </mat-expansion-panel>\n    <div class=\"f mt24\">\n      <button mat-flat-button color=\"accent\">Bearbeiten</button>\n      <div class=\"spacer\"></div>\n      <button mat-flat-button color=\"primary\">Zurück</button>\n    </div>\n    </mat-card-actions>\n    <mat-card-footer>\n  </mat-card-footer>\n</mat-card>"
         },
         {
             "name": "ItemFormComponent",
@@ -2345,13 +2517,13 @@
     "modules": [
         {
             "name": "AppModule",
-            "id": "module-AppModule-f53dc93d290e0a2d21388e89ca5cd84e8f98b37eaf9e4f0c761bcc42b6d6dc6b7718413c7905fc3e3933543ea7b0b736cc8cbbf4392a6c1edabab87f416c2d46",
+            "id": "module-AppModule-9d3601d1ee6eac49b67fedcb7e854d46994006a087ad5d172a95c3266c919fcc3700690968e07d1e93a4ef3cfcfde57597dbe837eed4de711dab333dc768905e",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/app.module.ts",
             "methods": [],
-            "sourceCode": "import { LayoutModule } from '@angular/cdk/layout';\nimport { HttpClientModule } from '@angular/common/http';\nimport { NgModule } from '@angular/core';\nimport { ReactiveFormsModule } from '@angular/forms';\nimport { MatButtonModule } from '@angular/material/button';\nimport { MatCardModule } from '@angular/material/card';\nimport { MatDialogModule } from '@angular/material/dialog';\nimport { MatExpansionModule } from '@angular/material/expansion';\nimport {\n  MatFormFieldModule,\n  MAT_FORM_FIELD_DEFAULT_OPTIONS,\n} from '@angular/material/form-field';\nimport { MatIconModule } from '@angular/material/icon';\nimport { MatInputModule } from '@angular/material/input';\nimport { MatListModule } from '@angular/material/list';\nimport { MatProgressBarModule } from '@angular/material/progress-bar';\nimport { MatProgressSpinnerModule } from '@angular/material/progress-spinner';\nimport { MatSidenavModule } from '@angular/material/sidenav';\nimport { MatToolbarModule } from '@angular/material/toolbar';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\nimport { EffectsModule } from '@ngrx/effects';\nimport { StoreModule } from '@ngrx/store';\nimport { StoreDevtoolsModule } from '@ngrx/store-devtools';\nimport { environment } from '../environments/environment';\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { EditReservationDialogComponent } from './components/edit-reservation-dialog/edit-reservation-dialog.component';\nimport { EmptyListComponent } from './components/empty-list/empty-list.component';\nimport { ItemDisplayComponent } from './components/item-display/item-display.component';\nimport { ItemFormComponent } from './components/item-form/item-form.component';\nimport { ConnectFormDirective } from './directives/connect-form.directive';\nimport { FormEnabledDirective } from './directives/form-enabled.directive';\nimport { FrameComponent } from './frame/frame.component';\nimport { AboutComponent } from './pages/about/about.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { agReducer } from './store/a.reducer';\nimport { AppState } from './store/app.state';\nimport { WishlistEffects } from './store/w.effects';\nimport { wReducer } from './store/w.reducer';\n\n@NgModule({\n  declarations: [\n    AboutComponent,\n    AppComponent,\n    CategoriesPageComponent,\n    ConnectFormDirective,\n    EditReservationDialogComponent,\n    EmptyListComponent,\n    FormEnabledDirective,\n    FrameComponent,\n    ItemDisplayComponent,\n    ItemFormComponent,\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    BrowserAnimationsModule,\n    LayoutModule,\n    ReactiveFormsModule,\n    MatButtonModule,\n    MatCardModule,\n    MatDialogModule,\n    MatExpansionModule,\n    MatFormFieldModule,\n    MatIconModule,\n    MatInputModule,\n    MatListModule,\n    MatProgressBarModule,\n    MatProgressSpinnerModule,\n    MatSidenavModule,\n    MatToolbarModule,\n    StoreModule.forRoot<AppState>({ ag: agReducer, wishlist: wReducer }),\n    EffectsModule.forRoot([WishlistEffects]),\n    // import HttpClientModule after BrowserModule.\n    HttpClientModule,\n    StoreDevtoolsModule.instrument({\n      maxAge: 25,\n      logOnly: environment.production,\n    }),\n  ],\n  providers: [\n    {\n      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,\n      useValue: { appearance: 'fill' },\n    },\n  ],\n  bootstrap: [AppComponent],\n})\nexport class AppModule {}\n",
+            "sourceCode": "import { LayoutModule } from '@angular/cdk/layout';\nimport { HttpClientModule } from '@angular/common/http';\nimport { NgModule } from '@angular/core';\nimport { ReactiveFormsModule } from '@angular/forms';\nimport { MatButtonModule } from '@angular/material/button';\nimport { MatCardModule } from '@angular/material/card';\nimport { MatDialogModule } from '@angular/material/dialog';\nimport { MatExpansionModule } from '@angular/material/expansion';\nimport {\n  MatFormFieldModule,\n  MAT_FORM_FIELD_DEFAULT_OPTIONS,\n} from '@angular/material/form-field';\nimport { MatIconModule } from '@angular/material/icon';\nimport { MatInputModule } from '@angular/material/input';\nimport { MatListModule } from '@angular/material/list';\nimport { MatProgressBarModule } from '@angular/material/progress-bar';\nimport { MatProgressSpinnerModule } from '@angular/material/progress-spinner';\nimport { MatSidenavModule } from '@angular/material/sidenav';\nimport { MatToolbarModule } from '@angular/material/toolbar';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\nimport { EffectsModule } from '@ngrx/effects';\nimport { StoreModule } from '@ngrx/store';\nimport { StoreDevtoolsModule } from '@ngrx/store-devtools';\nimport { environment } from '../environments/environment';\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { EmptyListComponent } from './components/empty-list/empty-list.component';\nimport { ItemDisplayComponent } from './components/item-display/item-display.component';\nimport { ItemFormComponent } from './components/item-form/item-form.component';\nimport { ConnectFormDirective } from './directives/connect-form.directive';\nimport { FormEnabledDirective } from './directives/form-enabled.directive';\nimport { FrameComponent } from './frame/frame.component';\nimport { AboutComponent } from './pages/about/about.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { agReducer } from './store/a.reducer';\nimport { AppState } from './store/app.state';\nimport { WishlistEffects } from './store/w.effects';\nimport { wReducer } from './store/w.reducer';\nimport { EditReservationComponent } from './components/edit-reservation/edit-reservation.component';\nimport { rReducer } from './store/r.reducer';\n\n@NgModule({\n  declarations: [\n    AboutComponent,\n    AppComponent,\n    CategoriesPageComponent,\n    ConnectFormDirective,\n    EmptyListComponent,\n    FormEnabledDirective,\n    FrameComponent,\n    ItemDisplayComponent,\n    ItemFormComponent,\n    EditReservationComponent,\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    BrowserAnimationsModule,\n    LayoutModule,\n    ReactiveFormsModule,\n    MatButtonModule,\n    MatCardModule,\n    MatDialogModule,\n    MatExpansionModule,\n    MatFormFieldModule,\n    MatIconModule,\n    MatInputModule,\n    MatListModule,\n    MatProgressBarModule,\n    MatProgressSpinnerModule,\n    MatSidenavModule,\n    MatToolbarModule,\n    StoreModule.forRoot<AppState>({\n      ag: agReducer,\n      wishlist: wReducer,\n      reservation: rReducer,\n    }),\n    EffectsModule.forRoot([WishlistEffects]),\n    // import HttpClientModule after BrowserModule.\n    HttpClientModule,\n    StoreDevtoolsModule.instrument({\n      maxAge: 25,\n      logOnly: environment.production,\n    }),\n  ],\n  providers: [\n    {\n      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,\n      useValue: { appearance: 'fill' },\n    },\n  ],\n  bootstrap: [AppComponent],\n})\nexport class AppModule {}\n",
             "children": [
                 {
                     "type": "providers",
@@ -2373,7 +2545,7 @@
                             "name": "ConnectFormDirective"
                         },
                         {
-                            "name": "EditReservationDialogComponent"
+                            "name": "EditReservationComponent"
                         },
                         {
                             "name": "EmptyListComponent"
@@ -2558,16 +2730,6 @@
                 "defaultValue": "() => ({\n  props: {},\n})"
             },
             {
-                "name": "Display",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/stories/Reservation.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story",
-                "defaultValue": "() => ({\n  props: {},\n})"
-            },
-            {
                 "name": "EditForm",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -2618,6 +2780,16 @@
                 "defaultValue": "createAction('[W] Get items')"
             },
             {
+                "name": "HasReservation",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/EditReservation.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "() => ({\n  props: {},\n})"
+            },
+            {
                 "name": "initialState",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -2651,11 +2823,31 @@
                 "name": "initialState",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "src/app/store/r.reducer.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "ReservationState",
+                "defaultValue": "{\n  itemid: null,\n  status: 'unknown',\n}"
+            },
+            {
+                "name": "initialState",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "src/app/store/w.reducer.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "WishlistState",
                 "defaultValue": "{\n  categories: [],\n  items: [],\n  activeItem: null,\n}"
+            },
+            {
+                "name": "IsFree",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/EditReservation.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "() => ({\n  props: {},\n})"
             },
             {
                 "name": "itemsLoaded",
@@ -2686,6 +2878,16 @@
                 "deprecationMessage": "",
                 "type": "Story",
                 "defaultValue": "() => ({})"
+            },
+            {
+                "name": "LoadingUpdating",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/EditReservation.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "() => ({\n  props: {},\n})"
             },
             {
                 "name": "LoggedIn",
@@ -2767,6 +2969,16 @@
                 "type": "literal type"
             },
             {
+                "name": "rReducer",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/r.reducer.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createReducer<ReservationState>(initialState)"
+            },
+            {
                 "name": "SaveError",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -2840,6 +3052,16 @@
                 "name": "selectFeature",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "src/app/store/r.selectors.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "(state: any) => (state as AppState).reservation"
+            },
+            {
+                "name": "selectFeature",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "src/app/store/w.selectors.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -2867,6 +3089,26 @@
                 "defaultValue": "createSelector(\n  selectFeature,\n  (state: AppGlobalState) => state.requestErrorText\n)"
             },
             {
+                "name": "selectReservationErrorText",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/r.selectors.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createSelector(\n  selectFeature,\n  (state: ReservationState) => state.errorText\n)"
+            },
+            {
+                "name": "selectReservationState",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/r.selectors.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createSelector(\n  selectFeature,\n  (state: ReservationState) => state.status\n)"
+            },
+            {
                 "name": "slideInAnimation",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -2890,21 +3132,21 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/stories/Categories.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<CategoriesPageComponent>",
-                "defaultValue": "(\n  args: CategoriesPageComponent\n) => ({\n  props: args,\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/stories/Button.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story<Button>",
                 "defaultValue": "(args: Button) => ({\n  props: args,\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Categories.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<CategoriesPageComponent>",
+                "defaultValue": "(\n  args: CategoriesPageComponent\n) => ({\n  props: args,\n})"
             },
             {
                 "name": "Template",
@@ -2935,6 +3177,16 @@
                 "deprecationMessage": "",
                 "type": "Story<Page>",
                 "defaultValue": "(args: Page) => ({\n  props: args,\n})"
+            },
+            {
+                "name": "UpdateFailed",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/EditReservation.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "() => ({\n  props: {},\n})"
             },
             {
                 "name": "wReducer",
@@ -3070,7 +3322,19 @@
                 ]
             }
         ],
-        "typealiases": [],
+        "typealiases": [
+            {
+                "name": "ReservationStatus",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "\"unknown\" | \"requestPending\" | \"reserved\" | \"free\" | \"updateFailed\"",
+                "file": "src/app/store/r.state.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 186
+            }
+        ],
         "enumerations": [],
         "groupedVariables": {
             "src/app/store/a.reducer.ts": [
@@ -3320,18 +3584,6 @@
                     "defaultValue": "() => ({\n  props: {},\n})"
                 }
             ],
-            "src/stories/Reservation.stories.ts": [
-                {
-                    "name": "Display",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/stories/Reservation.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story",
-                    "defaultValue": "() => ({\n  props: {},\n})"
-                }
-            ],
             "src/environments/environment.prod.ts": [
                 {
                     "name": "environment",
@@ -3376,6 +3628,70 @@
                     "deprecationMessage": "",
                     "type": "",
                     "defaultValue": "createAction(\n  '[W] Items loaded',\n  props<{\n    items: WishlistItem[];\n  }>()\n)"
+                }
+            ],
+            "src/stories/EditReservation.stories.ts": [
+                {
+                    "name": "HasReservation",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/EditReservation.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "() => ({\n  props: {},\n})"
+                },
+                {
+                    "name": "IsFree",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/EditReservation.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "() => ({\n  props: {},\n})"
+                },
+                {
+                    "name": "LoadingUpdating",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/EditReservation.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "() => ({\n  props: {},\n})"
+                },
+                {
+                    "name": "UpdateFailed",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/EditReservation.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "() => ({\n  props: {},\n})"
+                }
+            ],
+            "src/app/store/r.reducer.ts": [
+                {
+                    "name": "initialState",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/r.reducer.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ReservationState",
+                    "defaultValue": "{\n  itemid: null,\n  status: 'unknown',\n}"
+                },
+                {
+                    "name": "rReducer",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/r.reducer.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createReducer<ReservationState>(initialState)"
                 }
             ],
             "src/app/store/w.reducer.ts": [
@@ -3590,6 +3906,38 @@
                     "defaultValue": "createSelector(\n  selectFeature,\n  (state: AppGlobalState) => state.requestErrorText\n)"
                 }
             ],
+            "src/app/store/r.selectors.ts": [
+                {
+                    "name": "selectFeature",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/r.selectors.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "(state: any) => (state as AppState).reservation"
+                },
+                {
+                    "name": "selectReservationErrorText",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/r.selectors.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createSelector(\n  selectFeature,\n  (state: ReservationState) => state.errorText\n)"
+                },
+                {
+                    "name": "selectReservationState",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/r.selectors.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createSelector(\n  selectFeature,\n  (state: ReservationState) => state.status\n)"
+                }
+            ],
             "src/app/animations.ts": [
                 {
                     "name": "slideInAnimation",
@@ -3729,7 +4077,21 @@
             ]
         },
         "groupedEnumerations": {},
-        "groupedTypeAliases": {}
+        "groupedTypeAliases": {
+            "src/app/store/r.state.ts": [
+                {
+                    "name": "ReservationStatus",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "\"unknown\" | \"requestPending\" | \"reserved\" | \"free\" | \"updateFailed\"",
+                    "file": "src/app/store/r.state.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 186
+                }
+            ]
+        }
     },
     "routes": {
         "name": "<root>",
@@ -3766,7 +4128,7 @@
         ]
     },
     "coverage": {
-        "count": 1,
+        "count": 0,
         "status": "low",
         "files": [
             {
@@ -3816,12 +4178,12 @@
                 "status": "low"
             },
             {
-                "filePath": "src/app/components/edit-reservation-dialog/edit-reservation-dialog.component.ts",
+                "filePath": "src/app/components/edit-reservation/edit-reservation.component.ts",
                 "type": "component",
                 "linktype": "component",
-                "name": "EditReservationDialogComponent",
+                "name": "EditReservationComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/3",
+                "coverageCount": "0/4",
                 "status": "low"
             },
             {
@@ -3980,7 +4342,66 @@
                 "linktype": "interface",
                 "name": "AppState",
                 "coveragePercent": 0,
-                "coverageCount": "0/3",
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/r.reducer.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "initialState",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/r.reducer.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "rReducer",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/r.selectors.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "selectFeature",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/r.selectors.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "selectReservationErrorText",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/r.selectors.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "selectReservationState",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/r.state.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "ReservationState",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
                 "status": "low"
             },
             {
@@ -4202,6 +4623,46 @@
                 "status": "low"
             },
             {
+                "filePath": "src/stories/EditReservation.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "HasReservation",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/EditReservation.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "IsFree",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/EditReservation.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "LoadingUpdating",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/EditReservation.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "UpdateFailed",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
                 "filePath": "src/stories/EmptyList.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
@@ -4352,16 +4813,6 @@
                 "status": "low"
             },
             {
-                "filePath": "src/stories/Reservation.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Display",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
                 "filePath": "src/stories/User.ts",
                 "type": "interface",
                 "linktype": "interface",
@@ -4453,7 +4904,7 @@
                 "linktype": "classe",
                 "name": "AppStateBuilder",
                 "coveragePercent": 0,
-                "coverageCount": "0/10",
+                "coverageCount": "0/12",
                 "status": "low"
             },
             {
@@ -4482,6 +4933,15 @@
                 "name": "ListBuilder",
                 "coveragePercent": 0,
                 "coverageCount": "0/6",
+                "status": "low"
+            },
+            {
+                "filePath": "testing/stubs/edit-reservation.stub.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "EditReservationStubComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/2",
                 "status": "low"
             },
             {

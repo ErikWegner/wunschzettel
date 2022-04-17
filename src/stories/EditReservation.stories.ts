@@ -30,14 +30,52 @@ LoadingUpdating.decorators = [
 export const HasReservation: Story = () => ({
   props: {},
 });
-HasReservation.storyName = 'Has reservation TODO';
+HasReservation.storyName = 'Has reservation';
+HasReservation.decorators = [
+  moduleMetadata({
+    declarations: [],
+    imports: moduleImports,
+    providers: [
+      ...defaultProviders,
+      provideMockStore({
+        initialState: AppStateBuilder.reservationStatus('reserved'),
+      }),
+    ],
+  }),
+];
 
 export const IsFree: Story = () => ({
   props: {},
 });
 IsFree.storyName = 'Is free TODO';
+IsFree.decorators = [
+  moduleMetadata({
+    declarations: [],
+    imports: moduleImports,
+    providers: [
+      ...defaultProviders,
+      provideMockStore({
+        initialState: AppStateBuilder.reservationStatus('free'),
+      }),
+    ],
+  }),
+];
 
 export const UpdateFailed: Story = () => ({
   props: {},
 });
-UpdateFailed.storyName = 'Update failed TODO';
+UpdateFailed.storyName = 'Update failed';
+UpdateFailed.decorators = [
+  moduleMetadata({
+    declarations: [],
+    imports: moduleImports,
+    providers: [
+      ...defaultProviders,
+      provideMockStore({
+        initialState: AppStateBuilder.reservationStatus('updateFailed', {
+          errorText: 'Captcha-Fehler',
+        }),
+      }),
+    ],
+  }),
+];

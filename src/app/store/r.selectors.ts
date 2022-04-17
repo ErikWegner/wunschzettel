@@ -8,3 +8,8 @@ export const selectReservationState = createSelector(
   selectFeature,
   (state: ReservationState) => state.status
 );
+
+export const selectReservationErrorText = createSelector(
+  selectFeature,
+  (state: ReservationState) => state.errorText
+);

@@ -1,3 +1,24 @@
 <div [ngSwitch]="reservationStatus$ | async">
+  <!-- requestPending -->
   <mat-spinner *ngSwitchCase="'requestPending'" mode="indeterminate"></mat-spinner>
+  <!-- Fehler -->
+  <div *ngSwitchCase="'updateFailed'" class="error">
+    <p>
+      <mat-icon aria-hidden="false" aria-label="Reserviert">heart_broken</mat-icon>
+      Da ist etwas schiefgelaufen.
+    </p>
+    <p>
+      {{ reservationErrorText$ | async }}
+    </p>
+  </div>
+  <!-- reserved -->
+  <div *ngSwitchCase="'reserved'" class="amber">
+    <mat-icon aria-hidden="false" aria-label="Reserviert">warning_amber</mat-icon>
+    Es liegt bereits eine Reservierung vor.
+  </div>
+  <!-- free / unreserved / clear -->
+  <div *ngSwitchCase="'free'" class="green">
+    <mat-icon aria-hidden="false" aria-label="Frei">check_circle</mat-icon>
+    Es liegt keine Reservierung vor.
+  </div>
 </div>
