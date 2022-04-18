@@ -39,6 +39,8 @@ import { WishlistEffects } from './store/w.effects';
 import { wReducer } from './store/w.reducer';
 import { EditReservationComponent } from './components/edit-reservation/edit-reservation.component';
 import { rReducer } from './store/r.reducer';
+import { CategoryPageComponent } from './pages/category-page/category-page.component';
+import { ItemPreviewComponent } from './components/item-preview/item-preview.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +54,8 @@ import { rReducer } from './store/r.reducer';
     ItemDisplayComponent,
     ItemFormComponent,
     EditReservationComponent,
+    CategoryPageComponent,
+    ItemPreviewComponent,
   ],
   imports: [
     BrowserModule,

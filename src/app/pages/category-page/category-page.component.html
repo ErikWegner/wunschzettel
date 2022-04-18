@@ -1,0 +1,4 @@
+<mat-spinner *ngIf="(hasRequestPending$ | async)"></mat-spinner>
+<ng-container *ngIf="false === (hasRequestPending$ | async)">
+  <app-item-preview *ngFor="let item of (items$ | async)" [item]="item"></app-item-preview>
+</ng-container>

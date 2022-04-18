@@ -1,0 +1,14 @@
+<mat-card *ngIf="item">
+  <mat-card-title-group>
+    <mat-card-title>{{ item.Title }}</mat-card-title>
+    <mat-card-subtitle>{{ item.Category }}</mat-card-subtitle>
+  </mat-card-title-group>
+  <mat-divider inset></mat-divider>
+  <mat-card-content class="preview">
+    <div class="desc">
+      <img [src]="item.ImgageUrl" *ngIf="item.ImgageUrl" />
+      <span class="no-img" *ngIf="!item.ImgageUrl"></span>
+      {{ item.Description }}
+    </div>
+  </mat-card-content>
+</mat-card>

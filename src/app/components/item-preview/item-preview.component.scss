@@ -1,0 +1,19 @@
+.preview img,
+.preview .no-img {
+    height: 72px;
+    width: 72px;
+    float: left;
+    margin-right: 5px;
+    object-fit: cover;
+}
+
+.preview {
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    word-break: 'none';
+    hyphens: auto;
+}
