@@ -9,3 +9,10 @@ export const itemsLoaded = createAction(
     items: WishlistItem[];
   }>()
 );
+
+export const goToCategory = createAction(
+  '[W] Go to category',
+  props<{
+    category: string;
+  }>()
+);

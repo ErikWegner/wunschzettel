@@ -7,7 +7,9 @@ import { MatCardHarness } from '@angular/material/card/testing';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { By } from '@angular/platform-browser';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { cold } from 'jasmine-marbles';
 import { AppState } from 'src/app/store/app.state';
+import { goToCategory } from 'src/app/store/w.actions';
 import { AppStateBuilder, appStateStub } from 'testing/app.state.builder';
 import { ListBuilder } from 'testing/list-builder';
 import { EmptyListStubComponent } from 'testing/stubs/empty-list.stub.component';
@@ -108,6 +110,7 @@ describe('CategoriesPageComponent', () => {
   });
 
   it('should display empty message', async () => {
+    // Arrange
     const nextState = appStateStub();
     store.setState(nextState);
 
@@ -120,5 +123,22 @@ describe('CategoriesPageComponent', () => {
       emptyVisible: true,
       spinnerVisible: false,
     });
+  });
+
+  it('should dispatch navigate-to-category-request when clicking on category', async () => {
+    // Arrange
+    const nextState = AppStateBuilder.someCategories();
+    store.setState(nextState);
+    fixture.detectChanges();
+    const secondCard = (await loader.getAllHarnesses(MatCardHarness))[1];
+
+    // Act
+    await (await secondCard.host()).click();
+
+    // Assert
+    const expected = cold('a', {
+      a: goToCategory({ category: nextState.wishlist.categories[1] }),
+    });
+    expect(store.scannedActions$).toBeObservable(expected);
   });
 });

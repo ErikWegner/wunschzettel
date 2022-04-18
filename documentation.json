@@ -2827,7 +2827,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "ReservationState",
-                "defaultValue": "{\n  itemid: null,\n  status: 'unknown',\n}"
+                "defaultValue": "{\n  itemid: null,\n  status: 'unknown',\n  errorText: null,\n}"
             },
             {
                 "name": "initialState",
@@ -3681,7 +3681,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "ReservationState",
-                    "defaultValue": "{\n  itemid: null,\n  status: 'unknown',\n}"
+                    "defaultValue": "{\n  itemid: null,\n  status: 'unknown',\n  errorText: null,\n}"
                 },
                 {
                     "name": "rReducer",

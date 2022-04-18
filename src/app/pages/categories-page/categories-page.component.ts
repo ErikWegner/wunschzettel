@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { selectHasPendingRequest } from 'src/app/store/a.selectors';
+import { goToCategory } from 'src/app/store/w.actions';
 import { selectCategories } from 'src/app/store/w.selectors';
 
 @Component({
@@ -13,4 +14,12 @@ export class CategoriesPageComponent {
   hasRequestPending$ = this.store.select(selectHasPendingRequest);
 
   constructor(private store: Store) {}
+
+  public goToCategory(category: string): void {
+    this.store.dispatch(
+      goToCategory({
+        category,
+      })
+    );
+  }
 }
