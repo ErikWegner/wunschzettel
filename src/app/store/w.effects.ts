@@ -1,8 +1,14 @@
 import { Injectable } from "@angular/core";
-import { Actions, createEffect, ofType, ROOT_EFFECTS_INIT } from "@ngrx/effects";
-import { map, switchMap } from 'rxjs';
+import { Router } from '@angular/router';
+import {
+  Actions,
+  createEffect,
+  ofType,
+  ROOT_EFFECTS_INIT,
+} from '@ngrx/effects';
+import { map, switchMap, tap } from 'rxjs';
 import { ItemsService } from '../services/items.service';
-import { getItems, itemsLoaded } from './w.actions';
+import { getItems, goToCategory, itemsLoaded } from './w.actions';
 
 @Injectable()
 export class WishlistEffects {
@@ -24,5 +30,21 @@ export class WishlistEffects {
     );
   });
 
-  constructor(private actions$: Actions, private itemsService: ItemsService) {}
+  navigateToCategory$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(goToCategory),
+        tap((d) => {
+          this.router.navigate(['/wunschliste', d.category]);
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
+  constructor(
+    private actions$: Actions,
+    private itemsService: ItemsService,
+    private router: Router
+  ) {}
 }

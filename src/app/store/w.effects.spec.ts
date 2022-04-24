@@ -1,11 +1,13 @@
 import { TestBed } from "@angular/core/testing";
-import { EffectsModule, ROOT_EFFECTS_INIT } from "@ngrx/effects";
+import { Router } from '@angular/router';
+import { EffectsModule, ROOT_EFFECTS_INIT } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { Observable, of } from 'rxjs';
+import { randomString } from 'testing/utils';
 import { ItemsService } from '../services/items.service';
-import { getItems } from './w.actions';
+import { getItems, goToCategory } from './w.actions';
 import { WishlistEffects } from './w.effects';
 import { initialState as WishlishInitialState } from './w.reducer';
 
@@ -15,10 +17,12 @@ describe('WishlistEffects', () => {
   let store: MockStore;
   const initialState = WishlishInitialState;
   let itemsService: jasmine.SpyObj<ItemsService>;
+  let router: jasmine.SpyObj<Router>;
 
   beforeEach(() => {
     actions$ = new Observable<Action>();
     const itemsServiceMock = jasmine.createSpyObj('ItemsService', ['getItems']);
+    const routerMock = jasmine.createSpyObj('Router', ['navigate']);
 
     TestBed.configureTestingModule({
       imports: [EffectsModule.forRoot([WishlistEffects])],
@@ -27,6 +31,10 @@ describe('WishlistEffects', () => {
           provide: ItemsService,
           useValue: itemsServiceMock,
         },
+        {
+          provide: Router,
+          useValue: routerMock,
+        },
         provideMockStore({ initialState }),
         provideMockActions(() => actions$),
       ],
@@ -34,6 +42,7 @@ describe('WishlistEffects', () => {
 
     itemsService = TestBed.inject(ItemsService) as jasmine.SpyObj<ItemsService>;
     itemsService.getItems.and.returnValue(of([]));
+    router = TestBed.inject(Router) as jasmine.SpyObj<Router>;
     effects = TestBed.inject(WishlistEffects);
     store = TestBed.inject(MockStore);
   });
@@ -48,5 +57,20 @@ describe('WishlistEffects', () => {
 
     // Assert
     expect(next).toHaveBeenCalledWith(getItems());
+  });
+
+  it('should navigate to category page', () => {
+    // Arrange
+    const categoryName = randomString(12, 'category-');
+    actions$ = of(goToCategory({ category: categoryName }));
+
+    // Act
+    effects.navigateToCategory$.subscribe();
+
+    // Assert
+    expect(router.navigate).toHaveBeenCalledOnceWith([
+      '/wunschliste',
+      categoryName,
+    ]);
   });
 });

@@ -25,22 +25,23 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { EditReservationComponent } from './components/edit-reservation/edit-reservation.component';
 import { EmptyListComponent } from './components/empty-list/empty-list.component';
 import { ItemDisplayComponent } from './components/item-display/item-display.component';
 import { ItemFormComponent } from './components/item-form/item-form.component';
+import { ItemPreviewComponent } from './components/item-preview/item-preview.component';
 import { ConnectFormDirective } from './directives/connect-form.directive';
 import { FormEnabledDirective } from './directives/form-enabled.directive';
 import { FrameComponent } from './frame/frame.component';
 import { AboutComponent } from './pages/about/about.component';
 import { CategoriesPageComponent } from './pages/categories-page/categories-page.component';
+import { CategoryPageComponent } from './pages/category-page/category-page.component';
+import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { agReducer } from './store/a.reducer';
 import { AppState } from './store/app.state';
+import { rReducer } from './store/r.reducer';
 import { WishlistEffects } from './store/w.effects';
 import { wReducer } from './store/w.reducer';
-import { EditReservationComponent } from './components/edit-reservation/edit-reservation.component';
-import { rReducer } from './store/r.reducer';
-import { CategoryPageComponent } from './pages/category-page/category-page.component';
-import { ItemPreviewComponent } from './components/item-preview/item-preview.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { ItemPreviewComponent } from './components/item-preview/item-preview.com
     EditReservationComponent,
     CategoryPageComponent,
     ItemPreviewComponent,
+    PageNotFoundComponent,
   ],
   imports: [
     BrowserModule,

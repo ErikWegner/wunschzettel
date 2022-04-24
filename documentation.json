@@ -579,7 +579,7 @@
         },
         {
             "name": "WishlistEffects",
-            "id": "injectable-WishlistEffects-29ad81d6589218cc79f8a96c1254a06d505d26d6dfaa00a16fd4cf42f3fc5c0b979aed60c05eee03beaed05ef94bce2537a24b89892b5815632795be10d7dc12",
+            "id": "injectable-WishlistEffects-79f05a1387e99548bc7508a124c8e49f8b276b98d9be1dd9ea8b59c2fe59608a8388ea97be5b2336962f0c65b3d1dccb163cdb74c84ddcfbe44955c024ca18b9",
             "file": "src/app/store/w.effects.ts",
             "properties": [
                 {
@@ -590,7 +590,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 16
+                    "line": 22
                 },
                 {
                     "name": "init$",
@@ -600,7 +600,17 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 9
+                    "line": 15
+                },
+                {
+                    "name": "navigateToCategory$",
+                    "defaultValue": "createEffect(\n    () => {\n      return this.actions$.pipe(\n        ofType(goToCategory),\n        tap((d) => {\n          this.router.navigate(['/wunschliste', d.category]);\n        })\n      );\n    },\n    { dispatch: false }\n  )",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 33
                 }
             ],
             "methods": [],
@@ -608,7 +618,7 @@
             "deprecationMessage": "",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import { Injectable } from \"@angular/core\";\nimport { Actions, createEffect, ofType, ROOT_EFFECTS_INIT } from \"@ngrx/effects\";\nimport { map, switchMap } from 'rxjs';\nimport { ItemsService } from '../services/items.service';\nimport { getItems, itemsLoaded } from './w.actions';\n\n@Injectable()\nexport class WishlistEffects {\n  init$ = createEffect(() => {\n    return this.actions$.pipe(\n      ofType(ROOT_EFFECTS_INIT),\n      map((_) => getItems())\n    );\n  });\n\n  getItems$ = createEffect(() => {\n    return this.actions$.pipe(\n      ofType(getItems),\n      switchMap((_) =>\n        this.itemsService\n          .getItems()\n          .pipe(map((items) => itemsLoaded({ items })))\n      )\n    );\n  });\n\n  constructor(private actions$: Actions, private itemsService: ItemsService) {}\n}\n",
+            "sourceCode": "import { Injectable } from \"@angular/core\";\nimport { Router } from '@angular/router';\nimport {\n  Actions,\n  createEffect,\n  ofType,\n  ROOT_EFFECTS_INIT,\n} from '@ngrx/effects';\nimport { map, switchMap, tap } from 'rxjs';\nimport { ItemsService } from '../services/items.service';\nimport { getItems, goToCategory, itemsLoaded } from './w.actions';\n\n@Injectable()\nexport class WishlistEffects {\n  init$ = createEffect(() => {\n    return this.actions$.pipe(\n      ofType(ROOT_EFFECTS_INIT),\n      map((_) => getItems())\n    );\n  });\n\n  getItems$ = createEffect(() => {\n    return this.actions$.pipe(\n      ofType(getItems),\n      switchMap((_) =>\n        this.itemsService\n          .getItems()\n          .pipe(map((items) => itemsLoaded({ items })))\n      )\n    );\n  });\n\n  navigateToCategory$ = createEffect(\n    () => {\n      return this.actions$.pipe(\n        ofType(goToCategory),\n        tap((d) => {\n          this.router.navigate(['/wunschliste', d.category]);\n        })\n      );\n    },\n    { dispatch: false }\n  );\n\n  constructor(\n    private actions$: Actions,\n    private itemsService: ItemsService,\n    private router: Router\n  ) {}\n}\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -626,9 +636,15 @@
                         "type": "ItemsService",
                         "deprecated": false,
                         "deprecationMessage": ""
+                    },
+                    {
+                        "name": "router",
+                        "type": "Router",
+                        "deprecated": false,
+                        "deprecationMessage": ""
                     }
                 ],
-                "line": 25,
+                "line": 43,
                 "jsdoctags": [
                     {
                         "name": "actions$",
@@ -642,6 +658,15 @@
                     {
                         "name": "itemsService",
                         "type": "ItemsService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "router",
+                        "type": "Router",
                         "deprecated": false,
                         "deprecationMessage": "",
                         "tagName": {
@@ -1877,7 +1902,7 @@
                     }
                 ]
             },
-            "templateData": "<mat-spinner *ngIf=\"(hasRequestPending$ | async)\"></mat-spinner>\n<ng-container *ngIf=\"false === (hasRequestPending$ | async)\">\n  <mat-card class=\"c\" *ngFor=\"let category of (categories$ | async)\" (click)=\"goToCategory(category)\">{{ category }}</mat-card>\n  <app-empty-list *ngIf=\"((categories$ | async)?.length ?? 0) === 0\"></app-empty-list>\n</ng-container>\n"
+            "templateData": "<mat-spinner class=\"centerbox\" *ngIf=\"(hasRequestPending$ | async)\"></mat-spinner>\n<ng-container *ngIf=\"false === (hasRequestPending$ | async)\">\n  <mat-card class=\"c\" *ngFor=\"let category of (categories$ | async)\" (click)=\"goToCategory(category)\">{{ category }}</mat-card>\n  <app-empty-list *ngIf=\"((categories$ | async)?.length ?? 0) === 0\"></app-empty-list>\n</ng-container>\n"
         },
         {
             "name": "CategoryPageComponent",
@@ -1964,7 +1989,7 @@
                     }
                 ]
             },
-            "templateData": "<mat-spinner *ngIf=\"(hasRequestPending$ | async)\"></mat-spinner>\n<ng-container *ngIf=\"false === (hasRequestPending$ | async)\">\n  <app-item-preview *ngFor=\"let item of (items$ | async)\" [item]=\"item\"></app-item-preview>\n</ng-container>\n"
+            "templateData": "<mat-spinner class=\"centerbox\" *ngIf=\"(hasRequestPending$ | async)\"></mat-spinner>\n<ng-container *ngIf=\"false === (hasRequestPending$ | async)\">\n  <app-item-preview *ngFor=\"let item of (items$ | async)\" [item]=\"item\"></app-item-preview>\n</ng-container>\n"
         },
         {
             "name": "EditReservationComponent",
@@ -2781,18 +2806,80 @@
                 }
             ],
             "stylesData": ""
+        },
+        {
+            "name": "PageNotFoundComponent",
+            "id": "component-PageNotFoundComponent-a478094d44cb8172a8d93b2cca5aea86fc46be1648674e9915771758d706c3976a463b4a5df5b05d5ddcf591617c80ffd819ffb6e1ef39c07fd6419abdf3cf77",
+            "file": "src/app/pages/page-not-found/page-not-found.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-page-not-found",
+            "styleUrls": [
+                "./page-not-found.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./page-not-found.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 12,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'app-page-not-found',\n  templateUrl: './page-not-found.component.html',\n  styleUrls: ['./page-not-found.component.scss']\n})\nexport class PageNotFoundComponent implements OnInit {\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "$bordercolor: #888;\n\ndiv {\n    align-items: flex-end;\n}\n\n.n {\n    font-size: 800%;\n    border-right: 2px solid $bordercolor;\n}\n\n.t {\n    font-size: 300%;\n    border-bottom: 2px solid $bordercolor;\n}",
+                    "styleUrl": "./page-not-found.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [],
+                "line": 8
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<div class=\"centerbox f\">\n    <span class=\"n\">404</span>\n    <span class=\"t\">Seite nicht gefunden</span>\n</div>"
         }
     ],
     "modules": [
         {
             "name": "AppModule",
-            "id": "module-AppModule-8b0e6ad43dcbeff62d5f82fd7ff4f7556b727cb5e901910291a3758974741a24d185644fa86dc9a8507c4b834af32ae3a99542b87f8eafdd453fc5522a766383",
+            "id": "module-AppModule-841d2914b4f8d7ccf9035d63a3d5293a9c71e6a30f4a9b4d4de318bc5da6facdfd85ee923064a00929865a36a88760d2b3ef48e77555cc5aa4ae7bf36cf9960a",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/app.module.ts",
             "methods": [],
-            "sourceCode": "import { LayoutModule } from '@angular/cdk/layout';\nimport { HttpClientModule } from '@angular/common/http';\nimport { NgModule } from '@angular/core';\nimport { ReactiveFormsModule } from '@angular/forms';\nimport { MatButtonModule } from '@angular/material/button';\nimport { MatCardModule } from '@angular/material/card';\nimport { MatDialogModule } from '@angular/material/dialog';\nimport { MatExpansionModule } from '@angular/material/expansion';\nimport {\n  MatFormFieldModule,\n  MAT_FORM_FIELD_DEFAULT_OPTIONS,\n} from '@angular/material/form-field';\nimport { MatIconModule } from '@angular/material/icon';\nimport { MatInputModule } from '@angular/material/input';\nimport { MatListModule } from '@angular/material/list';\nimport { MatProgressBarModule } from '@angular/material/progress-bar';\nimport { MatProgressSpinnerModule } from '@angular/material/progress-spinner';\nimport { MatSidenavModule } from '@angular/material/sidenav';\nimport { MatToolbarModule } from '@angular/material/toolbar';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\nimport { EffectsModule } from '@ngrx/effects';\nimport { StoreModule } from '@ngrx/store';\nimport { StoreDevtoolsModule } from '@ngrx/store-devtools';\nimport { environment } from '../environments/environment';\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { EmptyListComponent } from './components/empty-list/empty-list.component';\nimport { ItemDisplayComponent } from './components/item-display/item-display.component';\nimport { ItemFormComponent } from './components/item-form/item-form.component';\nimport { ConnectFormDirective } from './directives/connect-form.directive';\nimport { FormEnabledDirective } from './directives/form-enabled.directive';\nimport { FrameComponent } from './frame/frame.component';\nimport { AboutComponent } from './pages/about/about.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { agReducer } from './store/a.reducer';\nimport { AppState } from './store/app.state';\nimport { WishlistEffects } from './store/w.effects';\nimport { wReducer } from './store/w.reducer';\nimport { EditReservationComponent } from './components/edit-reservation/edit-reservation.component';\nimport { rReducer } from './store/r.reducer';\nimport { CategoryPageComponent } from './pages/category-page/category-page.component';\nimport { ItemPreviewComponent } from './components/item-preview/item-preview.component';\n\n@NgModule({\n  declarations: [\n    AboutComponent,\n    AppComponent,\n    CategoriesPageComponent,\n    ConnectFormDirective,\n    EmptyListComponent,\n    FormEnabledDirective,\n    FrameComponent,\n    ItemDisplayComponent,\n    ItemFormComponent,\n    EditReservationComponent,\n    CategoryPageComponent,\n    ItemPreviewComponent,\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    BrowserAnimationsModule,\n    LayoutModule,\n    ReactiveFormsModule,\n    MatButtonModule,\n    MatCardModule,\n    MatDialogModule,\n    MatExpansionModule,\n    MatFormFieldModule,\n    MatIconModule,\n    MatInputModule,\n    MatListModule,\n    MatProgressBarModule,\n    MatProgressSpinnerModule,\n    MatSidenavModule,\n    MatToolbarModule,\n    StoreModule.forRoot<AppState>({\n      ag: agReducer,\n      wishlist: wReducer,\n      reservation: rReducer,\n    }),\n    EffectsModule.forRoot([WishlistEffects]),\n    // import HttpClientModule after BrowserModule.\n    HttpClientModule,\n    StoreDevtoolsModule.instrument({\n      maxAge: 25,\n      logOnly: environment.production,\n    }),\n  ],\n  providers: [\n    {\n      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,\n      useValue: { appearance: 'fill' },\n    },\n  ],\n  bootstrap: [AppComponent],\n})\nexport class AppModule {}\n",
+            "sourceCode": "import { LayoutModule } from '@angular/cdk/layout';\nimport { HttpClientModule } from '@angular/common/http';\nimport { NgModule } from '@angular/core';\nimport { ReactiveFormsModule } from '@angular/forms';\nimport { MatButtonModule } from '@angular/material/button';\nimport { MatCardModule } from '@angular/material/card';\nimport { MatDialogModule } from '@angular/material/dialog';\nimport { MatExpansionModule } from '@angular/material/expansion';\nimport {\n  MatFormFieldModule,\n  MAT_FORM_FIELD_DEFAULT_OPTIONS,\n} from '@angular/material/form-field';\nimport { MatIconModule } from '@angular/material/icon';\nimport { MatInputModule } from '@angular/material/input';\nimport { MatListModule } from '@angular/material/list';\nimport { MatProgressBarModule } from '@angular/material/progress-bar';\nimport { MatProgressSpinnerModule } from '@angular/material/progress-spinner';\nimport { MatSidenavModule } from '@angular/material/sidenav';\nimport { MatToolbarModule } from '@angular/material/toolbar';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\nimport { EffectsModule } from '@ngrx/effects';\nimport { StoreModule } from '@ngrx/store';\nimport { StoreDevtoolsModule } from '@ngrx/store-devtools';\nimport { environment } from '../environments/environment';\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { EditReservationComponent } from './components/edit-reservation/edit-reservation.component';\nimport { EmptyListComponent } from './components/empty-list/empty-list.component';\nimport { ItemDisplayComponent } from './components/item-display/item-display.component';\nimport { ItemFormComponent } from './components/item-form/item-form.component';\nimport { ItemPreviewComponent } from './components/item-preview/item-preview.component';\nimport { ConnectFormDirective } from './directives/connect-form.directive';\nimport { FormEnabledDirective } from './directives/form-enabled.directive';\nimport { FrameComponent } from './frame/frame.component';\nimport { AboutComponent } from './pages/about/about.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { CategoryPageComponent } from './pages/category-page/category-page.component';\nimport { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';\nimport { agReducer } from './store/a.reducer';\nimport { AppState } from './store/app.state';\nimport { rReducer } from './store/r.reducer';\nimport { WishlistEffects } from './store/w.effects';\nimport { wReducer } from './store/w.reducer';\n\n@NgModule({\n  declarations: [\n    AboutComponent,\n    AppComponent,\n    CategoriesPageComponent,\n    ConnectFormDirective,\n    EmptyListComponent,\n    FormEnabledDirective,\n    FrameComponent,\n    ItemDisplayComponent,\n    ItemFormComponent,\n    EditReservationComponent,\n    CategoryPageComponent,\n    ItemPreviewComponent,\n    PageNotFoundComponent,\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    BrowserAnimationsModule,\n    LayoutModule,\n    ReactiveFormsModule,\n    MatButtonModule,\n    MatCardModule,\n    MatDialogModule,\n    MatExpansionModule,\n    MatFormFieldModule,\n    MatIconModule,\n    MatInputModule,\n    MatListModule,\n    MatProgressBarModule,\n    MatProgressSpinnerModule,\n    MatSidenavModule,\n    MatToolbarModule,\n    StoreModule.forRoot<AppState>({\n      ag: agReducer,\n      wishlist: wReducer,\n      reservation: rReducer,\n    }),\n    EffectsModule.forRoot([WishlistEffects]),\n    // import HttpClientModule after BrowserModule.\n    HttpClientModule,\n    StoreDevtoolsModule.instrument({\n      maxAge: 25,\n      logOnly: environment.production,\n    }),\n  ],\n  providers: [\n    {\n      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,\n      useValue: { appearance: 'fill' },\n    },\n  ],\n  bootstrap: [AppComponent],\n})\nexport class AppModule {}\n",
             "children": [
                 {
                     "type": "providers",
@@ -2836,6 +2923,9 @@
                         },
                         {
                             "name": "ItemPreviewComponent"
+                        },
+                        {
+                            "name": "PageNotFoundComponent"
                         }
                     ]
                 },
@@ -2867,13 +2957,13 @@
         },
         {
             "name": "AppRoutingModule",
-            "id": "module-AppRoutingModule-6f79bba737d39a8d4d1dec7a3e379d3062c81d7f56cfbee968b3799b6541b10d0dd54c5c431ab5fbaada420d8fb9fc7e746ffd0b59708a994d4b08682e7ac5e9",
+            "id": "module-AppRoutingModule-9e7469a7b89d2e6776458e4469e6b068c9ea313b93ee13c573c7711466d76fd851d2c403103f833b5739a35b8d87eb356b7cb06ebfe9fd359b6d25e5ca437b3b",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/app-routing.module.ts",
             "methods": [],
-            "sourceCode": "import { NgModule } from '@angular/core';\nimport { RouterModule, Routes } from '@angular/router';\nimport { AboutComponent } from './pages/about/about.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\n\nconst routes: Routes = [\n  { path: 'wunschliste', component: CategoriesPageComponent, data: { animation: 'CategoriesPage' } },\n  { path: 'about', component: AboutComponent, data: { animation: 'AboutPage' } },\n\n  { path: '', redirectTo: '/wunschliste', pathMatch: 'full' },\n];\n\n@NgModule({\n  imports: [RouterModule.forRoot(routes, { useHash: true })],\n  exports: [RouterModule]\n})\nexport class AppRoutingModule { }\n",
+            "sourceCode": "import { NgModule } from '@angular/core';\nimport { RouterModule, Routes } from '@angular/router';\nimport { AboutComponent } from './pages/about/about.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { CategoryPageComponent } from './pages/category-page/category-page.component';\nimport { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';\n\nconst routes: Routes = [\n  {\n    path: 'wunschliste/:category',\n    component: CategoryPageComponent,\n    data: { animation: 'CategoryPage' },\n  },\n  {\n    path: 'wunschliste',\n    component: CategoriesPageComponent,\n    data: { animation: 'CategoriesPage' },\n  },\n  {\n    path: 'about',\n    component: AboutComponent,\n    data: { animation: 'AboutPage' },\n  },\n\n  { path: '', redirectTo: '/wunschliste', pathMatch: 'full' },\n  { path: '**', component: PageNotFoundComponent },\n];\n\n@NgModule({\n  imports: [RouterModule.forRoot(routes, { useHash: true })],\n  exports: [RouterModule]\n})\nexport class AppRoutingModule { }\n",
             "children": [
                 {
                     "type": "providers",
@@ -3009,6 +3099,16 @@
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "src/stories/ItemDisplay.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "() => ({\n  props: {},\n})"
+            },
+            {
+                "name": "Display",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/NotFound.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
@@ -3981,6 +4081,18 @@
                     "defaultValue": "appStateStub()"
                 }
             ],
+            "src/stories/NotFound.stories.ts": [
+                {
+                    "name": "Display",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/NotFound.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "() => ({\n  props: {},\n})"
+                }
+            ],
             "src/environments/environment.prod.ts": [
                 {
                     "name": "environment",
@@ -4521,6 +4633,13 @@
                 "module": "AppRoutingModule",
                 "children": [
                     {
+                        "path": "wunschliste/:category",
+                        "component": "CategoryPageComponent",
+                        "data": {
+                            "animation": "CategoryPage"
+                        }
+                    },
+                    {
                         "path": "wunschliste",
                         "component": "CategoriesPageComponent",
                         "data": {
@@ -4538,6 +4657,10 @@
                         "path": "",
                         "redirectTo": "/wunschliste",
                         "pathMatch": "full"
+                    },
+                    {
+                        "path": "**",
+                        "component": "PageNotFoundComponent"
                     }
                 ],
                 "kind": "module"
@@ -4691,6 +4814,15 @@
                 "name": "CategoryPageComponent",
                 "coveragePercent": 0,
                 "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/pages/page-not-found/page-not-found.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "PageNotFoundComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
                 "status": "low"
             },
             {
@@ -4875,7 +5007,7 @@
                 "linktype": "injectable",
                 "name": "WishlistEffects",
                 "coveragePercent": 0,
-                "coverageCount": "0/4",
+                "coverageCount": "0/5",
                 "status": "low"
             },
             {
@@ -5283,6 +5415,16 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/NotFound.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Display",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"

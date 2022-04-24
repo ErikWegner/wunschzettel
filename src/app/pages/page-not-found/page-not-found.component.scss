@@ -1,0 +1,15 @@
+$bordercolor: #888;
+
+div {
+    align-items: flex-end;
+}
+
+.n {
+    font-size: 800%;
+    border-right: 2px solid $bordercolor;
+}
+
+.t {
+    font-size: 300%;
+    border-bottom: 2px solid $bordercolor;
+}
