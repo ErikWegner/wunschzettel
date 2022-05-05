@@ -134,6 +134,9 @@ export class AppStateBuilder implements AppState {
 
   withItem(item: WishlistItem): AppStateBuilder {
     this.wishlist.items.push(item);
+    if (!this.wishlist.categories.includes(item.Category)) {
+      this.wishlist.categories.push(item.Category);
+    }
     return this;
   }
 }

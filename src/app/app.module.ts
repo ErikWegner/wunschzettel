@@ -42,6 +42,7 @@ import { AppState } from './store/app.state';
 import { rReducer } from './store/r.reducer';
 import { WishlistEffects } from './store/w.effects';
 import { wReducer } from './store/w.reducer';
+import { WithCategoryPipe } from './pipes/with-category.pipe';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { wReducer } from './store/w.reducer';
     CategoryPageComponent,
     ItemPreviewComponent,
     PageNotFoundComponent,
+    WithCategoryPipe,
   ],
   imports: [
     BrowserModule,
