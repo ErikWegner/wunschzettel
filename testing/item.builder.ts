@@ -22,6 +22,11 @@ export class WishlistItemBuilder {
     return this;
   }
 
+  withId(id: number) {
+    this.id = id;
+    return this;
+  }
+
   build(): WishlistItem {
     return {
       id: this.id,

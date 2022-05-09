@@ -7,12 +7,17 @@ import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.com
 
 const routes: Routes = [
   {
+    path: 'wunschliste',
+    component: CategoryPageComponent,
+    data: { animation: 'CategoryPage' },
+  },
+  {
     path: 'wunschliste/:category',
     component: CategoryPageComponent,
     data: { animation: 'CategoryPage' },
   },
   {
-    path: 'wunschliste',
+    path: 'kategorien',
     component: CategoriesPageComponent,
     data: { animation: 'CategoriesPage' },
   },
@@ -22,7 +27,7 @@ const routes: Routes = [
     data: { animation: 'AboutPage' },
   },
 
-  { path: '', redirectTo: '/wunschliste', pathMatch: 'full' },
+  { path: '', redirectTo: '/kategorien', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent },
 ];
 

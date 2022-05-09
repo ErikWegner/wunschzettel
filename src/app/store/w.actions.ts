@@ -16,3 +16,10 @@ export const goToCategory = createAction(
     category: string;
   }>()
 );
+
+export const goToItem = createAction(
+  '[W] Go to item',
+  props<{
+    itemId: number;
+  }>()
+);
