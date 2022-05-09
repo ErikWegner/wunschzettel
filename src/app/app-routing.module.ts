@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AboutComponent } from './pages/about/about.component';
 import { CategoriesPageComponent } from './pages/categories-page/categories-page.component';
 import { CategoryPageComponent } from './pages/category-page/category-page.component';
+import { ItemViewComponent } from './pages/item-view/item-view.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 
 const routes: Routes = [
@@ -17,7 +18,12 @@ const routes: Routes = [
     data: { animation: 'CategoryPage' },
   },
   {
-    path: 'kategorien',
+    path: 'wunsch/:wunsch',
+    component: ItemViewComponent,
+    data: { animation: 'CategoryPage' },
+  },
+  {
+    path: 'wunsch',
     component: CategoriesPageComponent,
     data: { animation: 'CategoriesPage' },
   },
@@ -27,7 +33,7 @@ const routes: Routes = [
     data: { animation: 'AboutPage' },
   },
 
-  { path: '', redirectTo: '/kategorien', pathMatch: 'full' },
+  { path: '', redirectTo: '/wunsch', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent },
 ];
 

@@ -43,6 +43,8 @@ import { rReducer } from './store/r.reducer';
 import { WishlistEffects } from './store/w.effects';
 import { wReducer } from './store/w.reducer';
 import { WithCategoryPipe } from './pipes/with-category.pipe';
+import { MenuNavlistComponent } from './components/menu-navlist/menu-navlist.component';
+import { ItemViewComponent } from './pages/item-view/item-view.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +62,8 @@ import { WithCategoryPipe } from './pipes/with-category.pipe';
     ItemPreviewComponent,
     PageNotFoundComponent,
     WithCategoryPipe,
+    MenuNavlistComponent,
+    ItemViewComponent,
   ],
   imports: [
     BrowserModule,

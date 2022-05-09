@@ -7,27 +7,30 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MenuNavlistStubComponent } from 'testing/stubs/menu-navlist.stub.component';
 import { FrameComponent } from './frame.component';
 
 describe('FrameComponent', () => {
   let component: FrameComponent;
   let fixture: ComponentFixture<FrameComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [FrameComponent],
-      imports: [
-        RouterTestingModule,
-        NoopAnimationsModule,
-        LayoutModule,
-        MatButtonModule,
-        MatIconModule,
-        MatListModule,
-        MatSidenavModule,
-        MatToolbarModule,
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [FrameComponent, MenuNavlistStubComponent],
+        imports: [
+          RouterTestingModule,
+          NoopAnimationsModule,
+          LayoutModule,
+          MatButtonModule,
+          MatIconModule,
+          MatListModule,
+          MatSidenavModule,
+          MatToolbarModule,
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FrameComponent);
