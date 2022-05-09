@@ -8,7 +8,7 @@ import {
 } from '@ngrx/effects';
 import { map, switchMap, tap } from 'rxjs';
 import { ItemsService } from '../services/items.service';
-import { getItems, goToCategory, itemsLoaded } from './w.actions';
+import { getItems, goToCategory, goToItem, itemsLoaded } from './w.actions';
 
 @Injectable()
 export class WishlistEffects {
@@ -36,6 +36,18 @@ export class WishlistEffects {
         ofType(goToCategory),
         tap((d) => {
           this.router.navigate(['/wunschliste', d.category]);
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
+  navigateToItem$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(goToItem),
+        tap((d) => {
+          this.router.navigate(['/wunsch', `${d.itemId}`]);
         })
       );
     },

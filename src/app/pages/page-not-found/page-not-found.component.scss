@@ -5,11 +5,13 @@ div {
 }
 
 .n {
-    font-size: 800%;
+    font-size: 128px;
+        line-height: 140px;
     border-right: 2px solid $bordercolor;
 }
 
 .t {
-    font-size: 300%;
+    font-size: 40px;
+        line-height: 57px;
     border-bottom: 2px solid $bordercolor;
 }

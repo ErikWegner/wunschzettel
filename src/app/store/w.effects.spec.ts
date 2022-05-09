@@ -5,9 +5,9 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { Observable, of } from 'rxjs';
-import { randomString } from 'testing/utils';
+import { randomNumber, randomString } from 'testing/utils';
 import { ItemsService } from '../services/items.service';
-import { getItems, goToCategory } from './w.actions';
+import { getItems, goToCategory, goToItem } from './w.actions';
 import { WishlistEffects } from './w.effects';
 import { initialState as WishlishInitialState } from './w.reducer';
 
@@ -72,5 +72,17 @@ describe('WishlistEffects', () => {
       '/wunschliste',
       categoryName,
     ]);
+  });
+
+  it('should navigate to item', () => {
+    // Arrange
+    const itemId = randomNumber(100, 20);
+    actions$ = of(goToItem({ itemId }));
+
+    // Act
+    effects.navigateToItem$.subscribe();
+
+    // Assert
+    expect(router.navigate).toHaveBeenCalledOnceWith(['/wunsch', itemId + '']);
   });
 });

@@ -1,5 +1,64 @@
 {
-    "pipes": [],
+    "pipes": [
+        {
+            "name": "WithCategoryPipe",
+            "id": "pipe-WithCategoryPipe-d1378727e1260d0ddf3ff342dca28c7ff3960a38f13d7994e0875609b875a72699a8a312e64accfb239d77a4d958fac6fadd0645704bbc06d9a1e6fd91749c57",
+            "file": "src/app/pipes/with-category.pipe.ts",
+            "type": "pipe",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "",
+            "rawdescription": "\n",
+            "properties": [],
+            "methods": [
+                {
+                    "name": "transform",
+                    "args": [
+                        {
+                            "name": "items",
+                            "type": "WishlistItem[] | null",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "category",
+                            "type": "string | null",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "WishlistItem[]",
+                    "typeParameters": [],
+                    "line": 8,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "items",
+                            "type": "WishlistItem[] | null",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "category",
+                            "type": "string | null",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "ngname": "withCategory",
+            "sourceCode": "import { NgIterable, Pipe, PipeTransform } from '@angular/core';\nimport { WishlistItem } from '../business/item';\n\n@Pipe({\n  name: 'withCategory',\n})\nexport class WithCategoryPipe implements PipeTransform {\n  transform(\n    items: WishlistItem[] | null,\n    category: string | null\n  ): WishlistItem[] {\n    if (items && items.length) {\n      if (category === null) {\n        return items;\n      }\n      return items.filter((item) => item.Category === category);\n    }\n    return [];\n  }\n}\n"
+        }
+    ],
     "interfaces": [
         {
             "name": "AddItemResponse",
@@ -579,7 +638,7 @@
         },
         {
             "name": "WishlistEffects",
-            "id": "injectable-WishlistEffects-79f05a1387e99548bc7508a124c8e49f8b276b98d9be1dd9ea8b59c2fe59608a8388ea97be5b2336962f0c65b3d1dccb163cdb74c84ddcfbe44955c024ca18b9",
+            "id": "injectable-WishlistEffects-e8df24edd303e448467a3286668c47c5d8aaeac4a2bb3302f174f32b986b22ed29e8f1ad89fbcab53feeb24858bb7f25baad76ea9eb7569668320e7f53ac9b10",
             "file": "src/app/store/w.effects.ts",
             "properties": [
                 {
@@ -611,6 +670,16 @@
                     "optional": false,
                     "description": "",
                     "line": 33
+                },
+                {
+                    "name": "navigateToItem$",
+                    "defaultValue": "createEffect(\n    () => {\n      return this.actions$.pipe(\n        ofType(goToItem),\n        tap((d) => {\n          this.router.navigate(['/wunsch', `${d.itemId}`]);\n        })\n      );\n    },\n    { dispatch: false }\n  )",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 45
                 }
             ],
             "methods": [],
@@ -618,7 +687,7 @@
             "deprecationMessage": "",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import { Injectable } from \"@angular/core\";\nimport { Router } from '@angular/router';\nimport {\n  Actions,\n  createEffect,\n  ofType,\n  ROOT_EFFECTS_INIT,\n} from '@ngrx/effects';\nimport { map, switchMap, tap } from 'rxjs';\nimport { ItemsService } from '../services/items.service';\nimport { getItems, goToCategory, itemsLoaded } from './w.actions';\n\n@Injectable()\nexport class WishlistEffects {\n  init$ = createEffect(() => {\n    return this.actions$.pipe(\n      ofType(ROOT_EFFECTS_INIT),\n      map((_) => getItems())\n    );\n  });\n\n  getItems$ = createEffect(() => {\n    return this.actions$.pipe(\n      ofType(getItems),\n      switchMap((_) =>\n        this.itemsService\n          .getItems()\n          .pipe(map((items) => itemsLoaded({ items })))\n      )\n    );\n  });\n\n  navigateToCategory$ = createEffect(\n    () => {\n      return this.actions$.pipe(\n        ofType(goToCategory),\n        tap((d) => {\n          this.router.navigate(['/wunschliste', d.category]);\n        })\n      );\n    },\n    { dispatch: false }\n  );\n\n  constructor(\n    private actions$: Actions,\n    private itemsService: ItemsService,\n    private router: Router\n  ) {}\n}\n",
+            "sourceCode": "import { Injectable } from \"@angular/core\";\nimport { Router } from '@angular/router';\nimport {\n  Actions,\n  createEffect,\n  ofType,\n  ROOT_EFFECTS_INIT,\n} from '@ngrx/effects';\nimport { map, switchMap, tap } from 'rxjs';\nimport { ItemsService } from '../services/items.service';\nimport { getItems, goToCategory, goToItem, itemsLoaded } from './w.actions';\n\n@Injectable()\nexport class WishlistEffects {\n  init$ = createEffect(() => {\n    return this.actions$.pipe(\n      ofType(ROOT_EFFECTS_INIT),\n      map((_) => getItems())\n    );\n  });\n\n  getItems$ = createEffect(() => {\n    return this.actions$.pipe(\n      ofType(getItems),\n      switchMap((_) =>\n        this.itemsService\n          .getItems()\n          .pipe(map((items) => itemsLoaded({ items })))\n      )\n    );\n  });\n\n  navigateToCategory$ = createEffect(\n    () => {\n      return this.actions$.pipe(\n        ofType(goToCategory),\n        tap((d) => {\n          this.router.navigate(['/wunschliste', d.category]);\n        })\n      );\n    },\n    { dispatch: false }\n  );\n\n  navigateToItem$ = createEffect(\n    () => {\n      return this.actions$.pipe(\n        ofType(goToItem),\n        tap((d) => {\n          this.router.navigate(['/wunsch', `${d.itemId}`]);\n        })\n      );\n    },\n    { dispatch: false }\n  );\n\n  constructor(\n    private actions$: Actions,\n    private itemsService: ItemsService,\n    private router: Router\n  ) {}\n}\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -644,7 +713,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 43,
+                "line": 55,
                 "jsdoctags": [
                     {
                         "name": "actions$",
@@ -682,13 +751,120 @@
     "interceptors": [],
     "classes": [
         {
+            "name": "ActivatedRouteStub",
+            "id": "class-ActivatedRouteStub-4e6c13b40da2ac7377c81aee47195aef7e5e1b202aed498095545bbc56ab9b1484d22c4f355a6ebff40c534cb2c073795b48bd79186b5dceb6585f3724ef2162",
+            "file": "testing/activated-route-stub.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "class",
+            "sourceCode": "import { convertToParamMap, ParamMap, Params } from '@angular/router';\nimport { ReplaySubject } from 'rxjs';\n\n/**\n * An ActivateRoute test double with a `paramMap` observable.\n * Use the `setParamMap()` method to add the next `paramMap` value.\n */\nexport class ActivatedRouteStub {\n  // Use a ReplaySubject to share previous values with subscribers\n  // and pump new values into the `paramMap` observable\n  private subject = new ReplaySubject<ParamMap>();\n\n  constructor(initialParams?: Params) {\n    this.setParamMap(initialParams);\n  }\n\n  /** The mock paramMap observable */\n  readonly paramMap = this.subject.asObservable();\n\n  /** Set the paramMap observable's next value */\n  setParamMap(params: Params = {}) {\n    this.subject.next(convertToParamMap(params));\n  }\n}\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "initialParams",
+                        "type": "Params",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "optional": true
+                    }
+                ],
+                "line": 11,
+                "jsdoctags": [
+                    {
+                        "name": "initialParams",
+                        "type": "Params",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "optional": true,
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "properties": [
+                {
+                    "name": "paramMap",
+                    "defaultValue": "this.subject.asObservable()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "<p>The mock paramMap observable</p>\n",
+                    "line": 18,
+                    "rawdescription": "\nThe mock paramMap observable",
+                    "modifierKind": [
+                        144
+                    ]
+                },
+                {
+                    "name": "subject",
+                    "defaultValue": "new ReplaySubject<ParamMap>()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 11,
+                    "modifierKind": [
+                        121
+                    ]
+                }
+            ],
+            "description": "<p>An ActivateRoute test double with a <code>paramMap</code> observable.\nUse the <code>setParamMap()</code> method to add the next <code>paramMap</code> value.</p>\n",
+            "rawdescription": "\n\nAn ActivateRoute test double with a `paramMap` observable.\nUse the `setParamMap()` method to add the next `paramMap` value.\n",
+            "methods": [
+                {
+                    "name": "setParamMap",
+                    "args": [
+                        {
+                            "name": "params",
+                            "type": "Params",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "defaultValue": "{}"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 21,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\nSet the paramMap observable's next value",
+                    "description": "<p>Set the paramMap observable&#39;s next value</p>\n",
+                    "jsdoctags": [
+                        {
+                            "name": "params",
+                            "type": "Params",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "defaultValue": "{}",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "indexSignatures": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "hostBindings": [],
+            "hostListeners": []
+        },
+        {
             "name": "AppStateBuilder",
-            "id": "class-AppStateBuilder-2c131c574b1668b314ba31d93b35850a4a7c0fd27345a9897901766681f8b55fcf9aa31c72d16c13aaa19ae84d6faf77a1dd50b25fabe5b745857b53b2dbd8cc",
+            "id": "class-AppStateBuilder-77692f5b1e07b368e31eaa1d28d3b607efd2c45251e8a6923ffd92521476d2e5f476c5500aa1b7386906f1df8482f047b1404a723e063e05a826e3cf797f79ce",
             "file": "testing/app.state.builder.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "class",
-            "sourceCode": "import { WishlistItem } from 'src/app/business/item';\nimport { AppGlobalState } from 'src/app/store/a.state';\nimport { AppState } from 'src/app/store/app.state';\nimport { ReservationState, ReservationStatus } from 'src/app/store/r.state';\nimport { WishlistState } from 'src/app/store/w.state';\nimport { ListBuilder } from './list-builder';\nimport { randomString } from './utils';\n\nexport const appStateStub = (): AppStateBuilder => new AppStateBuilder();\n\nexport class AppStateBuilder implements AppState {\n  ag: AppGlobalState = {\n    pendingRequest: false,\n    requestErrorText: null,\n    captchaRequest: 'Sieben plus zwei',\n  };\n  wishlist: WishlistState = {\n    categories: [],\n    items: [],\n    activeItem: null,\n  };\n  reservation: ReservationState = {\n    itemid: null,\n    status: 'unknown',\n    errorText: null,\n  };\n\n  public static hasError(errorText: string): any {\n    const b = new AppStateBuilder();\n    b.ag.requestErrorText = errorText;\n    return b;\n  }\n\n  public static givenCategories(...categories: string[]): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.wishlist.categories = [...categories];\n    return b;\n  }\n\n  public static someCategories(): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.wishlist.categories = ListBuilder.with((i) =>\n      randomString(8, 'Category ')\n    )\n      .items(7)\n      .build();\n    return b;\n  }\n\n  public static pendingRequest(): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.ag.pendingRequest = true;\n    return b;\n  }\n\n  public static hasActiveItem(values?: Partial<WishlistItem>): AppStateBuilder {\n    const b = new AppStateBuilder();\n    return b.withActiveItem(values);\n  }\n\n  public static reservationStatus(\n    status: ReservationStatus,\n    opt?: { errorText?: string }\n  ): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.reservation.status = status;\n    b.reservation.errorText = opt?.errorText || null;\n    return b;\n  }\n\n  public static withBookCategoryAndItems(): AppStateBuilder {\n    const b = AppStateBuilder.givenCategories('Buch')\n      .withItem({\n        id: 8,\n        Title: 'Schillers Glocke',\n        Description:\n          'Das Lied von der Glocke ist ein im Jahr 1799 von Friedrich Schiller veröffentlichtes Gedicht. Es gehörte lange Zeit zum Kanon der deutschen Literatur und ist eines der bekanntesten, am meisten zitierten und parodierten deutschen Gedichte.',\n        BuyUrl: 'https://de.wikipedia.org/wiki/Das_Lied_von_der_Glocke',\n        Category: 'Buch',\n        ImgageUrl:\n          'https://upload.wikimedia.org/wikipedia/commons/6/69/Liezen_Prachteinband_Schillers_Glocke_01.jpg',\n      })\n      .withItem({\n        Title: 'Faust I + II',\n        Category: 'Buch',\n        Description: `Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des\n      Fauststoffs bezeichnet. Der Begriff kann sich auf den ersten Teil der\n      durch Goethe geschaffenen Tragödie, auf deren ersten und zweiten Teil\n      gemeinsam oder insgesamt auf die Arbeiten am Fauststoff beziehen, die\n      Goethe durch sechzig Jahre hindurch immer wieder neu aufnahm. Er umfasst\n      in diesem letzteren Sinne auch die Entwürfe, Fragmente, Kommentare und\n      Paralipomena des Dichters zu seinem Faustwerk und zum Fauststoff.`,\n        BuyUrl: 'https://de.wikipedia.org/wiki/Goethes_Faust',\n        ImgageUrl:\n          'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg',\n        id: 19,\n      })\n      .withItem({\n        id: 41,\n        Title: 'Nathan der Weise',\n        Description:\n          'Nathan der Weise ist der Titel und die Hauptfigur eines fünfaktigen Ideendramas von Gotthold Ephraim Lessing, das 1779 veröffentlicht und am 14. April 1783 in Berlin uraufgeführt wurde. Das Werk hat als Themenschwerpunkte den Humanismus und den Toleranzgedanken der Aufklärung. Besonders berühmt wurde die Ringparabel im dritten Aufzug des Dramas.',\n        BuyUrl: 'https://de.wikipedia.org/wiki/Nathan_der_Weise',\n        Category: 'Buch',\n        ImgageUrl: '',\n      });\n    return b;\n  }\n\n  withActiveItem(values?: Partial<WishlistItem>): AppStateBuilder {\n    this.wishlist.activeItem = {\n      Title: 'Faust I + II',\n      Category: 'Buch',\n      Description: `Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des\n      Fauststoffs bezeichnet. Der Begriff kann sich auf den ersten Teil der\n      durch Goethe geschaffenen Tragödie, auf deren ersten und zweiten Teil\n      gemeinsam oder insgesamt auf die Arbeiten am Fauststoff beziehen, die\n      Goethe durch sechzig Jahre hindurch immer wieder neu aufnahm. Er umfasst\n      in diesem letzteren Sinne auch die Entwürfe, Fragmente, Kommentare und\n      Paralipomena des Dichters zu seinem Faustwerk und zum Fauststoff.`,\n      BuyUrl: 'https://de.wikipedia.org/wiki/Goethes_Faust',\n      ImgageUrl:\n        'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg',\n      id: 1,\n      ...values,\n    };\n    return this;\n  }\n\n  withCaptcha(challenge: string): AppStateBuilder {\n    this.ag.captchaRequest = challenge;\n    return this;\n  }\n\n  withItem(item: WishlistItem): AppStateBuilder {\n    this.wishlist.items.push(item);\n    return this;\n  }\n}\n",
+            "sourceCode": "import { WishlistItem } from 'src/app/business/item';\nimport { AppGlobalState } from 'src/app/store/a.state';\nimport { AppState } from 'src/app/store/app.state';\nimport { ReservationState, ReservationStatus } from 'src/app/store/r.state';\nimport { WishlistState } from 'src/app/store/w.state';\nimport { ListBuilder } from './list-builder';\nimport { randomString } from './utils';\n\nexport const appStateStub = (): AppStateBuilder => new AppStateBuilder();\n\nexport class AppStateBuilder implements AppState {\n  ag: AppGlobalState = {\n    pendingRequest: false,\n    requestErrorText: null,\n    captchaRequest: 'Sieben plus zwei',\n  };\n  wishlist: WishlistState = {\n    categories: [],\n    items: [],\n    activeItem: null,\n  };\n  reservation: ReservationState = {\n    itemid: null,\n    status: 'unknown',\n    errorText: null,\n  };\n\n  public static hasError(errorText: string): any {\n    const b = new AppStateBuilder();\n    b.ag.requestErrorText = errorText;\n    return b;\n  }\n\n  public static givenCategories(...categories: string[]): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.wishlist.categories = [...categories];\n    return b;\n  }\n\n  public static someCategories(): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.wishlist.categories = ListBuilder.with((i) =>\n      randomString(8, 'Category ')\n    )\n      .items(7)\n      .build();\n    return b;\n  }\n\n  public static pendingRequest(): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.ag.pendingRequest = true;\n    return b;\n  }\n\n  public static hasActiveItem(values?: Partial<WishlistItem>): AppStateBuilder {\n    const b = new AppStateBuilder();\n    return b.withActiveItem(values);\n  }\n\n  public static reservationStatus(\n    status: ReservationStatus,\n    opt?: { errorText?: string }\n  ): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.reservation.status = status;\n    b.reservation.errorText = opt?.errorText || null;\n    return b;\n  }\n\n  public static withBookCategoryAndItems(): AppStateBuilder {\n    const b = AppStateBuilder.givenCategories('Buch')\n      .withItem({\n        id: 8,\n        Title: 'Schillers Glocke',\n        Description:\n          'Das Lied von der Glocke ist ein im Jahr 1799 von Friedrich Schiller veröffentlichtes Gedicht. Es gehörte lange Zeit zum Kanon der deutschen Literatur und ist eines der bekanntesten, am meisten zitierten und parodierten deutschen Gedichte.',\n        BuyUrl: 'https://de.wikipedia.org/wiki/Das_Lied_von_der_Glocke',\n        Category: 'Buch',\n        ImgageUrl:\n          'https://upload.wikimedia.org/wikipedia/commons/6/69/Liezen_Prachteinband_Schillers_Glocke_01.jpg',\n      })\n      .withItem({\n        Title: 'Faust I + II',\n        Category: 'Buch',\n        Description: `Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des\n      Fauststoffs bezeichnet. Der Begriff kann sich auf den ersten Teil der\n      durch Goethe geschaffenen Tragödie, auf deren ersten und zweiten Teil\n      gemeinsam oder insgesamt auf die Arbeiten am Fauststoff beziehen, die\n      Goethe durch sechzig Jahre hindurch immer wieder neu aufnahm. Er umfasst\n      in diesem letzteren Sinne auch die Entwürfe, Fragmente, Kommentare und\n      Paralipomena des Dichters zu seinem Faustwerk und zum Fauststoff.`,\n        BuyUrl: 'https://de.wikipedia.org/wiki/Goethes_Faust',\n        ImgageUrl:\n          'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg',\n        id: 19,\n      })\n      .withItem({\n        id: 41,\n        Title: 'Nathan der Weise',\n        Description:\n          'Nathan der Weise ist der Titel und die Hauptfigur eines fünfaktigen Ideendramas von Gotthold Ephraim Lessing, das 1779 veröffentlicht und am 14. April 1783 in Berlin uraufgeführt wurde. Das Werk hat als Themenschwerpunkte den Humanismus und den Toleranzgedanken der Aufklärung. Besonders berühmt wurde die Ringparabel im dritten Aufzug des Dramas.',\n        BuyUrl: 'https://de.wikipedia.org/wiki/Nathan_der_Weise',\n        Category: 'Buch',\n        ImgageUrl: '',\n      });\n    return b;\n  }\n\n  withActiveItem(values?: Partial<WishlistItem>): AppStateBuilder {\n    this.wishlist.activeItem = {\n      Title: 'Faust I + II',\n      Category: 'Buch',\n      Description: `Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des\n      Fauststoffs bezeichnet. Der Begriff kann sich auf den ersten Teil der\n      durch Goethe geschaffenen Tragödie, auf deren ersten und zweiten Teil\n      gemeinsam oder insgesamt auf die Arbeiten am Fauststoff beziehen, die\n      Goethe durch sechzig Jahre hindurch immer wieder neu aufnahm. Er umfasst\n      in diesem letzteren Sinne auch die Entwürfe, Fragmente, Kommentare und\n      Paralipomena des Dichters zu seinem Faustwerk und zum Fauststoff.`,\n      BuyUrl: 'https://de.wikipedia.org/wiki/Goethes_Faust',\n      ImgageUrl:\n        'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg',\n      id: 1,\n      ...values,\n    };\n    return this;\n  }\n\n  withCaptcha(challenge: string): AppStateBuilder {\n    this.ag.captchaRequest = challenge;\n    return this;\n  }\n\n  withItem(item: WishlistItem): AppStateBuilder {\n    this.wishlist.items.push(item);\n    if (!this.wishlist.categories.includes(item.Category)) {\n      this.wishlist.categories.push(item.Category);\n    }\n    return this;\n  }\n}\n",
             "properties": [
                 {
                     "name": "ag",
@@ -1257,12 +1433,12 @@
         },
         {
             "name": "WishlistItemBuilder",
-            "id": "class-WishlistItemBuilder-e4835e3a7ae44fdb6cf587061f7173280d64e9eda4a9abd350a4fcabad40d339f7a5f73d2618874cfab8a5d62fdf61ab04b2e70e54276c3fd7afe8b6a609ddd7",
+            "id": "class-WishlistItemBuilder-ee7ff4ce70d97600349131819885e5f951a66c6402ac142d27543b014e568587c19a699d7c27702708755529c7eb2cfcd0e06b85a835aa58be23517c39b57812",
             "file": "testing/item.builder.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "class",
-            "sourceCode": "import { WishlistItem } from 'src/app/business/item';\nimport { randomNumber, randomString } from './utils';\n\nexport class WishlistItemBuilder {\n  id = randomNumber(900);\n  title = randomString(8, 'title ');\n  description = randomString(30, 'description ');\n  image_url = randomString(8, 'image ');\n  shopping_url = randomString(8, 'shop ');\n  category = randomString(8, 'category ');\n\n  static n() {\n    return new WishlistItemBuilder();\n  }\n\n  static default() {\n    return WishlistItemBuilder.n().build();\n  }\n\n  withCategory(category: string) {\n    this.category = category;\n    return this;\n  }\n\n  build(): WishlistItem {\n    return {\n      id: this.id,\n      Title: this.title,\n      Description: this.description,\n      ImgageUrl: this.image_url,\n      BuyUrl: this.shopping_url,\n      Category: this.category,\n    };\n  }\n}\n",
+            "sourceCode": "import { WishlistItem } from 'src/app/business/item';\nimport { randomNumber, randomString } from './utils';\n\nexport class WishlistItemBuilder {\n  id = randomNumber(900);\n  title = randomString(8, 'title ');\n  description = randomString(30, 'description ');\n  image_url = randomString(8, 'image ');\n  shopping_url = randomString(8, 'shop ');\n  category = randomString(8, 'category ');\n\n  static n() {\n    return new WishlistItemBuilder();\n  }\n\n  static default() {\n    return WishlistItemBuilder.n().build();\n  }\n\n  withCategory(category: string) {\n    this.category = category;\n    return this;\n  }\n\n  withId(id: number) {\n    this.id = id;\n    return this;\n  }\n\n  build(): WishlistItem {\n    return {\n      id: this.id,\n      Title: this.title,\n      Description: this.description,\n      ImgageUrl: this.image_url,\n      BuyUrl: this.shopping_url,\n      Category: this.category,\n    };\n  }\n}\n",
             "properties": [
                 {
                     "name": "category",
@@ -1332,7 +1508,7 @@
                     "optional": false,
                     "returnType": "WishlistItem",
                     "typeParameters": [],
-                    "line": 25,
+                    "line": 30,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -1382,6 +1558,34 @@
                         {
                             "name": "category",
                             "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "withId",
+                    "args": [
+                        {
+                            "name": "id",
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "this",
+                    "typeParameters": [],
+                    "line": 25,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "id",
+                            "type": "number",
                             "deprecated": false,
                             "deprecationMessage": "",
                             "tagName": {
@@ -1871,7 +2075,7 @@
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ":host {\n  padding: 20px;\n}\n",
+                    "data": ":host {\n  padding: 20px;\n}\n\nmat-card {\n  cursor: pointer;\n}",
                     "styleUrl": "./categories-page.component.scss"
                 }
             ],
@@ -1906,7 +2110,7 @@
         },
         {
             "name": "CategoryPageComponent",
-            "id": "component-CategoryPageComponent-1147970746df8c3df9ca1f17c68321380beb53d9ed03a26512bd3a7552bd4098659a56a492ad5ebeeef972912feb1088d635a3e7a38903e591239e9950f91bd6",
+            "id": "component-CategoryPageComponent-1bc5dfec684eb64c90cf70e8b31d1b275f0b9c764c505e30cbdbc8ed50714eb65a849f1e2306f65e3e1eab9411ffb7e7056cb875f1fd42b1f1d460aa9e33ec7c",
             "file": "src/app/pages/category-page/category-page.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -1926,6 +2130,16 @@
             "outputsClass": [],
             "propertiesClass": [
                 {
+                    "name": "activeCategory$",
+                    "defaultValue": "EMPTY",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Observable<string | null>",
+                    "optional": false,
+                    "description": "",
+                    "line": 15
+                },
+                {
                     "name": "hasRequestPending$",
                     "defaultValue": "this.store.select(selectHasPendingRequest)",
                     "deprecated": false,
@@ -1933,7 +2147,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 12
+                    "line": 14
                 },
                 {
                     "name": "items$",
@@ -1943,10 +2157,21 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 13
+                    "line": 16
                 }
             ],
-            "methodsClass": [],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 20,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
             "deprecated": false,
             "deprecationMessage": "",
             "hostBindings": [],
@@ -1954,7 +2179,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component } from '@angular/core';\nimport { Store } from '@ngrx/store';\nimport { selectHasPendingRequest } from 'src/app/store/a.selectors';\nimport { selectItems } from 'src/app/store/w.selectors';\n\n@Component({\n  selector: 'app-category-page',\n  templateUrl: './category-page.component.html',\n  styleUrls: ['./category-page.component.scss'],\n})\nexport class CategoryPageComponent {\n  hasRequestPending$ = this.store.select(selectHasPendingRequest);\n  items$ = this.store.select(selectItems);\n\n  constructor(private store: Store) {}\n}\n",
+            "sourceCode": "import { Component, OnInit } from '@angular/core';\nimport { ActivatedRoute, ParamMap } from '@angular/router';\nimport { Store } from '@ngrx/store';\nimport { EMPTY, map, Observable, switchMap } from 'rxjs';\nimport { selectHasPendingRequest } from 'src/app/store/a.selectors';\nimport { selectItems } from 'src/app/store/w.selectors';\n\n@Component({\n  selector: 'app-category-page',\n  templateUrl: './category-page.component.html',\n  styleUrls: ['./category-page.component.scss'],\n})\nexport class CategoryPageComponent implements OnInit {\n  hasRequestPending$ = this.store.select(selectHasPendingRequest);\n  activeCategory$: Observable<string | null> = EMPTY;\n  items$ = this.store.select(selectItems);\n\n  constructor(private route: ActivatedRoute, private store: Store) {}\n\n  ngOnInit(): void {\n    this.activeCategory$ = this.route.paramMap.pipe(\n      map((params: ParamMap) => params.get('category'))\n    );\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -1970,14 +2195,29 @@
                 "deprecationMessage": "",
                 "args": [
                     {
+                        "name": "route",
+                        "type": "ActivatedRoute",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
                         "name": "store",
                         "type": "Store",
                         "deprecated": false,
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 13,
+                "line": 16,
                 "jsdoctags": [
+                    {
+                        "name": "route",
+                        "type": "ActivatedRoute",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
                     {
                         "name": "store",
                         "type": "Store",
@@ -1989,7 +2229,10 @@
                     }
                 ]
             },
-            "templateData": "<mat-spinner class=\"centerbox\" *ngIf=\"(hasRequestPending$ | async)\"></mat-spinner>\n<ng-container *ngIf=\"false === (hasRequestPending$ | async)\">\n  <app-item-preview *ngFor=\"let item of (items$ | async)\" [item]=\"item\"></app-item-preview>\n</ng-container>\n"
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<mat-spinner class=\"centerbox\" *ngIf=\"(hasRequestPending$ | async)\"></mat-spinner>\n<ng-container *ngIf=\"false === (hasRequestPending$ | async)\">\n  <app-item-preview *ngFor=\"let item of ((items$ | async) | withCategory:(activeCategory$|async) )\" [item]=\"item\"></app-item-preview>\n</ng-container>\n"
         },
         {
             "name": "EditReservationComponent",
@@ -2622,7 +2865,7 @@
         },
         {
             "name": "ItemPreviewComponent",
-            "id": "component-ItemPreviewComponent-2db743937cfc58729767a3c4f226411abcd11444ad4c0509ff750bd96755f2bb0dc0687cb6f6057c62d9cb50cf0cf1e883b0c777d36249d5ee674a635e0f81e0",
+            "id": "component-ItemPreviewComponent-4188b238229a84db5bfe28b7f720c2d22c2b69371b003b90f19b6caaab217987cb78e8a8e538412e1276ce5cc8be0713df00adb49748746cd993612e5e722b83",
             "file": "src/app/components/item-preview/item-preview.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -2644,14 +2887,28 @@
                     "defaultValue": "null",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 11,
+                    "line": 13,
                     "type": "WishlistItem | null",
                     "decorators": []
                 }
             ],
             "outputsClass": [],
             "propertiesClass": [],
-            "methodsClass": [],
+            "methodsClass": [
+                {
+                    "name": "goToItem",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 17,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ]
+                }
+            ],
             "deprecated": false,
             "deprecationMessage": "",
             "hostBindings": [],
@@ -2659,7 +2916,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, Input } from '@angular/core';\nimport { WishlistItem } from 'src/app/business/item';\n\n@Component({\n  selector: 'app-item-preview',\n  templateUrl: './item-preview.component.html',\n  styleUrls: ['./item-preview.component.scss'],\n})\nexport class ItemPreviewComponent {\n  @Input()\n  item: WishlistItem | null = null;\n\n  constructor() {}\n}\n",
+            "sourceCode": "import { Component, Input } from '@angular/core';\nimport { Store } from '@ngrx/store';\nimport { WishlistItem } from 'src/app/business/item';\nimport { goToItem } from 'src/app/store/w.actions';\n\n@Component({\n  selector: 'app-item-preview',\n  templateUrl: './item-preview.component.html',\n  styleUrls: ['./item-preview.component.scss'],\n})\nexport class ItemPreviewComponent {\n  @Input()\n  item: WishlistItem | null = null;\n\n  constructor(private store: Store) {}\n\n  public goToItem(): void {\n    if (this.item) {\n      this.store.dispatch(goToItem({ itemId: this.item.id }));\n    }\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -2673,10 +2930,28 @@
                 "description": "",
                 "deprecated": false,
                 "deprecationMessage": "",
-                "args": [],
-                "line": 11
+                "args": [
+                    {
+                        "name": "store",
+                        "type": "Store",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 13,
+                "jsdoctags": [
+                    {
+                        "name": "store",
+                        "type": "Store",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
             },
-            "templateData": "<mat-card *ngIf=\"item\">\n  <mat-card-title-group>\n    <mat-card-title>{{ item.Title }}</mat-card-title>\n    <mat-card-subtitle>{{ item.Category }}</mat-card-subtitle>\n  </mat-card-title-group>\n  <mat-divider inset></mat-divider>\n  <mat-card-content class=\"preview\">\n    <div class=\"desc\">\n      <img [src]=\"item.ImgageUrl\" *ngIf=\"item.ImgageUrl\" />\n      <span class=\"no-img\" *ngIf=\"!item.ImgageUrl\"></span>\n      {{ item.Description }}\n    </div>\n  </mat-card-content>\n</mat-card>\n"
+            "templateData": "<mat-card *ngIf=\"item\" (click)=\"goToItem()\">\n  <mat-card-title-group>\n    <mat-card-title>{{ item.Title }}</mat-card-title>\n    <mat-card-subtitle>{{ item.Category }}</mat-card-subtitle>\n  </mat-card-title-group>\n  <mat-divider inset></mat-divider>\n  <mat-card-content class=\"preview\">\n    <div class=\"desc\">\n      <img [src]=\"item.ImgageUrl\" *ngIf=\"item.ImgageUrl\" />\n      <span class=\"no-img\" *ngIf=\"!item.ImgageUrl\"></span>\n      {{ item.Description }}\n    </div>\n  </mat-card-content>\n</mat-card>\n"
         },
         {
             "name": "ItemPreviewStubComponent",
@@ -2851,7 +3126,7 @@
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": "$bordercolor: #888;\n\ndiv {\n    align-items: flex-end;\n}\n\n.n {\n    font-size: 800%;\n    border-right: 2px solid $bordercolor;\n}\n\n.t {\n    font-size: 300%;\n    border-bottom: 2px solid $bordercolor;\n}",
+                    "data": "$bordercolor: #888;\n\ndiv {\n    align-items: flex-end;\n}\n\n.n {\n    font-size: 128px;\n        line-height: 140px;\n    border-right: 2px solid $bordercolor;\n}\n\n.t {\n    font-size: 40px;\n        line-height: 57px;\n    border-bottom: 2px solid $bordercolor;\n}",
                     "styleUrl": "./page-not-found.component.scss"
                 }
             ],
@@ -2873,13 +3148,13 @@
     "modules": [
         {
             "name": "AppModule",
-            "id": "module-AppModule-841d2914b4f8d7ccf9035d63a3d5293a9c71e6a30f4a9b4d4de318bc5da6facdfd85ee923064a00929865a36a88760d2b3ef48e77555cc5aa4ae7bf36cf9960a",
+            "id": "module-AppModule-f363bc37b56cf3612bdb4d5267bbe50bdd809bdea8be7f30cf0f70c67442c2e79b83e521c0deff37dfb340e40edf011a67733eeb67866bdd8902c0711e22eaf1",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/app.module.ts",
             "methods": [],
-            "sourceCode": "import { LayoutModule } from '@angular/cdk/layout';\nimport { HttpClientModule } from '@angular/common/http';\nimport { NgModule } from '@angular/core';\nimport { ReactiveFormsModule } from '@angular/forms';\nimport { MatButtonModule } from '@angular/material/button';\nimport { MatCardModule } from '@angular/material/card';\nimport { MatDialogModule } from '@angular/material/dialog';\nimport { MatExpansionModule } from '@angular/material/expansion';\nimport {\n  MatFormFieldModule,\n  MAT_FORM_FIELD_DEFAULT_OPTIONS,\n} from '@angular/material/form-field';\nimport { MatIconModule } from '@angular/material/icon';\nimport { MatInputModule } from '@angular/material/input';\nimport { MatListModule } from '@angular/material/list';\nimport { MatProgressBarModule } from '@angular/material/progress-bar';\nimport { MatProgressSpinnerModule } from '@angular/material/progress-spinner';\nimport { MatSidenavModule } from '@angular/material/sidenav';\nimport { MatToolbarModule } from '@angular/material/toolbar';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\nimport { EffectsModule } from '@ngrx/effects';\nimport { StoreModule } from '@ngrx/store';\nimport { StoreDevtoolsModule } from '@ngrx/store-devtools';\nimport { environment } from '../environments/environment';\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { EditReservationComponent } from './components/edit-reservation/edit-reservation.component';\nimport { EmptyListComponent } from './components/empty-list/empty-list.component';\nimport { ItemDisplayComponent } from './components/item-display/item-display.component';\nimport { ItemFormComponent } from './components/item-form/item-form.component';\nimport { ItemPreviewComponent } from './components/item-preview/item-preview.component';\nimport { ConnectFormDirective } from './directives/connect-form.directive';\nimport { FormEnabledDirective } from './directives/form-enabled.directive';\nimport { FrameComponent } from './frame/frame.component';\nimport { AboutComponent } from './pages/about/about.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { CategoryPageComponent } from './pages/category-page/category-page.component';\nimport { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';\nimport { agReducer } from './store/a.reducer';\nimport { AppState } from './store/app.state';\nimport { rReducer } from './store/r.reducer';\nimport { WishlistEffects } from './store/w.effects';\nimport { wReducer } from './store/w.reducer';\n\n@NgModule({\n  declarations: [\n    AboutComponent,\n    AppComponent,\n    CategoriesPageComponent,\n    ConnectFormDirective,\n    EmptyListComponent,\n    FormEnabledDirective,\n    FrameComponent,\n    ItemDisplayComponent,\n    ItemFormComponent,\n    EditReservationComponent,\n    CategoryPageComponent,\n    ItemPreviewComponent,\n    PageNotFoundComponent,\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    BrowserAnimationsModule,\n    LayoutModule,\n    ReactiveFormsModule,\n    MatButtonModule,\n    MatCardModule,\n    MatDialogModule,\n    MatExpansionModule,\n    MatFormFieldModule,\n    MatIconModule,\n    MatInputModule,\n    MatListModule,\n    MatProgressBarModule,\n    MatProgressSpinnerModule,\n    MatSidenavModule,\n    MatToolbarModule,\n    StoreModule.forRoot<AppState>({\n      ag: agReducer,\n      wishlist: wReducer,\n      reservation: rReducer,\n    }),\n    EffectsModule.forRoot([WishlistEffects]),\n    // import HttpClientModule after BrowserModule.\n    HttpClientModule,\n    StoreDevtoolsModule.instrument({\n      maxAge: 25,\n      logOnly: environment.production,\n    }),\n  ],\n  providers: [\n    {\n      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,\n      useValue: { appearance: 'fill' },\n    },\n  ],\n  bootstrap: [AppComponent],\n})\nexport class AppModule {}\n",
+            "sourceCode": "import { LayoutModule } from '@angular/cdk/layout';\nimport { HttpClientModule } from '@angular/common/http';\nimport { NgModule } from '@angular/core';\nimport { ReactiveFormsModule } from '@angular/forms';\nimport { MatButtonModule } from '@angular/material/button';\nimport { MatCardModule } from '@angular/material/card';\nimport { MatDialogModule } from '@angular/material/dialog';\nimport { MatExpansionModule } from '@angular/material/expansion';\nimport {\n  MatFormFieldModule,\n  MAT_FORM_FIELD_DEFAULT_OPTIONS,\n} from '@angular/material/form-field';\nimport { MatIconModule } from '@angular/material/icon';\nimport { MatInputModule } from '@angular/material/input';\nimport { MatListModule } from '@angular/material/list';\nimport { MatProgressBarModule } from '@angular/material/progress-bar';\nimport { MatProgressSpinnerModule } from '@angular/material/progress-spinner';\nimport { MatSidenavModule } from '@angular/material/sidenav';\nimport { MatToolbarModule } from '@angular/material/toolbar';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\nimport { EffectsModule } from '@ngrx/effects';\nimport { StoreModule } from '@ngrx/store';\nimport { StoreDevtoolsModule } from '@ngrx/store-devtools';\nimport { environment } from '../environments/environment';\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { EditReservationComponent } from './components/edit-reservation/edit-reservation.component';\nimport { EmptyListComponent } from './components/empty-list/empty-list.component';\nimport { ItemDisplayComponent } from './components/item-display/item-display.component';\nimport { ItemFormComponent } from './components/item-form/item-form.component';\nimport { ItemPreviewComponent } from './components/item-preview/item-preview.component';\nimport { ConnectFormDirective } from './directives/connect-form.directive';\nimport { FormEnabledDirective } from './directives/form-enabled.directive';\nimport { FrameComponent } from './frame/frame.component';\nimport { AboutComponent } from './pages/about/about.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { CategoryPageComponent } from './pages/category-page/category-page.component';\nimport { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';\nimport { agReducer } from './store/a.reducer';\nimport { AppState } from './store/app.state';\nimport { rReducer } from './store/r.reducer';\nimport { WishlistEffects } from './store/w.effects';\nimport { wReducer } from './store/w.reducer';\nimport { WithCategoryPipe } from './pipes/with-category.pipe';\n\n@NgModule({\n  declarations: [\n    AboutComponent,\n    AppComponent,\n    CategoriesPageComponent,\n    ConnectFormDirective,\n    EmptyListComponent,\n    FormEnabledDirective,\n    FrameComponent,\n    ItemDisplayComponent,\n    ItemFormComponent,\n    EditReservationComponent,\n    CategoryPageComponent,\n    ItemPreviewComponent,\n    PageNotFoundComponent,\n    WithCategoryPipe,\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    BrowserAnimationsModule,\n    LayoutModule,\n    ReactiveFormsModule,\n    MatButtonModule,\n    MatCardModule,\n    MatDialogModule,\n    MatExpansionModule,\n    MatFormFieldModule,\n    MatIconModule,\n    MatInputModule,\n    MatListModule,\n    MatProgressBarModule,\n    MatProgressSpinnerModule,\n    MatSidenavModule,\n    MatToolbarModule,\n    StoreModule.forRoot<AppState>({\n      ag: agReducer,\n      wishlist: wReducer,\n      reservation: rReducer,\n    }),\n    EffectsModule.forRoot([WishlistEffects]),\n    // import HttpClientModule after BrowserModule.\n    HttpClientModule,\n    StoreDevtoolsModule.instrument({\n      maxAge: 25,\n      logOnly: environment.production,\n    }),\n  ],\n  providers: [\n    {\n      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,\n      useValue: { appearance: 'fill' },\n    },\n  ],\n  bootstrap: [AppComponent],\n})\nexport class AppModule {}\n",
             "children": [
                 {
                     "type": "providers",
@@ -2926,6 +3201,9 @@
                         },
                         {
                             "name": "PageNotFoundComponent"
+                        },
+                        {
+                            "name": "WithCategoryPipe"
                         }
                     ]
                 },
@@ -2957,13 +3235,13 @@
         },
         {
             "name": "AppRoutingModule",
-            "id": "module-AppRoutingModule-9e7469a7b89d2e6776458e4469e6b068c9ea313b93ee13c573c7711466d76fd851d2c403103f833b5739a35b8d87eb356b7cb06ebfe9fd359b6d25e5ca437b3b",
+            "id": "module-AppRoutingModule-313c8a0d1b62f2a52098f965147c42f070cb29bdc8d7ef270cfd9eab0e881d6f7946bd17e211288cc3556870b2c14f69c0a15e9f59a2a8ba64923b6cc691d55e",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/app-routing.module.ts",
             "methods": [],
-            "sourceCode": "import { NgModule } from '@angular/core';\nimport { RouterModule, Routes } from '@angular/router';\nimport { AboutComponent } from './pages/about/about.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { CategoryPageComponent } from './pages/category-page/category-page.component';\nimport { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';\n\nconst routes: Routes = [\n  {\n    path: 'wunschliste/:category',\n    component: CategoryPageComponent,\n    data: { animation: 'CategoryPage' },\n  },\n  {\n    path: 'wunschliste',\n    component: CategoriesPageComponent,\n    data: { animation: 'CategoriesPage' },\n  },\n  {\n    path: 'about',\n    component: AboutComponent,\n    data: { animation: 'AboutPage' },\n  },\n\n  { path: '', redirectTo: '/wunschliste', pathMatch: 'full' },\n  { path: '**', component: PageNotFoundComponent },\n];\n\n@NgModule({\n  imports: [RouterModule.forRoot(routes, { useHash: true })],\n  exports: [RouterModule]\n})\nexport class AppRoutingModule { }\n",
+            "sourceCode": "import { NgModule } from '@angular/core';\nimport { RouterModule, Routes } from '@angular/router';\nimport { AboutComponent } from './pages/about/about.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { CategoryPageComponent } from './pages/category-page/category-page.component';\nimport { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';\n\nconst routes: Routes = [\n  {\n    path: 'wunschliste',\n    component: CategoryPageComponent,\n    data: { animation: 'CategoryPage' },\n  },\n  {\n    path: 'wunschliste/:category',\n    component: CategoryPageComponent,\n    data: { animation: 'CategoryPage' },\n  },\n  {\n    path: 'kategorien',\n    component: CategoriesPageComponent,\n    data: { animation: 'CategoriesPage' },\n  },\n  {\n    path: 'about',\n    component: AboutComponent,\n    data: { animation: 'AboutPage' },\n  },\n\n  { path: '', redirectTo: '/kategorien', pathMatch: 'full' },\n  { path: '**', component: PageNotFoundComponent },\n];\n\n@NgModule({\n  imports: [RouterModule.forRoot(routes, { useHash: true })],\n  exports: [RouterModule]\n})\nexport class AppRoutingModule { }\n",
             "children": [
                 {
                     "type": "providers",
@@ -3173,6 +3451,16 @@
                 "deprecationMessage": "",
                 "type": "",
                 "defaultValue": "createAction(\n  '[W] Go to category',\n  props<{\n    category: string;\n  }>()\n)"
+            },
+            {
+                "name": "goToItem",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/w.actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction(\n  '[W] Go to item',\n  props<{\n    itemId: number;\n  }>()\n)"
             },
             {
                 "name": "HasReservation",
@@ -3641,7 +3929,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
-                "defaultValue": "createReducer<WishlistState>(\n  initialState,\n  on(\n    itemsLoaded,\n    (state, p): WishlistState => ({\n      ...state,\n      categories: p.items\n        .map((i) => i.Category)\n        .reduce((a, c) => {\n          if (a.indexOf(c) === -1) {\n            a.push(c);\n          }\n          return a;\n        }, [] as string[])\n        .sort(),\n    })\n  )\n)"
+                "defaultValue": "createReducer<WishlistState>(\n  initialState,\n  on(\n    itemsLoaded,\n    (state, p): WishlistState => ({\n      ...state,\n      categories: p.items\n        .map((i) => i.Category)\n        .reduce((a, c) => {\n          if (a.indexOf(c) === -1) {\n            a.push(c);\n          }\n          return a;\n        }, [] as string[])\n        .sort(),\n      items: p.items,\n    })\n  )\n)"
             }
         ],
         "functions": [
@@ -4139,6 +4427,16 @@
                     "defaultValue": "createAction(\n  '[W] Go to category',\n  props<{\n    category: string;\n  }>()\n)"
                 },
                 {
+                    "name": "goToItem",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/w.actions.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createAction(\n  '[W] Go to item',\n  props<{\n    itemId: number;\n  }>()\n)"
+                },
+                {
                     "name": "itemsLoaded",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
@@ -4232,7 +4530,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
-                    "defaultValue": "createReducer<WishlistState>(\n  initialState,\n  on(\n    itemsLoaded,\n    (state, p): WishlistState => ({\n      ...state,\n      categories: p.items\n        .map((i) => i.Category)\n        .reduce((a, c) => {\n          if (a.indexOf(c) === -1) {\n            a.push(c);\n          }\n          return a;\n        }, [] as string[])\n        .sort(),\n    })\n  )\n)"
+                    "defaultValue": "createReducer<WishlistState>(\n  initialState,\n  on(\n    itemsLoaded,\n    (state, p): WishlistState => ({\n      ...state,\n      categories: p.items\n        .map((i) => i.Category)\n        .reduce((a, c) => {\n          if (a.indexOf(c) === -1) {\n            a.push(c);\n          }\n          return a;\n        }, [] as string[])\n        .sort(),\n      items: p.items,\n    })\n  )\n)"
                 }
             ],
             "src/stories/Button.stories.ts": [
@@ -4633,6 +4931,13 @@
                 "module": "AppRoutingModule",
                 "children": [
                     {
+                        "path": "wunschliste",
+                        "component": "CategoryPageComponent",
+                        "data": {
+                            "animation": "CategoryPage"
+                        }
+                    },
+                    {
                         "path": "wunschliste/:category",
                         "component": "CategoryPageComponent",
                         "data": {
@@ -4640,7 +4945,7 @@
                         }
                     },
                     {
-                        "path": "wunschliste",
+                        "path": "kategorien",
                         "component": "CategoriesPageComponent",
                         "data": {
                             "animation": "CategoriesPage"
@@ -4655,7 +4960,7 @@
                     },
                     {
                         "path": "",
-                        "redirectTo": "/wunschliste",
+                        "redirectTo": "/kategorien",
                         "pathMatch": "full"
                     },
                     {
@@ -4759,7 +5064,7 @@
                 "linktype": "component",
                 "name": "ItemPreviewComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/3",
+                "coverageCount": "0/4",
                 "status": "low"
             },
             {
@@ -4813,7 +5118,7 @@
                 "linktype": "component",
                 "name": "CategoryPageComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/4",
+                "coverageCount": "0/6",
                 "status": "low"
             },
             {
@@ -4823,6 +5128,15 @@
                 "name": "PageNotFoundComponent",
                 "coveragePercent": 0,
                 "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/pipes/with-category.pipe.ts",
+                "type": "pipe",
+                "linktype": "pipe",
+                "name": "WithCategoryPipe",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
                 "status": "low"
             },
             {
@@ -4996,6 +5310,16 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
+                "name": "goToItem",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/w.actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
                 "name": "itemsLoaded",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
@@ -5007,7 +5331,7 @@
                 "linktype": "injectable",
                 "name": "WishlistEffects",
                 "coveragePercent": 0,
-                "coverageCount": "0/5",
+                "coverageCount": "0/6",
                 "status": "low"
             },
             {
@@ -5546,6 +5870,15 @@
                 "status": "low"
             },
             {
+                "filePath": "testing/activated-route-stub.ts",
+                "type": "class",
+                "linktype": "classe",
+                "name": "ActivatedRouteStub",
+                "coveragePercent": 60,
+                "coverageCount": "3/5",
+                "status": "good"
+            },
+            {
                 "filePath": "testing/app.state.builder.ts",
                 "type": "class",
                 "linktype": "classe",
@@ -5570,7 +5903,7 @@
                 "linktype": "classe",
                 "name": "WishlistItemBuilder",
                 "coveragePercent": 0,
-                "coverageCount": "0/11",
+                "coverageCount": "0/12",
                 "status": "low"
             },
             {
