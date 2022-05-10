@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { EMPTY, map, Observable, switchMap } from 'rxjs';
+import { EMPTY, map, Observable } from 'rxjs';
 import { selectHasPendingRequest } from 'src/app/store/a.selectors';
 import { selectItems } from 'src/app/store/w.selectors';
 

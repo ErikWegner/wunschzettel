@@ -4,6 +4,7 @@ import { EditReservationComponent } from 'src/app/components/edit-reservation/ed
 import { ItemDisplayComponent } from 'src/app/components/item-display/item-display.component';
 import { AppState } from 'src/app/store/app.state';
 import { appStateStub } from 'testing/app.state.builder';
+import { WishlistItemBuilder } from 'testing/item.builder';
 import { moduleImports } from './matmetadata';
 
 const initialState: AppState = appStateStub();
@@ -21,5 +22,7 @@ export default {
 } as Meta;
 
 export const Display: Story = () => ({
-  props: {},
+  props: {
+    item: WishlistItemBuilder.faust(),
+  },
 });

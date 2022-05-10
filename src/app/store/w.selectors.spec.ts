@@ -1,6 +1,11 @@
 import { AppStateBuilder } from 'testing/app.state.builder';
+import { WishlistItemBuilder } from 'testing/item.builder';
 import { AppState } from './app.state';
-import { selectActiveItemAsFormData, selectCategories } from './w.selectors';
+import {
+  selectActiveItem,
+  selectActiveItemAsFormData,
+  selectCategories,
+} from './w.selectors';
 
 describe('Wishlist selectors', () => {
   const initialState: AppState = AppStateBuilder.givenCategories(
@@ -17,6 +22,14 @@ describe('Wishlist selectors', () => {
 
   describe('active item', () => {
     const initialState = AppStateBuilder.hasActiveItem();
+
+    it('should return active item', () => {
+      const item = WishlistItemBuilder.default();
+      const initialState =
+        AppStateBuilder.withBookCategoryAndItems().withActiveItem(item);
+      const result = selectActiveItem.projector(initialState.wishlist);
+      expect(result).toEqual(item);
+    });
 
     it('should map active item to form fields', () => {
       const result = selectActiveItemAsFormData.projector(

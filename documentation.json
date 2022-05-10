@@ -1433,12 +1433,12 @@
         },
         {
             "name": "WishlistItemBuilder",
-            "id": "class-WishlistItemBuilder-ee7ff4ce70d97600349131819885e5f951a66c6402ac142d27543b014e568587c19a699d7c27702708755529c7eb2cfcd0e06b85a835aa58be23517c39b57812",
+            "id": "class-WishlistItemBuilder-a4343f4d2c1e3ac708282a44bda7209692eaea77cdd3f238807227817be7714f3ca8bb11bc50ba630fc5ecb73898e848fa40b5140aa20ae3aaa52266e7061481",
             "file": "testing/item.builder.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "class",
-            "sourceCode": "import { WishlistItem } from 'src/app/business/item';\nimport { randomNumber, randomString } from './utils';\n\nexport class WishlistItemBuilder {\n  id = randomNumber(900);\n  title = randomString(8, 'title ');\n  description = randomString(30, 'description ');\n  image_url = randomString(8, 'image ');\n  shopping_url = randomString(8, 'shop ');\n  category = randomString(8, 'category ');\n\n  static n() {\n    return new WishlistItemBuilder();\n  }\n\n  static default() {\n    return WishlistItemBuilder.n().build();\n  }\n\n  withCategory(category: string) {\n    this.category = category;\n    return this;\n  }\n\n  withId(id: number) {\n    this.id = id;\n    return this;\n  }\n\n  build(): WishlistItem {\n    return {\n      id: this.id,\n      Title: this.title,\n      Description: this.description,\n      ImgageUrl: this.image_url,\n      BuyUrl: this.shopping_url,\n      Category: this.category,\n    };\n  }\n}\n",
+            "sourceCode": "import { WishlistItem } from 'src/app/business/item';\nimport { randomNumber, randomString } from './utils';\n\nexport class WishlistItemBuilder {\n  id = randomNumber(900);\n  title = randomString(8, 'title ');\n  description = randomString(30, 'description ');\n  image_url = randomString(8, 'image ');\n  shopping_url = randomString(8, 'shop ');\n  category = randomString(8, 'category ');\n\n  static n() {\n    return new WishlistItemBuilder();\n  }\n\n  static default() {\n    return WishlistItemBuilder.n().build();\n  }\n\n  static faust(): WishlistItem {\n    return {\n      Title: 'Faust I + II',\n      Category: 'Buch',\n      Description: `Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des\n      Fauststoffs bezeichnet. Der Begriff kann sich auf den ersten Teil der\n      durch Goethe geschaffenen Tragödie, auf deren ersten und zweiten Teil\n      gemeinsam oder insgesamt auf die Arbeiten am Fauststoff beziehen, die\n      Goethe durch sechzig Jahre hindurch immer wieder neu aufnahm. Er umfasst\n      in diesem letzteren Sinne auch die Entwürfe, Fragmente, Kommentare und\n      Paralipomena des Dichters zu seinem Faustwerk und zum Fauststoff.`,\n      BuyUrl: 'https://de.wikipedia.org/wiki/Goethes_Faust',\n      ImgageUrl:\n        'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg',\n      id: 42_872,\n    };\n  }\n\n  withCategory(category: string) {\n    this.category = category;\n    return this;\n  }\n\n  withId(id: number) {\n    this.id = id;\n    return this;\n  }\n\n  build(): WishlistItem {\n    return {\n      id: this.id,\n      Title: this.title,\n      Description: this.description,\n      ImgageUrl: this.image_url,\n      BuyUrl: this.shopping_url,\n      Category: this.category,\n    };\n  }\n}\n",
             "properties": [
                 {
                     "name": "category",
@@ -1508,7 +1508,7 @@
                     "optional": false,
                     "returnType": "WishlistItem",
                     "typeParameters": [],
-                    "line": 30,
+                    "line": 48,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -1519,6 +1519,19 @@
                     "returnType": "WishlistItem",
                     "typeParameters": [],
                     "line": 16,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        124
+                    ]
+                },
+                {
+                    "name": "faust",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "WishlistItem",
+                    "typeParameters": [],
+                    "line": 20,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1551,7 +1564,7 @@
                     "optional": false,
                     "returnType": "this",
                     "typeParameters": [],
-                    "line": 20,
+                    "line": 38,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -1579,7 +1592,7 @@
                     "optional": false,
                     "returnType": "this",
                     "typeParameters": [],
-                    "line": 25,
+                    "line": 43,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -2110,7 +2123,7 @@
         },
         {
             "name": "CategoryPageComponent",
-            "id": "component-CategoryPageComponent-1bc5dfec684eb64c90cf70e8b31d1b275f0b9c764c505e30cbdbc8ed50714eb65a849f1e2306f65e3e1eab9411ffb7e7056cb875f1fd42b1f1d460aa9e33ec7c",
+            "id": "component-CategoryPageComponent-1879c123fd5a0836d966ee78cb4c07ce826e337787f5e68515e2a83eec4e7cae252cc3e336c8ccd31eff9f64cf409a1ae1d948d6bae664e114659ece48310c76",
             "file": "src/app/pages/category-page/category-page.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -2179,7 +2192,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, OnInit } from '@angular/core';\nimport { ActivatedRoute, ParamMap } from '@angular/router';\nimport { Store } from '@ngrx/store';\nimport { EMPTY, map, Observable, switchMap } from 'rxjs';\nimport { selectHasPendingRequest } from 'src/app/store/a.selectors';\nimport { selectItems } from 'src/app/store/w.selectors';\n\n@Component({\n  selector: 'app-category-page',\n  templateUrl: './category-page.component.html',\n  styleUrls: ['./category-page.component.scss'],\n})\nexport class CategoryPageComponent implements OnInit {\n  hasRequestPending$ = this.store.select(selectHasPendingRequest);\n  activeCategory$: Observable<string | null> = EMPTY;\n  items$ = this.store.select(selectItems);\n\n  constructor(private route: ActivatedRoute, private store: Store) {}\n\n  ngOnInit(): void {\n    this.activeCategory$ = this.route.paramMap.pipe(\n      map((params: ParamMap) => params.get('category'))\n    );\n  }\n}\n",
+            "sourceCode": "import { Component, OnInit } from '@angular/core';\nimport { ActivatedRoute, ParamMap } from '@angular/router';\nimport { Store } from '@ngrx/store';\nimport { EMPTY, map, Observable } from 'rxjs';\nimport { selectHasPendingRequest } from 'src/app/store/a.selectors';\nimport { selectItems } from 'src/app/store/w.selectors';\n\n@Component({\n  selector: 'app-category-page',\n  templateUrl: './category-page.component.html',\n  styleUrls: ['./category-page.component.scss'],\n})\nexport class CategoryPageComponent implements OnInit {\n  hasRequestPending$ = this.store.select(selectHasPendingRequest);\n  activeCategory$: Observable<string | null> = EMPTY;\n  items$ = this.store.select(selectItems);\n\n  constructor(private route: ActivatedRoute, private store: Store) {}\n\n  ngOnInit(): void {\n    this.activeCategory$ = this.route.paramMap.pipe(\n      map((params: ParamMap) => params.get('category'))\n    );\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -2671,7 +2684,7 @@
         },
         {
             "name": "ItemDisplayComponent",
-            "id": "component-ItemDisplayComponent-9db7da683c0f0ff17c2c582c2cb394ce55729371025cb49757951b4d3bf06acba2ed88da6a1ebc19f673a098930c179ff53742b357d0cdf432c8a7b0ec52b2cd",
+            "id": "component-ItemDisplayComponent-c070745a9848552710415e48ee1f25088f56ca0f86bcde2afdc2687f0ce899765642799cf07410d7ae0205caeb3e167d01dbd5c4d5545bff842f018f9ee79bb7",
             "file": "src/app/components/item-display/item-display.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -2687,21 +2700,20 @@
                 "./item-display.component.html"
             ],
             "viewProviders": [],
-            "inputsClass": [],
-            "outputsClass": [],
-            "propertiesClass": [],
-            "methodsClass": [
+            "inputsClass": [
                 {
-                    "name": "ngOnInit",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 12,
+                    "name": "item",
+                    "defaultValue": "null",
                     "deprecated": false,
-                    "deprecationMessage": ""
+                    "deprecationMessage": "",
+                    "line": 11,
+                    "type": "WishlistItem | null",
+                    "decorators": []
                 }
             ],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
             "deprecated": false,
             "deprecationMessage": "",
             "hostBindings": [],
@@ -2709,7 +2721,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'app-item-display',\n  templateUrl: './item-display.component.html',\n  styleUrls: ['./item-display.component.scss']\n})\nexport class ItemDisplayComponent implements OnInit {\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n}\n",
+            "sourceCode": "import { Component, Input, OnInit } from '@angular/core';\nimport { WishlistItem } from 'src/app/business/item';\n\n@Component({\n  selector: 'app-item-display',\n  templateUrl: './item-display.component.html',\n  styleUrls: ['./item-display.component.scss'],\n})\nexport class ItemDisplayComponent {\n  @Input()\n  item: WishlistItem | null = null;\n\n  constructor() {}\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -2724,12 +2736,58 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "args": [],
-                "line": 8
+                "line": 11
             },
-            "implements": [
-                "OnInit"
+            "templateData": "<mat-card>\n  <mat-card-title-group>\n    <mat-card-title>{{ item?.Title }}</mat-card-title>\n    <mat-card-subtitle>{{ item?.Category }}</mat-card-subtitle>\n  </mat-card-title-group>\n  <mat-divider inset></mat-divider>\n  <mat-card-content>\n    <div class=\"f\">\n      <p>\n        {{ item?.Description }}\n      </p>\n      <div>\n        <img mat-card-lg-image\n          [src]=\"item?.ImgageUrl\" />\n      </div>\n    </div>\n    <div>\n      Kauf-Adresse:\n      <a [href]=\"item?.BuyUrl\">\n        {{ item?.BuyUrl }}\n      </a>\n    </div>\n  </mat-card-content>\n  <mat-divider inset></mat-divider>\n  <mat-card-actions>\n    <mat-expansion-panel>\n      <mat-expansion-panel-header>\n        <mat-panel-title>Reservieren und Status</mat-panel-title>\n      </mat-expansion-panel-header>\n      <app-edit-reservation></app-edit-reservation>\n    </mat-expansion-panel>\n    <div class=\"f mt24\">\n      <button mat-flat-button color=\"accent\">Bearbeiten</button>\n      <div class=\"spacer\"></div>\n      <button mat-flat-button color=\"primary\">Zurück</button>\n    </div>\n    </mat-card-actions>\n    <mat-card-footer>\n  </mat-card-footer>\n</mat-card>"
+        },
+        {
+            "name": "ItemDisplayStubComponent",
+            "id": "component-ItemDisplayStubComponent-1980deaf5bd9d1f9b00693fe5ccd72385fe22eb8d134dd84710ee1e1367cebb6fef2d54d17d796a0869b9367f6e237b0c14a634e9813b37b66be93024cdd1c05",
+            "file": "testing/stubs/item-display.stub.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-item-display",
+            "styleUrls": [],
+            "styles": [],
+            "template": "<div>app-item-display</div>    <div class=\"title\">{{ item?.Title }}</div>\n    <div class=\"category\">{{ item?.Category }}</div>",
+            "templateUrl": [],
+            "viewProviders": [],
+            "inputsClass": [
+                {
+                    "name": "item",
+                    "defaultValue": "null",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 12,
+                    "type": "WishlistItem | null",
+                    "decorators": []
+                }
             ],
-            "templateData": "<mat-card>\n  <mat-card-title-group>\n    <mat-card-title>Faust I + II</mat-card-title>\n    <mat-card-subtitle>Buch</mat-card-subtitle>\n  </mat-card-title-group>\n  <mat-divider inset></mat-divider>\n  <mat-card-content>\n    <div class=\"f\">\n      <p>\n        Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des\n        Fauststoffs bezeichnet. Der Begriff kann sich auf den ersten Teil der\n        durch Goethe geschaffenen Tragödie, auf deren ersten und zweiten Teil\n        gemeinsam oder insgesamt auf die Arbeiten am Fauststoff beziehen, die\n        Goethe durch sechzig Jahre hindurch immer wieder neu aufnahm. Er umfasst\n        in diesem letzteren Sinne auch die Entwürfe, Fragmente, Kommentare und\n        Paralipomena des Dichters zu seinem Faustwerk und zum Fauststoff.\n      </p>\n      <div>\n        <img mat-card-lg-image\n          src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg\" />\n      </div>\n    </div>\n    <div>\n      Kauf-Adresse:\n      <a href=\"https://de.wikipedia.org/wiki/Goethes_Faust\">\n        https://de.wikipedia.org/wiki/Goethes_Faust\n      </a>\n    </div>\n  </mat-card-content>\n  <mat-divider inset></mat-divider>\n  <mat-card-actions>\n    <mat-expansion-panel>\n      <mat-expansion-panel-header>\n        <mat-panel-title>Reservieren und Status</mat-panel-title>\n      </mat-expansion-panel-header>\n      <app-edit-reservation></app-edit-reservation>\n    </mat-expansion-panel>\n    <div class=\"f mt24\">\n      <button mat-flat-button color=\"accent\">Bearbeiten</button>\n      <div class=\"spacer\"></div>\n      <button mat-flat-button color=\"primary\">Zurück</button>\n    </div>\n    </mat-card-actions>\n    <mat-card-footer>\n  </mat-card-footer>\n</mat-card>"
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, Input } from '@angular/core';\nimport { WishlistItem } from 'src/app/business/item';\n\n@Component({\n  selector: 'app-item-display',\n  template: `<div>app-item-display</div>\n    <div class=\"title\">{{ item?.Title }}</div>\n    <div class=\"category\">{{ item?.Category }}</div> `,\n})\nexport class ItemDisplayStubComponent {\n  @Input()\n  item: WishlistItem | null = null;\n\n  constructor() {}\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [],
+                "line": 12
+            }
         },
         {
             "name": "ItemFormComponent",
@@ -3004,7 +3062,7 @@
         },
         {
             "name": "ItemViewComponent",
-            "id": "component-ItemViewComponent-cc558a03cc1e2fa4efe698f479207eea15d20b4bc99b46b3d20c0febca0db55dbded86ca21c3d0a283569dbb834bddabc50595f51bbe4172d3d7b571b560d2f8",
+            "id": "component-ItemViewComponent-623e9e649f159392ab78314cc38efef2313f535e8a11886ab8fdd98829ce8111715c1a39d588e268a690da080d5dc2aa31d58782758015fca9be2dd3914f923f",
             "file": "src/app/pages/item-view/item-view.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -3022,19 +3080,29 @@
             "viewProviders": [],
             "inputsClass": [],
             "outputsClass": [],
-            "propertiesClass": [],
-            "methodsClass": [
+            "propertiesClass": [
                 {
-                    "name": "ngOnInit",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 12,
+                    "name": "hasRequestPending$",
+                    "defaultValue": "this.store.select(selectHasPendingRequest)",
                     "deprecated": false,
-                    "deprecationMessage": ""
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 12
+                },
+                {
+                    "name": "item$",
+                    "defaultValue": "this.store.select(selectActiveItem)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 13
                 }
             ],
+            "methodsClass": [],
             "deprecated": false,
             "deprecationMessage": "",
             "hostBindings": [],
@@ -3042,7 +3110,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'app-item-view',\n  templateUrl: './item-view.component.html',\n  styleUrls: ['./item-view.component.scss']\n})\nexport class ItemViewComponent implements OnInit {\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n}\n",
+            "sourceCode": "import { Component, OnInit } from '@angular/core';\nimport { Store } from '@ngrx/store';\nimport { selectHasPendingRequest } from 'src/app/store/a.selectors';\nimport { selectActiveItem } from 'src/app/store/w.selectors';\n\n@Component({\n  selector: 'app-item-view',\n  templateUrl: './item-view.component.html',\n  styleUrls: ['./item-view.component.scss'],\n})\nexport class ItemViewComponent {\n  hasRequestPending$ = this.store.select(selectHasPendingRequest);\n  item$ = this.store.select(selectActiveItem);\n  constructor(private store: Store) {}\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -3056,13 +3124,28 @@
                 "description": "",
                 "deprecated": false,
                 "deprecationMessage": "",
-                "args": [],
-                "line": 8
+                "args": [
+                    {
+                        "name": "store",
+                        "type": "Store",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 13,
+                "jsdoctags": [
+                    {
+                        "name": "store",
+                        "type": "Store",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
             },
-            "implements": [
-                "OnInit"
-            ],
-            "templateData": "<p>item-view works!</p>\n"
+            "templateData": "<mat-spinner class=\"centerbox\" *ngIf=\"hasRequestPending$ | async\"></mat-spinner>\n<ng-container *ngIf=\"false === (hasRequestPending$ | async)\">\n  <app-item-display [item]=\"item$ | async\"></app-item-display>\n</ng-container>\n"
         },
         {
             "name": "MenuNavlistComponent",
@@ -3564,7 +3647,17 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "() => ({\n  props: {},\n})"
+                "defaultValue": "() => ({\n  props: {\n    item: WishlistItemBuilder.faust(),\n  },\n})"
+            },
+            {
+                "name": "Display",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/ItemView.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "() => ({})"
             },
             {
                 "name": "Display",
@@ -3700,6 +3793,16 @@
                 "name": "initialState",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "src/stories/ItemView.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "AppState",
+                "defaultValue": "AppStateBuilder.withBookCategoryAndItems().withActiveItem()"
+            },
+            {
+                "name": "initialState",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "src/app/store/a.reducer.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -3771,6 +3874,16 @@
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "src/stories/Category.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "() => ({})"
+            },
+            {
+                "name": "Loading",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/ItemView.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
@@ -3904,6 +4017,16 @@
                 "deprecationMessage": "",
                 "type": "",
                 "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "selectActiveItem",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/w.selectors.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createSelector(\n  selectFeature,\n  (state: WishlistState) => state.activeItem\n)"
             },
             {
                 "name": "selectActiveItemAsFormData",
@@ -4084,6 +4207,16 @@
                 "deprecationMessage": "",
                 "type": "Story<ItemFormComponent>",
                 "defaultValue": "(args: ItemFormComponent) => ({\n  props: args,\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/ItemView.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<ItemViewComponent>",
+                "defaultValue": "(args: ItemViewComponent) => ({\n  props: args,\n})"
             },
             {
                 "name": "Template",
@@ -4540,7 +4673,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "() => ({\n  props: {},\n})"
+                    "defaultValue": "() => ({\n  props: {\n    item: WishlistItemBuilder.faust(),\n  },\n})"
                 },
                 {
                     "name": "initialState",
@@ -4551,6 +4684,48 @@
                     "deprecationMessage": "",
                     "type": "AppState",
                     "defaultValue": "appStateStub()"
+                }
+            ],
+            "src/stories/ItemView.stories.ts": [
+                {
+                    "name": "Display",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/ItemView.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "() => ({})"
+                },
+                {
+                    "name": "initialState",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/ItemView.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "AppState",
+                    "defaultValue": "AppStateBuilder.withBookCategoryAndItems().withActiveItem()"
+                },
+                {
+                    "name": "Loading",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/ItemView.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "() => ({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/ItemView.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<ItemViewComponent>",
+                    "defaultValue": "(args: ItemViewComponent) => ({\n  props: args,\n})"
                 }
             ],
             "src/stories/NotFound.stories.ts": [
@@ -4834,6 +5009,16 @@
                 }
             ],
             "src/app/store/w.selectors.ts": [
+                {
+                    "name": "selectActiveItem",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/w.selectors.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createSelector(\n  selectFeature,\n  (state: WishlistState) => state.activeItem\n)"
+                },
                 {
                     "name": "selectActiveItemAsFormData",
                     "ctype": "miscellaneous",
@@ -5327,7 +5512,7 @@
                 "linktype": "component",
                 "name": "ItemViewComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/3",
+                "coverageCount": "0/4",
                 "status": "low"
             },
             {
@@ -5559,6 +5744,16 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "wReducer",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/w.selectors.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "selectActiveItem",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
@@ -5953,6 +6148,46 @@
                 "status": "low"
             },
             {
+                "filePath": "src/stories/ItemView.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Display",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/ItemView.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "initialState",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/ItemView.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Loading",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/ItemView.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
                 "filePath": "src/stories/NotFound.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
@@ -6112,7 +6347,7 @@
                 "linktype": "classe",
                 "name": "WishlistItemBuilder",
                 "coveragePercent": 0,
-                "coverageCount": "0/12",
+                "coverageCount": "0/13",
                 "status": "low"
             },
             {
@@ -6140,6 +6375,15 @@
                 "name": "EmptyListStubComponent",
                 "coveragePercent": 0,
                 "coverageCount": "0/2",
+                "status": "low"
+            },
+            {
+                "filePath": "testing/stubs/item-display.stub.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ItemDisplayStubComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
                 "status": "low"
             },
             {

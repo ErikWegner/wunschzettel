@@ -14,6 +14,11 @@ export const selectItems = createSelector(
   (state: WishlistState) => state.items
 );
 
+export const selectActiveItem = createSelector(
+  selectFeature,
+  (state: WishlistState) => state.activeItem
+);
+
 export const selectActiveItemAsFormData = createSelector(
   selectFeature,
   (state: WishlistState) => ({

@@ -1,29 +1,23 @@
 <mat-card>
   <mat-card-title-group>
-    <mat-card-title>Faust I + II</mat-card-title>
-    <mat-card-subtitle>Buch</mat-card-subtitle>
+    <mat-card-title>{{ item?.Title }}</mat-card-title>
+    <mat-card-subtitle>{{ item?.Category }}</mat-card-subtitle>
   </mat-card-title-group>
   <mat-divider inset></mat-divider>
   <mat-card-content>
     <div class="f">
       <p>
-        Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des
-        Fauststoffs bezeichnet. Der Begriff kann sich auf den ersten Teil der
-        durch Goethe geschaffenen Tragödie, auf deren ersten und zweiten Teil
-        gemeinsam oder insgesamt auf die Arbeiten am Fauststoff beziehen, die
-        Goethe durch sechzig Jahre hindurch immer wieder neu aufnahm. Er umfasst
-        in diesem letzteren Sinne auch die Entwürfe, Fragmente, Kommentare und
-        Paralipomena des Dichters zu seinem Faustwerk und zum Fauststoff.
+        {{ item?.Description }}
       </p>
       <div>
         <img mat-card-lg-image
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg" />
+          [src]="item?.ImgageUrl" />
       </div>
     </div>
     <div>
       Kauf-Adresse:
-      <a href="https://de.wikipedia.org/wiki/Goethes_Faust">
-        https://de.wikipedia.org/wiki/Goethes_Faust
+      <a [href]="item?.BuyUrl">
+        {{ item?.BuyUrl }}
       </a>
     </div>
   </mat-card-content>

@@ -1,8 +1,11 @@
+import { ActivatedRoute } from '@angular/router';
 import { provideMockStore } from '@ngrx/store/testing';
 import { Meta, moduleMetadata, Story } from '@storybook/angular';
 import { ItemPreviewComponent } from 'src/app/components/item-preview/item-preview.component';
 import { CategoryPageComponent } from 'src/app/pages/category-page/category-page.component';
+import { WithCategoryPipe } from 'src/app/pipes/with-category.pipe';
 import { AppState } from 'src/app/store/app.state';
+import { ActivatedRouteStub } from 'testing/activated-route-stub';
 import { AppStateBuilder } from 'testing/app.state.builder';
 import { moduleImports } from './matmetadata';
 
@@ -15,7 +18,10 @@ export default {
     moduleMetadata({
       declarations: [ItemPreviewComponent],
       imports: moduleImports,
-      providers: [provideMockStore({ initialState })],
+      providers: [
+        provideMockStore({ initialState }),
+        { provide: ActivatedRoute, useValue: new ActivatedRouteStub() },
+      ],
     }),
   ],
 } as Meta;
@@ -38,3 +44,16 @@ Loading.decorators = [
 ];
 
 export const Category: Story = () => ({});
+Category.decorators = [
+  moduleMetadata({
+    declarations: [ItemPreviewComponent, WithCategoryPipe],
+    imports: moduleImports,
+    providers: [
+      provideMockStore({ initialState }),
+      {
+        provide: ActivatedRoute,
+        useValue: new ActivatedRouteStub({ category: 'Buch' }),
+      },
+    ],
+  }),
+];

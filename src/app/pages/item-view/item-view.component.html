@@ -1,1 +1,4 @@
-<p>item-view works!</p>
+<mat-spinner class="centerbox" *ngIf="hasRequestPending$ | async"></mat-spinner>
+<ng-container *ngIf="false === (hasRequestPending$ | async)">
+  <app-item-display [item]="item$ | async"></app-item-display>
+</ng-container>
