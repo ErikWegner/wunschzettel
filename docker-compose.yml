@@ -1,0 +1,16 @@
+version: '3'
+services:
+  app:
+    build: .devcontainer/
+    volumes:
+      # Mount the root folder that contains .git
+      - .:/workspace:cached
+    command: /bin/sh -c "while sleep 1000; do :; done"
+
+  phpservice:
+    image: php:8.0-cli
+    command: php -t /app -S 0.0.0.0:6000
+    volumes:
+      - ./server:/app:rw
+    ports:
+      - "6000:6000"
