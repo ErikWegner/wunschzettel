@@ -1,6 +1,6 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import {
   selectCaptchaRequestText,
@@ -43,5 +43,5 @@ export class ItemFormComponent {
   requestError$ = this.store.select(selectRequestErrorText);
   captchaChallengeText$ = this.store.select(selectCaptchaRequestText);
 
-  constructor(private fb: FormBuilder, private store: Store) {}
+  constructor(private fb: UntypedFormBuilder, private store: Store) {}
 }
