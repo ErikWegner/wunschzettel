@@ -8,7 +8,8 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { Observable, of, throwError } from 'rxjs';
 import { randomNumber, randomString } from 'testing/utils';
 import { ItemsService } from '../services/items.service';
-import { getItems, goToCategory, goToItem, requestFailure } from './w.actions';
+import { requestFailure } from './a.actions';
+import { getItems, goToCategory, goToItem } from './w.actions';
 import { WishlistEffects } from './w.effects';
 import { initialState as WishlishInitialState } from './w.reducer';
 

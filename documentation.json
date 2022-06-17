@@ -638,18 +638,18 @@
         },
         {
             "name": "WishlistEffects",
-            "id": "injectable-WishlistEffects-e8df24edd303e448467a3286668c47c5d8aaeac4a2bb3302f174f32b986b22ed29e8f1ad89fbcab53feeb24858bb7f25baad76ea9eb7569668320e7f53ac9b10",
+            "id": "injectable-WishlistEffects-111a41930e062cce39a36f3a14f20801691b66847c5ad64fa8c905df9be7240934202606f80e4b204dce40069ec962721aa41e5be573a976377f8771210a191d",
             "file": "src/app/store/w.effects.ts",
             "properties": [
                 {
                     "name": "getItems$",
-                    "defaultValue": "createEffect(() => {\n    return this.actions$.pipe(\n      ofType(getItems),\n      switchMap((_) =>\n        this.itemsService\n          .getItems()\n          .pipe(map((items) => itemsLoaded({ items })))\n      )\n    );\n  })",
+                    "defaultValue": "createEffect(() => {\n    return this.actions$.pipe(\n      ofType(getItems),\n      switchMap((initialAction) =>\n        this.itemsService.getItems().pipe(\n          map((items) => itemsLoaded({ items })),\n          catchError((err) => {\n            return of(\n              requestFailure({\n                errorText: 'Fehler beim Laden der Einträge',\n                errorDetails: err.message,\n                retryAction: initialAction,\n              })\n            );\n          })\n        )\n      )\n    );\n  })",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 22
+                    "line": 23
                 },
                 {
                     "name": "init$",
@@ -659,7 +659,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 15
+                    "line": 16
                 },
                 {
                     "name": "navigateToCategory$",
@@ -669,7 +669,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 33
+                    "line": 43
                 },
                 {
                     "name": "navigateToItem$",
@@ -679,7 +679,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 45
+                    "line": 55
                 }
             ],
             "methods": [],
@@ -687,7 +687,7 @@
             "deprecationMessage": "",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import { Injectable } from \"@angular/core\";\nimport { Router } from '@angular/router';\nimport {\n  Actions,\n  createEffect,\n  ofType,\n  ROOT_EFFECTS_INIT,\n} from '@ngrx/effects';\nimport { map, switchMap, tap } from 'rxjs';\nimport { ItemsService } from '../services/items.service';\nimport { getItems, goToCategory, goToItem, itemsLoaded } from './w.actions';\n\n@Injectable()\nexport class WishlistEffects {\n  init$ = createEffect(() => {\n    return this.actions$.pipe(\n      ofType(ROOT_EFFECTS_INIT),\n      map((_) => getItems())\n    );\n  });\n\n  getItems$ = createEffect(() => {\n    return this.actions$.pipe(\n      ofType(getItems),\n      switchMap((_) =>\n        this.itemsService\n          .getItems()\n          .pipe(map((items) => itemsLoaded({ items })))\n      )\n    );\n  });\n\n  navigateToCategory$ = createEffect(\n    () => {\n      return this.actions$.pipe(\n        ofType(goToCategory),\n        tap((d) => {\n          this.router.navigate(['/wunschliste', d.category]);\n        })\n      );\n    },\n    { dispatch: false }\n  );\n\n  navigateToItem$ = createEffect(\n    () => {\n      return this.actions$.pipe(\n        ofType(goToItem),\n        tap((d) => {\n          this.router.navigate(['/wunsch', `${d.itemId}`]);\n        })\n      );\n    },\n    { dispatch: false }\n  );\n\n  constructor(\n    private actions$: Actions,\n    private itemsService: ItemsService,\n    private router: Router\n  ) {}\n}\n",
+            "sourceCode": "import { Injectable } from \"@angular/core\";\nimport { Router } from '@angular/router';\nimport {\n  Actions,\n  createEffect,\n  ofType,\n  ROOT_EFFECTS_INIT,\n} from '@ngrx/effects';\nimport { catchError, map, of, switchMap, tap } from 'rxjs';\nimport { ItemsService } from '../services/items.service';\nimport { requestFailure } from './a.actions';\nimport { getItems, goToCategory, goToItem, itemsLoaded } from './w.actions';\n\n@Injectable()\nexport class WishlistEffects {\n  init$ = createEffect(() => {\n    return this.actions$.pipe(\n      ofType(ROOT_EFFECTS_INIT),\n      map((_) => getItems())\n    );\n  });\n\n  getItems$ = createEffect(() => {\n    return this.actions$.pipe(\n      ofType(getItems),\n      switchMap((initialAction) =>\n        this.itemsService.getItems().pipe(\n          map((items) => itemsLoaded({ items })),\n          catchError((err) => {\n            return of(\n              requestFailure({\n                errorText: 'Fehler beim Laden der Einträge',\n                errorDetails: err.message,\n                retryAction: initialAction,\n              })\n            );\n          })\n        )\n      )\n    );\n  });\n\n  navigateToCategory$ = createEffect(\n    () => {\n      return this.actions$.pipe(\n        ofType(goToCategory),\n        tap((d) => {\n          this.router.navigate(['/wunschliste', d.category]);\n        })\n      );\n    },\n    { dispatch: false }\n  );\n\n  navigateToItem$ = createEffect(\n    () => {\n      return this.actions$.pipe(\n        ofType(goToItem),\n        tap((d) => {\n          this.router.navigate(['/wunsch', `${d.itemId}`]);\n        })\n      );\n    },\n    { dispatch: false }\n  );\n\n  constructor(\n    private actions$: Actions,\n    private itemsService: ItemsService,\n    private router: Router\n  ) {}\n}\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -713,7 +713,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 55,
+                "line": 65,
                 "jsdoctags": [
                     {
                         "name": "actions$",
@@ -2461,6 +2461,83 @@
             }
         },
         {
+            "name": "ErrorDisplayComponent",
+            "id": "component-ErrorDisplayComponent-76e47eee79a525c391859566f4fdfcedeb43d0d9f9e0e611e4a6b1cdd92ec5e95b651a4f428bc8efb83baa5eba9e4b72388580360a10264e6d2a3a72f955c2f4",
+            "file": "src/app/components/error-display/error-display.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-error-display",
+            "styleUrls": [
+                "./error-display.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./error-display.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "error$",
+                    "defaultValue": "this.store.select(selectRequestError)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 11
+                }
+            ],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component } from '@angular/core';\nimport { Store } from '@ngrx/store';\nimport { selectRequestError } from 'src/app/store/a.selectors';\n\n@Component({\n  selector: 'app-error-display',\n  templateUrl: './error-display.component.html',\n  styleUrls: ['./error-display.component.scss'],\n})\nexport class ErrorDisplayComponent {\n  error$ = this.store.select(selectRequestError);\n\n  constructor(private store: Store) {}\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "",
+                    "styleUrl": "./error-display.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "store",
+                        "type": "Store",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 11,
+                "jsdoctags": [
+                    {
+                        "name": "store",
+                        "type": "Store",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "templateData": "{{ (error$ | async)?.text }}"
+        },
+        {
             "name": "FrameComponent",
             "id": "component-FrameComponent-7b6ae25badd7c2ddb9efc3e591915adadeade50bc986b975dc43440cac22a067bab2f25a4d3a14b0ca5473df913b43f3fd84e1503702f311026fb2efeac69211",
             "file": "src/app/frame/frame.component.ts",
@@ -2791,7 +2868,7 @@
         },
         {
             "name": "ItemFormComponent",
-            "id": "component-ItemFormComponent-e8c35b593f8fdc1aa0eab9bbd7cb62e1244aeb084666b7767196b4174f73202c53269084251d8c3bd83cc67933a82fb664082730fc4b5052e4cf88c5e8e289c5",
+            "id": "component-ItemFormComponent-265b0059880271c759d65c86b91a845e3e8b9ed0043ce8b05b7ac855baffcf3295be3de1f44ce8ce78e0ff00cae9dafbc46a463dc20d028f78ac1f2e9a0e4fd0",
             "file": "src/app/components/item-form/item-form.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -2869,7 +2946,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { animate, style, transition, trigger } from '@angular/animations';\nimport { Component } from '@angular/core';\nimport { FormBuilder, Validators } from '@angular/forms';\nimport { Store } from '@ngrx/store';\nimport {\n  selectCaptchaRequestText,\n  selectHasPendingRequest,\n  selectRequestErrorText,\n} from 'src/app/store/a.selectors';\nimport { selectActiveItemAsFormData } from 'src/app/store/w.selectors';\n\n@Component({\n  selector: 'app-item-form',\n  templateUrl: './item-form.component.html',\n  styleUrls: ['./item-form.component.scss'],\n  animations: [\n    trigger('alertHighlightTrigger', [\n      transition(':enter', [\n        style({ opacity: 0 }),\n        animate('80ms', style({ opacity: 1 })),\n        animate('80ms', style({ opacity: 0 })),\n        animate('80ms', style({ opacity: 1 })),\n        animate('80ms', style({ opacity: 0 })),\n        animate('80ms', style({ opacity: 1 })),\n        animate('80ms', style({ opacity: 0 })),\n        animate('80ms', style({ opacity: 1 })),\n      ]),\n    ]),\n  ],\n})\nexport class ItemFormComponent {\n  itemForm = this.fb.group({\n    title: ['', Validators.required],\n    description: [''],\n    category: ['', Validators.required],\n    imagesrc: [''],\n    buyurl: [''],\n    captchaResponse: ['', Validators.required],\n  });\n\n  hasRequestPending$ = this.store.select(selectHasPendingRequest);\n  formData$ = this.store.select(selectActiveItemAsFormData);\n  requestError$ = this.store.select(selectRequestErrorText);\n  captchaChallengeText$ = this.store.select(selectCaptchaRequestText);\n\n  constructor(private fb: FormBuilder, private store: Store) {}\n}\n",
+            "sourceCode": "import { animate, style, transition, trigger } from '@angular/animations';\nimport { Component } from '@angular/core';\nimport { UntypedFormBuilder, Validators } from '@angular/forms';\nimport { Store } from '@ngrx/store';\nimport {\n  selectCaptchaRequestText,\n  selectHasPendingRequest,\n  selectRequestErrorText,\n} from 'src/app/store/a.selectors';\nimport { selectActiveItemAsFormData } from 'src/app/store/w.selectors';\n\n@Component({\n  selector: 'app-item-form',\n  templateUrl: './item-form.component.html',\n  styleUrls: ['./item-form.component.scss'],\n  animations: [\n    trigger('alertHighlightTrigger', [\n      transition(':enter', [\n        style({ opacity: 0 }),\n        animate('80ms', style({ opacity: 1 })),\n        animate('80ms', style({ opacity: 0 })),\n        animate('80ms', style({ opacity: 1 })),\n        animate('80ms', style({ opacity: 0 })),\n        animate('80ms', style({ opacity: 1 })),\n        animate('80ms', style({ opacity: 0 })),\n        animate('80ms', style({ opacity: 1 })),\n      ]),\n    ]),\n  ],\n})\nexport class ItemFormComponent {\n  itemForm = this.fb.group({\n    title: ['', Validators.required],\n    description: [''],\n    category: ['', Validators.required],\n    imagesrc: [''],\n    buyurl: [''],\n    captchaResponse: ['', Validators.required],\n  });\n\n  hasRequestPending$ = this.store.select(selectHasPendingRequest);\n  formData$ = this.store.select(selectActiveItemAsFormData);\n  requestError$ = this.store.select(selectRequestErrorText);\n  captchaChallengeText$ = this.store.select(selectCaptchaRequestText);\n\n  constructor(private fb: UntypedFormBuilder, private store: Store) {}\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -2886,7 +2963,7 @@
                 "args": [
                     {
                         "name": "fb",
-                        "type": "FormBuilder",
+                        "type": "UntypedFormBuilder",
                         "deprecated": false,
                         "deprecationMessage": ""
                     },
@@ -2901,7 +2978,7 @@
                 "jsdoctags": [
                     {
                         "name": "fb",
-                        "type": "FormBuilder",
+                        "type": "UntypedFormBuilder",
                         "deprecated": false,
                         "deprecationMessage": "",
                         "tagName": {
@@ -3409,13 +3486,13 @@
     "modules": [
         {
             "name": "AppModule",
-            "id": "module-AppModule-1e919a733948556dd61f0c66124e8141223a197de10f99c1d51cbe0b91cc65b2d044b41966524e87d98dfa80bc8914ce473caefa67549f26e3a69088a15f1f48",
+            "id": "module-AppModule-9f0c48b82bad061d60bde1226d899bfe66225f8ba2dcb90cd281dc18e87880b2960dc0f5cbcc172cea2dee5cfdd0f1e3a9ce89e8944a9f836e9e5bb7dfa938e9",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/app.module.ts",
             "methods": [],
-            "sourceCode": "import { LayoutModule } from '@angular/cdk/layout';\nimport { HttpClientModule } from '@angular/common/http';\nimport { NgModule } from '@angular/core';\nimport { ReactiveFormsModule } from '@angular/forms';\nimport { MatButtonModule } from '@angular/material/button';\nimport { MatCardModule } from '@angular/material/card';\nimport { MatDialogModule } from '@angular/material/dialog';\nimport { MatExpansionModule } from '@angular/material/expansion';\nimport {\n  MatFormFieldModule,\n  MAT_FORM_FIELD_DEFAULT_OPTIONS,\n} from '@angular/material/form-field';\nimport { MatIconModule } from '@angular/material/icon';\nimport { MatInputModule } from '@angular/material/input';\nimport { MatListModule } from '@angular/material/list';\nimport { MatProgressBarModule } from '@angular/material/progress-bar';\nimport { MatProgressSpinnerModule } from '@angular/material/progress-spinner';\nimport { MatSidenavModule } from '@angular/material/sidenav';\nimport { MatToolbarModule } from '@angular/material/toolbar';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\nimport { EffectsModule } from '@ngrx/effects';\nimport { StoreModule } from '@ngrx/store';\nimport { StoreDevtoolsModule } from '@ngrx/store-devtools';\nimport { environment } from '../environments/environment';\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { EditReservationComponent } from './components/edit-reservation/edit-reservation.component';\nimport { EmptyListComponent } from './components/empty-list/empty-list.component';\nimport { ItemDisplayComponent } from './components/item-display/item-display.component';\nimport { ItemFormComponent } from './components/item-form/item-form.component';\nimport { ItemPreviewComponent } from './components/item-preview/item-preview.component';\nimport { ConnectFormDirective } from './directives/connect-form.directive';\nimport { FormEnabledDirective } from './directives/form-enabled.directive';\nimport { FrameComponent } from './frame/frame.component';\nimport { AboutComponent } from './pages/about/about.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { CategoryPageComponent } from './pages/category-page/category-page.component';\nimport { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';\nimport { agReducer } from './store/a.reducer';\nimport { AppState } from './store/app.state';\nimport { rReducer } from './store/r.reducer';\nimport { WishlistEffects } from './store/w.effects';\nimport { wReducer } from './store/w.reducer';\nimport { WithCategoryPipe } from './pipes/with-category.pipe';\nimport { MenuNavlistComponent } from './components/menu-navlist/menu-navlist.component';\nimport { ItemViewComponent } from './pages/item-view/item-view.component';\n\n@NgModule({\n  declarations: [\n    AboutComponent,\n    AppComponent,\n    CategoriesPageComponent,\n    ConnectFormDirective,\n    EmptyListComponent,\n    FormEnabledDirective,\n    FrameComponent,\n    ItemDisplayComponent,\n    ItemFormComponent,\n    EditReservationComponent,\n    CategoryPageComponent,\n    ItemPreviewComponent,\n    PageNotFoundComponent,\n    WithCategoryPipe,\n    MenuNavlistComponent,\n    ItemViewComponent,\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    BrowserAnimationsModule,\n    LayoutModule,\n    ReactiveFormsModule,\n    MatButtonModule,\n    MatCardModule,\n    MatDialogModule,\n    MatExpansionModule,\n    MatFormFieldModule,\n    MatIconModule,\n    MatInputModule,\n    MatListModule,\n    MatProgressBarModule,\n    MatProgressSpinnerModule,\n    MatSidenavModule,\n    MatToolbarModule,\n    StoreModule.forRoot<AppState>({\n      ag: agReducer,\n      wishlist: wReducer,\n      reservation: rReducer,\n    }),\n    EffectsModule.forRoot([WishlistEffects]),\n    // import HttpClientModule after BrowserModule.\n    HttpClientModule,\n    StoreDevtoolsModule.instrument({\n      maxAge: 25,\n      logOnly: environment.production,\n    }),\n  ],\n  providers: [\n    {\n      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,\n      useValue: { appearance: 'fill' },\n    },\n  ],\n  bootstrap: [AppComponent],\n})\nexport class AppModule {}\n",
+            "sourceCode": "import { LayoutModule } from '@angular/cdk/layout';\nimport { HttpClientModule } from '@angular/common/http';\nimport { NgModule } from '@angular/core';\nimport { ReactiveFormsModule } from '@angular/forms';\nimport { MatButtonModule } from '@angular/material/button';\nimport { MatCardModule } from '@angular/material/card';\nimport { MatDialogModule } from '@angular/material/dialog';\nimport { MatExpansionModule } from '@angular/material/expansion';\nimport {\n  MatFormFieldModule,\n  MAT_FORM_FIELD_DEFAULT_OPTIONS,\n} from '@angular/material/form-field';\nimport { MatIconModule } from '@angular/material/icon';\nimport { MatInputModule } from '@angular/material/input';\nimport { MatListModule } from '@angular/material/list';\nimport { MatProgressBarModule } from '@angular/material/progress-bar';\nimport { MatProgressSpinnerModule } from '@angular/material/progress-spinner';\nimport { MatSidenavModule } from '@angular/material/sidenav';\nimport { MatToolbarModule } from '@angular/material/toolbar';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\nimport { EffectsModule } from '@ngrx/effects';\nimport { StoreModule } from '@ngrx/store';\nimport { StoreDevtoolsModule } from '@ngrx/store-devtools';\nimport { environment } from '../environments/environment';\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { EditReservationComponent } from './components/edit-reservation/edit-reservation.component';\nimport { EmptyListComponent } from './components/empty-list/empty-list.component';\nimport { ItemDisplayComponent } from './components/item-display/item-display.component';\nimport { ItemFormComponent } from './components/item-form/item-form.component';\nimport { ItemPreviewComponent } from './components/item-preview/item-preview.component';\nimport { ConnectFormDirective } from './directives/connect-form.directive';\nimport { FormEnabledDirective } from './directives/form-enabled.directive';\nimport { FrameComponent } from './frame/frame.component';\nimport { AboutComponent } from './pages/about/about.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { CategoryPageComponent } from './pages/category-page/category-page.component';\nimport { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';\nimport { agReducer } from './store/a.reducer';\nimport { AppState } from './store/app.state';\nimport { rReducer } from './store/r.reducer';\nimport { WishlistEffects } from './store/w.effects';\nimport { wReducer } from './store/w.reducer';\nimport { WithCategoryPipe } from './pipes/with-category.pipe';\nimport { MenuNavlistComponent } from './components/menu-navlist/menu-navlist.component';\nimport { ItemViewComponent } from './pages/item-view/item-view.component';\nimport { ErrorDisplayComponent } from './components/error-display/error-display.component';\n\n@NgModule({\n  declarations: [\n    AboutComponent,\n    AppComponent,\n    CategoriesPageComponent,\n    ConnectFormDirective,\n    EmptyListComponent,\n    FormEnabledDirective,\n    FrameComponent,\n    ItemDisplayComponent,\n    ItemFormComponent,\n    EditReservationComponent,\n    CategoryPageComponent,\n    ItemPreviewComponent,\n    PageNotFoundComponent,\n    WithCategoryPipe,\n    MenuNavlistComponent,\n    ItemViewComponent,\n    ErrorDisplayComponent,\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    BrowserAnimationsModule,\n    LayoutModule,\n    ReactiveFormsModule,\n    MatButtonModule,\n    MatCardModule,\n    MatDialogModule,\n    MatExpansionModule,\n    MatFormFieldModule,\n    MatIconModule,\n    MatInputModule,\n    MatListModule,\n    MatProgressBarModule,\n    MatProgressSpinnerModule,\n    MatSidenavModule,\n    MatToolbarModule,\n    StoreModule.forRoot<AppState>({\n      ag: agReducer,\n      wishlist: wReducer,\n      reservation: rReducer,\n    }),\n    EffectsModule.forRoot([WishlistEffects]),\n    // import HttpClientModule after BrowserModule.\n    HttpClientModule,\n    StoreDevtoolsModule.instrument({\n      maxAge: 25,\n      logOnly: environment.production,\n    }),\n  ],\n  providers: [\n    {\n      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,\n      useValue: { appearance: 'fill' },\n    },\n  ],\n  bootstrap: [AppComponent],\n})\nexport class AppModule {}\n",
             "children": [
                 {
                     "type": "providers",
@@ -3444,6 +3521,9 @@
                         },
                         {
                             "name": "EmptyListComponent"
+                        },
+                        {
+                            "name": "ErrorDisplayComponent"
                         },
                         {
                             "name": "FormEnabledDirective"
@@ -3690,6 +3770,16 @@
                 "defaultValue": "() => ({\n  props: {},\n})"
             },
             {
+                "name": "Empty",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/ErrorDisplay.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "() => ({})"
+            },
+            {
                 "name": "environment",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -3708,6 +3798,16 @@
                 "deprecationMessage": "",
                 "type": "object",
                 "defaultValue": "{\n  production: false\n}"
+            },
+            {
+                "name": "ErrorText",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/ErrorDisplay.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "() => ({})"
             },
             {
                 "name": "getItems",
@@ -3970,6 +4070,16 @@
                 "defaultValue": "Template.bind({})"
             },
             {
+                "name": "requestFailure",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/a.actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction(\n  '[W] Request requestFailure',\n  props<{\n    errorText: string;\n    errorDetails?: string;\n    retryAction?: Action;\n  }>()\n)"
+            },
+            {
                 "name": "require",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -4109,6 +4219,16 @@
                 "defaultValue": "createSelector(\n  selectFeature,\n  (state: WishlistState) => state.items\n)"
             },
             {
+                "name": "selectRequestError",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/a.selectors.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createSelector(\n  selectFeature,\n  (state: AppGlobalState) => ({\n    text: state.requestErrorText,\n  })\n)"
+            },
+            {
                 "name": "selectRequestErrorText",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -4187,6 +4307,16 @@
                 "deprecationMessage": "",
                 "type": "Story<CategoryPageComponent>",
                 "defaultValue": "(\n  args: CategoryPageComponent\n) => ({\n  props: args,\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/ErrorDisplay.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<ErrorDisplayComponent>",
+                "defaultValue": "(\n  args: ErrorDisplayComponent\n) => ({\n  props: args,\n})"
             },
             {
                 "name": "Template",
@@ -4740,6 +4870,38 @@
                     "defaultValue": "() => ({\n  props: {},\n})"
                 }
             ],
+            "src/stories/ErrorDisplay.stories.ts": [
+                {
+                    "name": "Empty",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/ErrorDisplay.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "() => ({})"
+                },
+                {
+                    "name": "ErrorText",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/ErrorDisplay.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "() => ({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/ErrorDisplay.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<ErrorDisplayComponent>",
+                    "defaultValue": "(\n  args: ErrorDisplayComponent\n) => ({\n  props: args,\n})"
+                }
+            ],
             "src/environments/environment.prod.ts": [
                 {
                     "name": "environment",
@@ -5008,6 +5170,18 @@
                     "defaultValue": "(args: Page) => ({\n  props: args,\n})"
                 }
             ],
+            "src/app/store/a.actions.ts": [
+                {
+                    "name": "requestFailure",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/a.actions.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createAction(\n  '[W] Request requestFailure',\n  props<{\n    errorText: string;\n    errorDetails?: string;\n    retryAction?: Action;\n  }>()\n)"
+                }
+            ],
             "src/app/store/w.selectors.ts": [
                 {
                     "name": "selectActiveItem",
@@ -5090,6 +5264,16 @@
                     "deprecationMessage": "",
                     "type": "",
                     "defaultValue": "createSelector(\n  selectFeature,\n  (state: AppGlobalState) => state.pendingRequest\n)"
+                },
+                {
+                    "name": "selectRequestError",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/a.selectors.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createSelector(\n  selectFeature,\n  (state: AppGlobalState) => ({\n    text: state.requestErrorText,\n  })\n)"
                 },
                 {
                     "name": "selectRequestErrorText",
@@ -5417,6 +5601,15 @@
                 "status": "low"
             },
             {
+                "filePath": "src/app/components/error-display/error-display.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ErrorDisplayComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
                 "filePath": "src/app/components/item-display/item-display.component.ts",
                 "type": "component",
                 "linktype": "component",
@@ -5543,6 +5736,16 @@
                 "status": "low"
             },
             {
+                "filePath": "src/app/store/a.actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "requestFailure",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
                 "filePath": "src/app/store/a.reducer.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
@@ -5588,6 +5791,16 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "selectHasPendingRequest",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/a.selectors.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "selectRequestError",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
@@ -6023,6 +6236,36 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "Display",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/ErrorDisplay.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Empty",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/ErrorDisplay.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "ErrorText",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/ErrorDisplay.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"

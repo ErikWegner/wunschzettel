@@ -45,6 +45,7 @@ import { wReducer } from './store/w.reducer';
 import { WithCategoryPipe } from './pipes/with-category.pipe';
 import { MenuNavlistComponent } from './components/menu-navlist/menu-navlist.component';
 import { ItemViewComponent } from './pages/item-view/item-view.component';
+import { ErrorDisplayComponent } from './components/error-display/error-display.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { ItemViewComponent } from './pages/item-view/item-view.component';
     WithCategoryPipe,
     MenuNavlistComponent,
     ItemViewComponent,
+    ErrorDisplayComponent,
   ],
   imports: [
     BrowserModule,

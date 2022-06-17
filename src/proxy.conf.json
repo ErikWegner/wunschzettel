@@ -1,9 +1,9 @@
 {
-  "/service.php": {
+  "/localservice.php": {
     "target": "http://phpservice:6000/",
     "secure": false
   },
-  "/demoservice.php": {
+  "/service.php": {
     "target": "https://ewus.de",
     "secure": true,
     "changeOrigin": true,

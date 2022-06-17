@@ -10,15 +10,6 @@ export const itemsLoaded = createAction(
   }>()
 );
 
-export const requestFailure = createAction(
-  '[W] Request requestFailure',
-  props<{
-    errorText: string;
-    errorDetails?: string;
-    retryAction?: Action;
-  }>()
-);
-
 export const goToCategory = createAction(
   '[W] Go to category',
   props<{

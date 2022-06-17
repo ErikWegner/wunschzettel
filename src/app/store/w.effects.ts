@@ -8,13 +8,8 @@ import {
 } from '@ngrx/effects';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { ItemsService } from '../services/items.service';
-import {
-  getItems,
-  goToCategory,
-  goToItem,
-  itemsLoaded,
-  requestFailure,
-} from './w.actions';
+import { requestFailure } from './a.actions';
+import { getItems, goToCategory, goToItem, itemsLoaded } from './w.actions';
 
 @Injectable()
 export class WishlistEffects {
