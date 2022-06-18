@@ -3,9 +3,10 @@ import { AppGlobalState } from './a.state';
 import { getItems, itemsLoaded } from './w.actions';
 
 export const initialState: AppGlobalState = {
+  captchaRequest: null,
   pendingRequest: true,
   requestErrorText: null,
-  captchaRequest: null,
+  requestRetryAction: null,
 };
 
 export const agReducer = createReducer<AppGlobalState>(

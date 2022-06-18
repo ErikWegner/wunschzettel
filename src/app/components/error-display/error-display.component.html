@@ -1,1 +1,9 @@
-{{ (error$ | async)?.text }}
+<mat-card *ngIf="error$ | async as errorData">
+  <mat-card-title>Fehler</mat-card-title>
+  <mat-card-content>
+    {{ errorData.text }}
+  </mat-card-content>
+  <mat-card-actions *ngIf="errorData.retryAction">
+    <button mat-button>Wiederholen</button>
+  </mat-card-actions>
+</mat-card>

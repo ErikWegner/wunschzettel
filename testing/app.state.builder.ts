@@ -1,3 +1,4 @@
+import { Action } from '@ngrx/store';
 import { WishlistItem } from 'src/app/business/item';
 import { AppGlobalState } from 'src/app/store/a.state';
 import { AppState } from 'src/app/store/app.state';
@@ -29,6 +30,11 @@ export class AppStateBuilder implements AppState {
     const b = new AppStateBuilder();
     b.ag.requestErrorText = errorText;
     return b;
+  }
+
+  public withRetryAction(retryAction: Action): any {
+    this.ag.requestRetryAction = retryAction;
+    return this;
   }
 
   public static givenCategories(...categories: string[]): AppStateBuilder {

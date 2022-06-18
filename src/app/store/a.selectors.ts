@@ -18,6 +18,7 @@ export const selectRequestError = createSelector(
   selectFeature,
   (state: AppGlobalState) => ({
     text: state.requestErrorText,
+    retryAction: state.requestRetryAction,
   })
 );
 

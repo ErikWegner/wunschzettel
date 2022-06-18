@@ -1,6 +1,7 @@
 import { provideMockStore } from '@ngrx/store/testing';
 import { Meta, moduleMetadata, Story } from '@storybook/angular';
 import { ErrorDisplayComponent } from 'src/app/components/error-display/error-display.component';
+import { getItems } from 'src/app/store/w.actions';
 import { AppStateBuilder } from 'testing/app.state.builder';
 import { moduleImports } from './matmetadata';
 
@@ -36,6 +37,21 @@ ErrorText.decorators = [
     providers: [
       provideMockStore({
         initialState: AppStateBuilder.hasError('The request failed'),
+      }),
+    ],
+  }),
+];
+
+export const ErrorTextAndAction: Story = () => ({});
+ErrorTextAndAction.decorators = [
+  moduleMetadata({
+    declarations: [],
+    imports: moduleImports,
+    providers: [
+      provideMockStore({
+        initialState: AppStateBuilder.hasError(
+          'The request failed'
+        ).withRetryAction(getItems()),
       }),
     ],
   }),
