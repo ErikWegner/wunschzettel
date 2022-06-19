@@ -13,6 +13,7 @@ import { goToCategory } from 'src/app/store/w.actions';
 import { AppStateBuilder, appStateStub } from 'testing/app.state.builder';
 import { ListBuilder } from 'testing/list-builder';
 import { EmptyListStubComponent } from 'testing/stubs/empty-list.stub.component';
+import { ErrorDisplayStubComponent } from 'testing/stubs/error-display.stub.component';
 import { randomNumber } from 'testing/utils';
 
 import { CategoriesPageComponent } from './categories-page.component';
@@ -26,7 +27,11 @@ describe('CategoriesPageComponent', () => {
   beforeEach(async () => {
     const initialState: AppState = appStateStub();
     await TestBed.configureTestingModule({
-      declarations: [CategoriesPageComponent, EmptyListStubComponent],
+      declarations: [
+        CategoriesPageComponent,
+        EmptyListStubComponent,
+        ErrorDisplayStubComponent,
+      ],
       imports: [MatCardModule, MatProgressSpinnerModule],
       providers: [provideMockStore({ initialState })],
     }).compileComponents();

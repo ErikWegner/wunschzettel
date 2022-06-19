@@ -11,9 +11,10 @@ export const appStateStub = (): AppStateBuilder => new AppStateBuilder();
 
 export class AppStateBuilder implements AppState {
   ag: AppGlobalState = {
+    captchaRequest: 'Sieben plus zwei',
     pendingRequest: false,
     requestErrorText: null,
-    captchaRequest: 'Sieben plus zwei',
+    requestRetryAction: null,
   };
   wishlist: WishlistState = {
     categories: [],
@@ -26,13 +27,13 @@ export class AppStateBuilder implements AppState {
     errorText: null,
   };
 
-  public static hasError(errorText: string): any {
+  public static hasError(errorText: string): AppStateBuilder {
     const b = new AppStateBuilder();
     b.ag.requestErrorText = errorText;
     return b;
   }
 
-  public withRetryAction(retryAction: Action): any {
+  public withRetryAction(retryAction: Action): AppStateBuilder {
     this.ag.requestRetryAction = retryAction;
     return this;
   }

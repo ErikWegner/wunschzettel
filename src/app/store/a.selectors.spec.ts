@@ -3,13 +3,17 @@ import { randomString } from 'testing/utils';
 import {
   selectCaptchaRequestText,
   selectHasPendingRequest,
+  selectHasRequestError,
   selectRequestErrorText,
 } from './a.selectors';
 import { AppState } from './app.state';
 
 describe('AppGlobalState selectors', () => {
   afterEach(() => {
+    selectCaptchaRequestText.release();
     selectHasPendingRequest.release();
+    selectHasRequestError.release();
+    selectRequestErrorText.release();
   });
 
   const initialState: AppState = AppStateBuilder.givenCategories(
@@ -38,5 +42,34 @@ describe('AppGlobalState selectors', () => {
     initialState.ag.captchaRequest = captchaPuzzleText;
     const result = selectCaptchaRequestText.projector(initialState.ag);
     expect(result).toBe(captchaPuzzleText);
+  });
+
+  [
+    {
+      testName: 'null',
+      inputValue: null,
+      expectedResult: false,
+    },
+    {
+      testName: 'empty value',
+      inputValue: '',
+      expectedResult: false,
+    },
+    {
+      testName: 'positive case',
+      inputValue: randomString(20),
+      expectedResult: true,
+    },
+  ].forEach((testsetup) => {
+    it(`should handle ${testsetup.testName}`, () => {
+      // Arrange
+      initialState.ag.requestErrorText = testsetup.inputValue;
+
+      // Act
+      const result = selectHasRequestError.projector(initialState.ag);
+
+      // Assert
+      expect(result).toBe(testsetup.expectedResult);
+    });
   });
 });

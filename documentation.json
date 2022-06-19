@@ -94,12 +94,12 @@
         },
         {
             "name": "AppGlobalState",
-            "id": "interface-AppGlobalState-e1e514fe6a341b4d6ed01d3d0ccebcfcec676c3e22b179ec4f4d4dff19f0eb2ec940f2f300250df36b994a09378644021b331cbfc63a993732fecfcab1c925be",
+            "id": "interface-AppGlobalState-5396f36f199abf06a32055c33ca6197838abc03124e4236501d6c99cd3e183c4fa182c60befabb729dd48909940383c05d83ee291e7764e59f8361410e59f3af",
             "file": "src/app/store/a.state.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "export interface AppGlobalState {\n  pendingRequest: boolean;\n  requestErrorText: string | null;\n  captchaRequest: string | null;\n}\n",
+            "sourceCode": "import { Action } from '@ngrx/store';\n\nexport interface AppGlobalState {\n  pendingRequest: boolean;\n  requestErrorText: string | null;\n  requestRetryAction: Action | null;\n  captchaRequest: string | null;\n}\n",
             "properties": [
                 {
                     "name": "captchaRequest",
@@ -108,7 +108,7 @@
                     "type": "string | null",
                     "optional": false,
                     "description": "",
-                    "line": 4
+                    "line": 7
                 },
                 {
                     "name": "pendingRequest",
@@ -117,7 +117,7 @@
                     "type": "boolean",
                     "optional": false,
                     "description": "",
-                    "line": 2
+                    "line": 4
                 },
                 {
                     "name": "requestErrorText",
@@ -126,7 +126,16 @@
                     "type": "string | null",
                     "optional": false,
                     "description": "",
-                    "line": 3
+                    "line": 5
+                },
+                {
+                    "name": "requestRetryAction",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Action | null",
+                    "optional": false,
+                    "description": "",
+                    "line": 6
                 }
             ],
             "indexSignatures": [],
@@ -342,7 +351,7 @@
     "injectables": [
         {
             "name": "ItemsService",
-            "id": "injectable-ItemsService-a002875ab0192a35eab6a22f8dff18922bcf79d8977619ac77c4dadab199e96c4bf52f127ee416ceb57dc00efd327c7bf99b4eaeff077c9075678094f482beef",
+            "id": "injectable-ItemsService-7766ddc85b8c1ca9e846d0c4bcf5104856f17099964f9c70dfc6a53fa9676261067bad9e616994adce99d6bb35e9504e42881c87f1c5e53f99c2be8e82749372",
             "file": "src/app/services/items.service.ts",
             "properties": [],
             "methods": [
@@ -607,7 +616,7 @@
             "deprecationMessage": "",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import { HttpClient } from '@angular/common/http';\nimport { Injectable } from '@angular/core';\nimport { EMPTY, map, Observable } from 'rxjs';\nimport { AddItemResponse } from '../business/add-item-response';\nimport { WishlistItem } from '../business/item';\nimport { Result } from '../business/result';\n\n@Injectable({\n  providedIn: 'root',\n})\nexport class ItemsService {\n  constructor(private http: HttpClient) {}\n\n  public getItems(): Observable<WishlistItem[]> {\n    return this.http\n      .get<{ data: WishlistItem[] }>('service.php?action=list')\n      .pipe(map((d) => d.data));\n  }\n\n  public getReservationFlag(id: number): Observable<boolean> {\n    return EMPTY;\n  }\n\n  public setReservationFlag(\n    id: number,\n    flag: boolean,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public setItem(\n    item: WishlistItem,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public addItem(\n    item: WishlistItem,\n    captchaAnswer: string\n  ): Observable<Result<AddItemResponse>> {\n    return EMPTY;\n  }\n\n  public deleteItem(\n    id: number,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public getCaptchaChallenge(): Observable<Result<string>> {\n    return EMPTY;\n  }\n}\n",
+            "sourceCode": "import { HttpClient } from '@angular/common/http';\nimport { Injectable } from '@angular/core';\nimport { EMPTY, map, Observable } from 'rxjs';\nimport { AddItemResponse } from '../business/add-item-response';\nimport { WishlistItem } from '../business/item';\nimport { Result } from '../business/result';\n\n@Injectable({\n  providedIn: 'root',\n})\nexport class ItemsService {\n  constructor(private http: HttpClient) {}\n\n  public getItems(): Observable<WishlistItem[]> {\n    return this.http\n      .get<{ data: WishlistItem[] }>('localservice.php?action=list')\n      .pipe(map((d) => d.data));\n  }\n\n  public getReservationFlag(id: number): Observable<boolean> {\n    return EMPTY;\n  }\n\n  public setReservationFlag(\n    id: number,\n    flag: boolean,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public setItem(\n    item: WishlistItem,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public addItem(\n    item: WishlistItem,\n    captchaAnswer: string\n  ): Observable<Result<AddItemResponse>> {\n    return EMPTY;\n  }\n\n  public deleteItem(\n    id: number,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public getCaptchaChallenge(): Observable<Result<string>> {\n    return EMPTY;\n  }\n}\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -859,22 +868,22 @@
         },
         {
             "name": "AppStateBuilder",
-            "id": "class-AppStateBuilder-77692f5b1e07b368e31eaa1d28d3b607efd2c45251e8a6923ffd92521476d2e5f476c5500aa1b7386906f1df8482f047b1404a723e063e05a826e3cf797f79ce",
+            "id": "class-AppStateBuilder-42f93e2bc2490f0ef01b59e96c1fef8b1e9f30bb03f153efe0394bb7e1c2e84cbd71db61945156021909a79e04f7cc4926345c26a7ba4c4cc0863e91c0bc6605",
             "file": "testing/app.state.builder.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "class",
-            "sourceCode": "import { WishlistItem } from 'src/app/business/item';\nimport { AppGlobalState } from 'src/app/store/a.state';\nimport { AppState } from 'src/app/store/app.state';\nimport { ReservationState, ReservationStatus } from 'src/app/store/r.state';\nimport { WishlistState } from 'src/app/store/w.state';\nimport { ListBuilder } from './list-builder';\nimport { randomString } from './utils';\n\nexport const appStateStub = (): AppStateBuilder => new AppStateBuilder();\n\nexport class AppStateBuilder implements AppState {\n  ag: AppGlobalState = {\n    pendingRequest: false,\n    requestErrorText: null,\n    captchaRequest: 'Sieben plus zwei',\n  };\n  wishlist: WishlistState = {\n    categories: [],\n    items: [],\n    activeItem: null,\n  };\n  reservation: ReservationState = {\n    itemid: null,\n    status: 'unknown',\n    errorText: null,\n  };\n\n  public static hasError(errorText: string): any {\n    const b = new AppStateBuilder();\n    b.ag.requestErrorText = errorText;\n    return b;\n  }\n\n  public static givenCategories(...categories: string[]): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.wishlist.categories = [...categories];\n    return b;\n  }\n\n  public static someCategories(): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.wishlist.categories = ListBuilder.with((i) =>\n      randomString(8, 'Category ')\n    )\n      .items(7)\n      .build();\n    return b;\n  }\n\n  public static pendingRequest(): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.ag.pendingRequest = true;\n    return b;\n  }\n\n  public static hasActiveItem(values?: Partial<WishlistItem>): AppStateBuilder {\n    const b = new AppStateBuilder();\n    return b.withActiveItem(values);\n  }\n\n  public static reservationStatus(\n    status: ReservationStatus,\n    opt?: { errorText?: string }\n  ): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.reservation.status = status;\n    b.reservation.errorText = opt?.errorText || null;\n    return b;\n  }\n\n  public static withBookCategoryAndItems(): AppStateBuilder {\n    const b = AppStateBuilder.givenCategories('Buch')\n      .withItem({\n        id: 8,\n        Title: 'Schillers Glocke',\n        Description:\n          'Das Lied von der Glocke ist ein im Jahr 1799 von Friedrich Schiller veröffentlichtes Gedicht. Es gehörte lange Zeit zum Kanon der deutschen Literatur und ist eines der bekanntesten, am meisten zitierten und parodierten deutschen Gedichte.',\n        BuyUrl: 'https://de.wikipedia.org/wiki/Das_Lied_von_der_Glocke',\n        Category: 'Buch',\n        ImgageUrl:\n          'https://upload.wikimedia.org/wikipedia/commons/6/69/Liezen_Prachteinband_Schillers_Glocke_01.jpg',\n      })\n      .withItem({\n        Title: 'Faust I + II',\n        Category: 'Buch',\n        Description: `Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des\n      Fauststoffs bezeichnet. Der Begriff kann sich auf den ersten Teil der\n      durch Goethe geschaffenen Tragödie, auf deren ersten und zweiten Teil\n      gemeinsam oder insgesamt auf die Arbeiten am Fauststoff beziehen, die\n      Goethe durch sechzig Jahre hindurch immer wieder neu aufnahm. Er umfasst\n      in diesem letzteren Sinne auch die Entwürfe, Fragmente, Kommentare und\n      Paralipomena des Dichters zu seinem Faustwerk und zum Fauststoff.`,\n        BuyUrl: 'https://de.wikipedia.org/wiki/Goethes_Faust',\n        ImgageUrl:\n          'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg',\n        id: 19,\n      })\n      .withItem({\n        id: 41,\n        Title: 'Nathan der Weise',\n        Description:\n          'Nathan der Weise ist der Titel und die Hauptfigur eines fünfaktigen Ideendramas von Gotthold Ephraim Lessing, das 1779 veröffentlicht und am 14. April 1783 in Berlin uraufgeführt wurde. Das Werk hat als Themenschwerpunkte den Humanismus und den Toleranzgedanken der Aufklärung. Besonders berühmt wurde die Ringparabel im dritten Aufzug des Dramas.',\n        BuyUrl: 'https://de.wikipedia.org/wiki/Nathan_der_Weise',\n        Category: 'Buch',\n        ImgageUrl: '',\n      });\n    return b;\n  }\n\n  withActiveItem(values?: Partial<WishlistItem>): AppStateBuilder {\n    this.wishlist.activeItem = {\n      Title: 'Faust I + II',\n      Category: 'Buch',\n      Description: `Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des\n      Fauststoffs bezeichnet. Der Begriff kann sich auf den ersten Teil der\n      durch Goethe geschaffenen Tragödie, auf deren ersten und zweiten Teil\n      gemeinsam oder insgesamt auf die Arbeiten am Fauststoff beziehen, die\n      Goethe durch sechzig Jahre hindurch immer wieder neu aufnahm. Er umfasst\n      in diesem letzteren Sinne auch die Entwürfe, Fragmente, Kommentare und\n      Paralipomena des Dichters zu seinem Faustwerk und zum Fauststoff.`,\n      BuyUrl: 'https://de.wikipedia.org/wiki/Goethes_Faust',\n      ImgageUrl:\n        'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg',\n      id: 1,\n      ...values,\n    };\n    return this;\n  }\n\n  withCaptcha(challenge: string): AppStateBuilder {\n    this.ag.captchaRequest = challenge;\n    return this;\n  }\n\n  withItem(item: WishlistItem): AppStateBuilder {\n    this.wishlist.items.push(item);\n    if (!this.wishlist.categories.includes(item.Category)) {\n      this.wishlist.categories.push(item.Category);\n    }\n    return this;\n  }\n}\n",
+            "sourceCode": "import { Action } from '@ngrx/store';\nimport { WishlistItem } from 'src/app/business/item';\nimport { AppGlobalState } from 'src/app/store/a.state';\nimport { AppState } from 'src/app/store/app.state';\nimport { ReservationState, ReservationStatus } from 'src/app/store/r.state';\nimport { WishlistState } from 'src/app/store/w.state';\nimport { ListBuilder } from './list-builder';\nimport { randomString } from './utils';\n\nexport const appStateStub = (): AppStateBuilder => new AppStateBuilder();\n\nexport class AppStateBuilder implements AppState {\n  ag: AppGlobalState = {\n    captchaRequest: 'Sieben plus zwei',\n    pendingRequest: false,\n    requestErrorText: null,\n    requestRetryAction: null,\n  };\n  wishlist: WishlistState = {\n    categories: [],\n    items: [],\n    activeItem: null,\n  };\n  reservation: ReservationState = {\n    itemid: null,\n    status: 'unknown',\n    errorText: null,\n  };\n\n  public static hasError(errorText: string): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.ag.requestErrorText = errorText;\n    return b;\n  }\n\n  public withRetryAction(retryAction: Action): AppStateBuilder {\n    this.ag.requestRetryAction = retryAction;\n    return this;\n  }\n\n  public static givenCategories(...categories: string[]): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.wishlist.categories = [...categories];\n    return b;\n  }\n\n  public static someCategories(): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.wishlist.categories = ListBuilder.with((i) =>\n      randomString(8, 'Category ')\n    )\n      .items(7)\n      .build();\n    return b;\n  }\n\n  public static pendingRequest(): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.ag.pendingRequest = true;\n    return b;\n  }\n\n  public static hasActiveItem(values?: Partial<WishlistItem>): AppStateBuilder {\n    const b = new AppStateBuilder();\n    return b.withActiveItem(values);\n  }\n\n  public static reservationStatus(\n    status: ReservationStatus,\n    opt?: { errorText?: string }\n  ): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.reservation.status = status;\n    b.reservation.errorText = opt?.errorText || null;\n    return b;\n  }\n\n  public static withBookCategoryAndItems(): AppStateBuilder {\n    const b = AppStateBuilder.givenCategories('Buch')\n      .withItem({\n        id: 8,\n        Title: 'Schillers Glocke',\n        Description:\n          'Das Lied von der Glocke ist ein im Jahr 1799 von Friedrich Schiller veröffentlichtes Gedicht. Es gehörte lange Zeit zum Kanon der deutschen Literatur und ist eines der bekanntesten, am meisten zitierten und parodierten deutschen Gedichte.',\n        BuyUrl: 'https://de.wikipedia.org/wiki/Das_Lied_von_der_Glocke',\n        Category: 'Buch',\n        ImgageUrl:\n          'https://upload.wikimedia.org/wikipedia/commons/6/69/Liezen_Prachteinband_Schillers_Glocke_01.jpg',\n      })\n      .withItem({\n        Title: 'Faust I + II',\n        Category: 'Buch',\n        Description: `Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des\n      Fauststoffs bezeichnet. Der Begriff kann sich auf den ersten Teil der\n      durch Goethe geschaffenen Tragödie, auf deren ersten und zweiten Teil\n      gemeinsam oder insgesamt auf die Arbeiten am Fauststoff beziehen, die\n      Goethe durch sechzig Jahre hindurch immer wieder neu aufnahm. Er umfasst\n      in diesem letzteren Sinne auch die Entwürfe, Fragmente, Kommentare und\n      Paralipomena des Dichters zu seinem Faustwerk und zum Fauststoff.`,\n        BuyUrl: 'https://de.wikipedia.org/wiki/Goethes_Faust',\n        ImgageUrl:\n          'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg',\n        id: 19,\n      })\n      .withItem({\n        id: 41,\n        Title: 'Nathan der Weise',\n        Description:\n          'Nathan der Weise ist der Titel und die Hauptfigur eines fünfaktigen Ideendramas von Gotthold Ephraim Lessing, das 1779 veröffentlicht und am 14. April 1783 in Berlin uraufgeführt wurde. Das Werk hat als Themenschwerpunkte den Humanismus und den Toleranzgedanken der Aufklärung. Besonders berühmt wurde die Ringparabel im dritten Aufzug des Dramas.',\n        BuyUrl: 'https://de.wikipedia.org/wiki/Nathan_der_Weise',\n        Category: 'Buch',\n        ImgageUrl: '',\n      });\n    return b;\n  }\n\n  withActiveItem(values?: Partial<WishlistItem>): AppStateBuilder {\n    this.wishlist.activeItem = {\n      Title: 'Faust I + II',\n      Category: 'Buch',\n      Description: `Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des\n      Fauststoffs bezeichnet. Der Begriff kann sich auf den ersten Teil der\n      durch Goethe geschaffenen Tragödie, auf deren ersten und zweiten Teil\n      gemeinsam oder insgesamt auf die Arbeiten am Fauststoff beziehen, die\n      Goethe durch sechzig Jahre hindurch immer wieder neu aufnahm. Er umfasst\n      in diesem letzteren Sinne auch die Entwürfe, Fragmente, Kommentare und\n      Paralipomena des Dichters zu seinem Faustwerk und zum Fauststoff.`,\n      BuyUrl: 'https://de.wikipedia.org/wiki/Goethes_Faust',\n      ImgageUrl:\n        'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg',\n      id: 1,\n      ...values,\n    };\n    return this;\n  }\n\n  withCaptcha(challenge: string): AppStateBuilder {\n    this.ag.captchaRequest = challenge;\n    return this;\n  }\n\n  withItem(item: WishlistItem): AppStateBuilder {\n    this.wishlist.items.push(item);\n    if (!this.wishlist.categories.includes(item.Category)) {\n      this.wishlist.categories.push(item.Category);\n    }\n    return this;\n  }\n}\n",
             "properties": [
                 {
                     "name": "ag",
-                    "defaultValue": "{\n    pendingRequest: false,\n    requestErrorText: null,\n    captchaRequest: 'Sieben plus zwei',\n  }",
+                    "defaultValue": "{\n    captchaRequest: 'Sieben plus zwei',\n    pendingRequest: false,\n    requestErrorText: null,\n    requestRetryAction: null,\n  }",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "AppGlobalState",
                     "optional": false,
                     "description": "",
-                    "line": 12
+                    "line": 13
                 },
                 {
                     "name": "reservation",
@@ -884,7 +893,7 @@
                     "type": "ReservationState",
                     "optional": false,
                     "description": "",
-                    "line": 22
+                    "line": 24
                 },
                 {
                     "name": "wishlist",
@@ -894,7 +903,7 @@
                     "type": "WishlistState",
                     "optional": false,
                     "description": "",
-                    "line": 17
+                    "line": 19
                 }
             ],
             "methods": [
@@ -912,7 +921,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 34,
+                    "line": 41,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -945,7 +954,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 56,
+                    "line": 63,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -975,9 +984,9 @@
                         }
                     ],
                     "optional": false,
-                    "returnType": "any",
+                    "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 28,
+                    "line": 30,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1001,7 +1010,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 50,
+                    "line": 57,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1028,7 +1037,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 61,
+                    "line": 68,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1062,7 +1071,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 40,
+                    "line": 47,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1083,7 +1092,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 110,
+                    "line": 117,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -1105,7 +1114,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 71,
+                    "line": 78,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1125,7 +1134,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 130,
+                    "line": 137,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -1153,13 +1162,44 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 135,
+                    "line": 142,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
                             "name": "item",
                             "type": "WishlistItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "withRetryAction",
+                    "args": [
+                        {
+                            "name": "retryAction",
+                            "type": "Action",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "AppStateBuilder",
+                    "typeParameters": [],
+                    "line": 36,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "retryAction",
+                            "type": "Action",
                             "deprecated": false,
                             "deprecationMessage": "",
                             "tagName": {
@@ -2004,7 +2044,7 @@
         },
         {
             "name": "CategoriesPageComponent",
-            "id": "component-CategoriesPageComponent-7d67c1bcb74116caa44118671c4003f41f36eebecaf6dc968cea50f4dfa9ef5a261c809a9d0466faa6c99dc31b309b222dcbf123dadaadf3540e0243b02d129b",
+            "id": "component-CategoriesPageComponent-62c5f19bdab72ef66f40d92f69fc6ae21ad6f34a90959db7c7f3070ce31949e289a74cc1582804eb25cccccba62e3a98bbb4e0e8d30cb8d4ee3cb9db010287d8",
             "file": "src/app/pages/categories-page/categories-page.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -2031,7 +2071,17 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 13
+                    "line": 16
+                },
+                {
+                    "name": "hasRequestError$",
+                    "defaultValue": "this.store.select(selectHasRequestError)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 18
                 },
                 {
                     "name": "hasRequestPending$",
@@ -2041,7 +2091,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 14
+                    "line": 17
                 }
             ],
             "methodsClass": [
@@ -2058,7 +2108,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 18,
+                    "line": 22,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -2084,7 +2134,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component } from '@angular/core';\nimport { Store } from '@ngrx/store';\nimport { selectHasPendingRequest } from 'src/app/store/a.selectors';\nimport { goToCategory } from 'src/app/store/w.actions';\nimport { selectCategories } from 'src/app/store/w.selectors';\n\n@Component({\n  selector: 'app-categories-page',\n  templateUrl: './categories-page.component.html',\n  styleUrls: ['./categories-page.component.scss'],\n})\nexport class CategoriesPageComponent {\n  categories$ = this.store.select(selectCategories);\n  hasRequestPending$ = this.store.select(selectHasPendingRequest);\n\n  constructor(private store: Store) {}\n\n  public goToCategory(category: string): void {\n    this.store.dispatch(\n      goToCategory({\n        category,\n      })\n    );\n  }\n}\n",
+            "sourceCode": "import { Component } from '@angular/core';\nimport { Store } from '@ngrx/store';\nimport {\n  selectHasPendingRequest,\n  selectHasRequestError,\n} from 'src/app/store/a.selectors';\nimport { goToCategory } from 'src/app/store/w.actions';\nimport { selectCategories } from 'src/app/store/w.selectors';\n\n@Component({\n  selector: 'app-categories-page',\n  templateUrl: './categories-page.component.html',\n  styleUrls: ['./categories-page.component.scss'],\n})\nexport class CategoriesPageComponent {\n  categories$ = this.store.select(selectCategories);\n  hasRequestPending$ = this.store.select(selectHasPendingRequest);\n  hasRequestError$ = this.store.select(selectHasRequestError);\n\n  constructor(private store: Store) {}\n\n  public goToCategory(category: string): void {\n    this.store.dispatch(\n      goToCategory({\n        category,\n      })\n    );\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -2106,7 +2156,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 14,
+                "line": 18,
                 "jsdoctags": [
                     {
                         "name": "store",
@@ -2119,7 +2169,7 @@
                     }
                 ]
             },
-            "templateData": "<mat-spinner class=\"centerbox\" *ngIf=\"(hasRequestPending$ | async)\"></mat-spinner>\n<ng-container *ngIf=\"false === (hasRequestPending$ | async)\">\n  <mat-card class=\"c\" *ngFor=\"let category of (categories$ | async)\" (click)=\"goToCategory(category)\">{{ category }}</mat-card>\n  <app-empty-list *ngIf=\"((categories$ | async)?.length ?? 0) === 0\"></app-empty-list>\n</ng-container>\n"
+            "templateData": "<app-error-display></app-error-display>\n<mat-spinner class=\"centerbox\" *ngIf=\"(hasRequestPending$ | async)\"></mat-spinner>\n<ng-container *ngIf=\"false === (hasRequestPending$ | async) && false === (hasRequestError$ | async)\">\n  <mat-card class=\"c\" *ngFor=\"let category of (categories$ | async)\" (click)=\"goToCategory(category)\">{{ category }}</mat-card>\n  <app-empty-list *ngIf=\"((categories$ | async)?.length ?? 0) === 0\"></app-empty-list>\n</ng-container>\n"
         },
         {
             "name": "CategoryPageComponent",
@@ -2462,7 +2512,7 @@
         },
         {
             "name": "ErrorDisplayComponent",
-            "id": "component-ErrorDisplayComponent-76e47eee79a525c391859566f4fdfcedeb43d0d9f9e0e611e4a6b1cdd92ec5e95b651a4f428bc8efb83baa5eba9e4b72388580360a10264e6d2a3a72f955c2f4",
+            "id": "component-ErrorDisplayComponent-0d75a7097f9503be567fe176ae62f0c08428372a0d031cae117276e1823e6576dbb2f3047d4052833583aa4d90d541b798d7b28b351e03547f400e7f24ed4769",
             "file": "src/app/components/error-display/error-display.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -2489,7 +2539,17 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 11
+                    "line": 15
+                },
+                {
+                    "name": "hasRequestError$",
+                    "defaultValue": "this.store.select(selectHasRequestError)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 14
                 }
             ],
             "methodsClass": [],
@@ -2500,11 +2560,11 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component } from '@angular/core';\nimport { Store } from '@ngrx/store';\nimport { selectRequestError } from 'src/app/store/a.selectors';\n\n@Component({\n  selector: 'app-error-display',\n  templateUrl: './error-display.component.html',\n  styleUrls: ['./error-display.component.scss'],\n})\nexport class ErrorDisplayComponent {\n  error$ = this.store.select(selectRequestError);\n\n  constructor(private store: Store) {}\n}\n",
+            "sourceCode": "import { Component } from '@angular/core';\nimport { Store } from '@ngrx/store';\nimport {\n  selectHasRequestError,\n  selectRequestError,\n} from 'src/app/store/a.selectors';\n\n@Component({\n  selector: 'app-error-display',\n  templateUrl: './error-display.component.html',\n  styleUrls: ['./error-display.component.scss'],\n})\nexport class ErrorDisplayComponent {\n  hasRequestError$ = this.store.select(selectHasRequestError);\n  error$ = this.store.select(selectRequestError);\n\n  constructor(private store: Store) {}\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": "",
+                    "data": "mat-card {\n  // Read the 500 hue from the primary color palette.\n  background-color: #f44336;\n  color: white;\n}",
                     "styleUrl": "./error-display.component.scss"
                 }
             ],
@@ -2522,7 +2582,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 11,
+                "line": 15,
                 "jsdoctags": [
                     {
                         "name": "store",
@@ -2535,7 +2595,46 @@
                     }
                 ]
             },
-            "templateData": "{{ (error$ | async)?.text }}"
+            "templateData": "<ng-container *ngIf=\"hasRequestError$|async\">\n  <mat-card *ngIf=\"error$ | async as errorData\">\n    <mat-card-title>Fehler</mat-card-title>\n    <mat-card-content>\n      {{ errorData.text }}\n    </mat-card-content>\n    <mat-card-actions *ngIf=\"errorData.retryAction\">\n      <button mat-button>Wiederholen</button>\n    </mat-card-actions>\n  </mat-card>\n</ng-container>"
+        },
+        {
+            "name": "ErrorDisplayStubComponent",
+            "id": "component-ErrorDisplayStubComponent-d566de124f1063709371fd5ac871d9b25e03b6e43273abc99a5acc9298c3094f0667e8bc9235244de53d913e7bd49c59fc00b512142c760a021860affbce7243",
+            "file": "testing/stubs/error-display.stub.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-error-display",
+            "styleUrls": [],
+            "styles": [],
+            "template": "<div>app-error-display</div>",
+            "templateUrl": [],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component } from '@angular/core';\n\n@Component({\n  selector: 'app-error-display',\n  template: '<div>app-error-display</div>',\n})\nexport class ErrorDisplayStubComponent {\n  constructor() {}\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [],
+                "line": 7
+            }
         },
         {
             "name": "FrameComponent",
@@ -3627,7 +3726,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
-                "defaultValue": "createReducer<AppGlobalState>(\n  initialState,\n  on(\n    getItems,\n    (state, _p): AppGlobalState => ({\n      ...state,\n      pendingRequest: true,\n    })\n  ),\n  on(\n    itemsLoaded,\n    (state, _p): AppGlobalState => ({\n      ...state,\n      pendingRequest: false,\n    })\n  )\n)"
+                "defaultValue": "createReducer<AppGlobalState>(\n  initialState,\n  on(\n    getItems,\n    (state, _p): AppGlobalState => ({\n      ...state,\n      pendingRequest: true,\n    })\n  ),\n  on(\n    itemsLoaded,\n    (state, _p): AppGlobalState => ({\n      ...state,\n      pendingRequest: false,\n    })\n  ),\n  on(\n    requestFailure,\n    (state, p): AppGlobalState => ({\n      ...state,\n      pendingRequest: false,\n      requestErrorText: p.errorText,\n      requestRetryAction: p.retryAction ?? null,\n    })\n  )\n)"
             },
             {
                 "name": "appStateStub",
@@ -3810,6 +3909,26 @@
                 "defaultValue": "() => ({})"
             },
             {
+                "name": "ErrorTextAndAction",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/ErrorDisplay.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "() => ({})"
+            },
+            {
+                "name": "Failure",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Categories.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "() => ({})"
+            },
+            {
                 "name": "getItems",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -3907,7 +4026,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "AppGlobalState",
-                "defaultValue": "{\n  pendingRequest: true,\n  requestErrorText: null,\n  captchaRequest: null,\n}"
+                "defaultValue": "{\n  captchaRequest: null,\n  pendingRequest: true,\n  requestErrorText: null,\n  requestRetryAction: null,\n}"
             },
             {
                 "name": "initialState",
@@ -4209,6 +4328,16 @@
                 "defaultValue": "createSelector(\n  selectFeature,\n  (state: AppGlobalState) => state.pendingRequest\n)"
             },
             {
+                "name": "selectHasRequestError",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/a.selectors.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createSelector(\n  selectFeature,\n  (state: AppGlobalState) => !!state.requestErrorText\n)"
+            },
+            {
                 "name": "selectItems",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -4226,7 +4355,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
-                "defaultValue": "createSelector(\n  selectFeature,\n  (state: AppGlobalState) => ({\n    text: state.requestErrorText,\n  })\n)"
+                "defaultValue": "createSelector(\n  selectFeature,\n  (state: AppGlobalState) => ({\n    text: state.requestErrorText,\n    retryAction: state.requestRetryAction,\n  })\n)"
             },
             {
                 "name": "selectRequestErrorText",
@@ -4526,7 +4655,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
-                    "defaultValue": "createReducer<AppGlobalState>(\n  initialState,\n  on(\n    getItems,\n    (state, _p): AppGlobalState => ({\n      ...state,\n      pendingRequest: true,\n    })\n  ),\n  on(\n    itemsLoaded,\n    (state, _p): AppGlobalState => ({\n      ...state,\n      pendingRequest: false,\n    })\n  )\n)"
+                    "defaultValue": "createReducer<AppGlobalState>(\n  initialState,\n  on(\n    getItems,\n    (state, _p): AppGlobalState => ({\n      ...state,\n      pendingRequest: true,\n    })\n  ),\n  on(\n    itemsLoaded,\n    (state, _p): AppGlobalState => ({\n      ...state,\n      pendingRequest: false,\n    })\n  ),\n  on(\n    requestFailure,\n    (state, p): AppGlobalState => ({\n      ...state,\n      pendingRequest: false,\n      requestErrorText: p.errorText,\n      requestRetryAction: p.retryAction ?? null,\n    })\n  )\n)"
                 },
                 {
                     "name": "initialState",
@@ -4536,7 +4665,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "AppGlobalState",
-                    "defaultValue": "{\n  pendingRequest: true,\n  requestErrorText: null,\n  captchaRequest: null,\n}"
+                    "defaultValue": "{\n  captchaRequest: null,\n  pendingRequest: true,\n  requestErrorText: null,\n  requestRetryAction: null,\n}"
                 }
             ],
             "testing/app.state.builder.ts": [
@@ -4571,6 +4700,16 @@
                     "deprecationMessage": "",
                     "type": "Story",
                     "defaultValue": "() => ({\n  props: {},\n})"
+                },
+                {
+                    "name": "Failure",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Categories.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "() => ({})"
                 },
                 {
                     "name": "initialState",
@@ -4883,6 +5022,16 @@
                 },
                 {
                     "name": "ErrorText",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/ErrorDisplay.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "() => ({})"
+                },
+                {
+                    "name": "ErrorTextAndAction",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
                     "file": "src/stories/ErrorDisplay.stories.ts",
@@ -5266,6 +5415,16 @@
                     "defaultValue": "createSelector(\n  selectFeature,\n  (state: AppGlobalState) => state.pendingRequest\n)"
                 },
                 {
+                    "name": "selectHasRequestError",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/a.selectors.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createSelector(\n  selectFeature,\n  (state: AppGlobalState) => !!state.requestErrorText\n)"
+                },
+                {
                     "name": "selectRequestError",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
@@ -5273,7 +5432,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
-                    "defaultValue": "createSelector(\n  selectFeature,\n  (state: AppGlobalState) => ({\n    text: state.requestErrorText,\n  })\n)"
+                    "defaultValue": "createSelector(\n  selectFeature,\n  (state: AppGlobalState) => ({\n    text: state.requestErrorText,\n    retryAction: state.requestRetryAction,\n  })\n)"
                 },
                 {
                     "name": "selectRequestErrorText",
@@ -5606,7 +5765,7 @@
                 "linktype": "component",
                 "name": "ErrorDisplayComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/3",
+                "coverageCount": "0/4",
                 "status": "low"
             },
             {
@@ -5687,7 +5846,7 @@
                 "linktype": "component",
                 "name": "CategoriesPageComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/5",
+                "coverageCount": "0/6",
                 "status": "low"
             },
             {
@@ -5800,6 +5959,16 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
+                "name": "selectHasRequestError",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/a.selectors.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
                 "name": "selectRequestError",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
@@ -5821,7 +5990,7 @@
                 "linktype": "interface",
                 "name": "AppGlobalState",
                 "coveragePercent": 0,
-                "coverageCount": "0/4",
+                "coverageCount": "0/5",
                 "status": "low"
             },
             {
@@ -6125,6 +6294,16 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
+                "name": "Failure",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Categories.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
                 "name": "initialState",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
@@ -6256,6 +6435,16 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "ErrorText",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/ErrorDisplay.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "ErrorTextAndAction",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
@@ -6571,7 +6760,7 @@
                 "linktype": "classe",
                 "name": "AppStateBuilder",
                 "coveragePercent": 0,
-                "coverageCount": "0/14",
+                "coverageCount": "0/15",
                 "status": "low"
             },
             {
@@ -6616,6 +6805,15 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "EmptyListStubComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/2",
+                "status": "low"
+            },
+            {
+                "filePath": "testing/stubs/error-display.stub.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ErrorDisplayStubComponent",
                 "coveragePercent": 0,
                 "coverageCount": "0/2",
                 "status": "low"

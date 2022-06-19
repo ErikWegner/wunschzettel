@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { selectHasPendingRequest } from 'src/app/store/a.selectors';
+import {
+  selectHasPendingRequest,
+  selectHasRequestError,
+} from 'src/app/store/a.selectors';
 import { goToCategory } from 'src/app/store/w.actions';
 import { selectCategories } from 'src/app/store/w.selectors';
 
@@ -12,6 +15,7 @@ import { selectCategories } from 'src/app/store/w.selectors';
 export class CategoriesPageComponent {
   categories$ = this.store.select(selectCategories);
   hasRequestPending$ = this.store.select(selectHasPendingRequest);
+  hasRequestError$ = this.store.select(selectHasRequestError);
 
   constructor(private store: Store) {}
 

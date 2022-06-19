@@ -1,5 +1,6 @@
+<app-error-display></app-error-display>
 <mat-spinner class="centerbox" *ngIf="(hasRequestPending$ | async)"></mat-spinner>
-<ng-container *ngIf="false === (hasRequestPending$ | async)">
+<ng-container *ngIf="false === (hasRequestPending$ | async) && false === (hasRequestError$ | async)">
   <mat-card class="c" *ngFor="let category of (categories$ | async)" (click)="goToCategory(category)">{{ category }}</mat-card>
   <app-empty-list *ngIf="((categories$ | async)?.length ?? 0) === 0"></app-empty-list>
 </ng-container>

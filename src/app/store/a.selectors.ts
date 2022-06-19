@@ -14,6 +14,11 @@ export const selectRequestErrorText = createSelector(
   (state: AppGlobalState) => state.requestErrorText
 );
 
+export const selectHasRequestError = createSelector(
+  selectFeature,
+  (state: AppGlobalState) => !!state.requestErrorText
+);
+
 export const selectRequestError = createSelector(
   selectFeature,
   (state: AppGlobalState) => ({
