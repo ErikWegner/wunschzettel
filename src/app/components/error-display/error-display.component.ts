@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
+import { clearFailedRequestAndRetry } from 'src/app/store/a.actions';
 import {
   selectHasRequestError,
   selectRequestError,
@@ -15,4 +16,8 @@ export class ErrorDisplayComponent {
   error$ = this.store.select(selectRequestError);
 
   constructor(private store: Store) {}
+
+  public dispatchRetryAction(action: Action) {
+    this.store.dispatch(clearFailedRequestAndRetry({ action }));
+  }
 }

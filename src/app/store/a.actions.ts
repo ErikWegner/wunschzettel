@@ -8,3 +8,10 @@ export const requestFailure = createAction(
     retryAction?: Action;
   }>()
 );
+
+export const clearFailedRequestAndRetry = createAction(
+  '[W] Retry action',
+  props<{
+    action: Action;
+  }>()
+);

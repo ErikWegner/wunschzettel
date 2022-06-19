@@ -1,6 +1,6 @@
-import { appStateStub } from 'testing/app.state.builder';
+import { AppStateBuilder, appStateStub } from 'testing/app.state.builder';
 import { randomString } from 'testing/utils';
-import { requestFailure } from './a.actions';
+import { clearFailedRequestAndRetry, requestFailure } from './a.actions';
 import { agReducer } from './a.reducer';
 import { getItems, itemsLoaded } from './w.actions';
 
@@ -57,6 +57,28 @@ describe('AppGlobal reducer', () => {
       expect(newstate.requestRetryAction)
         .withContext('requestRetryAction')
         .toBe(retryAction);
+    });
+  });
+
+  describe('retryAction', () => {
+    it('should clear request error', () => {
+      // Arrange
+      const errorText = randomString(20, 'Error ');
+      const failedAction = getItems();
+      const initialState =
+        AppStateBuilder.hasError(errorText).withRetryAction(failedAction);
+      const action = clearFailedRequestAndRetry({ action: failedAction });
+
+      // Act
+      const newstate = agReducer(initialState.ag, action);
+
+      // Assert
+      expect(newstate.requestErrorText)
+        .withContext('requestErrorText')
+        .toBeNull();
+      expect(newstate.requestRetryAction)
+        .withContext('requestRetryAction')
+        .toBeNull();
     });
   });
 });

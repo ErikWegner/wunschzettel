@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { requestFailure } from './a.actions';
+import { clearFailedRequestAndRetry, requestFailure } from './a.actions';
 import { AppGlobalState } from './a.state';
 import { getItems, itemsLoaded } from './w.actions';
 
@@ -33,6 +33,14 @@ export const agReducer = createReducer<AppGlobalState>(
       pendingRequest: false,
       requestErrorText: p.errorText,
       requestRetryAction: p.retryAction ?? null,
+    })
+  ),
+  on(
+    clearFailedRequestAndRetry,
+    (state, _): AppGlobalState => ({
+      ...state,
+      requestErrorText: null,
+      requestRetryAction: null,
     })
   )
 );

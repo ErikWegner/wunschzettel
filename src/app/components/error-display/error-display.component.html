@@ -5,7 +5,7 @@
       {{ errorData.text }}
     </mat-card-content>
     <mat-card-actions *ngIf="errorData.retryAction">
-      <button mat-button>Wiederholen</button>
+      <button mat-button (click)="dispatchRetryAction(errorData.retryAction)">Wiederholen</button>
     </mat-card-actions>
   </mat-card>
 </ng-container>

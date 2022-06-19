@@ -46,6 +46,7 @@ import { WithCategoryPipe } from './pipes/with-category.pipe';
 import { MenuNavlistComponent } from './components/menu-navlist/menu-navlist.component';
 import { ItemViewComponent } from './pages/item-view/item-view.component';
 import { ErrorDisplayComponent } from './components/error-display/error-display.component';
+import { AppGlobalStateEffects } from './store/a.effects';
 
 @NgModule({
   declarations: [
@@ -90,7 +91,7 @@ import { ErrorDisplayComponent } from './components/error-display/error-display.
       wishlist: wReducer,
       reservation: rReducer,
     }),
-    EffectsModule.forRoot([WishlistEffects]),
+    EffectsModule.forRoot([AppGlobalStateEffects, WishlistEffects]),
     // import HttpClientModule after BrowserModule.
     HttpClientModule,
     StoreDevtoolsModule.instrument({
