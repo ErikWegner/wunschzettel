@@ -47,6 +47,7 @@ import { MenuNavlistComponent } from './components/menu-navlist/menu-navlist.com
 import { ItemViewComponent } from './pages/item-view/item-view.component';
 import { ErrorDisplayComponent } from './components/error-display/error-display.component';
 import { AppGlobalStateEffects } from './store/a.effects';
+import { AddPageComponent } from './pages/add-page/add-page.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import { AppGlobalStateEffects } from './store/a.effects';
     MenuNavlistComponent,
     ItemViewComponent,
     ErrorDisplayComponent,
+    AddPageComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AboutComponent } from './pages/about/about.component';
+import { AddPageComponent } from './pages/add-page/add-page.component';
 import { CategoriesPageComponent } from './pages/categories-page/categories-page.component';
 import { CategoryPageComponent } from './pages/category-page/category-page.component';
 import { ItemViewComponent } from './pages/item-view/item-view.component';
@@ -26,6 +27,11 @@ const routes: Routes = [
     path: 'wunsch',
     component: CategoriesPageComponent,
     data: { animation: 'CategoriesPage' },
+  },
+  {
+    path: 'add',
+    component: AddPageComponent,
+    data: { animation: 'AddPage' },
   },
   {
     path: 'about',

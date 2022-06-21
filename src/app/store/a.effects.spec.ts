@@ -14,6 +14,7 @@ describe('AppGlobalStateEffects', () => {
   let effects: AppGlobalStateEffects;
 
   beforeEach(() => {
+    actions$ = new Observable<Action>();
     TestBed.configureTestingModule({
       imports: [EffectsModule.forRoot([AppGlobalStateEffects])],
       providers: [
