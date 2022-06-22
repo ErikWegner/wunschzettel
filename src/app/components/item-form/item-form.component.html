@@ -1,5 +1,5 @@
 <form [formGroup]="itemForm" [appFormEnabled]="(hasRequestPending$ | async) === false"
-  [appConnectForm]="formData$ | async">
+  [appConnectForm]="formData$ | async" (submit)="save()">
   <mat-card>
     <mat-card-title>Wunschzetteleintrag</mat-card-title>
 

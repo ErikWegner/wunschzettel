@@ -23,3 +23,10 @@ export const goToItem = createAction(
     itemId: number;
   }>()
 );
+
+export const saveItem = createAction(
+  '[W] Save item',
+  props<{
+    item: WishlistItem;
+  }>()
+);

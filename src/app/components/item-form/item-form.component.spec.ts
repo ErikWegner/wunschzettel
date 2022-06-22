@@ -1,15 +1,21 @@
+import { HarnessLoader } from '@angular/cdk/testing';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatButtonHarness } from '@angular/material/button/testing';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatInputHarness } from '@angular/material/input/testing';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { cold } from 'jasmine-marbles';
 import { ConnectFormDirective } from 'src/app/directives/connect-form.directive';
 import { FormEnabledDirective } from 'src/app/directives/form-enabled.directive';
 import { AppState } from 'src/app/store/app.state';
+import { saveItem } from 'src/app/store/w.actions';
 import { AppStateBuilder, appStateStub } from 'testing/app.state.builder';
 import { randomString } from 'testing/utils';
 
@@ -18,6 +24,7 @@ import { ItemFormComponent } from './item-form.component';
 describe('ItemFormComponent', () => {
   let component: ItemFormComponent;
   let fixture: ComponentFixture<ItemFormComponent>;
+  let loader: HarnessLoader;
   let store: MockStore;
 
   beforeEach(async () => {
@@ -45,6 +52,7 @@ describe('ItemFormComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ItemFormComponent);
     component = fixture.componentInstance;
+    loader = TestbedHarnessEnvironment.loader(fixture);
     fixture.detectChanges();
   });
 
@@ -175,5 +183,28 @@ describe('ItemFormComponent', () => {
     const labels = el.querySelectorAll('mat-label');
     expect(labels.length).withContext('There should be six labels').toBe(6);
     expect(labels[5].textContent).toBe(challenge);
+  });
+
+  it('should dispatch save action', async () => {
+    // Arrange
+    const challenge = randomString(20, 'Your captcha challenge: ');
+    const nextState = AppStateBuilder.hasActiveItem().withCaptcha(challenge);
+    store.setState(nextState);
+    fixture.detectChanges();
+    component.itemForm.patchValue({ captchaResponse: challenge });
+    fixture.detectChanges();
+
+    const button = await loader.getHarness(
+      MatButtonHarness.with({ text: 'Speichern' })
+    );
+
+    // Act
+    await button.click();
+
+    // Assert
+    const expected = cold('a', {
+      a: saveItem({ item: nextState.wishlist.activeItem! }),
+    });
+    expect(store.scannedActions$).toBeObservable(expected);
   });
 });
