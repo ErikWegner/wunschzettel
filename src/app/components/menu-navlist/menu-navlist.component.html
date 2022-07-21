@@ -1,5 +1,8 @@
 <mat-nav-list>
   <mat-divider></mat-divider>
+  <a mat-list-item [routerLink]="['/kategorien']">Kategorien</a>
+  <mat-divider></mat-divider>
+  <a mat-list-item [routerLink]="['/wunschliste']">Alle Einträge</a>
   <a *ngFor="let category of (categories$ | async)" mat-list-item [routerLink]="['/wunschliste', category]">{{ category }}</a>
   <mat-divider></mat-divider>
   <a mat-list-item routerLink="/about">Über</a>

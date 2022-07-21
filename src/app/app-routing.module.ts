@@ -24,7 +24,7 @@ const routes: Routes = [
     data: { animation: 'CategoryPage' },
   },
   {
-    path: 'wunsch',
+    path: 'kategorien',
     component: CategoriesPageComponent,
     data: { animation: 'CategoriesPage' },
   },
