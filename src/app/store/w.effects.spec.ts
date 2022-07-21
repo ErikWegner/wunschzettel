@@ -5,13 +5,18 @@ import { EffectsModule, ROOT_EFFECTS_INIT } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { cold, hot } from 'jasmine-marbles';
 import { Observable, of, throwError } from 'rxjs';
+import { appStateStub } from 'testing/app.state.builder';
+import { WishlistItemBuilder } from 'testing/item.builder';
+import { ListBuilder } from 'testing/list-builder';
 import { randomNumber, randomString } from 'testing/utils';
 import { ItemsService } from '../services/items.service';
 import { requestFailure } from './a.actions';
-import { getItems, goToCategory, goToItem } from './w.actions';
+import { getItems, goToCategory, goToItem, setActiveItem } from './w.actions';
 import { WishlistEffects } from './w.effects';
 import { initialState as WishlishInitialState } from './w.reducer';
+import { selectItems } from './w.selectors';
 
 describe('WishlistEffects', () => {
   let actions$: Observable<Action>;
@@ -76,16 +81,55 @@ describe('WishlistEffects', () => {
     ]);
   });
 
-  it('should navigate to item', () => {
+  it('should navigate to item', (done) => {
     // Arrange
-    const itemId = randomNumber(100, 20);
-    actions$ = of(goToItem({ itemId }));
+    const itemCount = randomNumber(20, 10);
+    const items = ListBuilder.with((i) =>
+      WishlistItemBuilder.n()
+        .withCategory(`Category ${i % 3}`)
+        .build()
+    )
+      .items(itemCount)
+      .build();
+    const itemIndex = randomNumber(itemCount, 0);
+    const item = items[itemIndex];
+
+    store.setState(appStateStub().withTheseItems(items));
+    actions$ = of(goToItem({ itemId: item.id }));
 
     // Act
-    effects.navigateToItem$.subscribe();
+    effects.navigateToItem$.subscribe(() => {
+      // Assert
+      expect(router.navigate).toHaveBeenCalledOnceWith([
+        '/wunsch',
+        item.id + '',
+      ]);
 
-    // Assert
-    expect(router.navigate).toHaveBeenCalledOnceWith(['/wunsch', itemId + '']);
+      done();
+    });
+  });
+
+  it('should set activeItem on navigation', () => {
+    // Arrange
+    const itemCount = randomNumber(20, 10);
+    const items = ListBuilder.with((i) =>
+      WishlistItemBuilder.n()
+        .withCategory(`Category ${i % 3}`)
+        .build()
+    )
+      .items(itemCount)
+      .build();
+    const itemIndex = randomNumber(itemCount, 0);
+    const item = items[itemIndex];
+
+    store.setState(appStateStub().withTheseItems(items));
+    actions$ = of(goToItem({ itemId: item.id }));
+
+    // Act + Assert
+    const expected = cold('a', {
+      a: setActiveItem({ item }),
+    });
+    expect(effects.navigateToItem$).toBeObservable(expected);
   });
 
   it('should handle error when loading items', () => {

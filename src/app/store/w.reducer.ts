@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { itemsLoaded } from './w.actions';
+import { itemsLoaded, setActiveItem } from './w.actions';
 import { WishlistState } from './w.state';
 
 export const initialState: WishlistState = {
@@ -24,6 +24,13 @@ export const wReducer = createReducer<WishlistState>(
         }, [] as string[])
         .sort(),
       items: p.items,
+    })
+  ),
+  on(
+    setActiveItem,
+    (state, p): WishlistState => ({
+      ...state,
+      activeItem: p.item ?? null,
     })
   )
 );

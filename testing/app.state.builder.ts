@@ -146,4 +146,11 @@ export class AppStateBuilder implements AppState {
     }
     return this;
   }
+
+  withTheseItems(items: WishlistItem[]): AppStateBuilder {
+    this.wishlist.items.length = 0;
+    this.wishlist.categories.length = 0;
+    items.forEach((item) => this.withItem(item));
+    return this;
+  }
 }

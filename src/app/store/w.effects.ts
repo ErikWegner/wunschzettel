@@ -1,15 +1,24 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   Actions,
+  concatLatestFrom,
   createEffect,
   ofType,
   ROOT_EFFECTS_INIT,
 } from '@ngrx/effects';
-import { catchError, map, of, switchMap, tap } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { catchError, map, mergeMap, of, switchMap, tap } from 'rxjs';
 import { ItemsService } from '../services/items.service';
 import { requestFailure } from './a.actions';
-import { getItems, goToCategory, goToItem, itemsLoaded } from './w.actions';
+import {
+  getItems,
+  goToCategory,
+  goToItem,
+  itemsLoaded,
+  setActiveItem,
+} from './w.actions';
+import { selectItems } from './w.selectors';
 
 @Injectable()
 export class WishlistEffects {
@@ -52,21 +61,26 @@ export class WishlistEffects {
     { dispatch: false }
   );
 
-  navigateToItem$ = createEffect(
-    () => {
-      return this.actions$.pipe(
-        ofType(goToItem),
-        tap((d) => {
-          this.router.navigate(['/wunsch', `${d.itemId}`]);
-        })
-      );
-    },
-    { dispatch: false }
-  );
+  navigateToItem$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(goToItem),
+      mergeMap((action) =>
+        this.store.select(selectItems).pipe(
+          map((items) => {
+            const itemId = action.itemId;
+            const item = items?.find((i) => i.id == itemId);
+            this.router.navigate(['/wunsch', `${itemId}`]);
+            return setActiveItem({ item });
+          })
+        )
+      )
+    );
+  });
 
   constructor(
     private actions$: Actions,
     private itemsService: ItemsService,
-    private router: Router
+    private router: Router,
+    private store: Store
   ) {}
 }
