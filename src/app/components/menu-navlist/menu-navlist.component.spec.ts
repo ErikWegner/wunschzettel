@@ -50,6 +50,23 @@ describe('MenuNavlistComponent', () => {
     const items = await list.getItems();
 
     // Assert
+    const preLinks = [
+      { name: 'categories link', text: 'Kategorien', href: '/kategorien' },
+      { name: 'all items', text: 'Alle Einträge', href: '/wunschliste' },
+    ];
+    for (let index = 0; index < preLinks.length; index++) {
+      const preLink = preLinks[index];
+      const item = items.shift()!;
+      const itemText = await item.getText();
+      const itemLink = await item.getHref();
+      expect(itemText)
+        .withContext(`Element #${preLink.name} should show text`)
+        .toBe(preLink.text);
+      expect(itemLink)
+        .withContext(`Element #${preLink.name} should link`)
+        .toBe(preLink.href);
+    }
+
     expect(items.length).toBe(
       nextState.wishlist.categories.length + aboutItemCount
     );

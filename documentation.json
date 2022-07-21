@@ -3542,7 +3542,7 @@
                     }
                 ]
             },
-            "templateData": "<mat-nav-list>\n  <mat-divider></mat-divider>\n  <a *ngFor=\"let category of (categories$ | async)\" mat-list-item [routerLink]=\"['/wunschliste', category]\">{{ category }}</a>\n  <mat-divider></mat-divider>\n  <a mat-list-item routerLink=\"/about\">Über</a>\n</mat-nav-list>\n"
+            "templateData": "<mat-nav-list>\n  <mat-divider></mat-divider>\n  <a mat-list-item [routerLink]=\"['/kategorien']\">Kategorien</a>\n  <mat-divider></mat-divider>\n  <a mat-list-item [routerLink]=\"['/wunschliste']\">Alle Einträge</a>\n  <a *ngFor=\"let category of (categories$ | async)\" mat-list-item [routerLink]=\"['/wunschliste', category]\">{{ category }}</a>\n  <mat-divider></mat-divider>\n  <a mat-list-item routerLink=\"/about\">Über</a>\n</mat-nav-list>\n"
         },
         {
             "name": "MenuNavlistStubComponent",
@@ -3828,13 +3828,13 @@
         },
         {
             "name": "AppRoutingModule",
-            "id": "module-AppRoutingModule-ea851cead90e6342489f26630a849f19677f823e49f3168c9fd83272d076582d6a3bb60b0027145b98fab5bbaccc26863fbdb099ce75f300a45c0b2c063e4e11",
+            "id": "module-AppRoutingModule-4f887ab809faa07752d9df21d654b5fa11f74bfb3edec541340b5f6e73b3e62cbcfda45e35a3f371ea8bf48286a8b6d9b2a43f3ff47a75bf43e8db7d516a6a38",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/app-routing.module.ts",
             "methods": [],
-            "sourceCode": "import { NgModule } from '@angular/core';\nimport { RouterModule, Routes } from '@angular/router';\nimport { AboutComponent } from './pages/about/about.component';\nimport { AddPageComponent } from './pages/add-page/add-page.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { CategoryPageComponent } from './pages/category-page/category-page.component';\nimport { ItemViewComponent } from './pages/item-view/item-view.component';\nimport { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';\n\nconst routes: Routes = [\n  {\n    path: 'wunschliste',\n    component: CategoryPageComponent,\n    data: { animation: 'CategoryPage' },\n  },\n  {\n    path: 'wunschliste/:category',\n    component: CategoryPageComponent,\n    data: { animation: 'CategoryPage' },\n  },\n  {\n    path: 'wunsch/:wunsch',\n    component: ItemViewComponent,\n    data: { animation: 'CategoryPage' },\n  },\n  {\n    path: 'wunsch',\n    component: CategoriesPageComponent,\n    data: { animation: 'CategoriesPage' },\n  },\n  {\n    path: 'add',\n    component: AddPageComponent,\n    data: { animation: 'AddPage' },\n  },\n  {\n    path: 'about',\n    component: AboutComponent,\n    data: { animation: 'AboutPage' },\n  },\n\n  { path: '', redirectTo: '/wunsch', pathMatch: 'full' },\n  { path: '**', component: PageNotFoundComponent },\n];\n\n@NgModule({\n  imports: [RouterModule.forRoot(routes, { useHash: true })],\n  exports: [RouterModule]\n})\nexport class AppRoutingModule { }\n",
+            "sourceCode": "import { NgModule } from '@angular/core';\nimport { RouterModule, Routes } from '@angular/router';\nimport { AboutComponent } from './pages/about/about.component';\nimport { AddPageComponent } from './pages/add-page/add-page.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { CategoryPageComponent } from './pages/category-page/category-page.component';\nimport { ItemViewComponent } from './pages/item-view/item-view.component';\nimport { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';\n\nconst routes: Routes = [\n  {\n    path: 'wunschliste',\n    component: CategoryPageComponent,\n    data: { animation: 'CategoryPage' },\n  },\n  {\n    path: 'wunschliste/:category',\n    component: CategoryPageComponent,\n    data: { animation: 'CategoryPage' },\n  },\n  {\n    path: 'wunsch/:wunsch',\n    component: ItemViewComponent,\n    data: { animation: 'CategoryPage' },\n  },\n  {\n    path: 'kategorien',\n    component: CategoriesPageComponent,\n    data: { animation: 'CategoriesPage' },\n  },\n  {\n    path: 'add',\n    component: AddPageComponent,\n    data: { animation: 'AddPage' },\n  },\n  {\n    path: 'about',\n    component: AboutComponent,\n    data: { animation: 'AboutPage' },\n  },\n\n  { path: '', redirectTo: '/wunsch', pathMatch: 'full' },\n  { path: '**', component: PageNotFoundComponent },\n];\n\n@NgModule({\n  imports: [RouterModule.forRoot(routes, { useHash: true })],\n  exports: [RouterModule]\n})\nexport class AppRoutingModule { }\n",
             "children": [
                 {
                     "type": "providers",
@@ -5913,7 +5913,7 @@
                         }
                     },
                     {
-                        "path": "wunsch",
+                        "path": "kategorien",
                         "component": "CategoriesPageComponent",
                         "data": {
                             "animation": "CategoriesPage"
