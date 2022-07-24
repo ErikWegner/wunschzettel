@@ -4085,13 +4085,13 @@
         },
         {
             "name": "AppRoutingModule",
-            "id": "module-AppRoutingModule-02f48add6e9b57e57cb7e7d848dd85d7ed7d42f3f402aa1012cb32c9f32d62862412af5a4b8e4cc3554b0a6b683678ab7bfd06d68f845bd3cb9bfb2521322ca8",
+            "id": "module-AppRoutingModule-7092388fde34391b8496b04b7cee965dddc70491f7cdbcb39dd6cbd52f73a9cf664801c37e3f7f140b7dd75a35917c99de512fde7a5b1b3bd2eb651da7dffdec",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/app-routing.module.ts",
             "methods": [],
-            "sourceCode": "import { NgModule } from '@angular/core';\nimport { RouterModule, Routes } from '@angular/router';\nimport { AboutComponent } from './pages/about/about.component';\nimport { AddPageComponent } from './pages/add-page/add-page.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { CategoryPageComponent } from './pages/category-page/category-page.component';\nimport { ItemViewComponent } from './pages/item-view/item-view.component';\nimport { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';\n\nconst routes: Routes = [\n  {\n    path: 'wunschliste',\n    component: CategoryPageComponent,\n    data: { animation: 'CategoryPage' },\n  },\n  {\n    path: 'wunschliste/:category',\n    component: CategoryPageComponent,\n    data: { animation: 'CategoryPage' },\n  },\n  {\n    path: 'wunsch/:wunsch',\n    component: ItemViewComponent,\n    data: { animation: 'CategoryPage', action: 'navigatedToItem' },\n  },\n  {\n    path: 'kategorien',\n    component: CategoriesPageComponent,\n    data: { animation: 'CategoriesPage' },\n  },\n  {\n    path: 'add',\n    component: AddPageComponent,\n    data: { animation: 'AddPage' },\n  },\n  {\n    path: 'about',\n    component: AboutComponent,\n    data: { animation: 'AboutPage' },\n  },\n\n  { path: '', redirectTo: '/wunsch', pathMatch: 'full' },\n  { path: '**', component: PageNotFoundComponent },\n];\n\n@NgModule({\n  imports: [RouterModule.forRoot(routes, { useHash: true })],\n  exports: [RouterModule]\n})\nexport class AppRoutingModule { }\n",
+            "sourceCode": "import { NgModule } from '@angular/core';\nimport { RouterModule, Routes } from '@angular/router';\nimport { AboutComponent } from './pages/about/about.component';\nimport { AddPageComponent } from './pages/add-page/add-page.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { CategoryPageComponent } from './pages/category-page/category-page.component';\nimport { ItemViewComponent } from './pages/item-view/item-view.component';\nimport { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';\n\nconst routes: Routes = [\n  {\n    path: 'wunschliste',\n    component: CategoryPageComponent,\n    data: { animation: 'CategoryPage' },\n  },\n  {\n    path: 'wunschliste/:category',\n    component: CategoryPageComponent,\n    data: { animation: 'CategoryPage' },\n  },\n  {\n    path: 'wunsch/:wunsch',\n    component: ItemViewComponent,\n    data: { animation: 'CategoryPage', action: 'navigatedToItem' },\n  },\n  {\n    path: 'kategorien',\n    component: CategoriesPageComponent,\n    data: { animation: 'CategoriesPage' },\n  },\n  {\n    path: 'add',\n    component: AddPageComponent,\n    data: { animation: 'AddPage' },\n  },\n  {\n    path: 'about',\n    component: AboutComponent,\n    data: { animation: 'AboutPage' },\n  },\n\n  { path: '', redirectTo: '/wunschliste', pathMatch: 'full' },\n  { path: '**', component: PageNotFoundComponent },\n];\n\n@NgModule({\n  imports: [RouterModule.forRoot(routes, { useHash: true })],\n  exports: [RouterModule]\n})\nexport class AppRoutingModule { }\n",
             "children": [
                 {
                     "type": "providers",
@@ -6255,7 +6255,7 @@
                     },
                     {
                         "path": "",
-                        "redirectTo": "/wunsch",
+                        "redirectTo": "/wunschliste",
                         "pathMatch": "full"
                     },
                     {

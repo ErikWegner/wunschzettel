@@ -39,7 +39,7 @@ const routes: Routes = [
     data: { animation: 'AboutPage' },
   },
 
-  { path: '', redirectTo: '/wunsch', pathMatch: 'full' },
+  { path: '', redirectTo: '/wunschliste', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent },
 ];
 
