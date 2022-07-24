@@ -21,7 +21,7 @@ const routes: Routes = [
   {
     path: 'wunsch/:wunsch',
     component: ItemViewComponent,
-    data: { animation: 'CategoryPage' },
+    data: { animation: 'CategoryPage', action: 'navigatedToItem' },
   },
   {
     path: 'kategorien',

@@ -1,8 +1,10 @@
+import { RouterReducerState } from '@ngrx/router-store';
 import { Action } from '@ngrx/store';
 import { WishlistItem } from 'src/app/business/item';
 import { AppGlobalState } from 'src/app/store/a.state';
 import { AppState } from 'src/app/store/app.state';
 import { ReservationState, ReservationStatus } from 'src/app/store/r.state';
+import { RouterStateUrl } from 'src/app/store/router/custom-route-serializer';
 import { WishlistState } from 'src/app/store/w.state';
 import { ListBuilder } from './list-builder';
 import { randomString } from './utils';
@@ -25,6 +27,10 @@ export class AppStateBuilder implements AppState {
     itemid: null,
     status: 'unknown',
     errorText: null,
+  };
+  router: RouterReducerState<RouterStateUrl> = {
+    navigationId: 0,
+    state: { url: '', params: {}, queryParams: {}, data: {} },
   };
 
   public static hasError(errorText: string): AppStateBuilder {

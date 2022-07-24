@@ -3,11 +3,25 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "ng serve",
-      "type": "pwa-chrome",
+      "name": "Debug with Chrome",
+      "request": "launch",
+      "type": "chrome",
+      "url": "http://localhost:4200",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "name": "Serve and debug with Chrome",
+      "type": "chrome",
       "request": "launch",
       "preLaunchTask": "npm: start",
       "url": "http://localhost:4200/"
+    },
+    {
+      "name": "Debug test with Chrome",
+      "request": "launch",
+      "type": "chrome",
+      "url": "http://localhost:9876",
+      "webRoot": "${workspaceFolder}"
     },
     {
       "name": "ng test",

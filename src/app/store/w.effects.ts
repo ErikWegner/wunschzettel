@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   Actions,
-  concatLatestFrom,
   createEffect,
   ofType,
   ROOT_EFFECTS_INIT,
@@ -11,6 +10,7 @@ import { Store } from '@ngrx/store';
 import { catchError, map, mergeMap, of, switchMap, tap } from 'rxjs';
 import { ItemsService } from '../services/items.service';
 import { requestFailure } from './a.actions';
+import { navigatedToItem } from './router/actions';
 import {
   getItems,
   goToCategory,
@@ -18,7 +18,6 @@ import {
   itemsLoaded,
   setActiveItem,
 } from './w.actions';
-import { selectItems } from './w.selectors';
 
 @Injectable()
 export class WishlistEffects {
@@ -61,15 +60,26 @@ export class WishlistEffects {
     { dispatch: false }
   );
 
-  navigateToItem$ = createEffect(() => {
+  navigateToItem$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(goToItem),
+        map((action) => {
+          this.router.navigate(['/wunsch', `${action.itemId}`]);
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
+  navigatedToItem$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(goToItem),
+      ofType(navigatedToItem),
       mergeMap((action) =>
-        this.store.select(selectItems).pipe(
+        this.itemsService.getItems().pipe(
           map((items) => {
             const itemId = action.itemId;
-            const item = items?.find((i) => i.id == itemId);
-            this.router.navigate(['/wunsch', `${itemId}`]);
+            const item = items?.find((i) => i.id === itemId);
             return setActiveItem({ item });
           })
         )

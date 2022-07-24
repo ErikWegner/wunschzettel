@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { EMPTY, map, Observable } from 'rxjs';
+import { EMPTY, map, Observable, shareReplay } from 'rxjs';
 import { AddItemResponse } from '../business/add-item-response';
 import { WishlistItem } from '../business/item';
 import { Result } from '../business/result';
@@ -9,12 +9,20 @@ import { Result } from '../business/result';
   providedIn: 'root',
 })
 export class ItemsService {
+  private cachedItems$: Observable<WishlistItem[]> | null = null;
+
   constructor(private http: HttpClient) {}
 
   public getItems(): Observable<WishlistItem[]> {
-    return this.http
-      .get<{ data: WishlistItem[] }>('service.php?action=list')
-      .pipe(map((d) => d.data));
+    if (!this.cachedItems$) {
+      this.cachedItems$ = this.http
+        .get<{ data: WishlistItem[] }>('service.php?action=list')
+        .pipe(
+          map((d) => d.data),
+          shareReplay(1)
+        );
+    }
+    return this.cachedItems$;
   }
 
   public getReservationFlag(id: number): Observable<boolean> {

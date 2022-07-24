@@ -5,18 +5,18 @@ import { EffectsModule, ROOT_EFFECTS_INIT } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { cold, hot } from 'jasmine-marbles';
-import { Observable, of, throwError } from 'rxjs';
+import { cold } from 'jasmine-marbles';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { appStateStub } from 'testing/app.state.builder';
 import { WishlistItemBuilder } from 'testing/item.builder';
 import { ListBuilder } from 'testing/list-builder';
 import { randomNumber, randomString } from 'testing/utils';
 import { ItemsService } from '../services/items.service';
 import { requestFailure } from './a.actions';
+import { navigatedToItem } from './router/actions';
 import { getItems, goToCategory, goToItem, setActiveItem } from './w.actions';
 import { WishlistEffects } from './w.effects';
 import { initialState as WishlishInitialState } from './w.reducer';
-import { selectItems } from './w.selectors';
 
 describe('WishlistEffects', () => {
   let actions$: Observable<Action>;
@@ -109,7 +109,7 @@ describe('WishlistEffects', () => {
     });
   });
 
-  it('should set activeItem on navigation', () => {
+  it('should set activeItem on navigatedToItem', () => {
     // Arrange
     const itemCount = randomNumber(20, 10);
     const items = ListBuilder.with((i) =>
@@ -121,15 +121,16 @@ describe('WishlistEffects', () => {
       .build();
     const itemIndex = randomNumber(itemCount, 0);
     const item = items[itemIndex];
+    const items$ = new BehaviorSubject(items).asObservable();
 
-    store.setState(appStateStub().withTheseItems(items));
-    actions$ = of(goToItem({ itemId: item.id }));
+    itemsService.getItems.and.returnValue(items$);
+    actions$ = of(navigatedToItem({ itemId: item.id }));
 
     // Act + Assert
     const expected = cold('a', {
       a: setActiveItem({ item }),
     });
-    expect(effects.navigateToItem$).toBeObservable(expected);
+    expect(effects.navigatedToItem$).toBeObservable(expected);
   });
 
   it('should handle error when loading items', () => {

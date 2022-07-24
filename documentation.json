@@ -144,12 +144,12 @@
         },
         {
             "name": "AppState",
-            "id": "interface-AppState-04a4baa98dd5295537ab806cf95c63c9ea07bffe33be8a7740035f75a4244efb0f0354b31add1269253418ff185b7f4bfdbeb7bacc7982019be95f631ae1e805",
+            "id": "interface-AppState-b5a53e58b3ba974b484576a7268a0d73c0c78949e40118bc818f13b47ed1adf105e8aeacffd8c698122e754748757fb43568b6426cb308441ce61b6dc37467e9",
             "file": "src/app/store/app.state.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import { AppGlobalState } from './a.state';\nimport { ReservationState } from './r.state';\nimport { WishlistState } from './w.state';\n\nexport interface AppState {\n  ag: AppGlobalState;\n  wishlist: WishlistState;\n  reservation: ReservationState;\n}\n",
+            "sourceCode": "import { RouterReducerState } from '@ngrx/router-store';\nimport { AppGlobalState } from './a.state';\nimport { ReservationState } from './r.state';\nimport { RouterStateUrl } from './router/custom-route-serializer';\nimport { WishlistState } from './w.state';\n\nexport interface AppState {\n  ag: AppGlobalState;\n  wishlist: WishlistState;\n  reservation: ReservationState;\n  router: RouterReducerState<RouterStateUrl>;\n}\n",
             "properties": [
                 {
                     "name": "ag",
@@ -158,7 +158,7 @@
                     "type": "AppGlobalState",
                     "optional": false,
                     "description": "",
-                    "line": 6
+                    "line": 8
                 },
                 {
                     "name": "reservation",
@@ -167,7 +167,16 @@
                     "type": "ReservationState",
                     "optional": false,
                     "description": "",
-                    "line": 8
+                    "line": 10
+                },
+                {
+                    "name": "router",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "RouterReducerState<RouterStateUrl>",
+                    "optional": false,
+                    "description": "",
+                    "line": 11
                 },
                 {
                     "name": "wishlist",
@@ -176,7 +185,7 @@
                     "type": "WishlistState",
                     "optional": false,
                     "description": "",
-                    "line": 7
+                    "line": 9
                 }
             ],
             "indexSignatures": [],
@@ -218,6 +227,79 @@
                     "optional": false,
                     "description": "",
                     "line": 10
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 165,
+            "methods": []
+        },
+        {
+            "name": "RouterNavigatedPayload",
+            "id": "interface-RouterNavigatedPayload-4e17393b7759af178d138c67d76c1a7b8ff8dc70943b56b321cc9e85b13c5a9c99b0e8cbcc55973840c834187a7bdf18cd6a33c03df1dbb9b5787228ec7fdab9",
+            "file": "src/app/store/router/effects.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "import { Injectable } from '@angular/core';\nimport { Actions, createEffect, ofType } from '@ngrx/effects';\nimport { ROUTER_NAVIGATED } from '@ngrx/router-store';\nimport { filter, map } from 'rxjs';\nimport { navigatedToItem } from './actions';\nimport { RouterStateUrl } from './custom-route-serializer';\n\ninterface RouterNavigatedPayload {\n  payload: { routerState: RouterStateUrl };\n}\n\n@Injectable()\nexport class RouterEffects {\n  navigationToItem$ = createEffect(() => {\n    return this.actions$.pipe(\n      ofType(ROUTER_NAVIGATED),\n      filter(\n        (p: RouterNavigatedPayload) =>\n          p.payload.routerState.data['action'] == 'navigatedToItem'\n      ),\n      map((p: RouterNavigatedPayload) => {\n        return navigatedToItem({\n          itemId: parseInt(p.payload.routerState.params['wunsch'] || '0'),\n        });\n      })\n    );\n  });\n\n  constructor(private actions$: Actions) {}\n}\n",
+            "properties": [
+                {
+                    "name": "payload",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "literal type",
+                    "optional": false,
+                    "description": "",
+                    "line": 9
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 165,
+            "methods": []
+        },
+        {
+            "name": "RouterStateUrl",
+            "id": "interface-RouterStateUrl-381d26bf7aa6edf2aad043398ed91b1e4ace0555be48ee113b3310b8442f95eb5f6dde83579be5d9536752b80d7a6a9a2d30aa05cce5505d992e9c37b817b5c2",
+            "file": "src/app/store/router/custom-route-serializer.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "import { Data, Params, RouterStateSnapshot } from '@angular/router';\nimport { RouterStateSerializer } from '@ngrx/router-store';\n\nexport interface RouterStateUrl {\n  url: string;\n  params: Params;\n  queryParams: Params;\n  data: Data;\n}\n\nexport class CustomSerializer implements RouterStateSerializer<RouterStateUrl> {\n  serialize(routerState: RouterStateSnapshot): RouterStateUrl {\n    let route = routerState.root;\n\n    while (route.firstChild) {\n      route = route.firstChild;\n    }\n\n    const {\n      url,\n      root: { queryParams },\n    } = routerState;\n    const { params, data } = route;\n\n    // Only return an object including the URL, params and query params\n    // instead of the entire snapshot\n    return { url, params, queryParams, data };\n  }\n}\n",
+            "properties": [
+                {
+                    "name": "data",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Data",
+                    "optional": false,
+                    "description": "",
+                    "line": 8
+                },
+                {
+                    "name": "params",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Params",
+                    "optional": false,
+                    "description": "",
+                    "line": 6
+                },
+                {
+                    "name": "queryParams",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Params",
+                    "optional": false,
+                    "description": "",
+                    "line": 7
+                },
+                {
+                    "name": "url",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 5
                 }
             ],
             "indexSignatures": [],
@@ -306,12 +388,12 @@
         },
         {
             "name": "WishlistState",
-            "id": "interface-WishlistState-1d8bf435f543aa50751a3e7f8ac9f6269cee8b2c7b95b5aa031c2f7814ac144321e6ddfb80fdacdf01b3f44ef3d20479c55e6d08dda67441495fa386297b9d93",
+            "id": "interface-WishlistState-23a0350485b30af9e3d2083eb49ed30e657c334a9c5515c81279103fafa74cd7e35591d20575658f7d4acf522e98e7659db75eabfcf74dfb300098eeb233e5cb",
             "file": "src/app/store/w.state.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import { WishlistItem } from '../business/item';\n\nexport interface WishlistState {\n  /** All existing categories */\n  categories: string[];\n  /** A known items */\n  items: WishlistItem[];\n  activeItem: WishlistItem | null;\n}\n",
+            "sourceCode": "import { WishlistItem } from '../business/item';\n\nexport interface WishlistState {\n  /** All existing categories */\n  categories: string[];\n  /** All known items */\n  items: WishlistItem[];\n  activeItem: WishlistItem | null;\n}\n",
             "properties": [
                 {
                     "name": "activeItem",
@@ -338,9 +420,9 @@
                     "deprecationMessage": "",
                     "type": "WishlistItem[]",
                     "optional": false,
-                    "description": "<p>A known items</p>\n",
+                    "description": "<p>All known items</p>\n",
                     "line": 7,
-                    "rawdescription": "\nA known items"
+                    "rawdescription": "\nAll known items"
                 }
             ],
             "indexSignatures": [],
@@ -401,9 +483,23 @@
         },
         {
             "name": "ItemsService",
-            "id": "injectable-ItemsService-a002875ab0192a35eab6a22f8dff18922bcf79d8977619ac77c4dadab199e96c4bf52f127ee416ceb57dc00efd327c7bf99b4eaeff077c9075678094f482beef",
+            "id": "injectable-ItemsService-c4efaaa95ade282f84589c14f184e6bf53305c90b4aac4b2226e0616d034b5659827d887ac819afc791c7f85d4e477af453c81beab9bb3485b36a6abc6161554",
             "file": "src/app/services/items.service.ts",
-            "properties": [],
+            "properties": [
+                {
+                    "name": "cachedItems$",
+                    "defaultValue": "null",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Observable<WishlistItem[]> | null",
+                    "optional": false,
+                    "description": "",
+                    "line": 12,
+                    "modifierKind": [
+                        121
+                    ]
+                }
+            ],
             "methods": [
                 {
                     "name": "addItem",
@@ -424,7 +520,7 @@
                     "optional": false,
                     "returnType": "Observable<Result<AddItemResponse>>",
                     "typeParameters": [],
-                    "line": 39,
+                    "line": 47,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -470,7 +566,7 @@
                     "optional": false,
                     "returnType": "Observable<Result<string>>",
                     "typeParameters": [],
-                    "line": 46,
+                    "line": 54,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -503,7 +599,7 @@
                     "optional": false,
                     "returnType": "Observable<Result<string>>",
                     "typeParameters": [],
-                    "line": 53,
+                    "line": 61,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -516,7 +612,7 @@
                     "optional": false,
                     "returnType": "Observable<WishlistItem[]>",
                     "typeParameters": [],
-                    "line": 14,
+                    "line": 16,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -536,7 +632,7 @@
                     "optional": false,
                     "returnType": "Observable<boolean>",
                     "typeParameters": [],
-                    "line": 20,
+                    "line": 28,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -573,7 +669,7 @@
                     "optional": false,
                     "returnType": "Observable<Result<string>>",
                     "typeParameters": [],
-                    "line": 32,
+                    "line": 40,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -625,7 +721,7 @@
                     "optional": false,
                     "returnType": "Observable<Result<string>>",
                     "typeParameters": [],
-                    "line": 24,
+                    "line": 32,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -666,7 +762,7 @@
             "deprecationMessage": "",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import { HttpClient } from '@angular/common/http';\nimport { Injectable } from '@angular/core';\nimport { EMPTY, map, Observable } from 'rxjs';\nimport { AddItemResponse } from '../business/add-item-response';\nimport { WishlistItem } from '../business/item';\nimport { Result } from '../business/result';\n\n@Injectable({\n  providedIn: 'root',\n})\nexport class ItemsService {\n  constructor(private http: HttpClient) {}\n\n  public getItems(): Observable<WishlistItem[]> {\n    return this.http\n      .get<{ data: WishlistItem[] }>('service.php?action=list')\n      .pipe(map((d) => d.data));\n  }\n\n  public getReservationFlag(id: number): Observable<boolean> {\n    return EMPTY;\n  }\n\n  public setReservationFlag(\n    id: number,\n    flag: boolean,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public setItem(\n    item: WishlistItem,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public addItem(\n    item: WishlistItem,\n    captchaAnswer: string\n  ): Observable<Result<AddItemResponse>> {\n    return EMPTY;\n  }\n\n  public deleteItem(\n    id: number,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public getCaptchaChallenge(): Observable<Result<string>> {\n    return EMPTY;\n  }\n}\n",
+            "sourceCode": "import { HttpClient } from '@angular/common/http';\nimport { Injectable } from '@angular/core';\nimport { EMPTY, map, Observable, shareReplay } from 'rxjs';\nimport { AddItemResponse } from '../business/add-item-response';\nimport { WishlistItem } from '../business/item';\nimport { Result } from '../business/result';\n\n@Injectable({\n  providedIn: 'root',\n})\nexport class ItemsService {\n  private cachedItems$: Observable<WishlistItem[]> | null = null;\n\n  constructor(private http: HttpClient) {}\n\n  public getItems(): Observable<WishlistItem[]> {\n    if (!this.cachedItems$) {\n      this.cachedItems$ = this.http\n        .get<{ data: WishlistItem[] }>('service.php?action=list')\n        .pipe(\n          map((d) => d.data),\n          shareReplay(1)\n        );\n    }\n    return this.cachedItems$;\n  }\n\n  public getReservationFlag(id: number): Observable<boolean> {\n    return EMPTY;\n  }\n\n  public setReservationFlag(\n    id: number,\n    flag: boolean,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public setItem(\n    item: WishlistItem,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public addItem(\n    item: WishlistItem,\n    captchaAnswer: string\n  ): Observable<Result<AddItemResponse>> {\n    return EMPTY;\n  }\n\n  public deleteItem(\n    id: number,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public getCaptchaChallenge(): Observable<Result<string>> {\n    return EMPTY;\n  }\n}\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -680,7 +776,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 11,
+                "line": 12,
                 "jsdoctags": [
                     {
                         "name": "http",
@@ -696,8 +792,58 @@
             "type": "injectable"
         },
         {
+            "name": "RouterEffects",
+            "id": "injectable-RouterEffects-4e17393b7759af178d138c67d76c1a7b8ff8dc70943b56b321cc9e85b13c5a9c99b0e8cbcc55973840c834187a7bdf18cd6a33c03df1dbb9b5787228ec7fdab9",
+            "file": "src/app/store/router/effects.ts",
+            "properties": [
+                {
+                    "name": "navigationToItem$",
+                    "defaultValue": "createEffect(() => {\n    return this.actions$.pipe(\n      ofType(ROUTER_NAVIGATED),\n      filter(\n        (p: RouterNavigatedPayload) =>\n          p.payload.routerState.data['action'] == 'navigatedToItem'\n      ),\n      map((p: RouterNavigatedPayload) => {\n        return navigatedToItem({\n          itemId: parseInt(p.payload.routerState.params['wunsch'] || '0'),\n        });\n      })\n    );\n  })",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 14
+                }
+            ],
+            "methods": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import { Injectable } from '@angular/core';\nimport { Actions, createEffect, ofType } from '@ngrx/effects';\nimport { ROUTER_NAVIGATED } from '@ngrx/router-store';\nimport { filter, map } from 'rxjs';\nimport { navigatedToItem } from './actions';\nimport { RouterStateUrl } from './custom-route-serializer';\n\ninterface RouterNavigatedPayload {\n  payload: { routerState: RouterStateUrl };\n}\n\n@Injectable()\nexport class RouterEffects {\n  navigationToItem$ = createEffect(() => {\n    return this.actions$.pipe(\n      ofType(ROUTER_NAVIGATED),\n      filter(\n        (p: RouterNavigatedPayload) =>\n          p.payload.routerState.data['action'] == 'navigatedToItem'\n      ),\n      map((p: RouterNavigatedPayload) => {\n        return navigatedToItem({\n          itemId: parseInt(p.payload.routerState.params['wunsch'] || '0'),\n        });\n      })\n    );\n  });\n\n  constructor(private actions$: Actions) {}\n}\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "actions$",
+                        "type": "Actions",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 27,
+                "jsdoctags": [
+                    {
+                        "name": "actions$",
+                        "type": "Actions",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "type": "injectable"
+        },
+        {
             "name": "WishlistEffects",
-            "id": "injectable-WishlistEffects-111a41930e062cce39a36f3a14f20801691b66847c5ad64fa8c905df9be7240934202606f80e4b204dce40069ec962721aa41e5be573a976377f8771210a191d",
+            "id": "injectable-WishlistEffects-79da48fd6306afc8e950d990f84a192fbadcf0daa69c76a3cd5003798bababc21fcb032580764593363a93f124ca804cd9bfa426614401a8d6dbf7d391c514a8",
             "file": "src/app/store/w.effects.ts",
             "properties": [
                 {
@@ -708,7 +854,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 23
+                    "line": 31
                 },
                 {
                     "name": "init$",
@@ -718,7 +864,17 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 16
+                    "line": 24
+                },
+                {
+                    "name": "navigatedToItem$",
+                    "defaultValue": "createEffect(() => {\n    return this.actions$.pipe(\n      ofType(navigatedToItem),\n      mergeMap((action) =>\n        this.itemsService.getItems().pipe(\n          map((items) => {\n            const itemId = action.itemId;\n            const item = items?.find((i) => i.id === itemId);\n            return setActiveItem({ item });\n          })\n        )\n      )\n    );\n  })",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 75
                 },
                 {
                     "name": "navigateToCategory$",
@@ -728,17 +884,17 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 43
+                    "line": 51
                 },
                 {
                     "name": "navigateToItem$",
-                    "defaultValue": "createEffect(\n    () => {\n      return this.actions$.pipe(\n        ofType(goToItem),\n        tap((d) => {\n          this.router.navigate(['/wunsch', `${d.itemId}`]);\n        })\n      );\n    },\n    { dispatch: false }\n  )",
+                    "defaultValue": "createEffect(\n    () => {\n      return this.actions$.pipe(\n        ofType(goToItem),\n        map((action) => {\n          this.router.navigate(['/wunsch', `${action.itemId}`]);\n        })\n      );\n    },\n    { dispatch: false }\n  )",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 55
+                    "line": 63
                 }
             ],
             "methods": [],
@@ -746,7 +902,7 @@
             "deprecationMessage": "",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import { Injectable } from \"@angular/core\";\nimport { Router } from '@angular/router';\nimport {\n  Actions,\n  createEffect,\n  ofType,\n  ROOT_EFFECTS_INIT,\n} from '@ngrx/effects';\nimport { catchError, map, of, switchMap, tap } from 'rxjs';\nimport { ItemsService } from '../services/items.service';\nimport { requestFailure } from './a.actions';\nimport { getItems, goToCategory, goToItem, itemsLoaded } from './w.actions';\n\n@Injectable()\nexport class WishlistEffects {\n  init$ = createEffect(() => {\n    return this.actions$.pipe(\n      ofType(ROOT_EFFECTS_INIT),\n      map((_) => getItems())\n    );\n  });\n\n  getItems$ = createEffect(() => {\n    return this.actions$.pipe(\n      ofType(getItems),\n      switchMap((initialAction) =>\n        this.itemsService.getItems().pipe(\n          map((items) => itemsLoaded({ items })),\n          catchError((err) => {\n            return of(\n              requestFailure({\n                errorText: 'Fehler beim Laden der Einträge',\n                errorDetails: err.message,\n                retryAction: initialAction,\n              })\n            );\n          })\n        )\n      )\n    );\n  });\n\n  navigateToCategory$ = createEffect(\n    () => {\n      return this.actions$.pipe(\n        ofType(goToCategory),\n        tap((d) => {\n          this.router.navigate(['/wunschliste', d.category]);\n        })\n      );\n    },\n    { dispatch: false }\n  );\n\n  navigateToItem$ = createEffect(\n    () => {\n      return this.actions$.pipe(\n        ofType(goToItem),\n        tap((d) => {\n          this.router.navigate(['/wunsch', `${d.itemId}`]);\n        })\n      );\n    },\n    { dispatch: false }\n  );\n\n  constructor(\n    private actions$: Actions,\n    private itemsService: ItemsService,\n    private router: Router\n  ) {}\n}\n",
+            "sourceCode": "import { Injectable } from '@angular/core';\nimport { Router } from '@angular/router';\nimport {\n  Actions,\n  createEffect,\n  ofType,\n  ROOT_EFFECTS_INIT,\n} from '@ngrx/effects';\nimport { Store } from '@ngrx/store';\nimport { catchError, map, mergeMap, of, switchMap, tap } from 'rxjs';\nimport { ItemsService } from '../services/items.service';\nimport { requestFailure } from './a.actions';\nimport { navigatedToItem } from './router/actions';\nimport {\n  getItems,\n  goToCategory,\n  goToItem,\n  itemsLoaded,\n  setActiveItem,\n} from './w.actions';\n\n@Injectable()\nexport class WishlistEffects {\n  init$ = createEffect(() => {\n    return this.actions$.pipe(\n      ofType(ROOT_EFFECTS_INIT),\n      map((_) => getItems())\n    );\n  });\n\n  getItems$ = createEffect(() => {\n    return this.actions$.pipe(\n      ofType(getItems),\n      switchMap((initialAction) =>\n        this.itemsService.getItems().pipe(\n          map((items) => itemsLoaded({ items })),\n          catchError((err) => {\n            return of(\n              requestFailure({\n                errorText: 'Fehler beim Laden der Einträge',\n                errorDetails: err.message,\n                retryAction: initialAction,\n              })\n            );\n          })\n        )\n      )\n    );\n  });\n\n  navigateToCategory$ = createEffect(\n    () => {\n      return this.actions$.pipe(\n        ofType(goToCategory),\n        tap((d) => {\n          this.router.navigate(['/wunschliste', d.category]);\n        })\n      );\n    },\n    { dispatch: false }\n  );\n\n  navigateToItem$ = createEffect(\n    () => {\n      return this.actions$.pipe(\n        ofType(goToItem),\n        map((action) => {\n          this.router.navigate(['/wunsch', `${action.itemId}`]);\n        })\n      );\n    },\n    { dispatch: false }\n  );\n\n  navigatedToItem$ = createEffect(() => {\n    return this.actions$.pipe(\n      ofType(navigatedToItem),\n      mergeMap((action) =>\n        this.itemsService.getItems().pipe(\n          map((items) => {\n            const itemId = action.itemId;\n            const item = items?.find((i) => i.id === itemId);\n            return setActiveItem({ item });\n          })\n        )\n      )\n    );\n  });\n\n  constructor(\n    private actions$: Actions,\n    private itemsService: ItemsService,\n    private router: Router,\n    private store: Store\n  ) {}\n}\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -770,9 +926,15 @@
                         "type": "Router",
                         "deprecated": false,
                         "deprecationMessage": ""
+                    },
+                    {
+                        "name": "store",
+                        "type": "Store",
+                        "deprecated": false,
+                        "deprecationMessage": ""
                     }
                 ],
-                "line": 65,
+                "line": 88,
                 "jsdoctags": [
                     {
                         "name": "actions$",
@@ -795,6 +957,15 @@
                     {
                         "name": "router",
                         "type": "Router",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "store",
+                        "type": "Store",
                         "deprecated": false,
                         "deprecationMessage": "",
                         "tagName": {
@@ -918,12 +1089,12 @@
         },
         {
             "name": "AppStateBuilder",
-            "id": "class-AppStateBuilder-42f93e2bc2490f0ef01b59e96c1fef8b1e9f30bb03f153efe0394bb7e1c2e84cbd71db61945156021909a79e04f7cc4926345c26a7ba4c4cc0863e91c0bc6605",
+            "id": "class-AppStateBuilder-bc29b7987eaad4ce665eafa9220ef9df4f016985832b3e8eda328f49e214dcca8fd34f1dd659c2eddd6c5f7ca49c426e2d5e2dec9f9cb6317f50eaf72d8d7143",
             "file": "testing/app.state.builder.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "class",
-            "sourceCode": "import { Action } from '@ngrx/store';\nimport { WishlistItem } from 'src/app/business/item';\nimport { AppGlobalState } from 'src/app/store/a.state';\nimport { AppState } from 'src/app/store/app.state';\nimport { ReservationState, ReservationStatus } from 'src/app/store/r.state';\nimport { WishlistState } from 'src/app/store/w.state';\nimport { ListBuilder } from './list-builder';\nimport { randomString } from './utils';\n\nexport const appStateStub = (): AppStateBuilder => new AppStateBuilder();\n\nexport class AppStateBuilder implements AppState {\n  ag: AppGlobalState = {\n    captchaRequest: 'Sieben plus zwei',\n    pendingRequest: false,\n    requestErrorText: null,\n    requestRetryAction: null,\n  };\n  wishlist: WishlistState = {\n    categories: [],\n    items: [],\n    activeItem: null,\n  };\n  reservation: ReservationState = {\n    itemid: null,\n    status: 'unknown',\n    errorText: null,\n  };\n\n  public static hasError(errorText: string): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.ag.requestErrorText = errorText;\n    return b;\n  }\n\n  public withRetryAction(retryAction: Action): AppStateBuilder {\n    this.ag.requestRetryAction = retryAction;\n    return this;\n  }\n\n  public static givenCategories(...categories: string[]): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.wishlist.categories = [...categories];\n    return b;\n  }\n\n  public static someCategories(): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.wishlist.categories = ListBuilder.with((i) =>\n      randomString(8, 'Category ')\n    )\n      .items(7)\n      .build();\n    return b;\n  }\n\n  public static pendingRequest(): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.ag.pendingRequest = true;\n    return b;\n  }\n\n  public static hasActiveItem(values?: Partial<WishlistItem>): AppStateBuilder {\n    const b = new AppStateBuilder();\n    return b.withActiveItem(values);\n  }\n\n  public static reservationStatus(\n    status: ReservationStatus,\n    opt?: { errorText?: string }\n  ): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.reservation.status = status;\n    b.reservation.errorText = opt?.errorText || null;\n    return b;\n  }\n\n  public static withBookCategoryAndItems(): AppStateBuilder {\n    const b = AppStateBuilder.givenCategories('Buch')\n      .withItem({\n        id: 8,\n        Title: 'Schillers Glocke',\n        Description:\n          'Das Lied von der Glocke ist ein im Jahr 1799 von Friedrich Schiller veröffentlichtes Gedicht. Es gehörte lange Zeit zum Kanon der deutschen Literatur und ist eines der bekanntesten, am meisten zitierten und parodierten deutschen Gedichte.',\n        BuyUrl: 'https://de.wikipedia.org/wiki/Das_Lied_von_der_Glocke',\n        Category: 'Buch',\n        ImgageUrl:\n          'https://upload.wikimedia.org/wikipedia/commons/6/69/Liezen_Prachteinband_Schillers_Glocke_01.jpg',\n      })\n      .withItem({\n        Title: 'Faust I + II',\n        Category: 'Buch',\n        Description: `Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des\n      Fauststoffs bezeichnet. Der Begriff kann sich auf den ersten Teil der\n      durch Goethe geschaffenen Tragödie, auf deren ersten und zweiten Teil\n      gemeinsam oder insgesamt auf die Arbeiten am Fauststoff beziehen, die\n      Goethe durch sechzig Jahre hindurch immer wieder neu aufnahm. Er umfasst\n      in diesem letzteren Sinne auch die Entwürfe, Fragmente, Kommentare und\n      Paralipomena des Dichters zu seinem Faustwerk und zum Fauststoff.`,\n        BuyUrl: 'https://de.wikipedia.org/wiki/Goethes_Faust',\n        ImgageUrl:\n          'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg',\n        id: 19,\n      })\n      .withItem({\n        id: 41,\n        Title: 'Nathan der Weise',\n        Description:\n          'Nathan der Weise ist der Titel und die Hauptfigur eines fünfaktigen Ideendramas von Gotthold Ephraim Lessing, das 1779 veröffentlicht und am 14. April 1783 in Berlin uraufgeführt wurde. Das Werk hat als Themenschwerpunkte den Humanismus und den Toleranzgedanken der Aufklärung. Besonders berühmt wurde die Ringparabel im dritten Aufzug des Dramas.',\n        BuyUrl: 'https://de.wikipedia.org/wiki/Nathan_der_Weise',\n        Category: 'Buch',\n        ImgageUrl: '',\n      });\n    return b;\n  }\n\n  withActiveItem(values?: Partial<WishlistItem>): AppStateBuilder {\n    this.wishlist.activeItem = {\n      Title: 'Faust I + II',\n      Category: 'Buch',\n      Description: `Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des\n      Fauststoffs bezeichnet. Der Begriff kann sich auf den ersten Teil der\n      durch Goethe geschaffenen Tragödie, auf deren ersten und zweiten Teil\n      gemeinsam oder insgesamt auf die Arbeiten am Fauststoff beziehen, die\n      Goethe durch sechzig Jahre hindurch immer wieder neu aufnahm. Er umfasst\n      in diesem letzteren Sinne auch die Entwürfe, Fragmente, Kommentare und\n      Paralipomena des Dichters zu seinem Faustwerk und zum Fauststoff.`,\n      BuyUrl: 'https://de.wikipedia.org/wiki/Goethes_Faust',\n      ImgageUrl:\n        'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg',\n      id: 1,\n      ...values,\n    };\n    return this;\n  }\n\n  withCaptcha(challenge: string): AppStateBuilder {\n    this.ag.captchaRequest = challenge;\n    return this;\n  }\n\n  withItem(item: WishlistItem): AppStateBuilder {\n    this.wishlist.items.push(item);\n    if (!this.wishlist.categories.includes(item.Category)) {\n      this.wishlist.categories.push(item.Category);\n    }\n    return this;\n  }\n}\n",
+            "sourceCode": "import { RouterReducerState } from '@ngrx/router-store';\nimport { Action } from '@ngrx/store';\nimport { WishlistItem } from 'src/app/business/item';\nimport { AppGlobalState } from 'src/app/store/a.state';\nimport { AppState } from 'src/app/store/app.state';\nimport { ReservationState, ReservationStatus } from 'src/app/store/r.state';\nimport { RouterStateUrl } from 'src/app/store/router/custom-route-serializer';\nimport { WishlistState } from 'src/app/store/w.state';\nimport { ListBuilder } from './list-builder';\nimport { randomString } from './utils';\n\nexport const appStateStub = (): AppStateBuilder => new AppStateBuilder();\n\nexport class AppStateBuilder implements AppState {\n  ag: AppGlobalState = {\n    captchaRequest: 'Sieben plus zwei',\n    pendingRequest: false,\n    requestErrorText: null,\n    requestRetryAction: null,\n  };\n  wishlist: WishlistState = {\n    categories: [],\n    items: [],\n    activeItem: null,\n  };\n  reservation: ReservationState = {\n    itemid: null,\n    status: 'unknown',\n    errorText: null,\n  };\n  router: RouterReducerState<RouterStateUrl> = {\n    navigationId: 0,\n    state: { url: '', params: {}, queryParams: {}, data: {} },\n  };\n\n  public static hasError(errorText: string): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.ag.requestErrorText = errorText;\n    return b;\n  }\n\n  public withRetryAction(retryAction: Action): AppStateBuilder {\n    this.ag.requestRetryAction = retryAction;\n    return this;\n  }\n\n  public static givenCategories(...categories: string[]): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.wishlist.categories = [...categories];\n    return b;\n  }\n\n  public static someCategories(): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.wishlist.categories = ListBuilder.with((i) =>\n      randomString(8, 'Category ')\n    )\n      .items(7)\n      .build();\n    return b;\n  }\n\n  public static pendingRequest(): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.ag.pendingRequest = true;\n    return b;\n  }\n\n  public static hasActiveItem(values?: Partial<WishlistItem>): AppStateBuilder {\n    const b = new AppStateBuilder();\n    return b.withActiveItem(values);\n  }\n\n  public static reservationStatus(\n    status: ReservationStatus,\n    opt?: { errorText?: string }\n  ): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.reservation.status = status;\n    b.reservation.errorText = opt?.errorText || null;\n    return b;\n  }\n\n  public static withBookCategoryAndItems(): AppStateBuilder {\n    const b = AppStateBuilder.givenCategories('Buch')\n      .withItem({\n        id: 8,\n        Title: 'Schillers Glocke',\n        Description:\n          'Das Lied von der Glocke ist ein im Jahr 1799 von Friedrich Schiller veröffentlichtes Gedicht. Es gehörte lange Zeit zum Kanon der deutschen Literatur und ist eines der bekanntesten, am meisten zitierten und parodierten deutschen Gedichte.',\n        BuyUrl: 'https://de.wikipedia.org/wiki/Das_Lied_von_der_Glocke',\n        Category: 'Buch',\n        ImgageUrl:\n          'https://upload.wikimedia.org/wikipedia/commons/6/69/Liezen_Prachteinband_Schillers_Glocke_01.jpg',\n      })\n      .withItem({\n        Title: 'Faust I + II',\n        Category: 'Buch',\n        Description: `Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des\n      Fauststoffs bezeichnet. Der Begriff kann sich auf den ersten Teil der\n      durch Goethe geschaffenen Tragödie, auf deren ersten und zweiten Teil\n      gemeinsam oder insgesamt auf die Arbeiten am Fauststoff beziehen, die\n      Goethe durch sechzig Jahre hindurch immer wieder neu aufnahm. Er umfasst\n      in diesem letzteren Sinne auch die Entwürfe, Fragmente, Kommentare und\n      Paralipomena des Dichters zu seinem Faustwerk und zum Fauststoff.`,\n        BuyUrl: 'https://de.wikipedia.org/wiki/Goethes_Faust',\n        ImgageUrl:\n          'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg',\n        id: 19,\n      })\n      .withItem({\n        id: 41,\n        Title: 'Nathan der Weise',\n        Description:\n          'Nathan der Weise ist der Titel und die Hauptfigur eines fünfaktigen Ideendramas von Gotthold Ephraim Lessing, das 1779 veröffentlicht und am 14. April 1783 in Berlin uraufgeführt wurde. Das Werk hat als Themenschwerpunkte den Humanismus und den Toleranzgedanken der Aufklärung. Besonders berühmt wurde die Ringparabel im dritten Aufzug des Dramas.',\n        BuyUrl: 'https://de.wikipedia.org/wiki/Nathan_der_Weise',\n        Category: 'Buch',\n        ImgageUrl: '',\n      });\n    return b;\n  }\n\n  withActiveItem(values?: Partial<WishlistItem>): AppStateBuilder {\n    this.wishlist.activeItem = {\n      Title: 'Faust I + II',\n      Category: 'Buch',\n      Description: `Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des\n      Fauststoffs bezeichnet. Der Begriff kann sich auf den ersten Teil der\n      durch Goethe geschaffenen Tragödie, auf deren ersten und zweiten Teil\n      gemeinsam oder insgesamt auf die Arbeiten am Fauststoff beziehen, die\n      Goethe durch sechzig Jahre hindurch immer wieder neu aufnahm. Er umfasst\n      in diesem letzteren Sinne auch die Entwürfe, Fragmente, Kommentare und\n      Paralipomena des Dichters zu seinem Faustwerk und zum Fauststoff.`,\n      BuyUrl: 'https://de.wikipedia.org/wiki/Goethes_Faust',\n      ImgageUrl:\n        'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg',\n      id: 1,\n      ...values,\n    };\n    return this;\n  }\n\n  withCaptcha(challenge: string): AppStateBuilder {\n    this.ag.captchaRequest = challenge;\n    return this;\n  }\n\n  withItem(item: WishlistItem): AppStateBuilder {\n    this.wishlist.items.push(item);\n    if (!this.wishlist.categories.includes(item.Category)) {\n      this.wishlist.categories.push(item.Category);\n    }\n    return this;\n  }\n\n  withTheseItems(items: WishlistItem[]): AppStateBuilder {\n    this.wishlist.items.length = 0;\n    this.wishlist.categories.length = 0;\n    items.forEach((item) => this.withItem(item));\n    return this;\n  }\n}\n",
             "properties": [
                 {
                     "name": "ag",
@@ -933,7 +1104,7 @@
                     "type": "AppGlobalState",
                     "optional": false,
                     "description": "",
-                    "line": 13
+                    "line": 15
                 },
                 {
                     "name": "reservation",
@@ -943,7 +1114,17 @@
                     "type": "ReservationState",
                     "optional": false,
                     "description": "",
-                    "line": 24
+                    "line": 26
+                },
+                {
+                    "name": "router",
+                    "defaultValue": "{\n    navigationId: 0,\n    state: { url: '', params: {}, queryParams: {}, data: {} },\n  }",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "RouterReducerState<RouterStateUrl>",
+                    "optional": false,
+                    "description": "",
+                    "line": 31
                 },
                 {
                     "name": "wishlist",
@@ -953,7 +1134,7 @@
                     "type": "WishlistState",
                     "optional": false,
                     "description": "",
-                    "line": 19
+                    "line": 21
                 }
             ],
             "methods": [
@@ -971,7 +1152,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 41,
+                    "line": 47,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1004,7 +1185,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 63,
+                    "line": 69,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1036,7 +1217,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 30,
+                    "line": 36,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1060,7 +1241,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 57,
+                    "line": 63,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1087,7 +1268,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 68,
+                    "line": 74,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1121,7 +1302,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 47,
+                    "line": 53,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1142,7 +1323,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 117,
+                    "line": 123,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -1164,7 +1345,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 78,
+                    "line": 84,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1184,7 +1365,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 137,
+                    "line": 143,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -1212,7 +1393,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 142,
+                    "line": 148,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -1240,7 +1421,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 36,
+                    "line": 42,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1257,6 +1438,34 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": "withTheseItems",
+                    "args": [
+                        {
+                            "name": "items",
+                            "type": "WishlistItem[]",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "AppStateBuilder",
+                    "typeParameters": [],
+                    "line": 156,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "items",
+                            "type": "WishlistItem[]",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
                 }
             ],
             "indexSignatures": [],
@@ -1266,6 +1475,54 @@
             "hostListeners": [],
             "implements": [
                 "AppState"
+            ]
+        },
+        {
+            "name": "CustomSerializer",
+            "id": "class-CustomSerializer-381d26bf7aa6edf2aad043398ed91b1e4ace0555be48ee113b3310b8442f95eb5f6dde83579be5d9536752b80d7a6a9a2d30aa05cce5505d992e9c37b817b5c2",
+            "file": "src/app/store/router/custom-route-serializer.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "class",
+            "sourceCode": "import { Data, Params, RouterStateSnapshot } from '@angular/router';\nimport { RouterStateSerializer } from '@ngrx/router-store';\n\nexport interface RouterStateUrl {\n  url: string;\n  params: Params;\n  queryParams: Params;\n  data: Data;\n}\n\nexport class CustomSerializer implements RouterStateSerializer<RouterStateUrl> {\n  serialize(routerState: RouterStateSnapshot): RouterStateUrl {\n    let route = routerState.root;\n\n    while (route.firstChild) {\n      route = route.firstChild;\n    }\n\n    const {\n      url,\n      root: { queryParams },\n    } = routerState;\n    const { params, data } = route;\n\n    // Only return an object including the URL, params and query params\n    // instead of the entire snapshot\n    return { url, params, queryParams, data };\n  }\n}\n",
+            "properties": [],
+            "methods": [
+                {
+                    "name": "serialize",
+                    "args": [
+                        {
+                            "name": "routerState",
+                            "type": "RouterStateSnapshot",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "RouterStateUrl",
+                    "typeParameters": [],
+                    "line": 12,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "routerState",
+                            "type": "RouterStateSnapshot",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "indexSignatures": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "hostBindings": [],
+            "hostListeners": [],
+            "implements": [
+                "RouterStateSerializer"
             ]
         },
         {
@@ -3729,13 +3986,13 @@
     "modules": [
         {
             "name": "AppModule",
-            "id": "module-AppModule-a8017d4247ef9e25f6f84af431c8721b1f21aca008f06e32286e6064fa0cbed6ee458ad10d687085a161602aaf3d7b7f354224dc921004d134f83dcd225e3a92",
+            "id": "module-AppModule-245566b067b6c2185e6e974236ca4d15cd8d946c6f957c9c1ebb4dddbf39c84f57ce89bbbf9cad4b7af21caeb078472404b8022c7377edfb493854e1885d96a7",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/app.module.ts",
             "methods": [],
-            "sourceCode": "import { LayoutModule } from '@angular/cdk/layout';\nimport { HttpClientModule } from '@angular/common/http';\nimport { NgModule } from '@angular/core';\nimport { ReactiveFormsModule } from '@angular/forms';\nimport { MatButtonModule } from '@angular/material/button';\nimport { MatCardModule } from '@angular/material/card';\nimport { MatDialogModule } from '@angular/material/dialog';\nimport { MatExpansionModule } from '@angular/material/expansion';\nimport {\n  MatFormFieldModule,\n  MAT_FORM_FIELD_DEFAULT_OPTIONS,\n} from '@angular/material/form-field';\nimport { MatIconModule } from '@angular/material/icon';\nimport { MatInputModule } from '@angular/material/input';\nimport { MatListModule } from '@angular/material/list';\nimport { MatProgressBarModule } from '@angular/material/progress-bar';\nimport { MatProgressSpinnerModule } from '@angular/material/progress-spinner';\nimport { MatSidenavModule } from '@angular/material/sidenav';\nimport { MatToolbarModule } from '@angular/material/toolbar';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\nimport { EffectsModule } from '@ngrx/effects';\nimport { StoreModule } from '@ngrx/store';\nimport { StoreDevtoolsModule } from '@ngrx/store-devtools';\nimport { environment } from '../environments/environment';\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { EditReservationComponent } from './components/edit-reservation/edit-reservation.component';\nimport { EmptyListComponent } from './components/empty-list/empty-list.component';\nimport { ItemDisplayComponent } from './components/item-display/item-display.component';\nimport { ItemFormComponent } from './components/item-form/item-form.component';\nimport { ItemPreviewComponent } from './components/item-preview/item-preview.component';\nimport { ConnectFormDirective } from './directives/connect-form.directive';\nimport { FormEnabledDirective } from './directives/form-enabled.directive';\nimport { FrameComponent } from './frame/frame.component';\nimport { AboutComponent } from './pages/about/about.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { CategoryPageComponent } from './pages/category-page/category-page.component';\nimport { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';\nimport { agReducer } from './store/a.reducer';\nimport { AppState } from './store/app.state';\nimport { rReducer } from './store/r.reducer';\nimport { WishlistEffects } from './store/w.effects';\nimport { wReducer } from './store/w.reducer';\nimport { WithCategoryPipe } from './pipes/with-category.pipe';\nimport { MenuNavlistComponent } from './components/menu-navlist/menu-navlist.component';\nimport { ItemViewComponent } from './pages/item-view/item-view.component';\nimport { ErrorDisplayComponent } from './components/error-display/error-display.component';\nimport { AppGlobalStateEffects } from './store/a.effects';\nimport { AddPageComponent } from './pages/add-page/add-page.component';\n\n@NgModule({\n  declarations: [\n    AboutComponent,\n    AppComponent,\n    CategoriesPageComponent,\n    ConnectFormDirective,\n    EmptyListComponent,\n    FormEnabledDirective,\n    FrameComponent,\n    ItemDisplayComponent,\n    ItemFormComponent,\n    EditReservationComponent,\n    CategoryPageComponent,\n    ItemPreviewComponent,\n    PageNotFoundComponent,\n    WithCategoryPipe,\n    MenuNavlistComponent,\n    ItemViewComponent,\n    ErrorDisplayComponent,\n    AddPageComponent,\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    BrowserAnimationsModule,\n    LayoutModule,\n    ReactiveFormsModule,\n    MatButtonModule,\n    MatCardModule,\n    MatDialogModule,\n    MatExpansionModule,\n    MatFormFieldModule,\n    MatIconModule,\n    MatInputModule,\n    MatListModule,\n    MatProgressBarModule,\n    MatProgressSpinnerModule,\n    MatSidenavModule,\n    MatToolbarModule,\n    StoreModule.forRoot<AppState>({\n      ag: agReducer,\n      wishlist: wReducer,\n      reservation: rReducer,\n    }),\n    EffectsModule.forRoot([AppGlobalStateEffects, WishlistEffects]),\n    // import HttpClientModule after BrowserModule.\n    HttpClientModule,\n    StoreDevtoolsModule.instrument({\n      maxAge: 25,\n      logOnly: environment.production,\n    }),\n  ],\n  providers: [\n    {\n      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,\n      useValue: { appearance: 'fill' },\n    },\n  ],\n  bootstrap: [AppComponent],\n})\nexport class AppModule {}\n",
+            "sourceCode": "import { LayoutModule } from '@angular/cdk/layout';\nimport { HttpClientModule } from '@angular/common/http';\nimport { NgModule } from '@angular/core';\nimport { ReactiveFormsModule } from '@angular/forms';\nimport { MatButtonModule } from '@angular/material/button';\nimport { MatCardModule } from '@angular/material/card';\nimport { MatDialogModule } from '@angular/material/dialog';\nimport { MatExpansionModule } from '@angular/material/expansion';\nimport {\n  MatFormFieldModule,\n  MAT_FORM_FIELD_DEFAULT_OPTIONS,\n} from '@angular/material/form-field';\nimport { MatIconModule } from '@angular/material/icon';\nimport { MatInputModule } from '@angular/material/input';\nimport { MatListModule } from '@angular/material/list';\nimport { MatProgressBarModule } from '@angular/material/progress-bar';\nimport { MatProgressSpinnerModule } from '@angular/material/progress-spinner';\nimport { MatSidenavModule } from '@angular/material/sidenav';\nimport { MatToolbarModule } from '@angular/material/toolbar';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\nimport { EffectsModule } from '@ngrx/effects';\nimport { routerReducer, StoreRouterConnectingModule } from '@ngrx/router-store';\nimport { StoreModule } from '@ngrx/store';\nimport { StoreDevtoolsModule } from '@ngrx/store-devtools';\nimport { environment } from '../environments/environment';\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { EditReservationComponent } from './components/edit-reservation/edit-reservation.component';\nimport { EmptyListComponent } from './components/empty-list/empty-list.component';\nimport { ErrorDisplayComponent } from './components/error-display/error-display.component';\nimport { ItemDisplayComponent } from './components/item-display/item-display.component';\nimport { ItemFormComponent } from './components/item-form/item-form.component';\nimport { ItemPreviewComponent } from './components/item-preview/item-preview.component';\nimport { MenuNavlistComponent } from './components/menu-navlist/menu-navlist.component';\nimport { ConnectFormDirective } from './directives/connect-form.directive';\nimport { FormEnabledDirective } from './directives/form-enabled.directive';\nimport { FrameComponent } from './frame/frame.component';\nimport { AboutComponent } from './pages/about/about.component';\nimport { AddPageComponent } from './pages/add-page/add-page.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { CategoryPageComponent } from './pages/category-page/category-page.component';\nimport { ItemViewComponent } from './pages/item-view/item-view.component';\nimport { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';\nimport { WithCategoryPipe } from './pipes/with-category.pipe';\nimport { AppGlobalStateEffects } from './store/a.effects';\nimport { agReducer } from './store/a.reducer';\nimport { AppState } from './store/app.state';\nimport { rReducer } from './store/r.reducer';\nimport { CustomSerializer } from './store/router/custom-route-serializer';\nimport { RouterEffects } from './store/router/effects';\nimport { WishlistEffects } from './store/w.effects';\nimport { wReducer } from './store/w.reducer';\n\n@NgModule({\n  declarations: [\n    AboutComponent,\n    AddPageComponent,\n    AppComponent,\n    CategoriesPageComponent,\n    CategoryPageComponent,\n    ConnectFormDirective,\n    EditReservationComponent,\n    EmptyListComponent,\n    ErrorDisplayComponent,\n    FormEnabledDirective,\n    FrameComponent,\n    ItemDisplayComponent,\n    ItemFormComponent,\n    ItemPreviewComponent,\n    ItemViewComponent,\n    MenuNavlistComponent,\n    PageNotFoundComponent,\n    WithCategoryPipe,\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    BrowserAnimationsModule,\n    LayoutModule,\n    ReactiveFormsModule,\n    MatButtonModule,\n    MatCardModule,\n    MatDialogModule,\n    MatExpansionModule,\n    MatFormFieldModule,\n    MatIconModule,\n    MatInputModule,\n    MatListModule,\n    MatProgressBarModule,\n    MatProgressSpinnerModule,\n    MatSidenavModule,\n    MatToolbarModule,\n    StoreModule.forRoot<AppState>({\n      ag: agReducer,\n      wishlist: wReducer,\n      reservation: rReducer,\n      router: routerReducer,\n    }),\n    EffectsModule.forRoot([\n      AppGlobalStateEffects,\n      WishlistEffects,\n      RouterEffects,\n    ]),\n    // import HttpClientModule after BrowserModule.\n    HttpClientModule,\n    StoreDevtoolsModule.instrument({\n      maxAge: 25,\n      logOnly: environment.production,\n    }),\n    StoreRouterConnectingModule.forRoot({\n      serializer: CustomSerializer,\n    }),\n  ],\n  providers: [\n    {\n      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,\n      useValue: { appearance: 'fill' },\n    },\n  ],\n  bootstrap: [AppComponent],\n})\nexport class AppModule {}\n",
             "children": [
                 {
                     "type": "providers",
@@ -3828,13 +4085,13 @@
         },
         {
             "name": "AppRoutingModule",
-            "id": "module-AppRoutingModule-4f887ab809faa07752d9df21d654b5fa11f74bfb3edec541340b5f6e73b3e62cbcfda45e35a3f371ea8bf48286a8b6d9b2a43f3ff47a75bf43e8db7d516a6a38",
+            "id": "module-AppRoutingModule-02f48add6e9b57e57cb7e7d848dd85d7ed7d42f3f402aa1012cb32c9f32d62862412af5a4b8e4cc3554b0a6b683678ab7bfd06d68f845bd3cb9bfb2521322ca8",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/app-routing.module.ts",
             "methods": [],
-            "sourceCode": "import { NgModule } from '@angular/core';\nimport { RouterModule, Routes } from '@angular/router';\nimport { AboutComponent } from './pages/about/about.component';\nimport { AddPageComponent } from './pages/add-page/add-page.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { CategoryPageComponent } from './pages/category-page/category-page.component';\nimport { ItemViewComponent } from './pages/item-view/item-view.component';\nimport { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';\n\nconst routes: Routes = [\n  {\n    path: 'wunschliste',\n    component: CategoryPageComponent,\n    data: { animation: 'CategoryPage' },\n  },\n  {\n    path: 'wunschliste/:category',\n    component: CategoryPageComponent,\n    data: { animation: 'CategoryPage' },\n  },\n  {\n    path: 'wunsch/:wunsch',\n    component: ItemViewComponent,\n    data: { animation: 'CategoryPage' },\n  },\n  {\n    path: 'kategorien',\n    component: CategoriesPageComponent,\n    data: { animation: 'CategoriesPage' },\n  },\n  {\n    path: 'add',\n    component: AddPageComponent,\n    data: { animation: 'AddPage' },\n  },\n  {\n    path: 'about',\n    component: AboutComponent,\n    data: { animation: 'AboutPage' },\n  },\n\n  { path: '', redirectTo: '/wunsch', pathMatch: 'full' },\n  { path: '**', component: PageNotFoundComponent },\n];\n\n@NgModule({\n  imports: [RouterModule.forRoot(routes, { useHash: true })],\n  exports: [RouterModule]\n})\nexport class AppRoutingModule { }\n",
+            "sourceCode": "import { NgModule } from '@angular/core';\nimport { RouterModule, Routes } from '@angular/router';\nimport { AboutComponent } from './pages/about/about.component';\nimport { AddPageComponent } from './pages/add-page/add-page.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { CategoryPageComponent } from './pages/category-page/category-page.component';\nimport { ItemViewComponent } from './pages/item-view/item-view.component';\nimport { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';\n\nconst routes: Routes = [\n  {\n    path: 'wunschliste',\n    component: CategoryPageComponent,\n    data: { animation: 'CategoryPage' },\n  },\n  {\n    path: 'wunschliste/:category',\n    component: CategoryPageComponent,\n    data: { animation: 'CategoryPage' },\n  },\n  {\n    path: 'wunsch/:wunsch',\n    component: ItemViewComponent,\n    data: { animation: 'CategoryPage', action: 'navigatedToItem' },\n  },\n  {\n    path: 'kategorien',\n    component: CategoriesPageComponent,\n    data: { animation: 'CategoriesPage' },\n  },\n  {\n    path: 'add',\n    component: AddPageComponent,\n    data: { animation: 'AddPage' },\n  },\n  {\n    path: 'about',\n    component: AboutComponent,\n    data: { animation: 'AboutPage' },\n  },\n\n  { path: '', redirectTo: '/wunsch', pathMatch: 'full' },\n  { path: '**', component: PageNotFoundComponent },\n];\n\n@NgModule({\n  imports: [RouterModule.forRoot(routes, { useHash: true })],\n  exports: [RouterModule]\n})\nexport class AppRoutingModule { }\n",
             "children": [
                 {
                     "type": "providers",
@@ -4126,6 +4383,16 @@
                 "defaultValue": "createAction(\n  '[W] Go to item',\n  props<{\n    itemId: number;\n  }>()\n)"
             },
             {
+                "name": "goToItemFailed",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/w.actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction(\n  '[W] Go to item failed',\n  props<{\n    itemId: number;\n  }>()\n)"
+            },
+            {
                 "name": "HasReservation",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -4344,6 +4611,16 @@
                 "deprecationMessage": "",
                 "type": "any[]",
                 "defaultValue": "[\n  BrowserAnimationsModule,\n  ReactiveFormsModule,\n  MatButtonModule,\n  MatCardModule,\n  MatDividerModule,\n  MatDialogModule,\n  MatExpansionModule,\n  MatFormFieldModule,\n  MatIconModule,\n  MatInputModule,\n  MatListModule,\n  MatProgressBarModule,\n  MatProgressSpinnerModule,\n  MatSidenavModule,\n  MatToolbarModule,\n]"
+            },
+            {
+                "name": "navigatedToItem",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/router/actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction(\n  '[R] navigatedToItem',\n  props<{\n    itemId: number;\n  }>()\n)"
             },
             {
                 "name": "NewForm",
@@ -4575,6 +4852,16 @@
                 "defaultValue": "createSelector(\n  selectFeature,\n  (state: ReservationState) => state.status\n)"
             },
             {
+                "name": "setActiveItem",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/w.actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction(\n  '[W] Set active item',\n  props<{\n    item?: WishlistItem;\n  }>()\n)"
+            },
+            {
                 "name": "slideInAnimation",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -4702,7 +4989,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
-                "defaultValue": "createReducer<WishlistState>(\n  initialState,\n  on(\n    itemsLoaded,\n    (state, p): WishlistState => ({\n      ...state,\n      categories: p.items\n        .map((i) => i.Category)\n        .reduce((a, c) => {\n          if (a.indexOf(c) === -1) {\n            a.push(c);\n          }\n          return a;\n        }, [] as string[])\n        .sort(),\n      items: p.items,\n    })\n  )\n)"
+                "defaultValue": "createReducer<WishlistState>(\n  initialState,\n  on(\n    itemsLoaded,\n    (state, p): WishlistState => ({\n      ...state,\n      categories: p.items\n        .map((i) => i.Category)\n        .reduce((a, c) => {\n          if (a.indexOf(c) === -1) {\n            a.push(c);\n          }\n          return a;\n        }, [] as string[])\n        .sort(),\n      items: p.items,\n    })\n  ),\n  on(\n    setActiveItem,\n    (state, p): WishlistState => ({\n      ...state,\n      activeItem: p.item ?? null,\n    })\n  )\n)"
             }
         ],
         "functions": [
@@ -5358,6 +5645,16 @@
                     "defaultValue": "createAction(\n  '[W] Go to item',\n  props<{\n    itemId: number;\n  }>()\n)"
                 },
                 {
+                    "name": "goToItemFailed",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/w.actions.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createAction(\n  '[W] Go to item failed',\n  props<{\n    itemId: number;\n  }>()\n)"
+                },
+                {
                     "name": "itemsLoaded",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
@@ -5376,6 +5673,16 @@
                     "deprecationMessage": "",
                     "type": "",
                     "defaultValue": "createAction(\n  '[W] Save item',\n  props<{\n    item: WishlistItem;\n  }>()\n)"
+                },
+                {
+                    "name": "setActiveItem",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/w.actions.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createAction(\n  '[W] Set active item',\n  props<{\n    item?: WishlistItem;\n  }>()\n)"
                 }
             ],
             "src/stories/EditReservation.stories.ts": [
@@ -5461,7 +5768,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
-                    "defaultValue": "createReducer<WishlistState>(\n  initialState,\n  on(\n    itemsLoaded,\n    (state, p): WishlistState => ({\n      ...state,\n      categories: p.items\n        .map((i) => i.Category)\n        .reduce((a, c) => {\n          if (a.indexOf(c) === -1) {\n            a.push(c);\n          }\n          return a;\n        }, [] as string[])\n        .sort(),\n      items: p.items,\n    })\n  )\n)"
+                    "defaultValue": "createReducer<WishlistState>(\n  initialState,\n  on(\n    itemsLoaded,\n    (state, p): WishlistState => ({\n      ...state,\n      categories: p.items\n        .map((i) => i.Category)\n        .reduce((a, c) => {\n          if (a.indexOf(c) === -1) {\n            a.push(c);\n          }\n          return a;\n        }, [] as string[])\n        .sort(),\n      items: p.items,\n    })\n  ),\n  on(\n    setActiveItem,\n    (state, p): WishlistState => ({\n      ...state,\n      activeItem: p.item ?? null,\n    })\n  )\n)"
                 }
             ],
             "src/stories/Button.stories.ts": [
@@ -5578,6 +5885,18 @@
                     "deprecationMessage": "",
                     "type": "Story<Page>",
                     "defaultValue": "(args: Page) => ({\n  props: args,\n})"
+                }
+            ],
+            "src/app/store/router/actions.ts": [
+                {
+                    "name": "navigatedToItem",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/router/actions.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createAction(\n  '[R] navigatedToItem',\n  props<{\n    itemId: number;\n  }>()\n)"
                 }
             ],
             "src/app/store/w.selectors.ts": [
@@ -5909,7 +6228,8 @@
                         "path": "wunsch/:wunsch",
                         "component": "ItemViewComponent",
                         "data": {
-                            "animation": "CategoryPage"
+                            "animation": "CategoryPage",
+                            "action": "navigatedToItem"
                         }
                     },
                     {
@@ -6156,7 +6476,7 @@
                 "linktype": "injectable",
                 "name": "ItemsService",
                 "coveragePercent": 0,
-                "coverageCount": "0/9",
+                "coverageCount": "0/10",
                 "status": "low"
             },
             {
@@ -6283,7 +6603,7 @@
                 "linktype": "interface",
                 "name": "AppState",
                 "coveragePercent": 0,
-                "coverageCount": "0/4",
+                "coverageCount": "0/5",
                 "status": "low"
             },
             {
@@ -6346,6 +6666,52 @@
                 "status": "low"
             },
             {
+                "filePath": "src/app/store/router/actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "navigatedToItem",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/router/custom-route-serializer.ts",
+                "type": "class",
+                "linktype": "classe",
+                "name": "CustomSerializer",
+                "coveragePercent": 0,
+                "coverageCount": "0/2",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/router/custom-route-serializer.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "RouterStateUrl",
+                "coveragePercent": 0,
+                "coverageCount": "0/5",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/router/effects.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "RouterEffects",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/router/effects.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "RouterNavigatedPayload",
+                "coveragePercent": 0,
+                "coverageCount": "0/2",
+                "status": "low"
+            },
+            {
                 "filePath": "src/app/store/w.actions.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
@@ -6380,6 +6746,16 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
+                "name": "goToItemFailed",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/w.actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
                 "name": "itemsLoaded",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
@@ -6396,12 +6772,22 @@
                 "status": "low"
             },
             {
+                "filePath": "src/app/store/w.actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "setActiveItem",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
                 "filePath": "src/app/store/w.effects.ts",
                 "type": "injectable",
                 "linktype": "injectable",
                 "name": "WishlistEffects",
                 "coveragePercent": 0,
-                "coverageCount": "0/6",
+                "coverageCount": "0/7",
                 "status": "low"
             },
             {
@@ -7084,7 +7470,7 @@
                 "linktype": "classe",
                 "name": "AppStateBuilder",
                 "coveragePercent": 0,
-                "coverageCount": "0/15",
+                "coverageCount": "0/17",
                 "status": "low"
             },
             {
