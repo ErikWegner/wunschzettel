@@ -23,11 +23,13 @@
   </mat-card-content>
   <mat-divider inset></mat-divider>
   <mat-card-actions>
-    <mat-expansion-panel>
+    <mat-expansion-panel (opened)="onPanelOpened();">
       <mat-expansion-panel-header>
         <mat-panel-title>Reservieren und Status</mat-panel-title>
       </mat-expansion-panel-header>
-      <app-edit-reservation></app-edit-reservation>
+      <ng-template matExpansionPanelContent>
+        <app-edit-reservation></app-edit-reservation>
+      </ng-template>
     </mat-expansion-panel>
     <div class="f mt24">
       <button mat-flat-button color="accent">Bearbeiten</button>
