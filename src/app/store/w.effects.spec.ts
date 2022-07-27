@@ -16,13 +16,11 @@ import { requestFailure } from './a.actions';
 import { navigatedToItem } from './router/actions';
 import { getItems, goToCategory, goToItem, setActiveItem } from './w.actions';
 import { WishlistEffects } from './w.effects';
-import { initialState as WishlishInitialState } from './w.reducer';
 
 describe('WishlistEffects', () => {
   let actions$: Observable<Action>;
   let effects: WishlistEffects;
   let store: MockStore;
-  const initialState = WishlishInitialState;
   let itemsService: jasmine.SpyObj<ItemsService>;
   let router: jasmine.SpyObj<Router>;
 
@@ -42,7 +40,7 @@ describe('WishlistEffects', () => {
           provide: Router,
           useValue: routerMock,
         },
-        provideMockStore({ initialState }),
+        provideMockStore({ initialState: appStateStub() }),
         provideMockActions(() => actions$),
       ],
     });

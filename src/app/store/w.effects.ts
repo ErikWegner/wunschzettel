@@ -6,7 +6,6 @@ import {
   ofType,
   ROOT_EFFECTS_INIT,
 } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
 import { catchError, map, mergeMap, of, switchMap, tap } from 'rxjs';
 import { ItemsService } from '../services/items.service';
 import { requestFailure } from './a.actions';
@@ -90,7 +89,6 @@ export class WishlistEffects {
   constructor(
     private actions$: Actions,
     private itemsService: ItemsService,
-    private router: Router,
-    private store: Store
+    private router: Router
   ) {}
 }
