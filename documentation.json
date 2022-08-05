@@ -2756,7 +2756,7 @@
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ".amber {\n  background-color: #f7e3aa;\n  color: #553102;\n}\n\n.green {\n  background-color: rgb(162, 253, 162);\n  color: rgb(3, 119, 3);\n}\n.gray {\n  background-color: rgb(168, 168, 168);\n  color: rgb(0, 0, 0);\n}\n",
+                    "data": ".amber {\n  background-color: #f7e3aa;\n  color: #553102;\n}\n\n.green {\n  background-color: rgb(162, 253, 162);\n  color: rgb(3, 119, 3);\n}\n\n.gray {\n  background-color: rgb(168, 168, 168);\n  color: rgb(0, 0, 0);\n}\n",
                     "styleUrl": "./edit-reservation.component.scss"
                 }
             ],

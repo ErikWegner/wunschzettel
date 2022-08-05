@@ -60,7 +60,7 @@ describe('EditReservationComponent', () => {
 
     // Assert
     const t = fixture.debugElement.nativeElement.textContent;
-    expect(t).toBe('warning_amber Es liegt bereits eine Reservierung vor. ');
+    expect(t).toBe('block Unbekannter Status ');
   });
 
   it('should show reserved status', () => {
