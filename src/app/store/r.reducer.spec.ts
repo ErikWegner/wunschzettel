@@ -2,9 +2,12 @@ import { appStateStub } from 'testing/app.state.builder';
 import { WishlistItemBuilder } from 'testing/item.builder';
 import { randomNumber, randomString } from 'testing/utils';
 import { WishlistItem } from '../business/item';
-import { retrieveReservationStatus } from './r.actions';
+import {
+  reservationStatusResponse,
+  retrieveReservationStatus,
+} from './r.actions';
 import { rReducer } from './r.reducer';
-import { ReservationState } from './r.state';
+import { ReservationState, ReservationStatus } from './r.state';
 import { setActiveItem } from './w.actions';
 
 describe('Reservation reducer', () => {
@@ -76,9 +79,53 @@ describe('Reservation reducer', () => {
       expect(newstate.itemid).toBe(itemId);
     });
 
-    it('should clear error text to `requestPending`', () => {
+    it('should clear error text', () => {
       // Assert
       expect(newstate.errorText).toBe('');
+    });
+  });
+
+  describe('reservationStatusResponse', () => {
+    (
+      [{ s: 'reserved' }, { s: 'free' }] as Array<{ s: ReservationStatus }>
+    ).forEach((testSetup) => {
+      describe(testSetup.s, () => {
+        let itemId: number;
+        let newstate: ReservationState;
+
+        beforeEach(() => {
+          // Arrange
+          const initialState = appStateStub();
+          initialState.reservation.status = 'requestPending';
+          initialState.reservation.itemid = -50;
+          initialState.reservation.errorText = 'Unrelated old error message';
+          itemId = randomNumber(900);
+
+          const action = reservationStatusResponse({
+            itemId,
+            status: testSetup.s,
+            errorText: null,
+          });
+
+          // Act
+          newstate = rReducer(initialState.reservation, action);
+        });
+
+        it('should set status to `' + testSetup.s + '`', () => {
+          // Assert
+          expect(newstate.status).toBe(testSetup.s);
+        });
+
+        it('should update item id', () => {
+          // Assert
+          expect(newstate.itemid).toBe(itemId);
+        });
+
+        it('should clear error text', () => {
+          // Assert
+          expect(newstate.errorText).toBe('');
+        });
+      });
     });
   });
 });

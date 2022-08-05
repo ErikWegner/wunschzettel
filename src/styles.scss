@@ -25,6 +25,10 @@ mat-card,
   display: flex;
 }
 
+.fc {
+  display: flex;
+  align-items: center;
+}
 .mt24 {
   margin-top: 24px;
 }
@@ -32,6 +36,10 @@ mat-card,
 .error {
   color: rgb(185, 1, 1);
 }
+
 .spacer {
   flex: 1 0 0;
+}
+.p5 {
+  padding: 5px;
 }

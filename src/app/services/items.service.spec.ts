@@ -8,9 +8,11 @@ import {
 import { TestBed } from '@angular/core/testing';
 import { HttpClient } from '@angular/common/http';
 
-import { ItemsService } from './items.service';
 import { ListBuilder } from 'testing/list-builder';
 import { WishlistItemBuilder } from 'testing/item.builder';
+
+import { ItemsService } from './items.service';
+import { randomNumber } from 'testing/utils';
 
 describe('ItemsService', () => {
   let service: ItemsService;
@@ -61,5 +63,25 @@ describe('ItemsService', () => {
     expect(subscribeCallbacks.next).toHaveBeenCalledOnceWith(items);
     expect(subscribeCallbacks.error).not.toHaveBeenCalled();
     expect(subscribeCallbacks.complete).toHaveBeenCalledTimes(1);
+  });
+
+  [{ i: true }, { i: false }].forEach((testSetup) => {
+    it(`should retrieve reservation status ${testSetup.i} of an item`, () => {
+      // Arrange
+      const id = randomNumber(400);
+
+      // Act
+      service.getReservationFlag(id).subscribe(subscribeCallbacks);
+
+      // Assert
+      const req = httpTestingController.expectOne(
+        'service.php?action=status&id=' + id
+      );
+      expect(req.request.method).toEqual('GET');
+      req?.flush({ data: { status: testSetup.i } });
+      expect(subscribeCallbacks.next).toHaveBeenCalledOnceWith(testSetup.i);
+      expect(subscribeCallbacks.error).not.toHaveBeenCalled();
+      expect(subscribeCallbacks.complete).toHaveBeenCalledTimes(1);
+    });
   });
 });

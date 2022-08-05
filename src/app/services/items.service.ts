@@ -26,7 +26,9 @@ export class ItemsService {
   }
 
   public getReservationFlag(id: number): Observable<boolean> {
-    return EMPTY;
+    return this.http
+      .get<{ data: { status: boolean } }>(`service.php?action=status&id=${id}`)
+      .pipe(map((d) => d.data.status));
   }
 
   public setReservationFlag(

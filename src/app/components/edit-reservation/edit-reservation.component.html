@@ -2,13 +2,13 @@
   <!-- requestPending -->
   <mat-spinner *ngSwitchCase="'requestPending'" mode="indeterminate"></mat-spinner>
   <!-- unknown -->
-  <div *ngSwitchCase="'unknown'" class="gray">
+  <div *ngSwitchCase="'unknown'" class="fc p5 gray">
     <mat-icon aria-hidden="false" aria-label="Unbekannt">block</mat-icon>
     Unbekannter Status
   </div>
   <!-- Fehler -->
   <div *ngSwitchCase="'updateFailed'" class="error">
-    <p>
+    <p class="fc p5">
       <mat-icon aria-hidden="false" aria-label="Reserviert">heart_broken</mat-icon>
       Da ist etwas schiefgelaufen.
     </p>
@@ -17,12 +17,12 @@
     </p>
   </div>
   <!-- reserved -->
-  <div *ngSwitchCase="'reserved'" class="amber">
+  <div *ngSwitchCase="'reserved'" class="fc p5 amber">
     <mat-icon aria-hidden="false" aria-label="Reserviert">warning_amber</mat-icon>
     Es liegt bereits eine Reservierung vor.
   </div>
   <!-- free / unreserved / clear -->
-  <div *ngSwitchCase="'free'" class="green">
+  <div *ngSwitchCase="'free'" class="fc p5 green">
     <mat-icon aria-hidden="false" aria-label="Frei">check_circle</mat-icon>
     Es liegt keine Reservierung vor.
   </div>

@@ -46,6 +46,7 @@ import { WithCategoryPipe } from './pipes/with-category.pipe';
 import { AppGlobalStateEffects } from './store/a.effects';
 import { agReducer } from './store/a.reducer';
 import { AppState } from './store/app.state';
+import { ReservationEffects } from './store/r.effects';
 import { rReducer } from './store/r.reducer';
 import { CustomSerializer } from './store/router/custom-route-serializer';
 import { RouterEffects } from './store/router/effects';
@@ -93,14 +94,15 @@ import { wReducer } from './store/w.reducer';
     MatToolbarModule,
     StoreModule.forRoot<AppState>({
       ag: agReducer,
-      wishlist: wReducer,
       reservation: rReducer,
       router: routerReducer,
+      wishlist: wReducer,
     }),
     EffectsModule.forRoot([
       AppGlobalStateEffects,
-      WishlistEffects,
+      ReservationEffects,
       RouterEffects,
+      WishlistEffects,
     ]),
     // import HttpClientModule after BrowserModule.
     HttpClientModule,

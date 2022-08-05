@@ -1,5 +1,8 @@
 import { createReducer, on } from '@ngrx/store';
-import { retrieveReservationStatus } from './r.actions';
+import {
+  reservationStatusResponse,
+  retrieveReservationStatus,
+} from './r.actions';
 import { ReservationState } from './r.state';
 import { setActiveItem } from './w.actions';
 
@@ -18,6 +21,15 @@ export const rReducer = createReducer<ReservationState>(
       errorText: '',
       itemid: p.itemId,
       status: 'requestPending',
+    })
+  ),
+  on(
+    reservationStatusResponse,
+    (state, p): ReservationState => ({
+      ...state,
+      errorText: '',
+      itemid: p.itemId,
+      status: p.status,
     })
   ),
   on(
