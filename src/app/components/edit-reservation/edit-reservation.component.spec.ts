@@ -1,6 +1,7 @@
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressSpinnerHarness } from '@angular/material/progress-spinner/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -19,7 +20,7 @@ describe('EditReservationComponent', () => {
     const initialState: AppState = appStateStub();
     await TestBed.configureTestingModule({
       declarations: [EditReservationComponent],
-      imports: [MatProgressSpinnerModule],
+      imports: [MatIconModule, MatProgressSpinnerModule],
       providers: [provideMockStore({ initialState })],
     }).compileComponents();
     store = TestBed.inject(MockStore);
@@ -49,7 +50,59 @@ describe('EditReservationComponent', () => {
     expect(spinner).not.toBeNull();
   });
 
-  xit('should show reserved status', () => {});
-  xit('should show free status', () => {});
-  xit('should show error message', () => {});
+  it('should show hint on status unknown (which should never happen)', () => {
+    // Arrange
+    const nextState = AppStateBuilder.reservationStatus('unknown');
+    store.setState(nextState);
+
+    // Act
+    fixture.detectChanges();
+
+    // Assert
+    const t = fixture.debugElement.nativeElement.textContent;
+    expect(t).toBe('warning_amber Es liegt bereits eine Reservierung vor. ');
+  });
+
+  it('should show reserved status', () => {
+    // Arrange
+    const nextState = AppStateBuilder.reservationStatus('reserved');
+    store.setState(nextState);
+
+    // Act
+    fixture.detectChanges();
+
+    // Assert
+    const t = fixture.debugElement.nativeElement.textContent;
+    expect(t).toBe('warning_amber Es liegt bereits eine Reservierung vor. ');
+  });
+
+  it('should show free status', () => {
+    // Arrange
+    const nextState = AppStateBuilder.reservationStatus('free');
+    store.setState(nextState);
+
+    // Act
+    fixture.detectChanges();
+
+    // Assert
+    const t = fixture.debugElement.nativeElement.textContent;
+    expect(t).toBe('check_circle Es liegt keine Reservierung vor. ');
+  });
+
+  it('should show error message', () => {
+    // Arrange
+    const nextState = AppStateBuilder.reservationStatus('updateFailed', {
+      errorText: 'Kommunikationsfehler',
+    });
+    store.setState(nextState);
+
+    // Act
+    fixture.detectChanges();
+
+    // Assert
+    const t = fixture.debugElement.nativeElement.textContent;
+    expect(t).toBe(
+      'heart_broken Da ist etwas schiefgelaufen.  Kommunikationsfehler '
+    );
+  });
 });

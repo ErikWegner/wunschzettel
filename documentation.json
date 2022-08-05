@@ -792,6 +792,71 @@
             "type": "injectable"
         },
         {
+            "name": "ReservationEffects",
+            "id": "injectable-ReservationEffects-624133ed5abd8ec550cb4927e73906dce7d42da50f5fbb7cd4900cab4a1d30617ae44d22060e07a9d087c57d389f94d400fa6628eb1f92f8a5a9793f9309f3f9",
+            "file": "src/app/store/r.effects.ts",
+            "properties": [
+                {
+                    "name": "loadStatus$",
+                    "defaultValue": "createEffect(() => {\n    return this.actions$.pipe(\n      ofType(retrieveReservationStatus),\n      switchMap((p) =>\n        this.itemsService.getReservationFlag(p.itemId).pipe(\n          map((reservedFlag) =>\n            reservationStatusResponse({\n              itemId: p.itemId,\n              status: reservedFlag ? 'reserved' : 'free',\n              errorText: null,\n            })\n          )\n        )\n      )\n    );\n  })",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 12
+                }
+            ],
+            "methods": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import { Injectable } from '@angular/core';\nimport { Actions, createEffect, ofType } from '@ngrx/effects';\nimport { map, switchMap } from 'rxjs';\nimport { ItemsService } from '../services/items.service';\nimport {\n  reservationStatusResponse,\n  retrieveReservationStatus,\n} from './r.actions';\n\n@Injectable()\nexport class ReservationEffects {\n  loadStatus$ = createEffect(() => {\n    return this.actions$.pipe(\n      ofType(retrieveReservationStatus),\n      switchMap((p) =>\n        this.itemsService.getReservationFlag(p.itemId).pipe(\n          map((reservedFlag) =>\n            reservationStatusResponse({\n              itemId: p.itemId,\n              status: reservedFlag ? 'reserved' : 'free',\n              errorText: null,\n            })\n          )\n        )\n      )\n    );\n  });\n\n  constructor(private actions$: Actions, private itemsService: ItemsService) {}\n}\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "actions$",
+                        "type": "Actions",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "itemsService",
+                        "type": "ItemsService",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 27,
+                "jsdoctags": [
+                    {
+                        "name": "actions$",
+                        "type": "Actions",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "itemsService",
+                        "type": "ItemsService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "type": "injectable"
+        },
+        {
             "name": "RouterEffects",
             "id": "injectable-RouterEffects-4e17393b7759af178d138c67d76c1a7b8ff8dc70943b56b321cc9e85b13c5a9c99b0e8cbcc55973840c834187a7bdf18cd6a33c03df1dbb9b5787228ec7fdab9",
             "file": "src/app/store/router/effects.ts",
@@ -843,7 +908,7 @@
         },
         {
             "name": "WishlistEffects",
-            "id": "injectable-WishlistEffects-79da48fd6306afc8e950d990f84a192fbadcf0daa69c76a3cd5003798bababc21fcb032580764593363a93f124ca804cd9bfa426614401a8d6dbf7d391c514a8",
+            "id": "injectable-WishlistEffects-78aa7215c0ad7f1d438188ee78e0683455cbeb2e6487f67fe5be31c560e2e494dc85d72034460e0f46f2b6f6fe6ed505825b5f7aebfcd91f36d5b033674f5297",
             "file": "src/app/store/w.effects.ts",
             "properties": [
                 {
@@ -854,7 +919,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 31
+                    "line": 30
                 },
                 {
                     "name": "init$",
@@ -864,7 +929,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 24
+                    "line": 23
                 },
                 {
                     "name": "navigatedToItem$",
@@ -874,7 +939,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 75
+                    "line": 74
                 },
                 {
                     "name": "navigateToCategory$",
@@ -884,7 +949,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 51
+                    "line": 50
                 },
                 {
                     "name": "navigateToItem$",
@@ -894,7 +959,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 63
+                    "line": 62
                 }
             ],
             "methods": [],
@@ -902,7 +967,7 @@
             "deprecationMessage": "",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import { Injectable } from '@angular/core';\nimport { Router } from '@angular/router';\nimport {\n  Actions,\n  createEffect,\n  ofType,\n  ROOT_EFFECTS_INIT,\n} from '@ngrx/effects';\nimport { Store } from '@ngrx/store';\nimport { catchError, map, mergeMap, of, switchMap, tap } from 'rxjs';\nimport { ItemsService } from '../services/items.service';\nimport { requestFailure } from './a.actions';\nimport { navigatedToItem } from './router/actions';\nimport {\n  getItems,\n  goToCategory,\n  goToItem,\n  itemsLoaded,\n  setActiveItem,\n} from './w.actions';\n\n@Injectable()\nexport class WishlistEffects {\n  init$ = createEffect(() => {\n    return this.actions$.pipe(\n      ofType(ROOT_EFFECTS_INIT),\n      map((_) => getItems())\n    );\n  });\n\n  getItems$ = createEffect(() => {\n    return this.actions$.pipe(\n      ofType(getItems),\n      switchMap((initialAction) =>\n        this.itemsService.getItems().pipe(\n          map((items) => itemsLoaded({ items })),\n          catchError((err) => {\n            return of(\n              requestFailure({\n                errorText: 'Fehler beim Laden der Einträge',\n                errorDetails: err.message,\n                retryAction: initialAction,\n              })\n            );\n          })\n        )\n      )\n    );\n  });\n\n  navigateToCategory$ = createEffect(\n    () => {\n      return this.actions$.pipe(\n        ofType(goToCategory),\n        tap((d) => {\n          this.router.navigate(['/wunschliste', d.category]);\n        })\n      );\n    },\n    { dispatch: false }\n  );\n\n  navigateToItem$ = createEffect(\n    () => {\n      return this.actions$.pipe(\n        ofType(goToItem),\n        map((action) => {\n          this.router.navigate(['/wunsch', `${action.itemId}`]);\n        })\n      );\n    },\n    { dispatch: false }\n  );\n\n  navigatedToItem$ = createEffect(() => {\n    return this.actions$.pipe(\n      ofType(navigatedToItem),\n      mergeMap((action) =>\n        this.itemsService.getItems().pipe(\n          map((items) => {\n            const itemId = action.itemId;\n            const item = items?.find((i) => i.id === itemId);\n            return setActiveItem({ item });\n          })\n        )\n      )\n    );\n  });\n\n  constructor(\n    private actions$: Actions,\n    private itemsService: ItemsService,\n    private router: Router,\n    private store: Store\n  ) {}\n}\n",
+            "sourceCode": "import { Injectable } from '@angular/core';\nimport { Router } from '@angular/router';\nimport {\n  Actions,\n  createEffect,\n  ofType,\n  ROOT_EFFECTS_INIT,\n} from '@ngrx/effects';\nimport { catchError, map, mergeMap, of, switchMap, tap } from 'rxjs';\nimport { ItemsService } from '../services/items.service';\nimport { requestFailure } from './a.actions';\nimport { navigatedToItem } from './router/actions';\nimport {\n  getItems,\n  goToCategory,\n  goToItem,\n  itemsLoaded,\n  setActiveItem,\n} from './w.actions';\n\n@Injectable()\nexport class WishlistEffects {\n  init$ = createEffect(() => {\n    return this.actions$.pipe(\n      ofType(ROOT_EFFECTS_INIT),\n      map((_) => getItems())\n    );\n  });\n\n  getItems$ = createEffect(() => {\n    return this.actions$.pipe(\n      ofType(getItems),\n      switchMap((initialAction) =>\n        this.itemsService.getItems().pipe(\n          map((items) => itemsLoaded({ items })),\n          catchError((err) => {\n            return of(\n              requestFailure({\n                errorText: 'Fehler beim Laden der Einträge',\n                errorDetails: err.message,\n                retryAction: initialAction,\n              })\n            );\n          })\n        )\n      )\n    );\n  });\n\n  navigateToCategory$ = createEffect(\n    () => {\n      return this.actions$.pipe(\n        ofType(goToCategory),\n        tap((d) => {\n          this.router.navigate(['/wunschliste', d.category]);\n        })\n      );\n    },\n    { dispatch: false }\n  );\n\n  navigateToItem$ = createEffect(\n    () => {\n      return this.actions$.pipe(\n        ofType(goToItem),\n        map((action) => {\n          this.router.navigate(['/wunsch', `${action.itemId}`]);\n        })\n      );\n    },\n    { dispatch: false }\n  );\n\n  navigatedToItem$ = createEffect(() => {\n    return this.actions$.pipe(\n      ofType(navigatedToItem),\n      mergeMap((action) =>\n        this.itemsService.getItems().pipe(\n          map((items) => {\n            const itemId = action.itemId;\n            const item = items?.find((i) => i.id === itemId);\n            return setActiveItem({ item });\n          })\n        )\n      )\n    );\n  });\n\n  constructor(\n    private actions$: Actions,\n    private itemsService: ItemsService,\n    private router: Router\n  ) {}\n}\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -926,15 +991,9 @@
                         "type": "Router",
                         "deprecated": false,
                         "deprecationMessage": ""
-                    },
-                    {
-                        "name": "store",
-                        "type": "Store",
-                        "deprecated": false,
-                        "deprecationMessage": ""
                     }
                 ],
-                "line": 88,
+                "line": 87,
                 "jsdoctags": [
                     {
                         "name": "actions$",
@@ -957,15 +1016,6 @@
                     {
                         "name": "router",
                         "type": "Router",
-                        "deprecated": false,
-                        "deprecationMessage": "",
-                        "tagName": {
-                            "text": "param"
-                        }
-                    },
-                    {
-                        "name": "store",
-                        "type": "Store",
                         "deprecated": false,
                         "deprecationMessage": "",
                         "tagName": {
@@ -2706,7 +2756,7 @@
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ".amber {\n  background-color: #f7e3aa;\n  color: #553102;\n}\n\n.green {\n  background-color: rgb(162, 253, 162);\n  color: rgb(3, 119, 3);\n}",
+                    "data": ".amber {\n  background-color: #f7e3aa;\n  color: #553102;\n}\n\n.green {\n  background-color: rgb(162, 253, 162);\n  color: rgb(3, 119, 3);\n}\n.gray {\n  background-color: rgb(168, 168, 168);\n  color: rgb(0, 0, 0);\n}\n",
                     "styleUrl": "./edit-reservation.component.scss"
                 }
             ],
@@ -2737,7 +2787,7 @@
                     }
                 ]
             },
-            "templateData": "<div [ngSwitch]=\"reservationStatus$ | async\">\n  <!-- requestPending -->\n  <mat-spinner *ngSwitchCase=\"'requestPending'\" mode=\"indeterminate\"></mat-spinner>\n  <!-- Fehler -->\n  <div *ngSwitchCase=\"'updateFailed'\" class=\"error\">\n    <p>\n      <mat-icon aria-hidden=\"false\" aria-label=\"Reserviert\">heart_broken</mat-icon>\n      Da ist etwas schiefgelaufen.\n    </p>\n    <p>\n      {{ reservationErrorText$ | async }}\n    </p>\n  </div>\n  <!-- reserved -->\n  <div *ngSwitchCase=\"'reserved'\" class=\"amber\">\n    <mat-icon aria-hidden=\"false\" aria-label=\"Reserviert\">warning_amber</mat-icon>\n    Es liegt bereits eine Reservierung vor.\n  </div>\n  <!-- free / unreserved / clear -->\n  <div *ngSwitchCase=\"'free'\" class=\"green\">\n    <mat-icon aria-hidden=\"false\" aria-label=\"Frei\">check_circle</mat-icon>\n    Es liegt keine Reservierung vor.\n  </div>\n</div>"
+            "templateData": "<div [ngSwitch]=\"reservationStatus$ | async\">\n  <!-- requestPending -->\n  <mat-spinner *ngSwitchCase=\"'requestPending'\" mode=\"indeterminate\"></mat-spinner>\n  <!-- unknown -->\n  <div *ngSwitchCase=\"'unknown'\" class=\"gray\">\n    <mat-icon aria-hidden=\"false\" aria-label=\"Unbekannt\">block</mat-icon>\n    Unbekannter Status\n  </div>\n  <!-- Fehler -->\n  <div *ngSwitchCase=\"'updateFailed'\" class=\"error\">\n    <p>\n      <mat-icon aria-hidden=\"false\" aria-label=\"Reserviert\">heart_broken</mat-icon>\n      Da ist etwas schiefgelaufen.\n    </p>\n    <p>\n      {{ reservationErrorText$ | async }}\n    </p>\n  </div>\n  <!-- reserved -->\n  <div *ngSwitchCase=\"'reserved'\" class=\"amber\">\n    <mat-icon aria-hidden=\"false\" aria-label=\"Reserviert\">warning_amber</mat-icon>\n    Es liegt bereits eine Reservierung vor.\n  </div>\n  <!-- free / unreserved / clear -->\n  <div *ngSwitchCase=\"'free'\" class=\"green\">\n    <mat-icon aria-hidden=\"false\" aria-label=\"Frei\">check_circle</mat-icon>\n    Es liegt keine Reservierung vor.\n  </div>\n</div>\n"
         },
         {
             "name": "EditReservationStubComponent",
@@ -3247,7 +3297,7 @@
         },
         {
             "name": "ItemDisplayComponent",
-            "id": "component-ItemDisplayComponent-c070745a9848552710415e48ee1f25088f56ca0f86bcde2afdc2687f0ce899765642799cf07410d7ae0205caeb3e167d01dbd5c4d5545bff842f018f9ee79bb7",
+            "id": "component-ItemDisplayComponent-beb26b4f4e0d745bb35fa237a17dd73293f602f0cd97ddeb70a45ce4d56bdd467e1727d004543ec6c7a52d8a76bfed9c91c3d27a64ff04a2a70ee0d1610ff080",
             "file": "src/app/components/item-display/item-display.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -3269,14 +3319,70 @@
                     "defaultValue": "null",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 11,
+                    "line": 24,
                     "type": "WishlistItem | null",
                     "decorators": []
                 }
             ],
             "outputsClass": [],
-            "propertiesClass": [],
-            "methodsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "panel",
+                    "defaultValue": "null",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "MatExpansionPanel | null",
+                    "optional": false,
+                    "description": "",
+                    "line": 21,
+                    "decorators": [
+                        {
+                            "name": "ViewChild",
+                            "stringifiedArguments": "MatExpansionPanel"
+                        }
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "ngOnChanges",
+                    "args": [
+                        {
+                            "name": "_changes",
+                            "type": "SimpleChanges",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 28,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "_changes",
+                            "type": "SimpleChanges",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "onPanelOpened",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 32,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
             "deprecated": false,
             "deprecationMessage": "",
             "hostBindings": [],
@@ -3284,7 +3390,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, Input, OnInit } from '@angular/core';\nimport { WishlistItem } from 'src/app/business/item';\n\n@Component({\n  selector: 'app-item-display',\n  templateUrl: './item-display.component.html',\n  styleUrls: ['./item-display.component.scss'],\n})\nexport class ItemDisplayComponent {\n  @Input()\n  item: WishlistItem | null = null;\n\n  constructor() {}\n}\n",
+            "sourceCode": "import {\n  Component,\n  Input,\n  OnChanges,\n  OnInit,\n  SimpleChanges,\n  ViewChild,\n} from '@angular/core';\nimport { MatExpansionPanel } from '@angular/material/expansion';\nimport { Store } from '@ngrx/store';\nimport { WishlistItem } from 'src/app/business/item';\nimport { retrieveReservationStatus } from 'src/app/store/r.actions';\n\n@Component({\n  selector: 'app-item-display',\n  templateUrl: './item-display.component.html',\n  styleUrls: ['./item-display.component.scss'],\n})\nexport class ItemDisplayComponent implements OnChanges {\n  @ViewChild(MatExpansionPanel)\n  panel: MatExpansionPanel | null = null;\n\n  @Input()\n  item: WishlistItem | null = null;\n\n  constructor(private store: Store) {}\n\n  ngOnChanges(_changes: SimpleChanges): void {\n    this.panel?.close();\n  }\n\n  onPanelOpened(): void {\n    if (this.item) {\n      this.store.dispatch(retrieveReservationStatus({ itemId: this.item.id }));\n    }\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -3298,10 +3404,31 @@
                 "description": "",
                 "deprecated": false,
                 "deprecationMessage": "",
-                "args": [],
-                "line": 11
+                "args": [
+                    {
+                        "name": "store",
+                        "type": "Store",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 24,
+                "jsdoctags": [
+                    {
+                        "name": "store",
+                        "type": "Store",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
             },
-            "templateData": "<mat-card>\n  <mat-card-title-group>\n    <mat-card-title>{{ item?.Title }}</mat-card-title>\n    <mat-card-subtitle>{{ item?.Category }}</mat-card-subtitle>\n  </mat-card-title-group>\n  <mat-divider inset></mat-divider>\n  <mat-card-content>\n    <div class=\"f\">\n      <p>\n        {{ item?.Description }}\n      </p>\n      <div>\n        <img mat-card-lg-image\n          [src]=\"item?.ImgageUrl\" />\n      </div>\n    </div>\n    <div>\n      Kauf-Adresse:\n      <a [href]=\"item?.BuyUrl\">\n        {{ item?.BuyUrl }}\n      </a>\n    </div>\n  </mat-card-content>\n  <mat-divider inset></mat-divider>\n  <mat-card-actions>\n    <mat-expansion-panel>\n      <mat-expansion-panel-header>\n        <mat-panel-title>Reservieren und Status</mat-panel-title>\n      </mat-expansion-panel-header>\n      <app-edit-reservation></app-edit-reservation>\n    </mat-expansion-panel>\n    <div class=\"f mt24\">\n      <button mat-flat-button color=\"accent\">Bearbeiten</button>\n      <div class=\"spacer\"></div>\n      <button mat-flat-button color=\"primary\">Zurück</button>\n    </div>\n    </mat-card-actions>\n    <mat-card-footer>\n  </mat-card-footer>\n</mat-card>"
+            "implements": [
+                "OnChanges"
+            ],
+            "templateData": "<mat-card>\n  <mat-card-title-group>\n    <mat-card-title>{{ item?.Title }}</mat-card-title>\n    <mat-card-subtitle>{{ item?.Category }}</mat-card-subtitle>\n  </mat-card-title-group>\n  <mat-divider inset></mat-divider>\n  <mat-card-content>\n    <div class=\"f\">\n      <p>\n        {{ item?.Description }}\n      </p>\n      <div>\n        <img mat-card-lg-image\n          [src]=\"item?.ImgageUrl\" />\n      </div>\n    </div>\n    <div>\n      Kauf-Adresse:\n      <a [href]=\"item?.BuyUrl\">\n        {{ item?.BuyUrl }}\n      </a>\n    </div>\n  </mat-card-content>\n  <mat-divider inset></mat-divider>\n  <mat-card-actions>\n    <mat-expansion-panel (opened)=\"onPanelOpened();\">\n      <mat-expansion-panel-header>\n        <mat-panel-title>Reservieren und Status</mat-panel-title>\n      </mat-expansion-panel-header>\n      <ng-template matExpansionPanelContent>\n        <app-edit-reservation></app-edit-reservation>\n      </ng-template>\n    </mat-expansion-panel>\n    <div class=\"f mt24\">\n      <button mat-flat-button color=\"accent\">Bearbeiten</button>\n      <div class=\"spacer\"></div>\n      <button mat-flat-button color=\"primary\">Zurück</button>\n    </div>\n    </mat-card-actions>\n    <mat-card-footer>\n  </mat-card-footer>\n</mat-card>\n"
         },
         {
             "name": "ItemDisplayStubComponent",
@@ -4503,6 +4630,16 @@
                 "defaultValue": "() => ({\n  props: {},\n})"
             },
             {
+                "name": "IsUnkown",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/EditReservation.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "() => ({\n  props: {},\n})"
+            },
+            {
                 "name": "itemsLoaded",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -4662,6 +4799,26 @@
                 "type": "literal type"
             },
             {
+                "name": "reservationStatusResponse",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/r.actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction(\n  '[R] Reservation status response',\n  props<{\n    itemId: number;\n    status: ReservationStatus;\n    errorText: string | null;\n  }>()\n)"
+            },
+            {
+                "name": "retrieveReservationStatus",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/r.actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction(\n  '[R] Retrieve reservation status',\n  props<{\n    itemId: number;\n  }>()\n)"
+            },
+            {
                 "name": "rReducer",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -4669,7 +4826,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
-                "defaultValue": "createReducer<ReservationState>(initialState)"
+                "defaultValue": "createReducer<ReservationState>(\n  initialState,\n  on(\n    retrieveReservationStatus,\n    (state, p): ReservationState => ({\n      ...state,\n      errorText: '',\n      itemid: p.itemId,\n      status: 'requestPending',\n    })\n  ),\n  on(\n    setActiveItem,\n    (state, p): ReservationState => ({\n      ...state,\n      errorText: '',\n      itemid: p.item?.id || null,\n      status: 'unknown',\n    })\n  )\n)"
             },
             {
                 "name": "SaveError",
@@ -5707,6 +5864,16 @@
                     "defaultValue": "() => ({\n  props: {},\n})"
                 },
                 {
+                    "name": "IsUnkown",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/EditReservation.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "() => ({\n  props: {},\n})"
+                },
+                {
                     "name": "LoadingUpdating",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
@@ -5746,7 +5913,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
-                    "defaultValue": "createReducer<ReservationState>(initialState)"
+                    "defaultValue": "createReducer<ReservationState>(\n  initialState,\n  on(\n    retrieveReservationStatus,\n    (state, p): ReservationState => ({\n      ...state,\n      errorText: '',\n      itemid: p.itemId,\n      status: 'requestPending',\n    })\n  ),\n  on(\n    setActiveItem,\n    (state, p): ReservationState => ({\n      ...state,\n      errorText: '',\n      itemid: p.item?.id || null,\n      status: 'unknown',\n    })\n  )\n)"
                 }
             ],
             "src/app/store/w.reducer.ts": [
@@ -5897,6 +6064,28 @@
                     "deprecationMessage": "",
                     "type": "",
                     "defaultValue": "createAction(\n  '[R] navigatedToItem',\n  props<{\n    itemId: number;\n  }>()\n)"
+                }
+            ],
+            "src/app/store/r.actions.ts": [
+                {
+                    "name": "reservationStatusResponse",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/r.actions.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createAction(\n  '[R] Reservation status response',\n  props<{\n    itemId: number;\n    status: ReservationStatus;\n    errorText: string | null;\n  }>()\n)"
+                },
+                {
+                    "name": "retrieveReservationStatus",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/r.actions.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createAction(\n  '[R] Retrieve reservation status',\n  props<{\n    itemId: number;\n  }>()\n)"
                 }
             ],
             "src/app/store/w.selectors.ts": [
@@ -6350,7 +6539,7 @@
                 "linktype": "component",
                 "name": "ItemDisplayComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/3",
+                "coverageCount": "0/6",
                 "status": "low"
             },
             {
@@ -6604,6 +6793,35 @@
                 "name": "AppState",
                 "coveragePercent": 0,
                 "coverageCount": "0/5",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/r.actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "reservationStatusResponse",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/r.actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "retrieveReservationStatus",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/r.effects.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "ReservationEffects",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
                 "status": "low"
             },
             {
@@ -7095,6 +7313,16 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "IsFree",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/EditReservation.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "IsUnkown",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"

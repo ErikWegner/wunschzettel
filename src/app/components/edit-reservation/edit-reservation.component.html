@@ -1,6 +1,11 @@
 <div [ngSwitch]="reservationStatus$ | async">
   <!-- requestPending -->
   <mat-spinner *ngSwitchCase="'requestPending'" mode="indeterminate"></mat-spinner>
+  <!-- unknown -->
+  <div *ngSwitchCase="'unknown'" class="gray">
+    <mat-icon aria-hidden="false" aria-label="Unbekannt">block</mat-icon>
+    Unbekannter Status
+  </div>
   <!-- Fehler -->
   <div *ngSwitchCase="'updateFailed'" class="error">
     <p>

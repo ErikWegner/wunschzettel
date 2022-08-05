@@ -44,10 +44,27 @@ HasReservation.decorators = [
   }),
 ];
 
+export const IsUnkown: Story = () => ({
+  props: {},
+});
+IsUnkown.storyName = 'Is unknown';
+IsUnkown.decorators = [
+  moduleMetadata({
+    declarations: [],
+    imports: moduleImports,
+    providers: [
+      ...defaultProviders,
+      provideMockStore({
+        initialState: AppStateBuilder.reservationStatus('unknown'),
+      }),
+    ],
+  }),
+];
+
 export const IsFree: Story = () => ({
   props: {},
 });
-IsFree.storyName = 'Is free TODO';
+IsFree.storyName = 'Is free';
 IsFree.decorators = [
   moduleMetadata({
     declarations: [],
