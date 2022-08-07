@@ -10,8 +10,7 @@
         {{ item?.Description }}
       </p>
       <div>
-        <img mat-card-lg-image
-          [src]="item?.ImgageUrl" />
+        <img mat-card-lg-image [src]="item?.ImgageUrl" />
       </div>
     </div>
     <div>
@@ -23,9 +22,14 @@
   </mat-card-content>
   <mat-divider inset></mat-divider>
   <mat-card-actions>
-    <mat-expansion-panel (opened)="onPanelOpened();">
+    <mat-expansion-panel
+      (opened)="description = openedDescription; onPanelOpened()"
+      (closed)="description = closedDescription"
+      hideToggle
+    >
       <mat-expansion-panel-header>
         <mat-panel-title>Reservieren und Status</mat-panel-title>
+        <mat-panel-description>{{ description }}</mat-panel-description>
       </mat-expansion-panel-header>
       <ng-template matExpansionPanelContent>
         <app-edit-reservation></app-edit-reservation>
@@ -36,7 +40,6 @@
       <div class="spacer"></div>
       <button mat-flat-button color="primary">Zurück</button>
     </div>
-    </mat-card-actions>
-    <mat-card-footer>
-  </mat-card-footer>
+  </mat-card-actions>
+  <mat-card-footer> </mat-card-footer>
 </mat-card>

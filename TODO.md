@@ -7,7 +7,7 @@ TODO
 * ✅ Link categories  
 * ✅ Show items of selected category  
 * ✅ Show item  
-* 📎 Show/hide reservation status  
+* ✅ Show/hide reservation status  
 * 📎 Challenge input  
 * 📎 Edit item  
 * 📎 Add item  

@@ -2,7 +2,6 @@ import {
   Component,
   Input,
   OnChanges,
-  OnInit,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
@@ -19,6 +18,9 @@ import { retrieveReservationStatus } from 'src/app/store/r.actions';
 export class ItemDisplayComponent implements OnChanges {
   @ViewChild(MatExpansionPanel)
   panel: MatExpansionPanel | null = null;
+  readonly openedDescription = 'Antippen zum Verstecken';
+  readonly closedDescription = 'Antippen zum Anzeigen';
+  description = this.closedDescription;
 
   @Input()
   item: WishlistItem | null = null;

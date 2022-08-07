@@ -99,4 +99,41 @@ describe('ItemDisplayComponent', () => {
     });
     expect(store.scannedActions$).toBeObservable(expected);
   });
+
+  [
+    {
+      testname: 'Show description after opening panel',
+      isOpen: true,
+      expectedDescription: 'Antippen zum Verstecken',
+    },
+    {
+      testname: 'Show description after closing panel',
+      isOpen: false,
+      expectedDescription: 'Antippen zum Anzeigen',
+    },
+    {
+      testname: 'Show description on init',
+      isOpen: null,
+      expectedDescription: 'Antippen zum Anzeigen',
+    },
+  ].forEach((testSetup) => {
+    it(testSetup.testname, async () => {
+      // Arrange
+      const panel = await getPanel();
+      const item = WishlistItemBuilder.default();
+      component.item = item;
+      fixture.detectChanges();
+
+      // Act
+      if (testSetup.isOpen !== null) {
+        await panel.expand();
+        await panel.collapse();
+        await (testSetup.isOpen ? panel.expand() : panel.collapse());
+      }
+
+      // Assert
+      const description = await panel.getDescription();
+      expect(description).toBe(testSetup.expectedDescription);
+    });
+  });
 });
