@@ -15,9 +15,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Install chromium
-        run: apt-get update && export DEBIAN_FRONTEND=noninteractive && apt-get -y install --no-install-recommends chromium
-
       - name: Setup nodejs
         uses: actions/setup-node@v2
         with:
