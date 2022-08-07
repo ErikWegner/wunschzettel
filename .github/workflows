@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [ ng14, master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install chromium
+        run: apt-get update && export DEBIAN_FRONTEND=noninteractive && apt-get -y install --no-install-recommends chromium
+
+      - name: Setup nodejs
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Install npm dependencies
+        run: npm install
+
+      - name: Run tests
+        env:
+          CHROME_BIN: /usr/bin/chromium
+        run: npm run test -- --watch false
+
+      - name: Run production build
+        run: npm run build
+
+      - name: Run storybook generation
+        run: npm run build-storybook
