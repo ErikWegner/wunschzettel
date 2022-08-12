@@ -17,13 +17,23 @@
     </p>
   </div>
   <!-- reserved -->
-  <div *ngSwitchCase="'reserved'" class="fc p5 amber">
-    <mat-icon aria-hidden="false" aria-label="Reserviert">warning_amber</mat-icon>
-    Es liegt bereits eine Reservierung vor.
-  </div>
+  <div *ngSwitchCase="'reserved'">
+    <div class="fc p5 amber">
+      <mat-icon aria-hidden="false" aria-label="Reserviert">warning_amber</mat-icon>
+      Es liegt bereits eine Reservierung vor.
+    </div>
+    <div class="action">
+      <button mat-flat-button color="primary">Reservierung löschen …</button>
+    </div>
+    </div>
   <!-- free / unreserved / clear -->
-  <div *ngSwitchCase="'free'" class="fc p5 green">
-    <mat-icon aria-hidden="false" aria-label="Frei">check_circle</mat-icon>
-    Es liegt keine Reservierung vor.
+  <div *ngSwitchCase="'free'">
+    <div class="fc p5 green">
+      <mat-icon aria-hidden="false" aria-label="Frei">check_circle</mat-icon>
+      Es liegt keine Reservierung vor.
+    </div>
+    <div class="action">
+      <button mat-flat-button color="primary">Reservieren …</button>
+    </div>
   </div>
 </div>

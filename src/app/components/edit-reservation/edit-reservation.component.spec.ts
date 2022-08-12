@@ -73,7 +73,7 @@ describe('EditReservationComponent', () => {
 
     // Assert
     const t = fixture.debugElement.nativeElement.textContent;
-    expect(t).toBe('warning_amber Es liegt bereits eine Reservierung vor. ');
+    expect(t).toBe('warning_amber Es liegt bereits eine Reservierung vor. Reservierung löschen …');
   });
 
   it('should show free status', () => {
@@ -86,7 +86,7 @@ describe('EditReservationComponent', () => {
 
     // Assert
     const t = fixture.debugElement.nativeElement.textContent;
-    expect(t).toBe('check_circle Es liegt keine Reservierung vor. ');
+    expect(t).toBe('check_circle Es liegt keine Reservierung vor. Reservieren …');
   });
 
   it('should show error message', () => {
