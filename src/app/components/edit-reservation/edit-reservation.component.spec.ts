@@ -1,6 +1,7 @@
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatButtonHarness } from '@angular/material/button/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressSpinnerHarness } from '@angular/material/progress-spinner/testing';
@@ -15,8 +16,10 @@ describe('EditReservationComponent', () => {
   let fixture: ComponentFixture<EditReservationComponent>;
   let loader: HarnessLoader;
   let store: MockStore;
+  let next: jasmine.Spy;
 
   beforeEach(async () => {
+    next = jasmine.createSpy('next');
     const initialState: AppState = appStateStub();
     await TestBed.configureTestingModule({
       declarations: [EditReservationComponent],
@@ -73,7 +76,7 @@ describe('EditReservationComponent', () => {
 
     // Assert
     const t = fixture.debugElement.nativeElement.textContent;
-    expect(t).toBe('warning_amber Es liegt bereits eine Reservierung vor. ');
+    expect(t).toBe('warning_amber Es liegt bereits eine Reservierung vor. Reservierung löschen …');
   });
 
   it('should show free status', () => {
@@ -86,7 +89,7 @@ describe('EditReservationComponent', () => {
 
     // Assert
     const t = fixture.debugElement.nativeElement.textContent;
-    expect(t).toBe('check_circle Es liegt keine Reservierung vor. ');
+    expect(t).toBe('check_circle Es liegt keine Reservierung vor. Reservieren …');
   });
 
   it('should show error message', () => {
@@ -105,4 +108,35 @@ describe('EditReservationComponent', () => {
       'heart_broken Da ist etwas schiefgelaufen.  Kommunikationsfehler '
     );
   });
+
+  it('should emit event when clicking `Reserve`', async () => {
+    // Arrange
+    const nextState = AppStateBuilder.reservationStatus('free');
+    store.setState(nextState);
+    fixture.detectChanges();
+    const actionButton = await loader.getHarness(MatButtonHarness);
+    fixture.componentInstance.action.subscribe(next);
+
+    // Act
+    await actionButton.click();
+
+    // Assert
+    expect(next).toHaveBeenCalledOnceWith({ action: 'reserve' });
+  });
+
+  it('should emit event when clicking `Clear reservation`', async () => {
+    // Arrange
+    const nextState = AppStateBuilder.reservationStatus('reserved');
+    store.setState(nextState);
+    fixture.detectChanges();
+    const actionButton = await loader.getHarness(MatButtonHarness);
+    fixture.componentInstance.action.subscribe(next);
+
+    // Act
+    await actionButton.click();
+
+    // Assert
+    expect(next).toHaveBeenCalledOnceWith({ action: 'clear' });
+  });
+
 });
