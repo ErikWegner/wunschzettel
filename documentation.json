@@ -2703,162 +2703,6 @@
             "templateData": "<mat-spinner class=\"centerbox\" *ngIf=\"(hasRequestPending$ | async)\"></mat-spinner>\n<ng-container *ngIf=\"false === (hasRequestPending$ | async)\">\n  <app-item-preview *ngFor=\"let item of ((items$ | async) | withCategory:(activeCategory$|async) )\" [item]=\"item\"></app-item-preview>\n</ng-container>\n"
         },
         {
-            "name": "EditReservationComponent",
-            "id": "component-EditReservationComponent-cf10b3a3433cd8d29da42d7561751339d2f7a3647138584f35608e8ef974bc9c6f5e0df2ce65f067480e55e858307d7d460dc300beabcd14448790f653facdf8",
-            "file": "src/app/components/edit-reservation/edit-reservation.component.ts",
-            "encapsulation": [],
-            "entryComponents": [],
-            "inputs": [],
-            "outputs": [],
-            "providers": [],
-            "selector": "app-edit-reservation",
-            "styleUrls": [
-                "./edit-reservation.component.scss"
-            ],
-            "styles": [],
-            "templateUrl": [
-                "./edit-reservation.component.html"
-            ],
-            "viewProviders": [],
-            "inputsClass": [],
-            "outputsClass": [
-                {
-                    "name": "action",
-                    "defaultValue": "new EventEmitter<{ action: 'reserve' | 'clear' }>()",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "line": 19,
-                    "type": "EventEmitter"
-                }
-            ],
-            "propertiesClass": [
-                {
-                    "name": "reservationErrorText$",
-                    "defaultValue": "this.store.select(selectReservationErrorText)",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "optional": false,
-                    "description": "",
-                    "line": 16
-                },
-                {
-                    "name": "reservationStatus$",
-                    "defaultValue": "this.store.select(selectReservationState)",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "optional": false,
-                    "description": "",
-                    "line": 15
-                }
-            ],
-            "methodsClass": [
-                {
-                    "name": "onClickClearReservation",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 23,
-                    "deprecated": false,
-                    "deprecationMessage": ""
-                },
-                {
-                    "name": "onClickReservation",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 27,
-                    "deprecated": false,
-                    "deprecationMessage": ""
-                }
-            ],
-            "deprecated": false,
-            "deprecationMessage": "",
-            "hostBindings": [],
-            "hostListeners": [],
-            "description": "",
-            "rawdescription": "\n",
-            "type": "component",
-            "sourceCode": "import { Component, EventEmitter, Output } from '@angular/core';\nimport { Store } from '@ngrx/store';\nimport { confirmEditReservation } from 'src/app/store/r.actions';\nimport {\n  selectReservationErrorText,\n  selectReservationState,\n} from 'src/app/store/r.selectors';\n\n@Component({\n  selector: 'app-edit-reservation',\n  templateUrl: './edit-reservation.component.html',\n  styleUrls: ['./edit-reservation.component.scss'],\n})\nexport class EditReservationComponent {\n  reservationStatus$ = this.store.select(selectReservationState);\n  reservationErrorText$ = this.store.select(selectReservationErrorText);\n\n  @Output()\n  action = new EventEmitter<{ action: 'reserve' | 'clear' }>();\n\n  constructor(private store: Store) {}\n\n  onClickClearReservation(): void {\n    this.store.dispatch(confirmEditReservation({ targetState: 'clear' }));\n  }\n\n  onClickReservation(): void {\n    this.store.dispatch(confirmEditReservation({ targetState: 'reserve' }));\n  }\n}\n",
-            "assetsDirs": [],
-            "styleUrlsData": [
-                {
-                    "data": ".amber {\n  background-color: #f7e3aa;\n  color: #553102;\n}\n\n.green {\n  background-color: rgb(162, 253, 162);\n  color: rgb(3, 119, 3);\n}\n\n.gray {\n  background-color: rgb(168, 168, 168);\n  color: rgb(0, 0, 0);\n}\n\n.action {\n  padding-top: 5px;\n  text-align: center;\n}\n",
-                    "styleUrl": "./edit-reservation.component.scss"
-                }
-            ],
-            "stylesData": "",
-            "constructorObj": {
-                "name": "constructor",
-                "description": "",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "args": [
-                    {
-                        "name": "store",
-                        "type": "Store",
-                        "deprecated": false,
-                        "deprecationMessage": ""
-                    }
-                ],
-                "line": 19,
-                "jsdoctags": [
-                    {
-                        "name": "store",
-                        "type": "Store",
-                        "deprecated": false,
-                        "deprecationMessage": "",
-                        "tagName": {
-                            "text": "param"
-                        }
-                    }
-                ]
-            },
-            "templateData": "<div [ngSwitch]=\"reservationStatus$ | async\">\n  <!-- requestPending -->\n  <mat-spinner *ngSwitchCase=\"'requestPending'\" mode=\"indeterminate\"></mat-spinner>\n  <!-- unknown -->\n  <div *ngSwitchCase=\"'unknown'\" class=\"fc p5 gray\">\n    <mat-icon aria-hidden=\"false\" aria-label=\"Unbekannt\">block</mat-icon>\n    Unbekannter Status\n  </div>\n  <!-- Fehler -->\n  <div *ngSwitchCase=\"'updateFailed'\" class=\"error\">\n    <p class=\"fc p5\">\n      <mat-icon aria-hidden=\"false\" aria-label=\"Reserviert\">heart_broken</mat-icon>\n      Da ist etwas schiefgelaufen.\n    </p>\n    <p>\n      {{ reservationErrorText$ | async }}\n    </p>\n  </div>\n  <!-- reserved -->\n  <div *ngSwitchCase=\"'reserved'\">\n    <div class=\"fc p5 amber\">\n      <mat-icon aria-hidden=\"false\" aria-label=\"Reserviert\">warning_amber</mat-icon>\n      Es liegt bereits eine Reservierung vor.\n    </div>\n    <div class=\"action\">\n      <button mat-flat-button color=\"primary\" (click)=\"onClickClearReservation();\">Reservierung löschen …</button>\n    </div>\n  </div>\n  <!-- free / unreserved / clear -->\n  <div *ngSwitchCase=\"'free'\">\n    <div class=\"fc p5 green\">\n      <mat-icon aria-hidden=\"false\" aria-label=\"Frei\">check_circle</mat-icon>\n      Es liegt keine Reservierung vor.\n    </div>\n    <div class=\"action\">\n      <button mat-flat-button color=\"primary\" (click)=\"onClickReservation();\">Reservieren …</button>\n    </div>\n  </div>\n</div>\n"
-        },
-        {
-            "name": "EditReservationStubComponent",
-            "id": "component-EditReservationStubComponent-a333109f8e7c79e6cd941d5b9fa4dafc3dd32fa1ebbe1eaf9c0fa58df5889becc5acc98e9cb6b6c50fc66aede2bc2054d4da9f84655bcf000d43d7424b117eee",
-            "file": "testing/stubs/edit-reservation.stub.component.ts",
-            "encapsulation": [],
-            "entryComponents": [],
-            "inputs": [],
-            "outputs": [],
-            "providers": [],
-            "selector": "app-edit-reservation",
-            "styleUrls": [],
-            "styles": [],
-            "template": "<div>app-edit-reservation</div>",
-            "templateUrl": [],
-            "viewProviders": [],
-            "inputsClass": [],
-            "outputsClass": [],
-            "propertiesClass": [],
-            "methodsClass": [],
-            "deprecated": false,
-            "deprecationMessage": "",
-            "hostBindings": [],
-            "hostListeners": [],
-            "description": "",
-            "rawdescription": "\n",
-            "type": "component",
-            "sourceCode": "import { Component } from '@angular/core';\n\n@Component({\n  selector: 'app-edit-reservation',\n  template: '<div>app-edit-reservation</div>',\n})\nexport class EditReservationStubComponent {\n  constructor() {}\n}\n",
-            "assetsDirs": [],
-            "styleUrlsData": "",
-            "stylesData": "",
-            "constructorObj": {
-                "name": "constructor",
-                "description": "",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "args": [],
-                "line": 7
-            }
-        },
-        {
             "name": "EmptyListComponent",
             "id": "component-EmptyListComponent-773f2b58636fc00eca1423c76063705e6960ef6fc62e4c31e2efbead0b8d5b2fa58f37f14925fcbf32b393453d125c2c06593a303504ce26d3b706065906a425",
             "file": "src/app/components/empty-list/empty-list.component.ts",
@@ -3494,7 +3338,7 @@
             "implements": [
                 "OnChanges"
             ],
-            "templateData": "<mat-card>\n  <mat-card-title-group>\n    <mat-card-title>{{ item?.Title }}</mat-card-title>\n    <mat-card-subtitle>{{ item?.Category }}</mat-card-subtitle>\n  </mat-card-title-group>\n  <mat-divider inset></mat-divider>\n  <mat-card-content>\n    <div class=\"f\">\n      <p>\n        {{ item?.Description }}\n      </p>\n      <div>\n        <img mat-card-lg-image [src]=\"item?.ImgageUrl\" />\n      </div>\n    </div>\n    <div>\n      Kauf-Adresse:\n      <a [href]=\"item?.BuyUrl\">\n        {{ item?.BuyUrl }}\n      </a>\n    </div>\n  </mat-card-content>\n  <mat-divider inset></mat-divider>\n  <mat-card-actions>\n    <mat-expansion-panel\n      (opened)=\"description = openedDescription; onPanelOpened()\"\n      (closed)=\"description = closedDescription\"\n      hideToggle\n    >\n      <mat-expansion-panel-header>\n        <mat-panel-title>Reservieren und Status</mat-panel-title>\n        <mat-panel-description>{{ description }}</mat-panel-description>\n      </mat-expansion-panel-header>\n      <ng-template matExpansionPanelContent>\n        <app-edit-reservation></app-edit-reservation>\n      </ng-template>\n    </mat-expansion-panel>\n    <div class=\"f mt24\">\n      <button mat-flat-button color=\"accent\">Bearbeiten</button>\n      <div class=\"spacer\"></div>\n      <button mat-flat-button color=\"primary\">Zurück</button>\n    </div>\n  </mat-card-actions>\n  <mat-card-footer> </mat-card-footer>\n</mat-card>\n"
+            "templateData": "<mat-card>\n  <mat-card-title-group>\n    <mat-card-title>{{ item?.Title }}</mat-card-title>\n    <mat-card-subtitle>{{ item?.Category }}</mat-card-subtitle>\n  </mat-card-title-group>\n  <mat-divider inset></mat-divider>\n  <mat-card-content>\n    <div class=\"f\">\n      <p>\n        {{ item?.Description }}\n      </p>\n      <div>\n        <img mat-card-lg-image [src]=\"item?.ImgageUrl\" />\n      </div>\n    </div>\n    <div>\n      Kauf-Adresse:\n      <a [href]=\"item?.BuyUrl\">\n        {{ item?.BuyUrl }}\n      </a>\n    </div>\n  </mat-card-content>\n  <mat-divider inset></mat-divider>\n  <mat-card-actions>\n    <mat-expansion-panel\n      (opened)=\"description = openedDescription; onPanelOpened()\"\n      (closed)=\"description = closedDescription\"\n      hideToggle\n    >\n      <mat-expansion-panel-header>\n        <mat-panel-title>Reservieren und Status</mat-panel-title>\n        <mat-panel-description>{{ description }}</mat-panel-description>\n      </mat-expansion-panel-header>\n      <ng-template matExpansionPanelContent>\n        <app-show-reservation-status></app-show-reservation-status>\n      </ng-template>\n    </mat-expansion-panel>\n    <div class=\"f mt24\">\n      <button mat-flat-button color=\"accent\">Bearbeiten</button>\n      <div class=\"spacer\"></div>\n      <button mat-flat-button color=\"primary\">Zurück</button>\n    </div>\n  </mat-card-actions>\n  <mat-card-footer> </mat-card-footer>\n</mat-card>\n"
         },
         {
             "name": "ItemDisplayStubComponent",
@@ -4174,18 +4018,174 @@
                 "OnInit"
             ],
             "templateData": "<div class=\"centerbox f\">\n    <span class=\"n\">404</span>\n    <span class=\"t\">Seite nicht gefunden</span>\n</div>"
+        },
+        {
+            "name": "ShowReservationStatusComponent",
+            "id": "component-ShowReservationStatusComponent-671ac96b3a8bbdc8829f2bc2f10eb3ab25cb8a8002c220a491eb49b7dc48981916dad8ed06deecbf58636d452a81a013956f1093763afd0b211e3a66c5441fb0",
+            "file": "src/app/components/show-reservation-status/show-reservation-status.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-show-reservation-status",
+            "styleUrls": [
+                "./show-reservation-status.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./show-reservation-status.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [
+                {
+                    "name": "action",
+                    "defaultValue": "new EventEmitter<{ action: 'reserve' | 'clear' }>()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 19,
+                    "type": "EventEmitter"
+                }
+            ],
+            "propertiesClass": [
+                {
+                    "name": "reservationErrorText$",
+                    "defaultValue": "this.store.select(selectReservationErrorText)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 16
+                },
+                {
+                    "name": "reservationStatus$",
+                    "defaultValue": "this.store.select(selectReservationState)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 15
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "onClickClearReservation",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 23,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "onClickReservation",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 27,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, EventEmitter, Output } from '@angular/core';\nimport { Store } from '@ngrx/store';\nimport { confirmEditReservation } from 'src/app/store/r.actions';\nimport {\n  selectReservationErrorText,\n  selectReservationState,\n} from 'src/app/store/r.selectors';\n\n@Component({\n  selector: 'app-show-reservation-status',\n  templateUrl: './show-reservation-status.component.html',\n  styleUrls: ['./show-reservation-status.component.scss'],\n})\nexport class ShowReservationStatusComponent {\n  reservationStatus$ = this.store.select(selectReservationState);\n  reservationErrorText$ = this.store.select(selectReservationErrorText);\n\n  @Output()\n  action = new EventEmitter<{ action: 'reserve' | 'clear' }>();\n\n  constructor(private store: Store) {}\n\n  onClickClearReservation(): void {\n    this.store.dispatch(confirmEditReservation({ targetState: 'clear' }));\n  }\n\n  onClickReservation(): void {\n    this.store.dispatch(confirmEditReservation({ targetState: 'reserve' }));\n  }\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": ".amber {\n  background-color: #f7e3aa;\n  color: #553102;\n}\n\n.green {\n  background-color: rgb(162, 253, 162);\n  color: rgb(3, 119, 3);\n}\n\n.gray {\n  background-color: rgb(168, 168, 168);\n  color: rgb(0, 0, 0);\n}\n\n.action {\n  padding-top: 5px;\n  text-align: center;\n}\n",
+                    "styleUrl": "./show-reservation-status.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "store",
+                        "type": "Store",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 19,
+                "jsdoctags": [
+                    {
+                        "name": "store",
+                        "type": "Store",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "templateData": "<div [ngSwitch]=\"reservationStatus$ | async\">\n  <!-- requestPending -->\n  <mat-spinner *ngSwitchCase=\"'requestPending'\" mode=\"indeterminate\"></mat-spinner>\n  <!-- unknown -->\n  <div *ngSwitchCase=\"'unknown'\" class=\"fc p5 gray\">\n    <mat-icon aria-hidden=\"false\" aria-label=\"Unbekannt\">block</mat-icon>\n    Unbekannter Status\n  </div>\n  <!-- Fehler -->\n  <div *ngSwitchCase=\"'updateFailed'\" class=\"error\">\n    <p class=\"fc p5\">\n      <mat-icon aria-hidden=\"false\" aria-label=\"Reserviert\">heart_broken</mat-icon>\n      Da ist etwas schiefgelaufen.\n    </p>\n    <p>\n      {{ reservationErrorText$ | async }}\n    </p>\n  </div>\n  <!-- reserved -->\n  <div *ngSwitchCase=\"'reserved'\">\n    <div class=\"fc p5 amber\">\n      <mat-icon aria-hidden=\"false\" aria-label=\"Reserviert\">warning_amber</mat-icon>\n      Es liegt bereits eine Reservierung vor.\n    </div>\n    <div class=\"action\">\n      <button mat-flat-button color=\"primary\" (click)=\"onClickClearReservation();\">Reservierung löschen …</button>\n    </div>\n  </div>\n  <!-- free / unreserved / clear -->\n  <div *ngSwitchCase=\"'free'\">\n    <div class=\"fc p5 green\">\n      <mat-icon aria-hidden=\"false\" aria-label=\"Frei\">check_circle</mat-icon>\n      Es liegt keine Reservierung vor.\n    </div>\n    <div class=\"action\">\n      <button mat-flat-button color=\"primary\" (click)=\"onClickReservation();\">Reservieren …</button>\n    </div>\n  </div>\n</div>\n"
+        },
+        {
+            "name": "ShowReservationStatusStubComponent",
+            "id": "component-ShowReservationStatusStubComponent-8e05aaababb7b16fcb31542044ea7d298ad036ed85241933bbdd3b0b25c19930f2be2316fe0abacf007e39620bd97e596fa77f203d5062e4ca45c3855a9b4184",
+            "file": "testing/stubs/show-reservation-status.stub.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-show-reservation-status",
+            "styleUrls": [],
+            "styles": [],
+            "template": "<div>app-show-reservation-status</div>",
+            "templateUrl": [],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component } from '@angular/core';\n\n@Component({\n  selector: 'app-show-reservation-status',\n  template: '<div>app-show-reservation-status</div>',\n})\nexport class ShowReservationStatusStubComponent {\n  constructor() {}\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [],
+                "line": 7
+            }
         }
     ],
     "modules": [
         {
             "name": "AppModule",
-            "id": "module-AppModule-ed91a0ec7e3767951d75adea6a1a1c2d8e5dceb6a6d2f95eb75639462650b25c8752ac6e114d15a95860febfeb255201d30bd37c40dafebff5435991d0682c17",
+            "id": "module-AppModule-dee3b1f2831eaab092e9e338ba7341fcf45e5fa8ce9243c02c681d986cfaa28794613c26d9e40758396dc3264bac5d4bdbb53a5e3e352570152e11a1b2179733",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/app.module.ts",
             "methods": [],
-            "sourceCode": "import { LayoutModule } from '@angular/cdk/layout';\nimport { HttpClientModule } from '@angular/common/http';\nimport { NgModule } from '@angular/core';\nimport { ReactiveFormsModule } from '@angular/forms';\nimport { MatButtonModule } from '@angular/material/button';\nimport { MatCardModule } from '@angular/material/card';\nimport { MatDialogModule } from '@angular/material/dialog';\nimport { MatExpansionModule } from '@angular/material/expansion';\nimport {\n  MatFormFieldModule,\n  MAT_FORM_FIELD_DEFAULT_OPTIONS,\n} from '@angular/material/form-field';\nimport { MatIconModule } from '@angular/material/icon';\nimport { MatInputModule } from '@angular/material/input';\nimport { MatListModule } from '@angular/material/list';\nimport { MatProgressBarModule } from '@angular/material/progress-bar';\nimport { MatProgressSpinnerModule } from '@angular/material/progress-spinner';\nimport { MatSidenavModule } from '@angular/material/sidenav';\nimport { MatToolbarModule } from '@angular/material/toolbar';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\nimport { EffectsModule } from '@ngrx/effects';\nimport { routerReducer, StoreRouterConnectingModule } from '@ngrx/router-store';\nimport { StoreModule } from '@ngrx/store';\nimport { StoreDevtoolsModule } from '@ngrx/store-devtools';\nimport { environment } from '../environments/environment';\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { EditReservationComponent } from './components/edit-reservation/edit-reservation.component';\nimport { EmptyListComponent } from './components/empty-list/empty-list.component';\nimport { ErrorDisplayComponent } from './components/error-display/error-display.component';\nimport { ItemDisplayComponent } from './components/item-display/item-display.component';\nimport { ItemFormComponent } from './components/item-form/item-form.component';\nimport { ItemPreviewComponent } from './components/item-preview/item-preview.component';\nimport { MenuNavlistComponent } from './components/menu-navlist/menu-navlist.component';\nimport { ConnectFormDirective } from './directives/connect-form.directive';\nimport { FormEnabledDirective } from './directives/form-enabled.directive';\nimport { FrameComponent } from './frame/frame.component';\nimport { AboutComponent } from './pages/about/about.component';\nimport { AddPageComponent } from './pages/add-page/add-page.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { CategoryPageComponent } from './pages/category-page/category-page.component';\nimport { ItemViewComponent } from './pages/item-view/item-view.component';\nimport { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';\nimport { WithCategoryPipe } from './pipes/with-category.pipe';\nimport { AppGlobalStateEffects } from './store/a.effects';\nimport { agReducer } from './store/a.reducer';\nimport { AppState } from './store/app.state';\nimport { ReservationEffects } from './store/r.effects';\nimport { rReducer } from './store/r.reducer';\nimport { CustomSerializer } from './store/router/custom-route-serializer';\nimport { RouterEffects } from './store/router/effects';\nimport { WishlistEffects } from './store/w.effects';\nimport { wReducer } from './store/w.reducer';\n\n@NgModule({\n  declarations: [\n    AboutComponent,\n    AddPageComponent,\n    AppComponent,\n    CategoriesPageComponent,\n    CategoryPageComponent,\n    ConnectFormDirective,\n    EditReservationComponent,\n    EmptyListComponent,\n    ErrorDisplayComponent,\n    FormEnabledDirective,\n    FrameComponent,\n    ItemDisplayComponent,\n    ItemFormComponent,\n    ItemPreviewComponent,\n    ItemViewComponent,\n    MenuNavlistComponent,\n    PageNotFoundComponent,\n    WithCategoryPipe,\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    BrowserAnimationsModule,\n    LayoutModule,\n    ReactiveFormsModule,\n    MatButtonModule,\n    MatCardModule,\n    MatDialogModule,\n    MatExpansionModule,\n    MatFormFieldModule,\n    MatIconModule,\n    MatInputModule,\n    MatListModule,\n    MatProgressBarModule,\n    MatProgressSpinnerModule,\n    MatSidenavModule,\n    MatToolbarModule,\n    StoreModule.forRoot<AppState>({\n      ag: agReducer,\n      reservation: rReducer,\n      router: routerReducer,\n      wishlist: wReducer,\n    }),\n    EffectsModule.forRoot([\n      AppGlobalStateEffects,\n      ReservationEffects,\n      RouterEffects,\n      WishlistEffects,\n    ]),\n    // import HttpClientModule after BrowserModule.\n    HttpClientModule,\n    StoreDevtoolsModule.instrument({\n      maxAge: 25,\n      logOnly: environment.production,\n    }),\n    StoreRouterConnectingModule.forRoot({\n      serializer: CustomSerializer,\n    }),\n  ],\n  providers: [\n    {\n      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,\n      useValue: { appearance: 'fill' },\n    },\n  ],\n  bootstrap: [AppComponent],\n})\nexport class AppModule {}\n",
+            "sourceCode": "import { LayoutModule } from '@angular/cdk/layout';\nimport { HttpClientModule } from '@angular/common/http';\nimport { NgModule } from '@angular/core';\nimport { ReactiveFormsModule } from '@angular/forms';\nimport { MatButtonModule } from '@angular/material/button';\nimport { MatCardModule } from '@angular/material/card';\nimport { MatDialogModule } from '@angular/material/dialog';\nimport { MatExpansionModule } from '@angular/material/expansion';\nimport {\n  MatFormFieldModule,\n  MAT_FORM_FIELD_DEFAULT_OPTIONS,\n} from '@angular/material/form-field';\nimport { MatIconModule } from '@angular/material/icon';\nimport { MatInputModule } from '@angular/material/input';\nimport { MatListModule } from '@angular/material/list';\nimport { MatProgressBarModule } from '@angular/material/progress-bar';\nimport { MatProgressSpinnerModule } from '@angular/material/progress-spinner';\nimport { MatSidenavModule } from '@angular/material/sidenav';\nimport { MatToolbarModule } from '@angular/material/toolbar';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\nimport { EffectsModule } from '@ngrx/effects';\nimport { routerReducer, StoreRouterConnectingModule } from '@ngrx/router-store';\nimport { StoreModule } from '@ngrx/store';\nimport { StoreDevtoolsModule } from '@ngrx/store-devtools';\nimport { environment } from '../environments/environment';\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { EmptyListComponent } from './components/empty-list/empty-list.component';\nimport { ErrorDisplayComponent } from './components/error-display/error-display.component';\nimport { ItemDisplayComponent } from './components/item-display/item-display.component';\nimport { ItemFormComponent } from './components/item-form/item-form.component';\nimport { ItemPreviewComponent } from './components/item-preview/item-preview.component';\nimport { MenuNavlistComponent } from './components/menu-navlist/menu-navlist.component';\nimport { ShowReservationStatusComponent } from './components/show-reservation-status/show-reservation-status.component';\nimport { ConnectFormDirective } from './directives/connect-form.directive';\nimport { FormEnabledDirective } from './directives/form-enabled.directive';\nimport { FrameComponent } from './frame/frame.component';\nimport { AboutComponent } from './pages/about/about.component';\nimport { AddPageComponent } from './pages/add-page/add-page.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { CategoryPageComponent } from './pages/category-page/category-page.component';\nimport { ItemViewComponent } from './pages/item-view/item-view.component';\nimport { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';\nimport { WithCategoryPipe } from './pipes/with-category.pipe';\nimport { AppGlobalStateEffects } from './store/a.effects';\nimport { agReducer } from './store/a.reducer';\nimport { AppState } from './store/app.state';\nimport { ReservationEffects } from './store/r.effects';\nimport { rReducer } from './store/r.reducer';\nimport { CustomSerializer } from './store/router/custom-route-serializer';\nimport { RouterEffects } from './store/router/effects';\nimport { WishlistEffects } from './store/w.effects';\nimport { wReducer } from './store/w.reducer';\n\n@NgModule({\n  declarations: [\n    AboutComponent,\n    AddPageComponent,\n    AppComponent,\n    CategoriesPageComponent,\n    CategoryPageComponent,\n    ConnectFormDirective,\n    EmptyListComponent,\n    ErrorDisplayComponent,\n    FormEnabledDirective,\n    FrameComponent,\n    ItemDisplayComponent,\n    ItemFormComponent,\n    ItemPreviewComponent,\n    ItemViewComponent,\n    MenuNavlistComponent,\n    PageNotFoundComponent,\n    ShowReservationStatusComponent,\n    WithCategoryPipe,\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    BrowserAnimationsModule,\n    LayoutModule,\n    ReactiveFormsModule,\n    MatButtonModule,\n    MatCardModule,\n    MatDialogModule,\n    MatExpansionModule,\n    MatFormFieldModule,\n    MatIconModule,\n    MatInputModule,\n    MatListModule,\n    MatProgressBarModule,\n    MatProgressSpinnerModule,\n    MatSidenavModule,\n    MatToolbarModule,\n    StoreModule.forRoot<AppState>({\n      ag: agReducer,\n      reservation: rReducer,\n      router: routerReducer,\n      wishlist: wReducer,\n    }),\n    EffectsModule.forRoot([\n      AppGlobalStateEffects,\n      ReservationEffects,\n      RouterEffects,\n      WishlistEffects,\n    ]),\n    // import HttpClientModule after BrowserModule.\n    HttpClientModule,\n    StoreDevtoolsModule.instrument({\n      maxAge: 25,\n      logOnly: environment.production,\n    }),\n    StoreRouterConnectingModule.forRoot({\n      serializer: CustomSerializer,\n    }),\n  ],\n  providers: [\n    {\n      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,\n      useValue: { appearance: 'fill' },\n    },\n  ],\n  bootstrap: [AppComponent],\n})\nexport class AppModule {}\n",
             "children": [
                 {
                     "type": "providers",
@@ -4211,9 +4211,6 @@
                         },
                         {
                             "name": "ConnectFormDirective"
-                        },
-                        {
-                            "name": "EditReservationComponent"
                         },
                         {
                             "name": "EmptyListComponent"
@@ -4244,6 +4241,9 @@
                         },
                         {
                             "name": "PageNotFoundComponent"
+                        },
+                        {
+                            "name": "ShowReservationStatusComponent"
                         },
                         {
                             "name": "WithCategoryPipe"
@@ -4609,7 +4609,7 @@
                 "name": "HasReservation",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/stories/EditReservation.stories.ts",
+                "file": "src/stories/ShowReservationStatus.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
@@ -4709,7 +4709,7 @@
                 "name": "IsFree",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/stories/EditReservation.stories.ts",
+                "file": "src/stories/ShowReservationStatus.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
@@ -4719,7 +4719,7 @@
                 "name": "IsUnkown",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/stories/EditReservation.stories.ts",
+                "file": "src/stories/ShowReservationStatus.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
@@ -4779,7 +4779,7 @@
                 "name": "LoadingUpdating",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/stories/EditReservation.stories.ts",
+                "file": "src/stories/ShowReservationStatus.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
@@ -5228,7 +5228,7 @@
                 "name": "UpdateFailed",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/stories/EditReservation.stories.ts",
+                "file": "src/stories/ShowReservationStatus.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
@@ -5990,12 +5990,12 @@
                     "defaultValue": "createAction(\n  '[W] Set active item',\n  props<{\n    item?: WishlistItem;\n  }>()\n)"
                 }
             ],
-            "src/stories/EditReservation.stories.ts": [
+            "src/stories/ShowReservationStatus.stories.ts": [
                 {
                     "name": "HasReservation",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/stories/EditReservation.stories.ts",
+                    "file": "src/stories/ShowReservationStatus.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
@@ -6005,7 +6005,7 @@
                     "name": "IsFree",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/stories/EditReservation.stories.ts",
+                    "file": "src/stories/ShowReservationStatus.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
@@ -6015,7 +6015,7 @@
                     "name": "IsUnkown",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/stories/EditReservation.stories.ts",
+                    "file": "src/stories/ShowReservationStatus.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
@@ -6025,7 +6025,7 @@
                     "name": "LoadingUpdating",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/stories/EditReservation.stories.ts",
+                    "file": "src/stories/ShowReservationStatus.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
@@ -6035,7 +6035,7 @@
                     "name": "UpdateFailed",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/stories/EditReservation.stories.ts",
+                    "file": "src/stories/ShowReservationStatus.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
@@ -6633,15 +6633,6 @@
                 "status": "low"
             },
             {
-                "filePath": "src/app/components/edit-reservation/edit-reservation.component.ts",
-                "type": "component",
-                "linktype": "component",
-                "name": "EditReservationComponent",
-                "coveragePercent": 0,
-                "coverageCount": "0/7",
-                "status": "low"
-            },
-            {
                 "filePath": "src/app/components/empty-list/empty-list.component.ts",
                 "type": "component",
                 "linktype": "component",
@@ -6693,6 +6684,15 @@
                 "name": "MenuNavlistComponent",
                 "coveragePercent": 0,
                 "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/components/show-reservation-status/show-reservation-status.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ShowReservationStatusComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/7",
                 "status": "low"
             },
             {
@@ -7434,56 +7434,6 @@
                 "status": "low"
             },
             {
-                "filePath": "src/stories/EditReservation.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "HasReservation",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/EditReservation.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "IsFree",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/EditReservation.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "IsUnkown",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/EditReservation.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "LoadingUpdating",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/EditReservation.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "UpdateFailed",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
                 "filePath": "src/stories/EmptyList.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
@@ -7754,6 +7704,56 @@
                 "status": "low"
             },
             {
+                "filePath": "src/stories/ShowReservationStatus.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "HasReservation",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/ShowReservationStatus.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "IsFree",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/ShowReservationStatus.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "IsUnkown",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/ShowReservationStatus.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "LoadingUpdating",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/ShowReservationStatus.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "UpdateFailed",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
                 "filePath": "src/stories/User.ts",
                 "type": "interface",
                 "linktype": "interface",
@@ -7886,15 +7886,6 @@
                 "status": "low"
             },
             {
-                "filePath": "testing/stubs/edit-reservation.stub.component.ts",
-                "type": "component",
-                "linktype": "component",
-                "name": "EditReservationStubComponent",
-                "coveragePercent": 0,
-                "coverageCount": "0/2",
-                "status": "low"
-            },
-            {
                 "filePath": "testing/stubs/empty-list.stub.component.ts",
                 "type": "component",
                 "linktype": "component",
@@ -7935,6 +7926,15 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "MenuNavlistStubComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/2",
+                "status": "low"
+            },
+            {
+                "filePath": "testing/stubs/show-reservation-status.stub.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ShowReservationStatusStubComponent",
                 "coveragePercent": 0,
                 "coverageCount": "0/2",
                 "status": "low"

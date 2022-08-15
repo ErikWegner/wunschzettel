@@ -7,11 +7,11 @@ import {
 } from 'src/app/store/r.selectors';
 
 @Component({
-  selector: 'app-edit-reservation',
-  templateUrl: './edit-reservation.component.html',
-  styleUrls: ['./edit-reservation.component.scss'],
+  selector: 'app-show-reservation-status',
+  templateUrl: './show-reservation-status.component.html',
+  styleUrls: ['./show-reservation-status.component.scss'],
 })
-export class EditReservationComponent {
+export class ShowReservationStatusComponent {
   reservationStatus$ = this.store.select(selectReservationState);
   reservationErrorText$ = this.store.select(selectReservationErrorText);
 

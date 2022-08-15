@@ -1,20 +1,20 @@
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatExpansionPanelHarness } from '@angular/material/expansion/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { EditReservationStubComponent } from 'testing/stubs/edit-reservation.stub.component';
-import { Component } from '@angular/core';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { WishlistItem } from 'src/app/business/item';
-import { WishlistItemBuilder } from 'testing/item.builder';
-import { appStateStub } from 'testing/app.state.builder';
-import { AppState } from 'src/app/store/app.state';
 import { cold } from 'jasmine-marbles';
+import { WishlistItem } from 'src/app/business/item';
+import { AppState } from 'src/app/store/app.state';
 import { retrieveReservationStatus } from 'src/app/store/r.actions';
+import { appStateStub } from 'testing/app.state.builder';
+import { WishlistItemBuilder } from 'testing/item.builder';
+import { ShowReservationStatusStubComponent } from 'testing/stubs/show-reservation-status.stub.component';
 
 import { ItemDisplayComponent } from './item-display.component';
 
@@ -36,7 +36,7 @@ describe('ItemDisplayComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         ItemDisplayComponent,
-        EditReservationStubComponent,
+        ShowReservationStatusStubComponent,
         TestHostComponent,
       ],
       imports: [

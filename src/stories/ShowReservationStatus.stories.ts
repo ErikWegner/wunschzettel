@@ -1,12 +1,12 @@
 import { provideMockStore } from '@ngrx/store/testing';
 import { Meta, moduleMetadata, Story } from '@storybook/angular';
-import { EditReservationComponent } from 'src/app/components/edit-reservation/edit-reservation.component';
+import { ShowReservationStatusComponent } from 'src/app/components/show-reservation-status/show-reservation-status.component';
 import { AppStateBuilder } from 'testing/app.state.builder';
 import { decorators, defaultProviders, moduleImports } from './matmetadata';
 
 export default {
-  title: 'Edit reservation',
-  component: EditReservationComponent,
+  title: 'Show reservation status',
+  component: ShowReservationStatusComponent,
   decorators,
 } as Meta;
 

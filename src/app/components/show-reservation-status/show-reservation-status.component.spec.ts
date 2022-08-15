@@ -10,11 +10,11 @@ import { AppState } from 'src/app/store/app.state';
 import { confirmEditReservation } from 'src/app/store/r.actions';
 import { AppStateBuilder, appStateStub } from 'testing/app.state.builder';
 
-import { EditReservationComponent } from './edit-reservation.component';
+import { ShowReservationStatusComponent } from './show-reservation-status.component';
 
 describe('EditReservationComponent', () => {
-  let component: EditReservationComponent;
-  let fixture: ComponentFixture<EditReservationComponent>;
+  let component: ShowReservationStatusComponent;
+  let fixture: ComponentFixture<ShowReservationStatusComponent>;
   let loader: HarnessLoader;
   let store: MockStore;
   let dispatchSpy: jasmine.Spy;
@@ -22,7 +22,7 @@ describe('EditReservationComponent', () => {
   beforeEach(async () => {
     const initialState: AppState = appStateStub();
     await TestBed.configureTestingModule({
-      declarations: [EditReservationComponent],
+      declarations: [ShowReservationStatusComponent],
       imports: [MatIconModule, MatProgressSpinnerModule],
       providers: [provideMockStore({ initialState })],
     }).compileComponents();
@@ -31,7 +31,7 @@ describe('EditReservationComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EditReservationComponent);
+    fixture = TestBed.createComponent(ShowReservationStatusComponent);
     loader = TestbedHarnessEnvironment.loader(fixture);
     component = fixture.componentInstance;
     fixture.detectChanges();
