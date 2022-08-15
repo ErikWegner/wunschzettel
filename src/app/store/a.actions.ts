@@ -1,7 +1,7 @@
 import { Action, createAction, props } from '@ngrx/store';
 
 export const requestFailure = createAction(
-  '[W] Request requestFailure',
+  '[A] Request requestFailure',
   props<{
     errorText: string;
     errorDetails?: string;
@@ -10,7 +10,7 @@ export const requestFailure = createAction(
 );
 
 export const clearFailedRequestAndRetry = createAction(
-  '[W] Retry action',
+  '[A] Retry action',
   props<{
     action: Action;
   }>()

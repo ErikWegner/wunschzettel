@@ -16,3 +16,10 @@ export const reservationStatusResponse = createAction(
     errorText: string | null;
   }>()
 );
+
+export const confirmEditReservation = createAction(
+  '[R] Confirm edit reservation status',
+  props<{
+    targetState: 'reserve' | 'clear';
+  }>()
+);

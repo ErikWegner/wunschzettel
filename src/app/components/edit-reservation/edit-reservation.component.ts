@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { confirmEditReservation } from 'src/app/store/r.actions';
 import {
   selectReservationErrorText,
   selectReservationState,
@@ -18,4 +19,12 @@ export class EditReservationComponent {
   action = new EventEmitter<{ action: 'reserve' | 'clear' }>();
 
   constructor(private store: Store) {}
+
+  onClickClearReservation(): void {
+    this.store.dispatch(confirmEditReservation({ targetState: 'clear' }));
+  }
+
+  onClickReservation(): void {
+    this.store.dispatch(confirmEditReservation({ targetState: 'reserve' }));
+  }
 }

@@ -23,7 +23,7 @@
       Es liegt bereits eine Reservierung vor.
     </div>
     <div class="action">
-      <button mat-flat-button color="primary" (click)="action.emit({action: 'clear'})">Reservierung löschen …</button>
+      <button mat-flat-button color="primary" (click)="onClickClearReservation();">Reservierung löschen …</button>
     </div>
   </div>
   <!-- free / unreserved / clear -->
@@ -33,7 +33,7 @@
       Es liegt keine Reservierung vor.
     </div>
     <div class="action">
-      <button mat-flat-button color="primary" (click)="action.emit({action: 'reserve'})">Reservieren …</button>
+      <button mat-flat-button color="primary" (click)="onClickReservation();">Reservieren …</button>
     </div>
   </div>
 </div>

@@ -7,6 +7,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressSpinnerHarness } from '@angular/material/progress-spinner/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { AppState } from 'src/app/store/app.state';
+import { confirmEditReservation } from 'src/app/store/r.actions';
 import { AppStateBuilder, appStateStub } from 'testing/app.state.builder';
 
 import { EditReservationComponent } from './edit-reservation.component';
@@ -16,10 +17,9 @@ describe('EditReservationComponent', () => {
   let fixture: ComponentFixture<EditReservationComponent>;
   let loader: HarnessLoader;
   let store: MockStore;
-  let next: jasmine.Spy;
+  let dispatchSpy: jasmine.Spy;
 
   beforeEach(async () => {
-    next = jasmine.createSpy('next');
     const initialState: AppState = appStateStub();
     await TestBed.configureTestingModule({
       declarations: [EditReservationComponent],
@@ -27,6 +27,7 @@ describe('EditReservationComponent', () => {
       providers: [provideMockStore({ initialState })],
     }).compileComponents();
     store = TestBed.inject(MockStore);
+    dispatchSpy = spyOn(store, 'dispatch');
   });
 
   beforeEach(() => {
@@ -76,7 +77,9 @@ describe('EditReservationComponent', () => {
 
     // Assert
     const t = fixture.debugElement.nativeElement.textContent;
-    expect(t).toBe('warning_amber Es liegt bereits eine Reservierung vor. Reservierung löschen …');
+    expect(t).toBe(
+      'warning_amber Es liegt bereits eine Reservierung vor. Reservierung löschen …'
+    );
   });
 
   it('should show free status', () => {
@@ -89,7 +92,9 @@ describe('EditReservationComponent', () => {
 
     // Assert
     const t = fixture.debugElement.nativeElement.textContent;
-    expect(t).toBe('check_circle Es liegt keine Reservierung vor. Reservieren …');
+    expect(t).toBe(
+      'check_circle Es liegt keine Reservierung vor. Reservieren …'
+    );
   });
 
   it('should show error message', () => {
@@ -115,28 +120,33 @@ describe('EditReservationComponent', () => {
     store.setState(nextState);
     fixture.detectChanges();
     const actionButton = await loader.getHarness(MatButtonHarness);
-    fixture.componentInstance.action.subscribe(next);
 
     // Act
     await actionButton.click();
 
     // Assert
-    expect(next).toHaveBeenCalledOnceWith({ action: 'reserve' });
+    expect(dispatchSpy).toHaveBeenCalledOnceWith(
+      confirmEditReservation({
+        targetState: 'reserve',
+      })
+    );
   });
 
-  it('should emit event when clicking `Clear reservation`', async () => {
+  it('should dispatch action when clicking `Clear reservation`', async () => {
     // Arrange
     const nextState = AppStateBuilder.reservationStatus('reserved');
     store.setState(nextState);
     fixture.detectChanges();
     const actionButton = await loader.getHarness(MatButtonHarness);
-    fixture.componentInstance.action.subscribe(next);
 
     // Act
     await actionButton.click();
 
     // Assert
-    expect(next).toHaveBeenCalledOnceWith({ action: 'clear' });
+    expect(dispatchSpy).toHaveBeenCalledOnceWith(
+      confirmEditReservation({
+        targetState: 'clear',
+      })
+    );
   });
-
 });
