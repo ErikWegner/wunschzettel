@@ -61,6 +61,6 @@ export class ItemsService {
   }
 
   public getCaptchaChallenge(): Observable<Result<string>> {
-    return EMPTY;
+    throw new Error('Not implemented');
   }
 }

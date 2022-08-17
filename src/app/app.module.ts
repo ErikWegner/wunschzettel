@@ -33,6 +33,7 @@ import { ItemFormComponent } from './components/item-form/item-form.component';
 import { ItemPreviewComponent } from './components/item-preview/item-preview.component';
 import { MenuNavlistComponent } from './components/menu-navlist/menu-navlist.component';
 import { ShowReservationStatusComponent } from './components/show-reservation-status/show-reservation-status.component';
+import { UpdateReservationDialogComponent } from './components/update-reservation-dialog/update-reservation-dialog.component';
 import { ConnectFormDirective } from './directives/connect-form.directive';
 import { FormEnabledDirective } from './directives/form-enabled.directive';
 import { FrameComponent } from './frame/frame.component';
@@ -72,6 +73,7 @@ import { wReducer } from './store/w.reducer';
     MenuNavlistComponent,
     PageNotFoundComponent,
     ShowReservationStatusComponent,
+    UpdateReservationDialogComponent,
     WithCategoryPipe,
   ],
   imports: [

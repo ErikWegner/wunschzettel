@@ -193,6 +193,38 @@
             "methods": []
         },
         {
+            "name": "DialogData",
+            "id": "interface-DialogData-774b26608ce6d5b9040b089c3796134f0f92fb6aa41d8a1faab82d426c6b4f93462029ced7780782f0d8b966ff64ddea3cbe0d520b6644297991d3dbb802a64b",
+            "file": "src/app/components/update-reservation-dialog/dialog-data.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "export interface DialogData {\n  itemId: number;\n  targetState: 'reserve' | 'clear';\n}\n",
+            "properties": [
+                {
+                    "name": "itemId",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "optional": false,
+                    "description": "",
+                    "line": 2
+                },
+                {
+                    "name": "targetState",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "\"reserve\" | \"clear\"",
+                    "optional": false,
+                    "description": "",
+                    "line": 3
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 165,
+            "methods": []
+        },
+        {
             "name": "ReservationState",
             "id": "interface-ReservationState-9f9f1cb10005b9c8353b75f71e441a2ff4ec73710792a55c09dc7ef7cae89ddae2312216928dedd3bbd868bdca89b36d37b2eaf03f4fdf28ff278157cffc9592",
             "file": "src/app/store/r.state.ts",
@@ -483,7 +515,7 @@
         },
         {
             "name": "ItemsService",
-            "id": "injectable-ItemsService-d98b3477c77505ed5faff53a743bf3361f9d4a07cf12ebc94fa69b9182a96c50181f20b275b3c6bdda366744b885c6ac3dd3a654ae1cacf63b76bdaf2e02b66a",
+            "id": "injectable-ItemsService-45c51e338b9a94aae2e13a707f4db6027441c494f573ad807402ac3ce388dd23c0ef23e640c2535302635749137ae027c0ddb77edad99d218a2d3f973a9eb58d",
             "file": "src/app/services/items.service.ts",
             "properties": [
                 {
@@ -762,7 +794,7 @@
             "deprecationMessage": "",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import { HttpClient } from '@angular/common/http';\nimport { Injectable } from '@angular/core';\nimport { EMPTY, map, Observable, shareReplay } from 'rxjs';\nimport { AddItemResponse } from '../business/add-item-response';\nimport { WishlistItem } from '../business/item';\nimport { Result } from '../business/result';\n\n@Injectable({\n  providedIn: 'root',\n})\nexport class ItemsService {\n  private cachedItems$: Observable<WishlistItem[]> | null = null;\n\n  constructor(private http: HttpClient) {}\n\n  public getItems(): Observable<WishlistItem[]> {\n    if (!this.cachedItems$) {\n      this.cachedItems$ = this.http\n        .get<{ data: WishlistItem[] }>('service.php?action=list')\n        .pipe(\n          map((d) => d.data),\n          shareReplay(1)\n        );\n    }\n    return this.cachedItems$;\n  }\n\n  public getReservationFlag(id: number): Observable<boolean> {\n    return this.http\n      .get<{ data: { status: boolean } }>(`service.php?action=status&id=${id}`)\n      .pipe(map((d) => d.data.status));\n  }\n\n  public setReservationFlag(\n    id: number,\n    flag: boolean,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public setItem(\n    item: WishlistItem,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public addItem(\n    item: WishlistItem,\n    captchaAnswer: string\n  ): Observable<Result<AddItemResponse>> {\n    return EMPTY;\n  }\n\n  public deleteItem(\n    id: number,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public getCaptchaChallenge(): Observable<Result<string>> {\n    return EMPTY;\n  }\n}\n",
+            "sourceCode": "import { HttpClient } from '@angular/common/http';\nimport { Injectable } from '@angular/core';\nimport { EMPTY, map, Observable, shareReplay } from 'rxjs';\nimport { AddItemResponse } from '../business/add-item-response';\nimport { WishlistItem } from '../business/item';\nimport { Result } from '../business/result';\n\n@Injectable({\n  providedIn: 'root',\n})\nexport class ItemsService {\n  private cachedItems$: Observable<WishlistItem[]> | null = null;\n\n  constructor(private http: HttpClient) {}\n\n  public getItems(): Observable<WishlistItem[]> {\n    if (!this.cachedItems$) {\n      this.cachedItems$ = this.http\n        .get<{ data: WishlistItem[] }>('service.php?action=list')\n        .pipe(\n          map((d) => d.data),\n          shareReplay(1)\n        );\n    }\n    return this.cachedItems$;\n  }\n\n  public getReservationFlag(id: number): Observable<boolean> {\n    return this.http\n      .get<{ data: { status: boolean } }>(`service.php?action=status&id=${id}`)\n      .pipe(map((d) => d.data.status));\n  }\n\n  public setReservationFlag(\n    id: number,\n    flag: boolean,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public setItem(\n    item: WishlistItem,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public addItem(\n    item: WishlistItem,\n    captchaAnswer: string\n  ): Observable<Result<AddItemResponse>> {\n    return EMPTY;\n  }\n\n  public deleteItem(\n    id: number,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public getCaptchaChallenge(): Observable<Result<string>> {\n    throw new Error('Not implemented');\n  }\n}\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -4021,7 +4053,7 @@
         },
         {
             "name": "ShowReservationStatusComponent",
-            "id": "component-ShowReservationStatusComponent-671ac96b3a8bbdc8829f2bc2f10eb3ab25cb8a8002c220a491eb49b7dc48981916dad8ed06deecbf58636d452a81a013956f1093763afd0b211e3a66c5441fb0",
+            "id": "component-ShowReservationStatusComponent-34e867cf0d146d6ebd33b70b1f7f88bb4826712f4f4bc890939108b3a91e865a041f7af26a46346172cea084690a9d0d66f1a9d7f9d13be3d673d7e39329b60e",
             "file": "src/app/components/show-reservation-status/show-reservation-status.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -4038,16 +4070,7 @@
             ],
             "viewProviders": [],
             "inputsClass": [],
-            "outputsClass": [
-                {
-                    "name": "action",
-                    "defaultValue": "new EventEmitter<{ action: 'reserve' | 'clear' }>()",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "line": 19,
-                    "type": "EventEmitter"
-                }
-            ],
+            "outputsClass": [],
             "propertiesClass": [
                 {
                     "name": "reservationErrorText$",
@@ -4077,7 +4100,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 23,
+                    "line": 20,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -4087,7 +4110,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 27,
+                    "line": 24,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -4099,7 +4122,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, EventEmitter, Output } from '@angular/core';\nimport { Store } from '@ngrx/store';\nimport { confirmEditReservation } from 'src/app/store/r.actions';\nimport {\n  selectReservationErrorText,\n  selectReservationState,\n} from 'src/app/store/r.selectors';\n\n@Component({\n  selector: 'app-show-reservation-status',\n  templateUrl: './show-reservation-status.component.html',\n  styleUrls: ['./show-reservation-status.component.scss'],\n})\nexport class ShowReservationStatusComponent {\n  reservationStatus$ = this.store.select(selectReservationState);\n  reservationErrorText$ = this.store.select(selectReservationErrorText);\n\n  @Output()\n  action = new EventEmitter<{ action: 'reserve' | 'clear' }>();\n\n  constructor(private store: Store) {}\n\n  onClickClearReservation(): void {\n    this.store.dispatch(confirmEditReservation({ targetState: 'clear' }));\n  }\n\n  onClickReservation(): void {\n    this.store.dispatch(confirmEditReservation({ targetState: 'reserve' }));\n  }\n}\n",
+            "sourceCode": "import { Component, EventEmitter, Output } from '@angular/core';\nimport { Store } from '@ngrx/store';\nimport { confirmEditReservation } from 'src/app/store/r.actions';\nimport {\n  selectReservationErrorText,\n  selectReservationState,\n} from 'src/app/store/r.selectors';\n\n@Component({\n  selector: 'app-show-reservation-status',\n  templateUrl: './show-reservation-status.component.html',\n  styleUrls: ['./show-reservation-status.component.scss'],\n})\nexport class ShowReservationStatusComponent {\n  reservationStatus$ = this.store.select(selectReservationState);\n  reservationErrorText$ = this.store.select(selectReservationErrorText);\n\n  constructor(private store: Store) {}\n\n  onClickClearReservation(): void {\n    this.store.dispatch(confirmEditReservation({ targetState: 'clear' }));\n  }\n\n  onClickReservation(): void {\n    this.store.dispatch(confirmEditReservation({ targetState: 'reserve' }));\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -4121,7 +4144,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 19,
+                "line": 16,
                 "jsdoctags": [
                     {
                         "name": "store",
@@ -4174,18 +4197,171 @@
                 "args": [],
                 "line": 7
             }
+        },
+        {
+            "name": "UpdateReservationDialogComponent",
+            "id": "component-UpdateReservationDialogComponent-7d97c5966795edc8f01267e9c0b4efe5dc74620e0878017e754686f2c4403470b5661b3ecfa9d3012a767624fe89c1d2c251364281cfbf752c379099171ee4d5",
+            "file": "src/app/components/update-reservation-dialog/update-reservation-dialog.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-update-reservation-dialog",
+            "styleUrls": [
+                "./update-reservation-dialog.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./update-reservation-dialog.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "challenge$",
+                    "defaultValue": "this.challengeRequest$.pipe(\n    mergeMap((_) => this.itemsService.getCaptchaChallenge()),\n    shareReplay({ bufferSize: 1, refCount: false })\n  )",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 17,
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "challengeRequest$",
+                    "defaultValue": "new Subject<void>()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 14,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "data",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "DialogData",
+                    "optional": false,
+                    "description": "",
+                    "line": 23,
+                    "decorators": [
+                        {
+                            "name": "Inject",
+                            "stringifiedArguments": "MAT_DIALOG_DATA"
+                        }
+                    ],
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "title",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 16,
+                    "modifierKind": [
+                        123
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 27,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, Inject, OnInit } from '@angular/core';\nimport { MAT_DIALOG_DATA } from '@angular/material/dialog';\nimport { Subject } from 'rxjs';\nimport { mergeMap, shareReplay } from 'rxjs/operators';\nimport { ItemsService } from 'src/app/services/items.service';\nimport { DialogData } from './dialog-data';\n\n@Component({\n  selector: 'app-update-reservation-dialog',\n  templateUrl: './update-reservation-dialog.component.html',\n  styleUrls: ['./update-reservation-dialog.component.scss'],\n})\nexport class UpdateReservationDialogComponent implements OnInit {\n  private challengeRequest$ = new Subject<void>();\n\n  public title = '';\n  public challenge$ = this.challengeRequest$.pipe(\n    mergeMap((_) => this.itemsService.getCaptchaChallenge()),\n    shareReplay({ bufferSize: 1, refCount: false })\n  );\n\n  constructor(\n    @Inject(MAT_DIALOG_DATA) public data: DialogData,\n    private itemsService: ItemsService\n  ) {}\n\n  ngOnInit(): void {\n    this.challengeRequest$.next();\n    this.title =\n      this.data.targetState === 'reserve'\n        ? 'Reservieren'\n        : 'Reservierung löschen';\n  }\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "",
+                    "styleUrl": "./update-reservation-dialog.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "data",
+                        "type": "DialogData",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "itemsService",
+                        "type": "ItemsService",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 20,
+                "jsdoctags": [
+                    {
+                        "name": "data",
+                        "type": "DialogData",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "itemsService",
+                        "type": "ItemsService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<h2 mat-dialog-title>{{ title }}</h2>\n\n<mat-dialog-content class=\"mat-typography\">\n  <ng-container *ngIf=\"challenge$ | async as challenge\">\n    <ng-container *ngIf=\"challenge.success\">\n      <mat-form-field appearance=\"standard\">\n        <mat-label>{{ challenge.data }}</mat-label>\n        <input matInput placeholder=\"Zahl\" />\n        <mat-hint>Bitte als Zahl eingeben</mat-hint>\n      </mat-form-field>\n    </ng-container>\n  </ng-container>\n</mat-dialog-content>\n<mat-dialog-actions align=\"end\">\n  <button mat-button mat-dialog-close>Abbruch</button>\n  <button mat-button [mat-dialog-close]=\"true\" cdkFocusInitial>Install</button>\n</mat-dialog-actions>\n"
         }
     ],
     "modules": [
         {
             "name": "AppModule",
-            "id": "module-AppModule-dee3b1f2831eaab092e9e338ba7341fcf45e5fa8ce9243c02c681d986cfaa28794613c26d9e40758396dc3264bac5d4bdbb53a5e3e352570152e11a1b2179733",
+            "id": "module-AppModule-42dcb60cfdf2dd1e26efba395cb64457c18fa5f648726a8096d099c0d4b7f48070a8332d30c68b290761a9bf95174d40f9d6a0b4ed65fd7aaf4523a804a44294",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/app.module.ts",
             "methods": [],
-            "sourceCode": "import { LayoutModule } from '@angular/cdk/layout';\nimport { HttpClientModule } from '@angular/common/http';\nimport { NgModule } from '@angular/core';\nimport { ReactiveFormsModule } from '@angular/forms';\nimport { MatButtonModule } from '@angular/material/button';\nimport { MatCardModule } from '@angular/material/card';\nimport { MatDialogModule } from '@angular/material/dialog';\nimport { MatExpansionModule } from '@angular/material/expansion';\nimport {\n  MatFormFieldModule,\n  MAT_FORM_FIELD_DEFAULT_OPTIONS,\n} from '@angular/material/form-field';\nimport { MatIconModule } from '@angular/material/icon';\nimport { MatInputModule } from '@angular/material/input';\nimport { MatListModule } from '@angular/material/list';\nimport { MatProgressBarModule } from '@angular/material/progress-bar';\nimport { MatProgressSpinnerModule } from '@angular/material/progress-spinner';\nimport { MatSidenavModule } from '@angular/material/sidenav';\nimport { MatToolbarModule } from '@angular/material/toolbar';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\nimport { EffectsModule } from '@ngrx/effects';\nimport { routerReducer, StoreRouterConnectingModule } from '@ngrx/router-store';\nimport { StoreModule } from '@ngrx/store';\nimport { StoreDevtoolsModule } from '@ngrx/store-devtools';\nimport { environment } from '../environments/environment';\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { EmptyListComponent } from './components/empty-list/empty-list.component';\nimport { ErrorDisplayComponent } from './components/error-display/error-display.component';\nimport { ItemDisplayComponent } from './components/item-display/item-display.component';\nimport { ItemFormComponent } from './components/item-form/item-form.component';\nimport { ItemPreviewComponent } from './components/item-preview/item-preview.component';\nimport { MenuNavlistComponent } from './components/menu-navlist/menu-navlist.component';\nimport { ShowReservationStatusComponent } from './components/show-reservation-status/show-reservation-status.component';\nimport { ConnectFormDirective } from './directives/connect-form.directive';\nimport { FormEnabledDirective } from './directives/form-enabled.directive';\nimport { FrameComponent } from './frame/frame.component';\nimport { AboutComponent } from './pages/about/about.component';\nimport { AddPageComponent } from './pages/add-page/add-page.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { CategoryPageComponent } from './pages/category-page/category-page.component';\nimport { ItemViewComponent } from './pages/item-view/item-view.component';\nimport { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';\nimport { WithCategoryPipe } from './pipes/with-category.pipe';\nimport { AppGlobalStateEffects } from './store/a.effects';\nimport { agReducer } from './store/a.reducer';\nimport { AppState } from './store/app.state';\nimport { ReservationEffects } from './store/r.effects';\nimport { rReducer } from './store/r.reducer';\nimport { CustomSerializer } from './store/router/custom-route-serializer';\nimport { RouterEffects } from './store/router/effects';\nimport { WishlistEffects } from './store/w.effects';\nimport { wReducer } from './store/w.reducer';\n\n@NgModule({\n  declarations: [\n    AboutComponent,\n    AddPageComponent,\n    AppComponent,\n    CategoriesPageComponent,\n    CategoryPageComponent,\n    ConnectFormDirective,\n    EmptyListComponent,\n    ErrorDisplayComponent,\n    FormEnabledDirective,\n    FrameComponent,\n    ItemDisplayComponent,\n    ItemFormComponent,\n    ItemPreviewComponent,\n    ItemViewComponent,\n    MenuNavlistComponent,\n    PageNotFoundComponent,\n    ShowReservationStatusComponent,\n    WithCategoryPipe,\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    BrowserAnimationsModule,\n    LayoutModule,\n    ReactiveFormsModule,\n    MatButtonModule,\n    MatCardModule,\n    MatDialogModule,\n    MatExpansionModule,\n    MatFormFieldModule,\n    MatIconModule,\n    MatInputModule,\n    MatListModule,\n    MatProgressBarModule,\n    MatProgressSpinnerModule,\n    MatSidenavModule,\n    MatToolbarModule,\n    StoreModule.forRoot<AppState>({\n      ag: agReducer,\n      reservation: rReducer,\n      router: routerReducer,\n      wishlist: wReducer,\n    }),\n    EffectsModule.forRoot([\n      AppGlobalStateEffects,\n      ReservationEffects,\n      RouterEffects,\n      WishlistEffects,\n    ]),\n    // import HttpClientModule after BrowserModule.\n    HttpClientModule,\n    StoreDevtoolsModule.instrument({\n      maxAge: 25,\n      logOnly: environment.production,\n    }),\n    StoreRouterConnectingModule.forRoot({\n      serializer: CustomSerializer,\n    }),\n  ],\n  providers: [\n    {\n      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,\n      useValue: { appearance: 'fill' },\n    },\n  ],\n  bootstrap: [AppComponent],\n})\nexport class AppModule {}\n",
+            "sourceCode": "import { LayoutModule } from '@angular/cdk/layout';\nimport { HttpClientModule } from '@angular/common/http';\nimport { NgModule } from '@angular/core';\nimport { ReactiveFormsModule } from '@angular/forms';\nimport { MatButtonModule } from '@angular/material/button';\nimport { MatCardModule } from '@angular/material/card';\nimport { MatDialogModule } from '@angular/material/dialog';\nimport { MatExpansionModule } from '@angular/material/expansion';\nimport {\n  MatFormFieldModule,\n  MAT_FORM_FIELD_DEFAULT_OPTIONS,\n} from '@angular/material/form-field';\nimport { MatIconModule } from '@angular/material/icon';\nimport { MatInputModule } from '@angular/material/input';\nimport { MatListModule } from '@angular/material/list';\nimport { MatProgressBarModule } from '@angular/material/progress-bar';\nimport { MatProgressSpinnerModule } from '@angular/material/progress-spinner';\nimport { MatSidenavModule } from '@angular/material/sidenav';\nimport { MatToolbarModule } from '@angular/material/toolbar';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\nimport { EffectsModule } from '@ngrx/effects';\nimport { routerReducer, StoreRouterConnectingModule } from '@ngrx/router-store';\nimport { StoreModule } from '@ngrx/store';\nimport { StoreDevtoolsModule } from '@ngrx/store-devtools';\nimport { environment } from '../environments/environment';\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { EmptyListComponent } from './components/empty-list/empty-list.component';\nimport { ErrorDisplayComponent } from './components/error-display/error-display.component';\nimport { ItemDisplayComponent } from './components/item-display/item-display.component';\nimport { ItemFormComponent } from './components/item-form/item-form.component';\nimport { ItemPreviewComponent } from './components/item-preview/item-preview.component';\nimport { MenuNavlistComponent } from './components/menu-navlist/menu-navlist.component';\nimport { ShowReservationStatusComponent } from './components/show-reservation-status/show-reservation-status.component';\nimport { UpdateReservationDialogComponent } from './components/update-reservation-dialog/update-reservation-dialog.component';\nimport { ConnectFormDirective } from './directives/connect-form.directive';\nimport { FormEnabledDirective } from './directives/form-enabled.directive';\nimport { FrameComponent } from './frame/frame.component';\nimport { AboutComponent } from './pages/about/about.component';\nimport { AddPageComponent } from './pages/add-page/add-page.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { CategoryPageComponent } from './pages/category-page/category-page.component';\nimport { ItemViewComponent } from './pages/item-view/item-view.component';\nimport { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';\nimport { WithCategoryPipe } from './pipes/with-category.pipe';\nimport { AppGlobalStateEffects } from './store/a.effects';\nimport { agReducer } from './store/a.reducer';\nimport { AppState } from './store/app.state';\nimport { ReservationEffects } from './store/r.effects';\nimport { rReducer } from './store/r.reducer';\nimport { CustomSerializer } from './store/router/custom-route-serializer';\nimport { RouterEffects } from './store/router/effects';\nimport { WishlistEffects } from './store/w.effects';\nimport { wReducer } from './store/w.reducer';\n\n@NgModule({\n  declarations: [\n    AboutComponent,\n    AddPageComponent,\n    AppComponent,\n    CategoriesPageComponent,\n    CategoryPageComponent,\n    ConnectFormDirective,\n    EmptyListComponent,\n    ErrorDisplayComponent,\n    FormEnabledDirective,\n    FrameComponent,\n    ItemDisplayComponent,\n    ItemFormComponent,\n    ItemPreviewComponent,\n    ItemViewComponent,\n    MenuNavlistComponent,\n    PageNotFoundComponent,\n    ShowReservationStatusComponent,\n    UpdateReservationDialogComponent,\n    WithCategoryPipe,\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    BrowserAnimationsModule,\n    LayoutModule,\n    ReactiveFormsModule,\n    MatButtonModule,\n    MatCardModule,\n    MatDialogModule,\n    MatExpansionModule,\n    MatFormFieldModule,\n    MatIconModule,\n    MatInputModule,\n    MatListModule,\n    MatProgressBarModule,\n    MatProgressSpinnerModule,\n    MatSidenavModule,\n    MatToolbarModule,\n    StoreModule.forRoot<AppState>({\n      ag: agReducer,\n      reservation: rReducer,\n      router: routerReducer,\n      wishlist: wReducer,\n    }),\n    EffectsModule.forRoot([\n      AppGlobalStateEffects,\n      ReservationEffects,\n      RouterEffects,\n      WishlistEffects,\n    ]),\n    // import HttpClientModule after BrowserModule.\n    HttpClientModule,\n    StoreDevtoolsModule.instrument({\n      maxAge: 25,\n      logOnly: environment.production,\n    }),\n    StoreRouterConnectingModule.forRoot({\n      serializer: CustomSerializer,\n    }),\n  ],\n  providers: [\n    {\n      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,\n      useValue: { appearance: 'fill' },\n    },\n  ],\n  bootstrap: [AppComponent],\n})\nexport class AppModule {}\n",
             "children": [
                 {
                     "type": "providers",
@@ -4244,6 +4420,9 @@
                         },
                         {
                             "name": "ShowReservationStatusComponent"
+                        },
+                        {
+                            "name": "UpdateReservationDialogComponent"
                         },
                         {
                             "name": "WithCategoryPipe"
@@ -4386,6 +4565,16 @@
                 "defaultValue": "require.context('./', true, /\\.spec\\.ts$/)"
             },
             {
+                "name": "customDefaultProviders",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/UpdateReservationDialog.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "[]",
+                "defaultValue": "[\n  ...defaultProviders,\n  {\n    provide: ItemsService,\n    useValue: {\n      getCaptchaChallenge: () => of(new Result('acht')),\n    },\n  },\n]"
+            },
+            {
                 "name": "declarations",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -4414,6 +4603,16 @@
                 "deprecationMessage": "",
                 "type": "any[]",
                 "defaultValue": "[\n  { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },\n]"
+            },
+            {
+                "name": "dialogData",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/UpdateReservationDialog.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "DialogData",
+                "defaultValue": "{\n  itemId: 5,\n  targetState: 'clear',\n}"
             },
             {
                 "name": "Display",
@@ -4616,6 +4815,26 @@
                 "defaultValue": "() => ({\n  props: {},\n})"
             },
             {
+                "name": "HasReservation",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/UpdateReservationDialog.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "() => ({\n  props: {},\n})"
+            },
+            {
+                "name": "hasReservationDialogData",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/UpdateReservationDialog.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "DialogData",
+                "defaultValue": "{\n  ...dialogData,\n  targetState: 'clear',\n}"
+            },
+            {
                 "name": "initialState",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -4716,10 +4935,40 @@
                 "defaultValue": "() => ({\n  props: {},\n})"
             },
             {
+                "name": "IsFree",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/UpdateReservationDialog.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "() => ({\n  props: {},\n})"
+            },
+            {
+                "name": "isFreeDialogData",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/UpdateReservationDialog.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "DialogData",
+                "defaultValue": "{\n  ...dialogData,\n  targetState: 'reserve',\n}"
+            },
+            {
                 "name": "IsUnkown",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "src/stories/ShowReservationStatus.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "() => ({\n  props: {},\n})"
+            },
+            {
+                "name": "IsUnkown",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/UpdateReservationDialog.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
@@ -4780,6 +5029,16 @@
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "src/stories/ShowReservationStatus.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "() => ({\n  props: {},\n})"
+            },
+            {
+                "name": "LoadingUpdating",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/UpdateReservationDialog.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
@@ -5235,6 +5494,16 @@
                 "defaultValue": "() => ({\n  props: {},\n})"
             },
             {
+                "name": "UpdateFailed",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/UpdateReservationDialog.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "() => ({\n  props: {},\n})"
+            },
+            {
                 "name": "wReducer",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -5594,6 +5863,98 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "literal type"
+                }
+            ],
+            "src/stories/UpdateReservationDialog.stories.ts": [
+                {
+                    "name": "customDefaultProviders",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/UpdateReservationDialog.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "[]",
+                    "defaultValue": "[\n  ...defaultProviders,\n  {\n    provide: ItemsService,\n    useValue: {\n      getCaptchaChallenge: () => of(new Result('acht')),\n    },\n  },\n]"
+                },
+                {
+                    "name": "dialogData",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/UpdateReservationDialog.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "DialogData",
+                    "defaultValue": "{\n  itemId: 5,\n  targetState: 'clear',\n}"
+                },
+                {
+                    "name": "HasReservation",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/UpdateReservationDialog.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "() => ({\n  props: {},\n})"
+                },
+                {
+                    "name": "hasReservationDialogData",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/UpdateReservationDialog.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "DialogData",
+                    "defaultValue": "{\n  ...dialogData,\n  targetState: 'clear',\n}"
+                },
+                {
+                    "name": "IsFree",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/UpdateReservationDialog.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "() => ({\n  props: {},\n})"
+                },
+                {
+                    "name": "isFreeDialogData",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/UpdateReservationDialog.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "DialogData",
+                    "defaultValue": "{\n  ...dialogData,\n  targetState: 'reserve',\n}"
+                },
+                {
+                    "name": "IsUnkown",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/UpdateReservationDialog.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "() => ({\n  props: {},\n})"
+                },
+                {
+                    "name": "LoadingUpdating",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/UpdateReservationDialog.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "() => ({\n  props: {},\n})"
+                },
+                {
+                    "name": "UpdateFailed",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/UpdateReservationDialog.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "() => ({\n  props: {},\n})"
                 }
             ],
             "src/stories/ItemForm.stories.ts": [
@@ -6692,6 +7053,24 @@
                 "linktype": "component",
                 "name": "ShowReservationStatusComponent",
                 "coveragePercent": 0,
+                "coverageCount": "0/6",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/components/update-reservation-dialog/dialog-data.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "DialogData",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/components/update-reservation-dialog/update-reservation-dialog.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "UpdateReservationDialogComponent",
+                "coveragePercent": 0,
                 "coverageCount": "0/7",
                 "status": "low"
             },
@@ -7745,6 +8124,96 @@
             },
             {
                 "filePath": "src/stories/ShowReservationStatus.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "UpdateFailed",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/UpdateReservationDialog.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "customDefaultProviders",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/UpdateReservationDialog.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "dialogData",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/UpdateReservationDialog.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "HasReservation",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/UpdateReservationDialog.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "hasReservationDialogData",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/UpdateReservationDialog.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "IsFree",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/UpdateReservationDialog.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "isFreeDialogData",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/UpdateReservationDialog.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "IsUnkown",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/UpdateReservationDialog.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "LoadingUpdating",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/UpdateReservationDialog.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",

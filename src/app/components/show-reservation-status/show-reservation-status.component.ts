@@ -15,9 +15,6 @@ export class ShowReservationStatusComponent {
   reservationStatus$ = this.store.select(selectReservationState);
   reservationErrorText$ = this.store.select(selectReservationErrorText);
 
-  @Output()
-  action = new EventEmitter<{ action: 'reserve' | 'clear' }>();
-
   constructor(private store: Store) {}
 
   onClickClearReservation(): void {
