@@ -1,6 +1,7 @@
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatButtonHarness } from '@angular/material/button/testing';
 import { MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatFormFieldHarness } from '@angular/material/form-field/testing';
@@ -58,10 +59,14 @@ describe('UpdateReservationDialogComponent', () => {
   });
 
   [
-    { targetState: 'clear', title: 'Reservierung löschen' },
-    { targetState: 'reserve', title: 'Reservieren' },
+    {
+      targetState: 'clear',
+      title: 'Reservierung löschen',
+      buttonText: 'Löschen',
+    },
+    { targetState: 'reserve', title: 'Reservieren', buttonText: 'Reservieren' },
   ].forEach((testsetup) => {
-    it(`should set title on init for ${testsetup.targetState}`, () => {
+    it(`should set title on init for ${testsetup.targetState}`, async () => {
       // Arrange
       dialogData.targetState = testsetup.targetState as 'clear' | 'reserve';
 
@@ -70,6 +75,9 @@ describe('UpdateReservationDialogComponent', () => {
 
       // Assert
       expect(component.title).toBe(testsetup.title);
+      const control = (await loader.getAllHarnesses(MatButtonHarness))[1];
+      const buttonText = await control.getText();
+      expect(buttonText).toBe(testsetup.buttonText);
     });
   });
 
