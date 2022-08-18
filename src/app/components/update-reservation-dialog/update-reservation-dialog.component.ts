@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Subject } from 'rxjs';
-import { mergeMap, shareReplay } from 'rxjs/operators';
+import { BehaviorSubject, map, mergeMap, shareReplay } from 'rxjs';
 import { ItemsService } from 'src/app/services/items.service';
 import { DialogData } from './dialog-data';
 
@@ -11,12 +10,12 @@ import { DialogData } from './dialog-data';
   styleUrls: ['./update-reservation-dialog.component.scss'],
 })
 export class UpdateReservationDialogComponent implements OnInit {
-  private challengeRequest$ = new Subject<void>();
+  private challengeRequest$ = new BehaviorSubject(null);
 
   public title = '';
   public challenge$ = this.challengeRequest$.pipe(
     mergeMap((_) => this.itemsService.getCaptchaChallenge()),
-    shareReplay({ bufferSize: 1, refCount: false })
+    shareReplay(1)
   );
 
   constructor(
@@ -25,7 +24,6 @@ export class UpdateReservationDialogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.challengeRequest$.next();
     this.title =
       this.data.targetState === 'reserve'
         ? 'Reservieren'
