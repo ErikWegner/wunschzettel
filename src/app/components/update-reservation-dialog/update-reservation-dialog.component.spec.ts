@@ -75,7 +75,7 @@ describe('UpdateReservationDialogComponent', () => {
 
       // Assert
       expect(component.title).toBe(testsetup.title);
-      const control = (await loader.getAllHarnesses(MatButtonHarness))[1];
+      const control = (await loader.getAllHarnesses(MatButtonHarness))[2];
       const buttonText = await control.getText();
       expect(buttonText).toBe(testsetup.buttonText);
     });
@@ -98,5 +98,29 @@ describe('UpdateReservationDialogComponent', () => {
       const label = await control.getLabel();
       expect(label).toBe(challenge);
     });
+  });
+
+  it('should refresh captcha', async () => {
+    // Arrange
+    const challenge1 = randomString(8, 'captcha 1:');
+    const challenge2 = randomString(8, 'captcha 2:');
+    itemsService.getCaptchaChallenge.calls.reset();
+    itemsService.getCaptchaChallenge.and.returnValues(
+      of(new Result(challenge1)),
+      of(new Result(challenge2))
+    );
+
+    const button = await loader.getHarness(
+      MatButtonHarness.with({ text: 'Neue Aufgabe' })
+    );
+    fixture.detectChanges();
+
+    // Act
+    await button.click();
+
+    // Assert
+    const control = (await loader.getAllHarnesses(MatFormFieldHarness))[0];
+    const label = await control.getLabel();
+    expect(label).toBe(challenge2);
   });
 });

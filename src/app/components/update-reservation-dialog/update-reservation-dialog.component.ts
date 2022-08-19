@@ -29,4 +29,8 @@ export class UpdateReservationDialogComponent implements OnInit {
         ? 'Reservieren'
         : 'Reservierung löschen';
   }
+
+  challengeRequest(): void {
+    this.challengeRequest$.next(null);
+  }
 }
