@@ -13,8 +13,11 @@ body {
 mat-card,
 .centerbox {
   padding: 16px;
-  margin: 8px auto;
-  max-width: 520px;
+}
+
+.centerbox {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .c {

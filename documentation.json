@@ -2606,7 +2606,7 @@
                     }
                 ]
             },
-            "templateData": "<app-error-display></app-error-display>\n<mat-spinner class=\"centerbox\" *ngIf=\"(hasRequestPending$ | async)\"></mat-spinner>\n<ng-container *ngIf=\"false === (hasRequestPending$ | async) && false === (hasRequestError$ | async)\">\n  <mat-card class=\"c\" *ngFor=\"let category of (categories$ | async)\" (click)=\"goToCategory(category)\">{{ category }}</mat-card>\n  <app-empty-list *ngIf=\"((categories$ | async)?.length ?? 0) === 0\"></app-empty-list>\n</ng-container>\n"
+            "templateData": "<app-error-display></app-error-display>\n<mat-spinner class=\"centerbox\" *ngIf=\"(hasRequestPending$ | async)\"></mat-spinner>\n<ng-container *ngIf=\"false === (hasRequestPending$ | async) && false === (hasRequestError$ | async)\">\n  <h1>Kategorien</h1>\n  <mat-card class=\"c\" *ngFor=\"let category of (categories$ | async)\" (click)=\"goToCategory(category)\">{{ category }}</mat-card>\n  <app-empty-list *ngIf=\"((categories$ | async)?.length ?? 0) === 0\"></app-empty-list>\n</ng-container>\n"
         },
         {
             "name": "CategoryPageComponent",
@@ -2732,7 +2732,7 @@
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<mat-spinner class=\"centerbox\" *ngIf=\"(hasRequestPending$ | async)\"></mat-spinner>\n<ng-container *ngIf=\"false === (hasRequestPending$ | async)\">\n  <app-item-preview *ngFor=\"let item of ((items$ | async) | withCategory:(activeCategory$|async) )\" [item]=\"item\"></app-item-preview>\n</ng-container>\n"
+            "templateData": "<mat-spinner class=\"centerbox\" *ngIf=\"(hasRequestPending$ | async)\"></mat-spinner>\n<ng-container *ngIf=\"false === (hasRequestPending$ | async)\">\n  <ng-container *ngIf=\"{activeCategory: activeCategory$ | async} as d\">\n    <div *ngIf=\"d.activeCategory; then singleCategoryHeaderBlock else allHeaderBlock\"></div>\n    <ng-template #singleCategoryHeaderBlock>\n      <h1>Einträge der Kategorie\n        <em>\n          {{ d.activeCategory }}\n        </em>\n      </h1>\n    </ng-template>\n    <ng-template #allHeaderBlock>\n      <h1>\n        Einträge aller Kategorien\n      </h1>\n    </ng-template>\n    <p>\n      <a *ngIf=\"d.activeCategory\" routerLink=\"/wunschliste\">Alle Einträge aller Kategorien</a>\n  \n      <a routerLink=\"/kategorien\">Kategorien</a>\n    </p>\n    <app-item-preview *ngFor=\"let item of ((items$ | async) | withCategory:(d.activeCategory) )\" [item]=\"item\">\n    </app-item-preview>\n  </ng-container>\n</ng-container>"
         },
         {
             "name": "EmptyListComponent",
@@ -3077,7 +3077,7 @@
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ".sidenav-container {\n  height: 100%;\n}\n\n.sidenav {\n  width: 200px;\n}\n\n.sidenav .mat-toolbar {\n  background: inherit;\n}\n\n.mat-toolbar.mat-primary {\n  position: sticky;\n  top: 0;\n  z-index: 1;\n}\n",
+                    "data": ".sidenav-container {\n  height: 100%;\n}\n\n.sidenav {\n  width: 200px;\n}\n\n.sidenav .mat-toolbar {\n  background: inherit;\n}\n\n.mat-toolbar.mat-primary {\n  position: sticky;\n  top: 0;\n  z-index: 1;\n}\n\n#main {\n  margin: 8px auto;\n  max-width: 520px;\n}",
                     "styleUrl": "./frame.component.scss"
                 }
             ],
@@ -3126,7 +3126,7 @@
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<mat-sidenav-container class=\"sidenav-container\">\n  <mat-sidenav #drawer class=\"sidenav\" fixedInViewport [attr.role]=\"(isHandset$ | async) ? 'dialog' : 'navigation'\"\n    [mode]=\"(isHandset$ | async) ? 'over' : 'side'\" [opened]=\"(isHandset$ | async) === false\">\n    <mat-toolbar>Menü</mat-toolbar>\n    <app-menu-navlist></app-menu-navlist>\n  </mat-sidenav>\n  <mat-sidenav-content>\n    <mat-toolbar color=\"primary\">\n      <button type=\"button\" aria-label=\"Toggle sidenav\" mat-icon-button (click)=\"drawer.toggle()\"\n        *ngIf=\"isHandset$ | async\">\n        <mat-icon aria-label=\"Side nav toggle icon\">menu</mat-icon>\n      </button>\n      <span>Wunschzettel</span>\n    </mat-toolbar>\n    <div [@routeAnimations]=\"prepareRoute(outlet)\">\n      <router-outlet #outlet=\"outlet\"></router-outlet>\n    </div>\n  </mat-sidenav-content>\n</mat-sidenav-container>\n"
+            "templateData": "<mat-sidenav-container class=\"sidenav-container\">\n  <mat-sidenav #drawer class=\"sidenav\" fixedInViewport [attr.role]=\"(isHandset$ | async) ? 'dialog' : 'navigation'\"\n    [mode]=\"(isHandset$ | async) ? 'over' : 'side'\" [opened]=\"(isHandset$ | async) === false\">\n    <mat-toolbar>Menü</mat-toolbar>\n    <app-menu-navlist></app-menu-navlist>\n  </mat-sidenav>\n  <mat-sidenav-content>\n    <mat-toolbar color=\"primary\">\n      <button type=\"button\" aria-label=\"Toggle sidenav\" mat-icon-button (click)=\"drawer.toggle()\"\n        *ngIf=\"isHandset$ | async\">\n        <mat-icon aria-label=\"Side nav toggle icon\">menu</mat-icon>\n      </button>\n      <span>Wunschzettel</span>\n    </mat-toolbar>\n    <div id=\"main\">\n      <div [@routeAnimations]=\"prepareRoute(outlet)\">\n        <router-outlet #outlet=\"outlet\"></router-outlet>\n      </div>\n    </div>\n  </mat-sidenav-content>\n</mat-sidenav-container>\n"
         },
         {
             "name": "HeaderComponent",
@@ -3203,7 +3203,7 @@
         },
         {
             "name": "ItemDisplayComponent",
-            "id": "component-ItemDisplayComponent-972747aaf0eff22dffe6e24e8cf0e64a9581bbb5092aac62d2a2621f0335bb53b8fe749385d3e5f05f336418333ae0df6efdd8165115cc5bc69e11087ca835b0",
+            "id": "component-ItemDisplayComponent-29f3122e36bcd7485556aba072a1d4a63afe009e83c41387b37f28cad4a89b214ca150a49103dc234d6801430ffe7fef993f0c4bee449cdc8599d737e543dd8b",
             "file": "src/app/components/item-display/item-display.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -3225,7 +3225,7 @@
                     "defaultValue": "null",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 26,
+                    "line": 27,
                     "type": "WishlistItem | null",
                     "decorators": []
                 }
@@ -3240,7 +3240,7 @@
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 22,
+                    "line": 23,
                     "modifierKind": [
                         144
                     ]
@@ -3253,7 +3253,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 23
+                    "line": 24
                 },
                 {
                     "name": "openedDescription",
@@ -3263,7 +3263,7 @@
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 21,
+                    "line": 22,
                     "modifierKind": [
                         144
                     ]
@@ -3276,7 +3276,7 @@
                     "type": "MatExpansionPanel | null",
                     "optional": false,
                     "description": "",
-                    "line": 20,
+                    "line": 21,
                     "decorators": [
                         {
                             "name": "ViewChild",
@@ -3286,6 +3286,16 @@
                 }
             ],
             "methodsClass": [
+                {
+                    "name": "back",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 41,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
                 {
                     "name": "ngOnChanges",
                     "args": [
@@ -3299,7 +3309,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 30,
+                    "line": 31,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -3320,7 +3330,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 34,
+                    "line": 35,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -3332,7 +3342,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\n  Component,\n  Input,\n  OnChanges,\n  SimpleChanges,\n  ViewChild,\n} from '@angular/core';\nimport { MatExpansionPanel } from '@angular/material/expansion';\nimport { Store } from '@ngrx/store';\nimport { WishlistItem } from 'src/app/business/item';\nimport { retrieveReservationStatus } from 'src/app/store/r.actions';\n\n@Component({\n  selector: 'app-item-display',\n  templateUrl: './item-display.component.html',\n  styleUrls: ['./item-display.component.scss'],\n})\nexport class ItemDisplayComponent implements OnChanges {\n  @ViewChild(MatExpansionPanel)\n  panel: MatExpansionPanel | null = null;\n  readonly openedDescription = 'Antippen zum Verstecken';\n  readonly closedDescription = 'Antippen zum Anzeigen';\n  description = this.closedDescription;\n\n  @Input()\n  item: WishlistItem | null = null;\n\n  constructor(private store: Store) {}\n\n  ngOnChanges(_changes: SimpleChanges): void {\n    this.panel?.close();\n  }\n\n  onPanelOpened(): void {\n    if (this.item) {\n      this.store.dispatch(retrieveReservationStatus({ itemId: this.item.id }));\n    }\n  }\n}\n",
+            "sourceCode": "import {\n  Component,\n  Input,\n  OnChanges,\n  SimpleChanges,\n  ViewChild,\n} from '@angular/core';\nimport { MatExpansionPanel } from '@angular/material/expansion';\nimport { Store } from '@ngrx/store';\nimport { WishlistItem } from 'src/app/business/item';\nimport { retrieveReservationStatus } from 'src/app/store/r.actions';\nimport { goToCategory } from 'src/app/store/w.actions';\n\n@Component({\n  selector: 'app-item-display',\n  templateUrl: './item-display.component.html',\n  styleUrls: ['./item-display.component.scss'],\n})\nexport class ItemDisplayComponent implements OnChanges {\n  @ViewChild(MatExpansionPanel)\n  panel: MatExpansionPanel | null = null;\n  readonly openedDescription = 'Antippen zum Verstecken';\n  readonly closedDescription = 'Antippen zum Anzeigen';\n  description = this.closedDescription;\n\n  @Input()\n  item: WishlistItem | null = null;\n\n  constructor(private store: Store) {}\n\n  ngOnChanges(_changes: SimpleChanges): void {\n    this.panel?.close();\n  }\n\n  onPanelOpened(): void {\n    if (this.item) {\n      this.store.dispatch(retrieveReservationStatus({ itemId: this.item.id }));\n    }\n  }\n\n  back(): void {\n    if (this.item) {\n      this.store.dispatch(goToCategory({category: this.item.Category}));\n    }\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -3354,7 +3364,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 26,
+                "line": 27,
                 "jsdoctags": [
                     {
                         "name": "store",
@@ -3370,7 +3380,7 @@
             "implements": [
                 "OnChanges"
             ],
-            "templateData": "<mat-card>\n  <mat-card-title-group>\n    <mat-card-title>{{ item?.Title }}</mat-card-title>\n    <mat-card-subtitle>{{ item?.Category }}</mat-card-subtitle>\n  </mat-card-title-group>\n  <mat-divider inset></mat-divider>\n  <mat-card-content>\n    <div class=\"f\">\n      <p>\n        {{ item?.Description }}\n      </p>\n      <div>\n        <img mat-card-lg-image [src]=\"item?.ImgageUrl\" />\n      </div>\n    </div>\n    <div>\n      Kauf-Adresse:\n      <a [href]=\"item?.BuyUrl\">\n        {{ item?.BuyUrl }}\n      </a>\n    </div>\n  </mat-card-content>\n  <mat-divider inset></mat-divider>\n  <mat-card-actions>\n    <mat-expansion-panel\n      (opened)=\"description = openedDescription; onPanelOpened()\"\n      (closed)=\"description = closedDescription\"\n      hideToggle\n    >\n      <mat-expansion-panel-header>\n        <mat-panel-title>Reservieren und Status</mat-panel-title>\n        <mat-panel-description>{{ description }}</mat-panel-description>\n      </mat-expansion-panel-header>\n      <ng-template matExpansionPanelContent>\n        <app-show-reservation-status></app-show-reservation-status>\n      </ng-template>\n    </mat-expansion-panel>\n    <div class=\"f mt24\">\n      <button mat-flat-button color=\"accent\">Bearbeiten</button>\n      <div class=\"spacer\"></div>\n      <button mat-flat-button color=\"primary\">Zurück</button>\n    </div>\n  </mat-card-actions>\n  <mat-card-footer> </mat-card-footer>\n</mat-card>\n"
+            "templateData": "<mat-card>\n  <mat-card-title-group>\n    <mat-card-title>{{ item?.Title }}</mat-card-title>\n    <mat-card-subtitle>{{ item?.Category }}</mat-card-subtitle>\n  </mat-card-title-group>\n  <mat-divider inset></mat-divider>\n  <mat-card-content>\n    <div class=\"f\">\n      <p>\n        {{ item?.Description }}\n      </p>\n      <div>\n        <img mat-card-lg-image [src]=\"item?.ImgageUrl\" />\n      </div>\n    </div>\n    <div>\n      Kauf-Adresse:\n      <a [href]=\"item?.BuyUrl\">\n        {{ item?.BuyUrl }}\n      </a>\n    </div>\n  </mat-card-content>\n  <mat-divider inset></mat-divider>\n  <mat-card-actions>\n    <mat-expansion-panel\n      (opened)=\"description = openedDescription; onPanelOpened()\"\n      (closed)=\"description = closedDescription\"\n      hideToggle\n    >\n      <mat-expansion-panel-header>\n        <mat-panel-title>Reservieren und Status</mat-panel-title>\n        <mat-panel-description>{{ description }}</mat-panel-description>\n      </mat-expansion-panel-header>\n      <ng-template matExpansionPanelContent>\n        <app-show-reservation-status></app-show-reservation-status>\n      </ng-template>\n    </mat-expansion-panel>\n    <div class=\"f mt24\">\n      <button mat-flat-button color=\"accent\">Bearbeiten</button>\n      <div class=\"spacer\"></div>\n      <button mat-flat-button color=\"primary\" (click)=\"back()\">Zurück</button>\n    </div>\n  </mat-card-actions>\n  <mat-card-footer> </mat-card-footer>\n</mat-card>\n"
         },
         {
             "name": "ItemDisplayStubComponent",
@@ -4049,7 +4059,7 @@
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<div class=\"centerbox f\">\n    <span class=\"n\">404</span>\n    <span class=\"t\">Seite nicht gefunden</span>\n</div>"
+            "templateData": "<div class=\"f\">\n    <span class=\"n\">404</span>\n    <span class=\"t\">Seite nicht gefunden</span>\n</div>"
         },
         {
             "name": "ShowReservationStatusComponent",
@@ -4200,7 +4210,7 @@
         },
         {
             "name": "UpdateReservationDialogComponent",
-            "id": "component-UpdateReservationDialogComponent-d8d23ca997415a5c8f5ff311020579fc1d3b1172b4039f9d85060dc27273b0830a233b55172f008d692819e58bceec6572adb8965e8fff5b588c4d6b620f0d1b",
+            "id": "component-UpdateReservationDialogComponent-a467e251e913748ca5410251eb017ae2d195a0ba03aab2c47ec8aef811f734e25bbb9bcdbba5cb4f4217640ca9e48e86911e60af5ef44b9e785d388980fe537b",
             "file": "src/app/components/update-reservation-dialog/update-reservation-dialog.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -4279,6 +4289,16 @@
             ],
             "methodsClass": [
                 {
+                    "name": "challengeRequest",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 33,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
                     "name": "ngOnInit",
                     "args": [],
                     "optional": false,
@@ -4296,7 +4316,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, Inject, OnInit } from '@angular/core';\nimport { MAT_DIALOG_DATA } from '@angular/material/dialog';\nimport { BehaviorSubject, map, mergeMap, shareReplay } from 'rxjs';\nimport { ItemsService } from 'src/app/services/items.service';\nimport { DialogData } from './dialog-data';\n\n@Component({\n  selector: 'app-update-reservation-dialog',\n  templateUrl: './update-reservation-dialog.component.html',\n  styleUrls: ['./update-reservation-dialog.component.scss'],\n})\nexport class UpdateReservationDialogComponent implements OnInit {\n  private challengeRequest$ = new BehaviorSubject(null);\n\n  public title = '';\n  public challenge$ = this.challengeRequest$.pipe(\n    mergeMap((_) => this.itemsService.getCaptchaChallenge()),\n    shareReplay(1)\n  );\n\n  constructor(\n    @Inject(MAT_DIALOG_DATA) public data: DialogData,\n    private itemsService: ItemsService\n  ) {}\n\n  ngOnInit(): void {\n    this.title =\n      this.data.targetState === 'reserve'\n        ? 'Reservieren'\n        : 'Reservierung löschen';\n  }\n}\n",
+            "sourceCode": "import { Component, Inject, OnInit } from '@angular/core';\nimport { MAT_DIALOG_DATA } from '@angular/material/dialog';\nimport { BehaviorSubject, map, mergeMap, shareReplay } from 'rxjs';\nimport { ItemsService } from 'src/app/services/items.service';\nimport { DialogData } from './dialog-data';\n\n@Component({\n  selector: 'app-update-reservation-dialog',\n  templateUrl: './update-reservation-dialog.component.html',\n  styleUrls: ['./update-reservation-dialog.component.scss'],\n})\nexport class UpdateReservationDialogComponent implements OnInit {\n  private challengeRequest$ = new BehaviorSubject(null);\n\n  public title = '';\n  public challenge$ = this.challengeRequest$.pipe(\n    mergeMap((_) => this.itemsService.getCaptchaChallenge()),\n    shareReplay(1)\n  );\n\n  constructor(\n    @Inject(MAT_DIALOG_DATA) public data: DialogData,\n    private itemsService: ItemsService\n  ) {}\n\n  ngOnInit(): void {\n    this.title =\n      this.data.targetState === 'reserve'\n        ? 'Reservieren'\n        : 'Reservierung löschen';\n  }\n\n  challengeRequest(): void {\n    this.challengeRequest$.next(null);\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -4349,7 +4369,7 @@
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<h2 mat-dialog-title>{{ title }}</h2>\n\n<mat-dialog-content class=\"mat-typography\">\n  <ng-container *ngIf=\"challenge$ | async as challenge\">\n    <ng-container *ngIf=\"challenge.success\">\n      <mat-form-field appearance=\"standard\">\n        <mat-label>{{ challenge.data }}</mat-label>\n        <input matInput placeholder=\"Zahl\" />\n        <mat-hint>Bitte als Zahl eingeben</mat-hint>\n      </mat-form-field>\n    </ng-container>\n  </ng-container>\n</mat-dialog-content>\n<mat-dialog-actions align=\"end\">\n  <button mat-flat-button mat-dialog-close>Abbruch</button>\n  <button mat-flat-button [mat-dialog-close]=\"true\" color=\"primary\">{{ data.targetState === 'clear' ? 'Löschen' : 'Reservieren' }}</button>\n</mat-dialog-actions>\n"
+            "templateData": "<h2 mat-dialog-title>{{ title }}</h2>\n\n<mat-dialog-content class=\"mat-typography\">\n  <ng-container *ngIf=\"challenge$ | async as challenge\">\n    <ng-container *ngIf=\"challenge.success\">\n      <mat-form-field appearance=\"standard\">\n        <mat-label>{{ challenge.data }}</mat-label>\n        <input matInput placeholder=\"Zahl\" />\n        <mat-hint>Bitte als Zahl eingeben</mat-hint>\n      </mat-form-field>\n    </ng-container>\n  </ng-container>\n  <button mat-flat-button (click)=\"challengeRequest()\">Neue Aufgabe</button>\n</mat-dialog-content>\n<mat-dialog-actions align=\"end\">\n  <button mat-flat-button mat-dialog-close>Abbruch</button>\n  <button mat-flat-button [mat-dialog-close]=\"true\" color=\"primary\">{{ data.targetState === 'clear' ? 'Löschen' : 'Reservieren' }}</button>\n</mat-dialog-actions>\n"
         }
     ],
     "modules": [
@@ -7017,7 +7037,7 @@
                 "linktype": "component",
                 "name": "ItemDisplayComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/9",
+                "coverageCount": "0/10",
                 "status": "low"
             },
             {
@@ -7071,7 +7091,7 @@
                 "linktype": "component",
                 "name": "UpdateReservationDialogComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/7",
+                "coverageCount": "0/8",
                 "status": "low"
             },
             {
