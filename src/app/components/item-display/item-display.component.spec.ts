@@ -2,6 +2,7 @@ import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatButtonHarness } from '@angular/material/button/testing';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -12,6 +13,7 @@ import { cold } from 'jasmine-marbles';
 import { WishlistItem } from 'src/app/business/item';
 import { AppState } from 'src/app/store/app.state';
 import { retrieveReservationStatus } from 'src/app/store/r.actions';
+import { goToCategory } from 'src/app/store/w.actions';
 import { appStateStub } from 'testing/app.state.builder';
 import { WishlistItemBuilder } from 'testing/item.builder';
 import { ShowReservationStatusStubComponent } from 'testing/stubs/show-reservation-status.stub.component';
@@ -135,5 +137,22 @@ describe('ItemDisplayComponent', () => {
       const description = await panel.getDescription();
       expect(description).toBe(testSetup.expectedDescription);
     });
+  });
+
+  it('should dispatch navigation when clicking on back button', async () => {
+    // Arrange
+    const item = WishlistItemBuilder.default();
+    component.item = item;
+    fixture.detectChanges();
+    const button = await loader.getHarness(MatButtonHarness.with({text: 'Zurück'}));
+    const expected = cold('a', {
+      a: goToCategory({ category: item.Category }),
+    });
+
+    // Act
+    await button.click();
+
+    // Assert
+    expect(store.scannedActions$).toBeObservable(expected);
   });
 });

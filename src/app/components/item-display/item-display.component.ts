@@ -9,6 +9,7 @@ import { MatExpansionPanel } from '@angular/material/expansion';
 import { Store } from '@ngrx/store';
 import { WishlistItem } from 'src/app/business/item';
 import { retrieveReservationStatus } from 'src/app/store/r.actions';
+import { goToCategory } from 'src/app/store/w.actions';
 
 @Component({
   selector: 'app-item-display',
@@ -34,6 +35,12 @@ export class ItemDisplayComponent implements OnChanges {
   onPanelOpened(): void {
     if (this.item) {
       this.store.dispatch(retrieveReservationStatus({ itemId: this.item.id }));
+    }
+  }
+
+  back(): void {
+    if (this.item) {
+      this.store.dispatch(goToCategory({category: this.item.Category}));
     }
   }
 }
