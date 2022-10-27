@@ -3634,7 +3634,7 @@
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ".preview img,\n.preview .no-img {\n    height: 72px;\n    width: 72px;\n    float: left;\n    margin-right: 5px;\n    object-fit: cover;\n}\n\n.preview {\n    display: -webkit-box;\n    text-overflow: ellipsis;\n    overflow: hidden;\n    -webkit-line-clamp: 3;\n    -webkit-box-orient: vertical;\n    display: -webkit-box;\n    word-break: 'none';\n    hyphens: auto;\n}",
+                    "data": "mat-card {\n    cursor: pointer;\n}\n.preview img,\n.preview .no-img {\n    height: 72px;\n    width: 72px;\n    float: left;\n    margin-right: 5px;\n    object-fit: cover;\n}\n\n.preview {\n    display: -webkit-box;\n    text-overflow: ellipsis;\n    overflow: hidden;\n    -webkit-line-clamp: 3;\n    -webkit-box-orient: vertical;\n    display: -webkit-box;\n    word-break: 'none';\n    hyphens: auto;\n}",
                     "styleUrl": "./item-preview.component.scss"
                 }
             ],
