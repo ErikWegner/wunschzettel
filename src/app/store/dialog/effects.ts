@@ -1,14 +1,20 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { tap } from 'rxjs';
+import { DialogData } from 'src/app/components/update-reservation-dialog/dialog-data';
 import { UpdateReservationDialogComponent } from 'src/app/components/update-reservation-dialog/update-reservation-dialog.component';
-import { setActiveItemAndShowReservationDialog } from '../w.actions';
-import { showReservationDialog } from './actions';
+import { confirmEditReservation } from '../r.actions';
+import { selectActiveItem } from '../w.selectors';
 
 @Injectable()
 export class DialogEffects {
-  constructor(private actions$: Actions, private dialog: MatDialog) {}
+  constructor(
+    private actions$: Actions,
+    private dialog: MatDialog,
+    private store: Store
+  ) {}
 
   // saveDataSuccess$ = createEffect(() =>
   //   this.actions$.pipe(
@@ -20,10 +26,11 @@ export class DialogEffects {
   openDialog$ = createEffect(
     () => {
       return this.actions$.pipe(
-        ofType(setActiveItemAndShowReservationDialog),
-        tap((payload) => {
+        ofType(confirmEditReservation),
+        concatLatestFrom((_action) => this.store.select(selectActiveItem)),
+        tap(([_action, activeItem]) => {
           this.dialog.open(UpdateReservationDialogComponent, {
-            data: { itemId: payload.item?.id },
+            data: <DialogData>{ itemId: activeItem?.id || 0 },
           });
         })
       );

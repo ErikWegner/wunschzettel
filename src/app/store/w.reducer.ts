@@ -1,9 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import {
-  itemsLoaded,
-  setActiveItem,
-  setActiveItemAndShowReservationDialog,
-} from './w.actions';
+import { itemsLoaded, setActiveItem } from './w.actions';
 import { WishlistState } from './w.state';
 
 export const initialState: WishlistState = {
@@ -37,14 +33,6 @@ export const wReducer = createReducer<WishlistState>(
       ...state,
       activeItem: p.item ?? null,
       reservationDialogVisible: false,
-    })
-  ),
-  on(
-    setActiveItemAndShowReservationDialog,
-    (state, p): WishlistState => ({
-      ...state,
-      activeItem: p.item ?? null,
-      reservationDialogVisible: true,
     })
   )
 );

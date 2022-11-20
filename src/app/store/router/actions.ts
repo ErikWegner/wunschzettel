@@ -4,6 +4,5 @@ export const navigatedToItem = createAction(
   '[R] navigatedToItem',
   props<{
     itemId: number;
-    openReservationDialog: boolean;
   }>()
 );

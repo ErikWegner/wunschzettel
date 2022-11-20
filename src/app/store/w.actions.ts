@@ -44,10 +44,3 @@ export const saveItem = createAction(
     item: WishlistItem;
   }>()
 );
-
-export const setActiveItemAndShowReservationDialog = createAction(
-  '[W] Show reservation dialog',
-  props<{
-    item?: WishlistItem;
-  }>()
-);

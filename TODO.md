@@ -25,5 +25,4 @@ Page: ItemViewComponent
 Component: ItemDisplayComponent -> ShowReservationStatusComponent
 
 ShowReservationStatusComponent.Button.Click -> dispatch:confirmEditReservation ✅
-RouterEffects.on:confirmEditReservation -> Route + `/reservation`
-RouterEffects -> DialogEffect
+DialogEffect
