@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { BehaviorSubject, map, mergeMap, shareReplay } from 'rxjs';
+import { BehaviorSubject, mergeMap, shareReplay } from 'rxjs';
 import { ItemsService } from 'src/app/services/items.service';
 import { DialogData } from './dialog-data';
 

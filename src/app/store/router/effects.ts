@@ -21,6 +21,8 @@ export class RouterEffects {
       map((p: RouterNavigatedPayload) => {
         return navigatedToItem({
           itemId: parseInt(p.payload.routerState.params['wunsch'] || '0'),
+          openReservationDialog:
+            p.payload.routerState.url.endsWith('/reservieren'),
         });
       })
     );

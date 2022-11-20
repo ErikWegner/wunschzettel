@@ -22,6 +22,7 @@ export class AppStateBuilder implements AppState {
     categories: [],
     items: [],
     activeItem: null,
+    reservationDialogVisible: false,
   };
   reservation: ReservationState = {
     itemid: null,
@@ -157,6 +158,16 @@ export class AppStateBuilder implements AppState {
     this.wishlist.items.length = 0;
     this.wishlist.categories.length = 0;
     items.forEach((item) => this.withItem(item));
+    return this;
+  }
+
+  withQueryParams(queryParams: Record<string, any>): AppStateBuilder {
+    this.router.state.queryParams = { ...queryParams };
+    return this;
+  }
+
+  withReservationDialogVisible(): AppStateBuilder {
+    this.wishlist.reservationDialogVisible = true;
     return this;
   }
 }

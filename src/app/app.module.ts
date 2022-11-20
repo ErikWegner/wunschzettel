@@ -47,6 +47,7 @@ import { WithCategoryPipe } from './pipes/with-category.pipe';
 import { AppGlobalStateEffects } from './store/a.effects';
 import { agReducer } from './store/a.reducer';
 import { AppState } from './store/app.state';
+import { DialogEffects } from './store/dialog/effects';
 import { ReservationEffects } from './store/r.effects';
 import { rReducer } from './store/r.reducer';
 import { CustomSerializer } from './store/router/custom-route-serializer';
@@ -102,6 +103,7 @@ import { wReducer } from './store/w.reducer';
     }),
     EffectsModule.forRoot([
       AppGlobalStateEffects,
+      DialogEffects,
       ReservationEffects,
       RouterEffects,
       WishlistEffects,

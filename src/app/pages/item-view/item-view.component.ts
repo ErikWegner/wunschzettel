@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { selectHasPendingRequest } from 'src/app/store/a.selectors';
 import { selectActiveItem } from 'src/app/store/w.selectors';

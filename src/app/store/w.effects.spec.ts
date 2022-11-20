@@ -122,7 +122,9 @@ describe('WishlistEffects', () => {
     const items$ = new BehaviorSubject(items).asObservable();
 
     itemsService.getItems.and.returnValue(items$);
-    actions$ = of(navigatedToItem({ itemId: item.id }));
+    actions$ = of(
+      navigatedToItem({ itemId: item.id, openReservationDialog: false })
+    );
 
     // Act + Assert
     const expected = cold('a', {

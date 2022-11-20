@@ -16,6 +16,7 @@ import {
   goToItem,
   itemsLoaded,
   setActiveItem,
+  setActiveItemAndShowReservationDialog,
 } from './w.actions';
 
 @Injectable()
@@ -79,7 +80,9 @@ export class WishlistEffects {
           map((items) => {
             const itemId = action.itemId;
             const item = items?.find((i) => i.id === itemId);
-            return setActiveItem({ item });
+            return action.openReservationDialog
+              ? setActiveItemAndShowReservationDialog({ item })
+              : setActiveItem({ item });
           })
         )
       )
