@@ -28,9 +28,12 @@ export class DialogEffects {
       return this.actions$.pipe(
         ofType(confirmEditReservation),
         concatLatestFrom((_action) => this.store.select(selectActiveItem)),
-        tap(([_action, activeItem]) => {
+        tap(([action, activeItem]) => {
           this.dialog.open(UpdateReservationDialogComponent, {
-            data: <DialogData>{ itemId: activeItem?.id || 0 },
+            data: <DialogData>{
+              itemId: activeItem?.id || 0,
+              targetState: action.targetState,
+            },
           });
         })
       );

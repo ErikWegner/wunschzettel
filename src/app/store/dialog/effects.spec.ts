@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
-import { EffectsModule } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -9,26 +8,40 @@ import { DialogData } from 'src/app/components/update-reservation-dialog/dialog-
 import { UpdateReservationDialogComponent } from 'src/app/components/update-reservation-dialog/update-reservation-dialog.component';
 import { appStateStub } from 'testing/app.state.builder';
 import { confirmEditReservation } from '../r.actions';
+import { selectActiveItem } from '../w.selectors';
 
 import { DialogEffects } from './effects';
 
 describe('DialogEffects', () => {
-  let actions$: Observable<Action>;
+  let actions$ = new Observable<Action>();
   let effects: DialogEffects;
   let matDialogMock: jasmine.SpyObj<MatDialog>;
+  let activeItemId: number;
 
   beforeEach(() => {
     let matDialog = jasmine.createSpyObj('MatDialog', ['open']);
-    let actions$ = new Observable<Action>();
+    matDialog.open.and.returnValue({
+      afterClosed: () => of({}),
+    });
+    const initialState = appStateStub().withActiveItem();
+    activeItemId = initialState.wishlist.activeItem?.id || 0;
     TestBed.configureTestingModule({
-      imports: [EffectsModule.forRoot([DialogEffects])],
       providers: [
-        provideMockStore({ initialState: appStateStub().withActiveItem() }),
-        provideMockActions(() => actions$),
+        DialogEffects,
         {
           provide: MatDialog,
           useValue: matDialog,
         },
+        provideMockStore({
+          initialState,
+          selectors: [
+            {
+              selector: selectActiveItem,
+              value: initialState.wishlist.activeItem,
+            },
+          ],
+        }),
+        provideMockActions(() => actions$),
       ],
     });
 
@@ -36,8 +49,11 @@ describe('DialogEffects', () => {
     matDialogMock = TestBed.inject(MatDialog) as jasmine.SpyObj<MatDialog>;
   });
 
-  [{ targetState: 'reserve' }, { targetState: 'clean' }].forEach((testsetup) =>
-    it('should open dialog for confirmEditReservation', () => {
+  [
+    { targetState: 'reserve', name: 'confirmEditReservation' },
+    { targetState: 'clean', name: 'confirmClearReservation' },
+  ].forEach((testsetup) => {
+    it('should open dialog for ' + testsetup.name, () => {
       // Arrange
       actions$ = of(
         confirmEditReservation({ targetState: testsetup.targetState as any })
@@ -51,11 +67,11 @@ describe('DialogEffects', () => {
         UpdateReservationDialogComponent,
         {
           data: <DialogData>{
-            itemId: 0,
+            itemId: activeItemId,
             targetState: testsetup.targetState as any,
           },
         }
       );
-    })
-  );
+    });
+  });
 });
