@@ -20,9 +20,6 @@ describe('DialogEffects', () => {
 
   beforeEach(() => {
     let matDialog = jasmine.createSpyObj('MatDialog', ['open']);
-    matDialog.open.and.returnValue({
-      afterClosed: () => of({}),
-    });
     const initialState = appStateStub().withActiveItem();
     activeItemId = initialState.wishlist.activeItem?.id || 0;
     TestBed.configureTestingModule({
