@@ -6,4 +6,5 @@ export interface WishlistState {
   /** All known items */
   items: WishlistItem[];
   activeItem: WishlistItem | null;
+  reservationDialogVisible: boolean;
 }

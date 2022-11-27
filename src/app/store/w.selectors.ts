@@ -19,6 +19,11 @@ export const selectActiveItem = createSelector(
   (state: WishlistState) => state.activeItem
 );
 
+export const selectReservationDialogIsVisible = createSelector(
+  selectFeature,
+  (state: WishlistState) => state.reservationDialogVisible
+);
+
 export const selectActiveItemAsFormData = createSelector(
   selectFeature,
   (state: WishlistState) => ({

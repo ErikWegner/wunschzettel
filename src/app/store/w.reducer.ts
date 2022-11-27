@@ -6,6 +6,7 @@ export const initialState: WishlistState = {
   categories: [],
   items: [],
   activeItem: null,
+  reservationDialogVisible: false,
 };
 
 export const wReducer = createReducer<WishlistState>(
@@ -31,6 +32,7 @@ export const wReducer = createReducer<WishlistState>(
     (state, p): WishlistState => ({
       ...state,
       activeItem: p.item ?? null,
+      reservationDialogVisible: false,
     })
   )
 );

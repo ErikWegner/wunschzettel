@@ -10,10 +10,7 @@ import { slideInAnimation } from '../animations';
   selector: 'app-frame',
   templateUrl: './frame.component.html',
   styleUrls: ['./frame.component.scss'],
-  animations: [
-    slideInAnimation
-  ]
-
+  animations: [slideInAnimation],
 })
 export class FrameComponent implements OnInit {
   @ViewChild('drawer') drawer: MatSidenav | undefined;

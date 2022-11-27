@@ -19,3 +19,10 @@ TODO
 👁️ In progress  
 ⏳ Waiting for dependencies  
 ✅ Done  
+
+
+Page: ItemViewComponent
+Component: ItemDisplayComponent -> ShowReservationStatusComponent
+
+ShowReservationStatusComponent.Button.Click -> dispatch:confirmEditReservation ✅
+DialogEffect
