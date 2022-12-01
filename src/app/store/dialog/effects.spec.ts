@@ -31,12 +31,6 @@ describe('DialogEffects', () => {
         },
         provideMockStore({
           initialState,
-          selectors: [
-            {
-              selector: selectActiveItem,
-              value: initialState.wishlist.activeItem,
-            },
-          ],
         }),
         provideMockActions(() => actions$),
       ],
