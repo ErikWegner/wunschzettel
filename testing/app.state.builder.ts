@@ -138,6 +138,13 @@ export class AppStateBuilder implements AppState {
       id: 1,
       ...values,
     };
+    if (
+      this.wishlist.items.every(
+        (item) => item.id != this.wishlist.activeItem?.id
+      )
+    ) {
+      this.wishlist.items.push(this.wishlist.activeItem);
+    }
     return this;
   }
 

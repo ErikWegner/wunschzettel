@@ -2,8 +2,6 @@ import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatButtonHarness } from '@angular/material/button/testing';
-import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { By } from '@angular/platform-browser';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -80,7 +78,7 @@ describe('ItemViewComponent', () => {
   it('should display item', () => {
     // Arrange
     const item = WishlistItemBuilder.default();
-    const nextState =
+    const nextState: AppState =
       AppStateBuilder.withBookCategoryAndItems().withActiveItem(item);
     store.setState(nextState);
 

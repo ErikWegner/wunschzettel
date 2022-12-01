@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { EffectsModule, ROOT_EFFECTS_INIT } from '@ngrx/effects';
+import { ROOT_EFFECTS_INIT } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -15,6 +15,7 @@ import { ItemsService } from '../services/items.service';
 import { requestFailure } from './a.actions';
 import { navigatedToItem } from './router/actions';
 import { getItems, goToCategory, goToItem, setActiveItem } from './w.actions';
+
 import { WishlistEffects } from './w.effects';
 
 describe('WishlistEffects', () => {
@@ -30,8 +31,8 @@ describe('WishlistEffects', () => {
     const routerMock = jasmine.createSpyObj('Router', ['navigate']);
 
     TestBed.configureTestingModule({
-      imports: [EffectsModule.forRoot([WishlistEffects])],
       providers: [
+        WishlistEffects,
         {
           provide: ItemsService,
           useValue: itemsServiceMock,
