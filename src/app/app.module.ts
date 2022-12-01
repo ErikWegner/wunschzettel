@@ -1,56 +1,129 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { LayoutModule } from '@angular/cdk/layout';
 import { HttpClientModule } from '@angular/common/http';
-
-import { AppRoutingModule } from './app-routing.module';
+import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { AppComponent } from './app.component';
-import { AboutComponent } from './pages/about/about.component';
-import { CategoriesListComponent } from './pages/categories-list/categories-list.component';
-import { ItemsListComponent } from './pages/items-list/items-list.component';
-import { ItemViewComponent } from './pages/item-view/item-view.component';
-import { ItemEditComponent } from './pages/item-edit/item-edit.component';
-import { ItemDeleteComponent } from './pages/item-delete/item-delete.component';
-import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatExpansionModule } from '@angular/material/expansion';
+import {
+  MatFormFieldModule,
+  MAT_FORM_FIELD_DEFAULT_OPTIONS,
+} from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CustomMaterialModule } from './custom-material/custom-material.module';
-import { LoaderComponent } from './components/loader/loader.component';
-import { MessageComponent } from './components/message/message.component';
-import { EditReservationDialogComponent } from './components/edit-reservation-dialog/edit-reservation-dialog.component';
-import { BackendService } from './backend.service';
-import { BackendServiceMock } from './backend.service.mock';
-import { environment } from 'src/environments/environment';
-import { ServiceWorkerModule } from '@angular/service-worker';
+import { EffectsModule } from '@ngrx/effects';
+import { routerReducer, StoreRouterConnectingModule } from '@ngrx/router-store';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { EmptyListComponent } from './components/empty-list/empty-list.component';
+import { ErrorDisplayComponent } from './components/error-display/error-display.component';
+import { ItemDisplayComponent } from './components/item-display/item-display.component';
+import { ItemFormComponent } from './components/item-form/item-form.component';
+import { ItemPreviewComponent } from './components/item-preview/item-preview.component';
+import { MenuNavlistComponent } from './components/menu-navlist/menu-navlist.component';
+import { ShowReservationStatusComponent } from './components/show-reservation-status/show-reservation-status.component';
+import { UpdateReservationDialogComponent } from './components/update-reservation-dialog/update-reservation-dialog.component';
+import { ConnectFormDirective } from './directives/connect-form.directive';
+import { FormEnabledDirective } from './directives/form-enabled.directive';
+import { FrameComponent } from './frame/frame.component';
+import { AboutComponent } from './pages/about/about.component';
+import { AddPageComponent } from './pages/add-page/add-page.component';
+import { CategoriesPageComponent } from './pages/categories-page/categories-page.component';
+import { CategoryPageComponent } from './pages/category-page/category-page.component';
+import { ItemViewComponent } from './pages/item-view/item-view.component';
+import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
+import { WithCategoryPipe } from './pipes/with-category.pipe';
+import { AppGlobalStateEffects } from './store/a.effects';
+import { agReducer } from './store/a.reducer';
+import { AppState } from './store/app.state';
+import { DialogEffects } from './store/dialog/effects';
+import { ReservationEffects } from './store/r.effects';
+import { rReducer } from './store/r.reducer';
+import { CustomSerializer } from './store/router/custom-route-serializer';
+import { RouterEffects } from './store/router/effects';
+import { WishlistEffects } from './store/w.effects';
+import { wReducer } from './store/w.reducer';
 
 @NgModule({
   declarations: [
-    AppComponent,
     AboutComponent,
-    CategoriesListComponent,
-    ItemsListComponent,
+    AddPageComponent,
+    AppComponent,
+    CategoriesPageComponent,
+    CategoryPageComponent,
+    ConnectFormDirective,
+    EmptyListComponent,
+    ErrorDisplayComponent,
+    FormEnabledDirective,
+    FrameComponent,
+    ItemDisplayComponent,
+    ItemFormComponent,
+    ItemPreviewComponent,
     ItemViewComponent,
-    ItemEditComponent,
-    ItemDeleteComponent,
+    MenuNavlistComponent,
     PageNotFoundComponent,
-    LoaderComponent,
-    MessageComponent,
-    EditReservationDialogComponent,
-  ],
-  entryComponents: [
-    EditReservationDialogComponent,
+    ShowReservationStatusComponent,
+    UpdateReservationDialogComponent,
+    WithCategoryPipe,
   ],
   imports: [
     BrowserModule,
-    ReactiveFormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    CustomMaterialModule,
+    LayoutModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatCardModule,
+    MatDialogModule,
+    MatExpansionModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatListModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    StoreModule.forRoot<AppState>({
+      ag: agReducer,
+      reservation: rReducer,
+      router: routerReducer,
+      wishlist: wReducer,
+    }),
+    EffectsModule.forRoot([
+      AppGlobalStateEffects,
+      DialogEffects,
+      ReservationEffects,
+      RouterEffects,
+      WishlistEffects,
+    ]),
+    // import HttpClientModule after BrowserModule.
     HttpClientModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.production,
+    }),
+    StoreRouterConnectingModule.forRoot({
+      serializer: CustomSerializer,
+    }),
   ],
   providers: [
-    { provide: BackendService, useClass: environment.production ? BackendService : BackendServiceMock }
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: { appearance: 'fill' },
+    },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

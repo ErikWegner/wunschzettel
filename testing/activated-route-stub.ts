@@ -1,6 +1,3 @@
-// export for convenience.
-export { ActivatedRoute } from '@angular/router';
-
 import { convertToParamMap, ParamMap, Params } from '@angular/router';
 import { ReplaySubject } from 'rxjs';
 
@@ -20,19 +17,8 @@ export class ActivatedRouteStub {
   /** The mock paramMap observable */
   readonly paramMap = this.subject.asObservable();
 
-  readonly snapshot = {
-    paramMap: {} as ParamMap
-  };
-
-  /** Set the paramMap observables's next value */
-  setParamMap(params?: Params) {
-    this.snapshot.paramMap = convertToParamMap(params);
-    this.subject.next(this.snapshot.paramMap);
+  /** Set the paramMap observable's next value */
+  setParamMap(params: Params = {}) {
+    this.subject.next(convertToParamMap(params));
   }
 }
-
-/*
-Copyright Google LLC. All Rights Reserved.
-Use of this source code is governed by an MIT-style license that
-can be found in the LICENSE file at http://angular.io/license
-*/

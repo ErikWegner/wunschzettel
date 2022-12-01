@@ -1,0 +1,25 @@
+<mat-spinner class="centerbox" *ngIf="(hasRequestPending$ | async)"></mat-spinner>
+<ng-container *ngIf="false === (hasRequestPending$ | async)">
+  <ng-container *ngIf="{activeCategory: activeCategory$ | async} as d">
+    <div *ngIf="d.activeCategory; then singleCategoryHeaderBlock else allHeaderBlock"></div>
+    <ng-template #singleCategoryHeaderBlock>
+      <h1>Einträge der Kategorie
+        <em>
+          {{ d.activeCategory }}
+        </em>
+      </h1>
+    </ng-template>
+    <ng-template #allHeaderBlock>
+      <h1>
+        Einträge aller Kategorien
+      </h1>
+    </ng-template>
+    <p>
+      <a *ngIf="d.activeCategory" routerLink="/wunschliste">Alle Einträge aller Kategorien</a>
+  
+      <a routerLink="/kategorien">Kategorien</a>
+    </p>
+    <app-item-preview *ngFor="let item of ((items$ | async) | withCategory:(d.activeCategory) )" [item]="item">
+    </app-item-preview>
+  </ng-container>
+</ng-container>

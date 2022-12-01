@@ -1,0 +1,45 @@
+<mat-card>
+  <mat-card-title-group>
+    <mat-card-title>{{ item?.Title }}</mat-card-title>
+    <mat-card-subtitle>{{ item?.Category }}</mat-card-subtitle>
+  </mat-card-title-group>
+  <mat-divider inset></mat-divider>
+  <mat-card-content>
+    <div class="f">
+      <p>
+        {{ item?.Description }}
+      </p>
+      <div>
+        <img mat-card-lg-image [src]="item?.ImgageUrl" />
+      </div>
+    </div>
+    <div>
+      Kauf-Adresse:
+      <a [href]="item?.BuyUrl">
+        {{ item?.BuyUrl }}
+      </a>
+    </div>
+  </mat-card-content>
+  <mat-divider inset></mat-divider>
+  <mat-card-actions>
+    <mat-expansion-panel
+      (opened)="description = openedDescription; onPanelOpened()"
+      (closed)="description = closedDescription"
+      hideToggle
+    >
+      <mat-expansion-panel-header>
+        <mat-panel-title>Reservieren und Status</mat-panel-title>
+        <mat-panel-description>{{ description }}</mat-panel-description>
+      </mat-expansion-panel-header>
+      <ng-template matExpansionPanelContent>
+        <app-show-reservation-status></app-show-reservation-status>
+      </ng-template>
+    </mat-expansion-panel>
+    <div class="f mt24">
+      <button mat-flat-button color="accent">Bearbeiten</button>
+      <div class="spacer"></div>
+      <button mat-flat-button color="primary" (click)="back()">Zurück</button>
+    </div>
+  </mat-card-actions>
+  <mat-card-footer> </mat-card-footer>
+</mat-card>

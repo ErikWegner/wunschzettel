@@ -1,23 +1,18 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatCardModule } from '@angular/material/card';
 
 import { AboutComponent } from './about.component';
-import { CustomMaterialModule } from '../../custom-material/custom-material.module';
-import { RouterTestingModule } from '@angular/router/testing';
 
 describe('AboutComponent', () => {
   let component: AboutComponent;
   let fixture: ComponentFixture<AboutComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule,
-        CustomMaterialModule,
-      ],
-      declarations: [AboutComponent]
-    })
-      .compileComponents();
-  }));
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [AboutComponent],
+      imports: [MatCardModule],
+    }).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AboutComponent);

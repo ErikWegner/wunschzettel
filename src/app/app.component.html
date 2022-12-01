@@ -1,15 +1,1 @@
-<mat-toolbar color="primary">
-  <span routerLink="/">Wunschzettel</span>
-  <!-- This fills the remaining space of the current row -->
-  <span class="flexspacer"></span>
-  <button mat-button [matMenuTriggerFor]="menu">☰</button>
-  <mat-menu #menu="matMenu">
-    <a mat-menu-item routerLink="/">Startseite</a>
-    <a mat-menu-item routerLink="/categories">Kategorien</a>
-    <a mat-menu-item routerLink="/items/add">Neuer Eintrag</a>
-    <a mat-menu-item routerLink="/about">Über</a>
-  </mat-menu>
-</mat-toolbar>
-<main>
-  <router-outlet></router-outlet>
-</main>
+<app-frame></app-frame>

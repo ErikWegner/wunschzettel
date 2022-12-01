@@ -1,0 +1,58 @@
+<form [formGroup]="itemForm" [appFormEnabled]="(hasRequestPending$ | async) === false"
+  [appConnectForm]="formData$ | async" (submit)="save()">
+  <mat-card>
+    <mat-card-title>Wunschzetteleintrag</mat-card-title>
+
+    <mat-card-content>
+      <mat-form-field>
+        <mat-label>Bezeichnung</mat-label>
+        <input matInput formControlName="title" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Beschreibung</mat-label>
+        <textarea matInput formControlName="description"></textarea>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Kategorie</mat-label>
+        <input matInput formControlName="category" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Bild-Adresse</mat-label>
+        <input matInput formControlName="imagesrc" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Kauf-Adresse</mat-label>
+        <input matInput formControlName="buyurl" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>{{ captchaChallengeText$ | async }}</mat-label>
+        <input matInput formControlName="captchaResponse" />
+        <mat-hint align="start">Bitte als Zahl eingeben.</mat-hint>
+      </mat-form-field>
+
+      <mat-progress-bar mode="indeterminate" *ngIf="hasRequestPending$ | async"></mat-progress-bar>
+      <div *ngIf="requestError$ | async">
+        <p @alertHighlightTrigger class="error">
+          Fehler: {{ requestError$ | async }}
+        </p>
+        <button mat-flat-button color="primary">Neue Aufgabe abrufen</button>
+      </div>
+
+    </mat-card-content>
+
+    <mat-card-actions>
+      <div class="f">
+        <button mat-flat-button color="accent">zurück</button>
+        <div class="spacer"></div>
+        <button mat-flat-button color="primary" type="submit" [disabled]="itemForm.invalid">
+          Speichern
+        </button>
+      </div>
+    </mat-card-actions>
+  </mat-card>
+</form>

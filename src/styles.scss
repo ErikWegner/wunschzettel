@@ -1,0 +1,49 @@
+/* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+mat-card,
+.centerbox {
+  padding: 16px;
+  margin-top: 8px;
+}
+
+.centerbox {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.c {
+  text-align: center;
+}
+
+.f {
+  display: flex;
+}
+
+.fc {
+  display: flex;
+  align-items: center;
+}
+.mt24 {
+  margin-top: 24px;
+}
+
+.error {
+  color: rgb(185, 1, 1);
+}
+
+.spacer {
+  flex: 1 0 0;
+}
+.p5 {
+  padding: 5px;
+}

@@ -1,0 +1,14 @@
+{
+  "/localservice.php": {
+    "target": "http://phpservice:6000/",
+    "secure": false
+  },
+  "/service.php": {
+    "target": "https://ewus.de",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/service.php": "/wdemo/service.php"
+    }
+  }
+}
