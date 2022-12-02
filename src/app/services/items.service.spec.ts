@@ -12,7 +12,8 @@ import { ListBuilder } from 'testing/list-builder';
 import { WishlistItemBuilder } from 'testing/item.builder';
 
 import { ItemsService } from './items.service';
-import { randomNumber } from 'testing/utils';
+import { randomNumber, randomString } from 'testing/utils';
+import { Result } from '../business/result';
 
 describe('ItemsService', () => {
   let service: ItemsService;
@@ -42,6 +43,10 @@ describe('ItemsService', () => {
     // After every test, assert that there are no more pending requests.
     httpTestingController.verify();
   });
+
+  function apiUrl(path: string) {
+    return 'service.php' + path;
+  }
 
   it('should be created', () => {
     expect(service).toBeTruthy();
@@ -83,5 +88,59 @@ describe('ItemsService', () => {
       expect(subscribeCallbacks.error).not.toHaveBeenCalled();
       expect(subscribeCallbacks.complete).toHaveBeenCalledTimes(1);
     });
+  });
+
+  it('should request captcha challenge', () => {
+    // Arrange
+    const captchaChallengeText = randomString(6, 'challenge-');
+
+    // Act
+    service.getCaptchaChallenge().subscribe(subscribeCallbacks);
+
+    // Assert
+    const req = httpTestingController.expectOne(apiUrl('?action=captcha'));
+    req.flush({ data: { captchatext: captchaChallengeText } });
+
+    expect(subscribeCallbacks.next).toHaveBeenCalledTimes(1);
+    expect(subscribeCallbacks.error).toHaveBeenCalledTimes(0);
+    expect(subscribeCallbacks.complete).toHaveBeenCalledTimes(1);
+    expect(subscribeCallbacks.next.calls.first().args[0]).toEqual(
+      new Result(captchaChallengeText)
+    );
+  });
+
+  it('should handle captcha server failure', () => {
+    // Act
+    service.getCaptchaChallenge().subscribe(subscribeCallbacks);
+
+    // Assert
+    const req = httpTestingController.expectOne(apiUrl('?action=captcha'));
+    req.flush('502: Service unavailable', {
+      status: 502,
+      statusText: 'Service unavailable',
+    });
+
+    expect(subscribeCallbacks.next).toHaveBeenCalledTimes(1);
+    expect(subscribeCallbacks.error).toHaveBeenCalledTimes(0);
+    expect(subscribeCallbacks.complete).toHaveBeenCalledTimes(1);
+    expect(subscribeCallbacks.next.calls.first().args[0]).toEqual(
+      new Result('', false)
+    );
+  });
+
+  it('should handle captcha network failure', () => {
+    // Act
+    service.getCaptchaChallenge().subscribe(subscribeCallbacks);
+
+    // Assert
+    const req = httpTestingController.expectOne(apiUrl('?action=captcha'));
+    req.error(new ProgressEvent('error'));
+
+    expect(subscribeCallbacks.next).toHaveBeenCalledTimes(1);
+    expect(subscribeCallbacks.error).toHaveBeenCalledTimes(0);
+    expect(subscribeCallbacks.complete).toHaveBeenCalledTimes(1);
+    expect(subscribeCallbacks.next.calls.first().args[0]).toEqual(
+      new Result('', false)
+    );
   });
 });
