@@ -29,12 +29,13 @@ mat-card,
   display: flex;
 }
 
+.fb {
+  display: flexbox;
+}
+
 .fc {
   display: flex;
   align-items: center;
-}
-.mt24 {
-  margin-top: 24px;
 }
 
 .error {

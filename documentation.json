@@ -420,12 +420,12 @@
         },
         {
             "name": "WishlistState",
-            "id": "interface-WishlistState-23a0350485b30af9e3d2083eb49ed30e657c334a9c5515c81279103fafa74cd7e35591d20575658f7d4acf522e98e7659db75eabfcf74dfb300098eeb233e5cb",
+            "id": "interface-WishlistState-a60975076235e2384f61e497802145566157981328d13dd7a462c4a3d745c49c2214e176467f537755abf5278a665c76886026bf0d1f02766835941f6280ccdd",
             "file": "src/app/store/w.state.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import { WishlistItem } from '../business/item';\n\nexport interface WishlistState {\n  /** All existing categories */\n  categories: string[];\n  /** All known items */\n  items: WishlistItem[];\n  activeItem: WishlistItem | null;\n}\n",
+            "sourceCode": "import { WishlistItem } from '../business/item';\n\nexport interface WishlistState {\n  /** All existing categories */\n  categories: string[];\n  /** All known items */\n  items: WishlistItem[];\n  activeItem: WishlistItem | null;\n  reservationDialogVisible: boolean;\n}\n",
             "properties": [
                 {
                     "name": "activeItem",
@@ -455,6 +455,15 @@
                     "description": "<p>All known items</p>\n",
                     "line": 7,
                     "rawdescription": "\nAll known items"
+                },
+                {
+                    "name": "reservationDialogVisible",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "optional": false,
+                    "description": "",
+                    "line": 9
                 }
             ],
             "indexSignatures": [],
@@ -503,6 +512,86 @@
                     {
                         "name": "actions$",
                         "type": "Actions",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "type": "injectable"
+        },
+        {
+            "name": "DialogEffects",
+            "id": "injectable-DialogEffects-eb9f6c139e6baf6c0e088a62047f792737536c9d46b2a4782e5c96cde5b96d396e2256347846d0496505ae1adbc0abc62008673f17a3977bbf0ade33aef4554f",
+            "file": "src/app/store/dialog/effects.ts",
+            "properties": [
+                {
+                    "name": "openDialog$",
+                    "defaultValue": "createEffect(\n    () => {\n      return this.actions$.pipe(\n        ofType(confirmEditReservation),\n        concatLatestFrom((_action) => this.store.select(selectActiveItem)),\n        tap(([action, activeItem]) => {\n          this.dialog.open(UpdateReservationDialogComponent, {\n            data: <DialogData>{\n              itemId: activeItem?.id || 0,\n              targetState: action.targetState,\n            },\n          });\n        })\n      );\n    },\n    { dispatch: false }\n  )",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 26
+                }
+            ],
+            "methods": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import { Injectable } from '@angular/core';\nimport { MatDialog } from '@angular/material/dialog';\nimport { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';\nimport { Store } from '@ngrx/store';\nimport { tap } from 'rxjs';\nimport { DialogData } from 'src/app/components/update-reservation-dialog/dialog-data';\nimport { UpdateReservationDialogComponent } from 'src/app/components/update-reservation-dialog/update-reservation-dialog.component';\nimport { confirmEditReservation } from '../r.actions';\nimport { selectActiveItem } from '../w.selectors';\n\n@Injectable()\nexport class DialogEffects {\n  constructor(\n    private actions$: Actions,\n    private dialog: MatDialog,\n    private store: Store\n  ) {}\n\n  // saveDataSuccess$ = createEffect(() =>\n  //   this.actions$.pipe(\n  //     ofType(DataActions.SaveDataSuccess),\n  //     map((response) => DialogActions.dialogClosed(response))\n  //   )\n  // );\n\n  openDialog$ = createEffect(\n    () => {\n      return this.actions$.pipe(\n        ofType(confirmEditReservation),\n        concatLatestFrom((_action) => this.store.select(selectActiveItem)),\n        tap(([action, activeItem]) => {\n          this.dialog.open(UpdateReservationDialogComponent, {\n            data: <DialogData>{\n              itemId: activeItem?.id || 0,\n              targetState: action.targetState,\n            },\n          });\n        })\n      );\n    },\n    { dispatch: false }\n  );\n\n  // dialogSaved$ = createEffect(() =>\n  //   this.actions$.pipe(\n  //     ofType(DialogActions.dialogSaved),\n  //     map((payload) => DataActions.SaveData(payload))\n  //   )\n  // );\n\n  // dialogClosed$ = createEffect(() =>\n  //   this.actions$.pipe(\n  //     ofType(DialogActions.dialogClosed),\n  //     map((payload) => {\n  //       this.dialogRef.closeAll();\n  //       return snackBarActions.savedSuccessfully(payload);\n  //     })\n  //   )\n  // );\n}\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "actions$",
+                        "type": "Actions",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "dialog",
+                        "type": "MatDialog",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "store",
+                        "type": "Store",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 12,
+                "jsdoctags": [
+                    {
+                        "name": "actions$",
+                        "type": "Actions",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "dialog",
+                        "type": "MatDialog",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "store",
+                        "type": "Store",
                         "deprecated": false,
                         "deprecationMessage": "",
                         "tagName": {
@@ -1171,12 +1260,12 @@
         },
         {
             "name": "AppStateBuilder",
-            "id": "class-AppStateBuilder-bc29b7987eaad4ce665eafa9220ef9df4f016985832b3e8eda328f49e214dcca8fd34f1dd659c2eddd6c5f7ca49c426e2d5e2dec9f9cb6317f50eaf72d8d7143",
+            "id": "class-AppStateBuilder-cc6e0aba3a88171415c914b65a40e2e4bdd8856fc42fb2565e214218edea688aefc833843d54356dc897b4a4517b09bcf80cee7748f19ffa38258a57dcff5d6a",
             "file": "testing/app.state.builder.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "class",
-            "sourceCode": "import { RouterReducerState } from '@ngrx/router-store';\nimport { Action } from '@ngrx/store';\nimport { WishlistItem } from 'src/app/business/item';\nimport { AppGlobalState } from 'src/app/store/a.state';\nimport { AppState } from 'src/app/store/app.state';\nimport { ReservationState, ReservationStatus } from 'src/app/store/r.state';\nimport { RouterStateUrl } from 'src/app/store/router/custom-route-serializer';\nimport { WishlistState } from 'src/app/store/w.state';\nimport { ListBuilder } from './list-builder';\nimport { randomString } from './utils';\n\nexport const appStateStub = (): AppStateBuilder => new AppStateBuilder();\n\nexport class AppStateBuilder implements AppState {\n  ag: AppGlobalState = {\n    captchaRequest: 'Sieben plus zwei',\n    pendingRequest: false,\n    requestErrorText: null,\n    requestRetryAction: null,\n  };\n  wishlist: WishlistState = {\n    categories: [],\n    items: [],\n    activeItem: null,\n  };\n  reservation: ReservationState = {\n    itemid: null,\n    status: 'unknown',\n    errorText: null,\n  };\n  router: RouterReducerState<RouterStateUrl> = {\n    navigationId: 0,\n    state: { url: '', params: {}, queryParams: {}, data: {} },\n  };\n\n  public static hasError(errorText: string): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.ag.requestErrorText = errorText;\n    return b;\n  }\n\n  public withRetryAction(retryAction: Action): AppStateBuilder {\n    this.ag.requestRetryAction = retryAction;\n    return this;\n  }\n\n  public static givenCategories(...categories: string[]): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.wishlist.categories = [...categories];\n    return b;\n  }\n\n  public static someCategories(): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.wishlist.categories = ListBuilder.with((i) =>\n      randomString(8, 'Category ')\n    )\n      .items(7)\n      .build();\n    return b;\n  }\n\n  public static pendingRequest(): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.ag.pendingRequest = true;\n    return b;\n  }\n\n  public static hasActiveItem(values?: Partial<WishlistItem>): AppStateBuilder {\n    const b = new AppStateBuilder();\n    return b.withActiveItem(values);\n  }\n\n  public static reservationStatus(\n    status: ReservationStatus,\n    opt?: { errorText?: string }\n  ): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.reservation.status = status;\n    b.reservation.errorText = opt?.errorText || null;\n    return b;\n  }\n\n  public static withBookCategoryAndItems(): AppStateBuilder {\n    const b = AppStateBuilder.givenCategories('Buch')\n      .withItem({\n        id: 8,\n        Title: 'Schillers Glocke',\n        Description:\n          'Das Lied von der Glocke ist ein im Jahr 1799 von Friedrich Schiller veröffentlichtes Gedicht. Es gehörte lange Zeit zum Kanon der deutschen Literatur und ist eines der bekanntesten, am meisten zitierten und parodierten deutschen Gedichte.',\n        BuyUrl: 'https://de.wikipedia.org/wiki/Das_Lied_von_der_Glocke',\n        Category: 'Buch',\n        ImgageUrl:\n          'https://upload.wikimedia.org/wikipedia/commons/6/69/Liezen_Prachteinband_Schillers_Glocke_01.jpg',\n      })\n      .withItem({\n        Title: 'Faust I + II',\n        Category: 'Buch',\n        Description: `Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des\n      Fauststoffs bezeichnet. Der Begriff kann sich auf den ersten Teil der\n      durch Goethe geschaffenen Tragödie, auf deren ersten und zweiten Teil\n      gemeinsam oder insgesamt auf die Arbeiten am Fauststoff beziehen, die\n      Goethe durch sechzig Jahre hindurch immer wieder neu aufnahm. Er umfasst\n      in diesem letzteren Sinne auch die Entwürfe, Fragmente, Kommentare und\n      Paralipomena des Dichters zu seinem Faustwerk und zum Fauststoff.`,\n        BuyUrl: 'https://de.wikipedia.org/wiki/Goethes_Faust',\n        ImgageUrl:\n          'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg',\n        id: 19,\n      })\n      .withItem({\n        id: 41,\n        Title: 'Nathan der Weise',\n        Description:\n          'Nathan der Weise ist der Titel und die Hauptfigur eines fünfaktigen Ideendramas von Gotthold Ephraim Lessing, das 1779 veröffentlicht und am 14. April 1783 in Berlin uraufgeführt wurde. Das Werk hat als Themenschwerpunkte den Humanismus und den Toleranzgedanken der Aufklärung. Besonders berühmt wurde die Ringparabel im dritten Aufzug des Dramas.',\n        BuyUrl: 'https://de.wikipedia.org/wiki/Nathan_der_Weise',\n        Category: 'Buch',\n        ImgageUrl: '',\n      });\n    return b;\n  }\n\n  withActiveItem(values?: Partial<WishlistItem>): AppStateBuilder {\n    this.wishlist.activeItem = {\n      Title: 'Faust I + II',\n      Category: 'Buch',\n      Description: `Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des\n      Fauststoffs bezeichnet. Der Begriff kann sich auf den ersten Teil der\n      durch Goethe geschaffenen Tragödie, auf deren ersten und zweiten Teil\n      gemeinsam oder insgesamt auf die Arbeiten am Fauststoff beziehen, die\n      Goethe durch sechzig Jahre hindurch immer wieder neu aufnahm. Er umfasst\n      in diesem letzteren Sinne auch die Entwürfe, Fragmente, Kommentare und\n      Paralipomena des Dichters zu seinem Faustwerk und zum Fauststoff.`,\n      BuyUrl: 'https://de.wikipedia.org/wiki/Goethes_Faust',\n      ImgageUrl:\n        'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg',\n      id: 1,\n      ...values,\n    };\n    return this;\n  }\n\n  withCaptcha(challenge: string): AppStateBuilder {\n    this.ag.captchaRequest = challenge;\n    return this;\n  }\n\n  withItem(item: WishlistItem): AppStateBuilder {\n    this.wishlist.items.push(item);\n    if (!this.wishlist.categories.includes(item.Category)) {\n      this.wishlist.categories.push(item.Category);\n    }\n    return this;\n  }\n\n  withTheseItems(items: WishlistItem[]): AppStateBuilder {\n    this.wishlist.items.length = 0;\n    this.wishlist.categories.length = 0;\n    items.forEach((item) => this.withItem(item));\n    return this;\n  }\n}\n",
+            "sourceCode": "import { RouterReducerState } from '@ngrx/router-store';\nimport { Action } from '@ngrx/store';\nimport { WishlistItem } from 'src/app/business/item';\nimport { AppGlobalState } from 'src/app/store/a.state';\nimport { AppState } from 'src/app/store/app.state';\nimport { ReservationState, ReservationStatus } from 'src/app/store/r.state';\nimport { RouterStateUrl } from 'src/app/store/router/custom-route-serializer';\nimport { WishlistState } from 'src/app/store/w.state';\nimport { ListBuilder } from './list-builder';\nimport { randomString } from './utils';\n\nexport const appStateStub = (): AppStateBuilder => new AppStateBuilder();\n\nexport class AppStateBuilder implements AppState {\n  ag: AppGlobalState = {\n    captchaRequest: 'Sieben plus zwei',\n    pendingRequest: false,\n    requestErrorText: null,\n    requestRetryAction: null,\n  };\n  wishlist: WishlistState = {\n    categories: [],\n    items: [],\n    activeItem: null,\n    reservationDialogVisible: false,\n  };\n  reservation: ReservationState = {\n    itemid: null,\n    status: 'unknown',\n    errorText: null,\n  };\n  router: RouterReducerState<RouterStateUrl> = {\n    navigationId: 0,\n    state: { url: '', params: {}, queryParams: {}, data: {} },\n  };\n\n  public static hasError(errorText: string): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.ag.requestErrorText = errorText;\n    return b;\n  }\n\n  public withRetryAction(retryAction: Action): AppStateBuilder {\n    this.ag.requestRetryAction = retryAction;\n    return this;\n  }\n\n  public static givenCategories(...categories: string[]): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.wishlist.categories = [...categories];\n    return b;\n  }\n\n  public static someCategories(): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.wishlist.categories = ListBuilder.with((i) =>\n      randomString(8, 'Category ')\n    )\n      .items(7)\n      .build();\n    return b;\n  }\n\n  public static pendingRequest(): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.ag.pendingRequest = true;\n    return b;\n  }\n\n  public static hasActiveItem(values?: Partial<WishlistItem>): AppStateBuilder {\n    const b = new AppStateBuilder();\n    return b.withActiveItem(values);\n  }\n\n  public static reservationStatus(\n    status: ReservationStatus,\n    opt?: { errorText?: string }\n  ): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.reservation.status = status;\n    b.reservation.errorText = opt?.errorText || null;\n    return b;\n  }\n\n  public static withBookCategoryAndItems(): AppStateBuilder {\n    const b = AppStateBuilder.givenCategories('Buch')\n      .withItem({\n        id: 8,\n        Title: 'Schillers Glocke',\n        Description:\n          'Das Lied von der Glocke ist ein im Jahr 1799 von Friedrich Schiller veröffentlichtes Gedicht. Es gehörte lange Zeit zum Kanon der deutschen Literatur und ist eines der bekanntesten, am meisten zitierten und parodierten deutschen Gedichte.',\n        BuyUrl: 'https://de.wikipedia.org/wiki/Das_Lied_von_der_Glocke',\n        Category: 'Buch',\n        ImgageUrl:\n          'https://upload.wikimedia.org/wikipedia/commons/6/69/Liezen_Prachteinband_Schillers_Glocke_01.jpg',\n      })\n      .withItem({\n        Title: 'Faust I + II',\n        Category: 'Buch',\n        Description: `Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des\n      Fauststoffs bezeichnet. Der Begriff kann sich auf den ersten Teil der\n      durch Goethe geschaffenen Tragödie, auf deren ersten und zweiten Teil\n      gemeinsam oder insgesamt auf die Arbeiten am Fauststoff beziehen, die\n      Goethe durch sechzig Jahre hindurch immer wieder neu aufnahm. Er umfasst\n      in diesem letzteren Sinne auch die Entwürfe, Fragmente, Kommentare und\n      Paralipomena des Dichters zu seinem Faustwerk und zum Fauststoff.`,\n        BuyUrl: 'https://de.wikipedia.org/wiki/Goethes_Faust',\n        ImgageUrl:\n          'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg',\n        id: 19,\n      })\n      .withItem({\n        id: 41,\n        Title: 'Nathan der Weise',\n        Description:\n          'Nathan der Weise ist der Titel und die Hauptfigur eines fünfaktigen Ideendramas von Gotthold Ephraim Lessing, das 1779 veröffentlicht und am 14. April 1783 in Berlin uraufgeführt wurde. Das Werk hat als Themenschwerpunkte den Humanismus und den Toleranzgedanken der Aufklärung. Besonders berühmt wurde die Ringparabel im dritten Aufzug des Dramas.',\n        BuyUrl: 'https://de.wikipedia.org/wiki/Nathan_der_Weise',\n        Category: 'Buch',\n        ImgageUrl: '',\n      });\n    return b;\n  }\n\n  withActiveItem(values?: Partial<WishlistItem>): AppStateBuilder {\n    this.wishlist.activeItem = {\n      Title: 'Faust I + II',\n      Category: 'Buch',\n      Description: `Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des\n      Fauststoffs bezeichnet. Der Begriff kann sich auf den ersten Teil der\n      durch Goethe geschaffenen Tragödie, auf deren ersten und zweiten Teil\n      gemeinsam oder insgesamt auf die Arbeiten am Fauststoff beziehen, die\n      Goethe durch sechzig Jahre hindurch immer wieder neu aufnahm. Er umfasst\n      in diesem letzteren Sinne auch die Entwürfe, Fragmente, Kommentare und\n      Paralipomena des Dichters zu seinem Faustwerk und zum Fauststoff.`,\n      BuyUrl: 'https://de.wikipedia.org/wiki/Goethes_Faust',\n      ImgageUrl:\n        'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg',\n      id: 1,\n      ...values,\n    };\n    if (\n      this.wishlist.items.every(\n        (item) => item.id != this.wishlist.activeItem?.id\n      )\n    ) {\n      this.wishlist.items.push(this.wishlist.activeItem);\n    }\n    return this;\n  }\n\n  withCaptcha(challenge: string): AppStateBuilder {\n    this.ag.captchaRequest = challenge;\n    return this;\n  }\n\n  withItem(item: WishlistItem): AppStateBuilder {\n    this.wishlist.items.push(item);\n    if (!this.wishlist.categories.includes(item.Category)) {\n      this.wishlist.categories.push(item.Category);\n    }\n    return this;\n  }\n\n  withTheseItems(items: WishlistItem[]): AppStateBuilder {\n    this.wishlist.items.length = 0;\n    this.wishlist.categories.length = 0;\n    items.forEach((item) => this.withItem(item));\n    return this;\n  }\n\n  withQueryParams(queryParams: Record<string, any>): AppStateBuilder {\n    this.router.state.queryParams = { ...queryParams };\n    return this;\n  }\n\n  withReservationDialogVisible(): AppStateBuilder {\n    this.wishlist.reservationDialogVisible = true;\n    return this;\n  }\n}\n",
             "properties": [
                 {
                     "name": "ag",
@@ -1196,7 +1285,7 @@
                     "type": "ReservationState",
                     "optional": false,
                     "description": "",
-                    "line": 26
+                    "line": 27
                 },
                 {
                     "name": "router",
@@ -1206,11 +1295,11 @@
                     "type": "RouterReducerState<RouterStateUrl>",
                     "optional": false,
                     "description": "",
-                    "line": 31
+                    "line": 32
                 },
                 {
                     "name": "wishlist",
-                    "defaultValue": "{\n    categories: [],\n    items: [],\n    activeItem: null,\n  }",
+                    "defaultValue": "{\n    categories: [],\n    items: [],\n    activeItem: null,\n    reservationDialogVisible: false,\n  }",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "WishlistState",
@@ -1234,7 +1323,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 47,
+                    "line": 48,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1267,7 +1356,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 69,
+                    "line": 70,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1299,7 +1388,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 36,
+                    "line": 37,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1323,7 +1412,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 63,
+                    "line": 64,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1350,7 +1439,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 74,
+                    "line": 75,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1384,7 +1473,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 53,
+                    "line": 54,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1405,7 +1494,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 123,
+                    "line": 124,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -1427,7 +1516,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 84,
+                    "line": 85,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1447,7 +1536,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 143,
+                    "line": 151,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -1475,7 +1564,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 148,
+                    "line": 156,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -1491,6 +1580,44 @@
                     ]
                 },
                 {
+                    "name": "withQueryParams",
+                    "args": [
+                        {
+                            "name": "queryParams",
+                            "type": "Record<string | any>",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "AppStateBuilder",
+                    "typeParameters": [],
+                    "line": 171,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "queryParams",
+                            "type": "Record<string | any>",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "withReservationDialogVisible",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "AppStateBuilder",
+                    "typeParameters": [],
+                    "line": 176,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
                     "name": "withRetryAction",
                     "args": [
                         {
@@ -1503,7 +1630,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 42,
+                    "line": 43,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1534,7 +1661,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 156,
+                    "line": 164,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -2981,7 +3108,7 @@
         },
         {
             "name": "FrameComponent",
-            "id": "component-FrameComponent-7b6ae25badd7c2ddb9efc3e591915adadeade50bc986b975dc43440cac22a067bab2f25a4d3a14b0ca5473df913b43f3fd84e1503702f311026fb2efeac69211",
+            "id": "component-FrameComponent-6bbdb31a1a5f3c930a0384c298d99be3773cbff9c523d86ec85f370ede2888746050b3763ec3234e0537dc9d0ab88c50948fa0ab1afe34a897e18eed3c7524b9",
             "file": "src/app/frame/frame.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -3007,7 +3134,7 @@
                     "type": "MatSidenav | undefined",
                     "optional": false,
                     "description": "",
-                    "line": 19,
+                    "line": 16,
                     "decorators": [
                         {
                             "name": "ViewChild",
@@ -3023,7 +3150,7 @@
                     "type": "Observable<boolean>",
                     "optional": false,
                     "description": "",
-                    "line": 21
+                    "line": 18
                 }
             ],
             "methodsClass": [
@@ -3033,7 +3160,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 33,
+                    "line": 30,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -3050,7 +3177,7 @@
                     "optional": false,
                     "returnType": "any",
                     "typeParameters": [],
-                    "line": 42,
+                    "line": 39,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -3073,7 +3200,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';\nimport { Component, OnInit, ViewChild } from '@angular/core';\nimport { MatSidenav } from '@angular/material/sidenav';\nimport { NavigationEnd, Router, RouterOutlet } from '@angular/router';\nimport { Observable } from 'rxjs';\nimport { filter, map, shareReplay, withLatestFrom } from 'rxjs/operators';\nimport { slideInAnimation } from '../animations';\n\n@Component({\n  selector: 'app-frame',\n  templateUrl: './frame.component.html',\n  styleUrls: ['./frame.component.scss'],\n  animations: [\n    slideInAnimation\n  ]\n\n})\nexport class FrameComponent implements OnInit {\n  @ViewChild('drawer') drawer: MatSidenav | undefined;\n\n  isHandset$: Observable<boolean> = this.breakpointObserver\n    .observe(Breakpoints.Handset)\n    .pipe(\n      map((result) => result.matches),\n      shareReplay()\n    );\n\n  constructor(\n    private breakpointObserver: BreakpointObserver,\n    private router: Router\n  ) {}\n\n  ngOnInit(): void {\n    this.router.events\n      .pipe(\n        withLatestFrom(this.isHandset$),\n        filter(([a, b]) => b && a instanceof NavigationEnd)\n      )\n      .subscribe((_) => this.drawer?.close());\n  }\n\n  prepareRoute(outlet: RouterOutlet) {\n    return outlet?.activatedRouteData?.['animation'];\n  }\n}\n",
+            "sourceCode": "import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';\nimport { Component, OnInit, ViewChild } from '@angular/core';\nimport { MatSidenav } from '@angular/material/sidenav';\nimport { NavigationEnd, Router, RouterOutlet } from '@angular/router';\nimport { Observable } from 'rxjs';\nimport { filter, map, shareReplay, withLatestFrom } from 'rxjs/operators';\nimport { slideInAnimation } from '../animations';\n\n@Component({\n  selector: 'app-frame',\n  templateUrl: './frame.component.html',\n  styleUrls: ['./frame.component.scss'],\n  animations: [slideInAnimation],\n})\nexport class FrameComponent implements OnInit {\n  @ViewChild('drawer') drawer: MatSidenav | undefined;\n\n  isHandset$: Observable<boolean> = this.breakpointObserver\n    .observe(Breakpoints.Handset)\n    .pipe(\n      map((result) => result.matches),\n      shareReplay()\n    );\n\n  constructor(\n    private breakpointObserver: BreakpointObserver,\n    private router: Router\n  ) {}\n\n  ngOnInit(): void {\n    this.router.events\n      .pipe(\n        withLatestFrom(this.isHandset$),\n        filter(([a, b]) => b && a instanceof NavigationEnd)\n      )\n      .subscribe((_) => this.drawer?.close());\n  }\n\n  prepareRoute(outlet: RouterOutlet) {\n    return outlet?.activatedRouteData?.['animation'];\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -3101,7 +3228,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 26,
+                "line": 23,
                 "jsdoctags": [
                     {
                         "name": "breakpointObserver",
@@ -3346,7 +3473,7 @@
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": "mat-card-content {\n  padding-top: 6px;\n\n  img {\n    margin-left: 3px;\n    max-width: 200px;\n    width: auto;\n    height: auto;\n  }\n}\n",
+                    "data": "mat-card-content {\n  padding-top: 6px;\n\n  img {\n    margin-left: 3px;\n    max-width: 200px;\n    width: auto;\n    height: auto;\n  }\n}\n\nmat-divider {\n  margin-top: 24px;\n  margin-bottom: 12px;\n}",
                     "styleUrl": "./item-display.component.scss"
                 }
             ],
@@ -3380,7 +3507,7 @@
             "implements": [
                 "OnChanges"
             ],
-            "templateData": "<mat-card>\n  <mat-card-title-group>\n    <mat-card-title>{{ item?.Title }}</mat-card-title>\n    <mat-card-subtitle>{{ item?.Category }}</mat-card-subtitle>\n  </mat-card-title-group>\n  <mat-divider inset></mat-divider>\n  <mat-card-content>\n    <div class=\"f\">\n      <p>\n        {{ item?.Description }}\n      </p>\n      <div>\n        <img mat-card-lg-image [src]=\"item?.ImgageUrl\" />\n      </div>\n    </div>\n    <div>\n      Kauf-Adresse:\n      <a [href]=\"item?.BuyUrl\">\n        {{ item?.BuyUrl }}\n      </a>\n    </div>\n  </mat-card-content>\n  <mat-divider inset></mat-divider>\n  <mat-card-actions>\n    <mat-expansion-panel\n      (opened)=\"description = openedDescription; onPanelOpened()\"\n      (closed)=\"description = closedDescription\"\n      hideToggle\n    >\n      <mat-expansion-panel-header>\n        <mat-panel-title>Reservieren und Status</mat-panel-title>\n        <mat-panel-description>{{ description }}</mat-panel-description>\n      </mat-expansion-panel-header>\n      <ng-template matExpansionPanelContent>\n        <app-show-reservation-status></app-show-reservation-status>\n      </ng-template>\n    </mat-expansion-panel>\n    <div class=\"f mt24\">\n      <button mat-flat-button color=\"accent\">Bearbeiten</button>\n      <div class=\"spacer\"></div>\n      <button mat-flat-button color=\"primary\" (click)=\"back()\">Zurück</button>\n    </div>\n  </mat-card-actions>\n  <mat-card-footer> </mat-card-footer>\n</mat-card>\n"
+            "templateData": "<mat-card>\n  <mat-card-title-group>\n    <mat-card-title>{{ item?.Title }}</mat-card-title>\n    <mat-card-subtitle>{{ item?.Category }}</mat-card-subtitle>\n  </mat-card-title-group>\n  <mat-divider></mat-divider>\n  <mat-card-content>\n    <div class=\"f\">\n      <p>\n        {{ item?.Description }}\n      </p>\n      <div>\n        <img mat-card-lg-image [src]=\"item?.ImgageUrl\" />\n      </div>\n    </div>\n    <div>\n      Kauf-Adresse:\n      <a [href]=\"item?.BuyUrl\">\n        {{ item?.BuyUrl }}\n      </a>\n    </div>\n  </mat-card-content>\n  <mat-divider></mat-divider>\n  <mat-card-content>\n    <mat-expansion-panel\n    (opened)=\"description = openedDescription; onPanelOpened()\"\n    (closed)=\"description = closedDescription\"\n    hideToggle\n  >\n    <mat-expansion-panel-header>\n      <mat-panel-title>Reservieren und Status</mat-panel-title>\n      <mat-panel-description>{{ description }}</mat-panel-description>\n    </mat-expansion-panel-header>\n    <ng-template matExpansionPanelContent>\n      <app-show-reservation-status></app-show-reservation-status>\n    </ng-template>\n  </mat-expansion-panel>\n  </mat-card-content>\n  <mat-divider></mat-divider>\n  <mat-card-actions>\n      <button mat-flat-button color=\"accent\">Bearbeiten</button>\n      <div class=\"spacer\"></div>\n      <button mat-flat-button color=\"primary\" (click)=\"back()\">Zurück</button>\n  </mat-card-actions>\n  <mat-card-footer> </mat-card-footer>\n</mat-card>\n"
         },
         {
             "name": "ItemDisplayStubComponent",
@@ -3718,7 +3845,7 @@
         },
         {
             "name": "ItemViewComponent",
-            "id": "component-ItemViewComponent-623e9e649f159392ab78314cc38efef2313f535e8a11886ab8fdd98829ce8111715c1a39d588e268a690da080d5dc2aa31d58782758015fca9be2dd3914f923f",
+            "id": "component-ItemViewComponent-9a3bb3d14857a79adedb986b9c0408da9d998058c90971d937399313983c21944a0adb01e5aacc05cb4c112c060e188ac2db99bd95fe0b8144076cd2ad774247",
             "file": "src/app/pages/item-view/item-view.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -3766,7 +3893,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, OnInit } from '@angular/core';\nimport { Store } from '@ngrx/store';\nimport { selectHasPendingRequest } from 'src/app/store/a.selectors';\nimport { selectActiveItem } from 'src/app/store/w.selectors';\n\n@Component({\n  selector: 'app-item-view',\n  templateUrl: './item-view.component.html',\n  styleUrls: ['./item-view.component.scss'],\n})\nexport class ItemViewComponent {\n  hasRequestPending$ = this.store.select(selectHasPendingRequest);\n  item$ = this.store.select(selectActiveItem);\n  constructor(private store: Store) {}\n}\n",
+            "sourceCode": "import { Component } from '@angular/core';\nimport { Store } from '@ngrx/store';\nimport { selectHasPendingRequest } from 'src/app/store/a.selectors';\nimport { selectActiveItem } from 'src/app/store/w.selectors';\n\n@Component({\n  selector: 'app-item-view',\n  templateUrl: './item-view.component.html',\n  styleUrls: ['./item-view.component.scss'],\n})\nexport class ItemViewComponent {\n  hasRequestPending$ = this.store.select(selectHasPendingRequest);\n  item$ = this.store.select(selectActiveItem);\n  constructor(private store: Store) {}\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -4063,7 +4190,7 @@
         },
         {
             "name": "ShowReservationStatusComponent",
-            "id": "component-ShowReservationStatusComponent-34e867cf0d146d6ebd33b70b1f7f88bb4826712f4f4bc890939108b3a91e865a041f7af26a46346172cea084690a9d0d66f1a9d7f9d13be3d673d7e39329b60e",
+            "id": "component-ShowReservationStatusComponent-d50a46acc8095b6379afce6f96111abf759f69ff95ca29070caf79786a80f8859c88ff39c821e395b68a72e00edc384bed3f9feda5696c9e37d7d3c2d51c2932",
             "file": "src/app/components/show-reservation-status/show-reservation-status.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -4132,7 +4259,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, EventEmitter, Output } from '@angular/core';\nimport { Store } from '@ngrx/store';\nimport { confirmEditReservation } from 'src/app/store/r.actions';\nimport {\n  selectReservationErrorText,\n  selectReservationState,\n} from 'src/app/store/r.selectors';\n\n@Component({\n  selector: 'app-show-reservation-status',\n  templateUrl: './show-reservation-status.component.html',\n  styleUrls: ['./show-reservation-status.component.scss'],\n})\nexport class ShowReservationStatusComponent {\n  reservationStatus$ = this.store.select(selectReservationState);\n  reservationErrorText$ = this.store.select(selectReservationErrorText);\n\n  constructor(private store: Store) {}\n\n  onClickClearReservation(): void {\n    this.store.dispatch(confirmEditReservation({ targetState: 'clear' }));\n  }\n\n  onClickReservation(): void {\n    this.store.dispatch(confirmEditReservation({ targetState: 'reserve' }));\n  }\n}\n",
+            "sourceCode": "import { Component } from '@angular/core';\nimport { Store } from '@ngrx/store';\nimport { confirmEditReservation } from 'src/app/store/r.actions';\nimport {\n  selectReservationErrorText,\n  selectReservationState,\n} from 'src/app/store/r.selectors';\n\n@Component({\n  selector: 'app-show-reservation-status',\n  templateUrl: './show-reservation-status.component.html',\n  styleUrls: ['./show-reservation-status.component.scss'],\n})\nexport class ShowReservationStatusComponent {\n  reservationStatus$ = this.store.select(selectReservationState);\n  reservationErrorText$ = this.store.select(selectReservationErrorText);\n\n  constructor(private store: Store) {}\n\n  onClickClearReservation(): void {\n    this.store.dispatch(confirmEditReservation({ targetState: 'clear' }));\n  }\n\n  onClickReservation(): void {\n    this.store.dispatch(confirmEditReservation({ targetState: 'reserve' }));\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -4210,7 +4337,7 @@
         },
         {
             "name": "UpdateReservationDialogComponent",
-            "id": "component-UpdateReservationDialogComponent-a467e251e913748ca5410251eb017ae2d195a0ba03aab2c47ec8aef811f734e25bbb9bcdbba5cb4f4217640ca9e48e86911e60af5ef44b9e785d388980fe537b",
+            "id": "component-UpdateReservationDialogComponent-a4cc35a564e1d216b59b537cf0a5c2db827f3f183d9e1a7883aa2c358a0aea78c84a81089ec5fc08bdf2b72054a24f30a655542cd9fb9f473b9e563725f2322a",
             "file": "src/app/components/update-reservation-dialog/update-reservation-dialog.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -4316,7 +4443,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, Inject, OnInit } from '@angular/core';\nimport { MAT_DIALOG_DATA } from '@angular/material/dialog';\nimport { BehaviorSubject, map, mergeMap, shareReplay } from 'rxjs';\nimport { ItemsService } from 'src/app/services/items.service';\nimport { DialogData } from './dialog-data';\n\n@Component({\n  selector: 'app-update-reservation-dialog',\n  templateUrl: './update-reservation-dialog.component.html',\n  styleUrls: ['./update-reservation-dialog.component.scss'],\n})\nexport class UpdateReservationDialogComponent implements OnInit {\n  private challengeRequest$ = new BehaviorSubject(null);\n\n  public title = '';\n  public challenge$ = this.challengeRequest$.pipe(\n    mergeMap((_) => this.itemsService.getCaptchaChallenge()),\n    shareReplay(1)\n  );\n\n  constructor(\n    @Inject(MAT_DIALOG_DATA) public data: DialogData,\n    private itemsService: ItemsService\n  ) {}\n\n  ngOnInit(): void {\n    this.title =\n      this.data.targetState === 'reserve'\n        ? 'Reservieren'\n        : 'Reservierung löschen';\n  }\n\n  challengeRequest(): void {\n    this.challengeRequest$.next(null);\n  }\n}\n",
+            "sourceCode": "import { Component, Inject, OnInit } from '@angular/core';\nimport { MAT_DIALOG_DATA } from '@angular/material/dialog';\nimport { BehaviorSubject, mergeMap, shareReplay } from 'rxjs';\nimport { ItemsService } from 'src/app/services/items.service';\nimport { DialogData } from './dialog-data';\n\n@Component({\n  selector: 'app-update-reservation-dialog',\n  templateUrl: './update-reservation-dialog.component.html',\n  styleUrls: ['./update-reservation-dialog.component.scss'],\n})\nexport class UpdateReservationDialogComponent implements OnInit {\n  private challengeRequest$ = new BehaviorSubject(null);\n\n  public title = '';\n  public challenge$ = this.challengeRequest$.pipe(\n    mergeMap((_) => this.itemsService.getCaptchaChallenge()),\n    shareReplay(1)\n  );\n\n  constructor(\n    @Inject(MAT_DIALOG_DATA) public data: DialogData,\n    private itemsService: ItemsService\n  ) {}\n\n  ngOnInit(): void {\n    this.title =\n      this.data.targetState === 'reserve'\n        ? 'Reservieren'\n        : 'Reservierung löschen';\n  }\n\n  challengeRequest(): void {\n    this.challengeRequest$.next(null);\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -4369,19 +4496,19 @@
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<h2 mat-dialog-title>{{ title }}</h2>\n\n<mat-dialog-content class=\"mat-typography\">\n  <ng-container *ngIf=\"challenge$ | async as challenge\">\n    <ng-container *ngIf=\"challenge.success\">\n      <mat-form-field appearance=\"standard\">\n        <mat-label>{{ challenge.data }}</mat-label>\n        <input matInput placeholder=\"Zahl\" />\n        <mat-hint>Bitte als Zahl eingeben</mat-hint>\n      </mat-form-field>\n    </ng-container>\n  </ng-container>\n  <button mat-flat-button (click)=\"challengeRequest()\">Neue Aufgabe</button>\n</mat-dialog-content>\n<mat-dialog-actions align=\"end\">\n  <button mat-flat-button mat-dialog-close>Abbruch</button>\n  <button mat-flat-button [mat-dialog-close]=\"true\" color=\"primary\">{{ data.targetState === 'clear' ? 'Löschen' : 'Reservieren' }}</button>\n</mat-dialog-actions>\n"
+            "templateData": "<h2 mat-dialog-title>{{ title }}</h2>\n\n<mat-dialog-content class=\"mat-typography\">\n  <ng-container *ngIf=\"challenge$ | async as challenge\">\n    <ng-container *ngIf=\"challenge.success\">\n      <mat-form-field appearance=\"fill\">\n        <mat-label>{{ challenge.data }}</mat-label>\n        <input matInput placeholder=\"Zahl\" />\n        <mat-hint>Bitte als Zahl eingeben</mat-hint>\n      </mat-form-field>\n    </ng-container>\n  </ng-container>\n  <button mat-flat-button (click)=\"challengeRequest()\">Neue Aufgabe</button>\n</mat-dialog-content>\n<mat-dialog-actions align=\"end\">\n  <button mat-flat-button mat-dialog-close>Abbruch</button>\n  <button mat-flat-button [mat-dialog-close]=\"true\" color=\"primary\">{{ data.targetState === 'clear' ? 'Löschen' : 'Reservieren' }}</button>\n</mat-dialog-actions>\n"
         }
     ],
     "modules": [
         {
             "name": "AppModule",
-            "id": "module-AppModule-42dcb60cfdf2dd1e26efba395cb64457c18fa5f648726a8096d099c0d4b7f48070a8332d30c68b290761a9bf95174d40f9d6a0b4ed65fd7aaf4523a804a44294",
+            "id": "module-AppModule-595f19a9a69ac56fa69f3dce18e80bda530e7fbc98ba3f784b9e9c59dfed58966ba74bdefde6a027f673172428411940b7bcb67e626039f1e1df9713bd745a57",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/app.module.ts",
             "methods": [],
-            "sourceCode": "import { LayoutModule } from '@angular/cdk/layout';\nimport { HttpClientModule } from '@angular/common/http';\nimport { NgModule } from '@angular/core';\nimport { ReactiveFormsModule } from '@angular/forms';\nimport { MatButtonModule } from '@angular/material/button';\nimport { MatCardModule } from '@angular/material/card';\nimport { MatDialogModule } from '@angular/material/dialog';\nimport { MatExpansionModule } from '@angular/material/expansion';\nimport {\n  MatFormFieldModule,\n  MAT_FORM_FIELD_DEFAULT_OPTIONS,\n} from '@angular/material/form-field';\nimport { MatIconModule } from '@angular/material/icon';\nimport { MatInputModule } from '@angular/material/input';\nimport { MatListModule } from '@angular/material/list';\nimport { MatProgressBarModule } from '@angular/material/progress-bar';\nimport { MatProgressSpinnerModule } from '@angular/material/progress-spinner';\nimport { MatSidenavModule } from '@angular/material/sidenav';\nimport { MatToolbarModule } from '@angular/material/toolbar';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\nimport { EffectsModule } from '@ngrx/effects';\nimport { routerReducer, StoreRouterConnectingModule } from '@ngrx/router-store';\nimport { StoreModule } from '@ngrx/store';\nimport { StoreDevtoolsModule } from '@ngrx/store-devtools';\nimport { environment } from '../environments/environment';\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { EmptyListComponent } from './components/empty-list/empty-list.component';\nimport { ErrorDisplayComponent } from './components/error-display/error-display.component';\nimport { ItemDisplayComponent } from './components/item-display/item-display.component';\nimport { ItemFormComponent } from './components/item-form/item-form.component';\nimport { ItemPreviewComponent } from './components/item-preview/item-preview.component';\nimport { MenuNavlistComponent } from './components/menu-navlist/menu-navlist.component';\nimport { ShowReservationStatusComponent } from './components/show-reservation-status/show-reservation-status.component';\nimport { UpdateReservationDialogComponent } from './components/update-reservation-dialog/update-reservation-dialog.component';\nimport { ConnectFormDirective } from './directives/connect-form.directive';\nimport { FormEnabledDirective } from './directives/form-enabled.directive';\nimport { FrameComponent } from './frame/frame.component';\nimport { AboutComponent } from './pages/about/about.component';\nimport { AddPageComponent } from './pages/add-page/add-page.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { CategoryPageComponent } from './pages/category-page/category-page.component';\nimport { ItemViewComponent } from './pages/item-view/item-view.component';\nimport { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';\nimport { WithCategoryPipe } from './pipes/with-category.pipe';\nimport { AppGlobalStateEffects } from './store/a.effects';\nimport { agReducer } from './store/a.reducer';\nimport { AppState } from './store/app.state';\nimport { ReservationEffects } from './store/r.effects';\nimport { rReducer } from './store/r.reducer';\nimport { CustomSerializer } from './store/router/custom-route-serializer';\nimport { RouterEffects } from './store/router/effects';\nimport { WishlistEffects } from './store/w.effects';\nimport { wReducer } from './store/w.reducer';\n\n@NgModule({\n  declarations: [\n    AboutComponent,\n    AddPageComponent,\n    AppComponent,\n    CategoriesPageComponent,\n    CategoryPageComponent,\n    ConnectFormDirective,\n    EmptyListComponent,\n    ErrorDisplayComponent,\n    FormEnabledDirective,\n    FrameComponent,\n    ItemDisplayComponent,\n    ItemFormComponent,\n    ItemPreviewComponent,\n    ItemViewComponent,\n    MenuNavlistComponent,\n    PageNotFoundComponent,\n    ShowReservationStatusComponent,\n    UpdateReservationDialogComponent,\n    WithCategoryPipe,\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    BrowserAnimationsModule,\n    LayoutModule,\n    ReactiveFormsModule,\n    MatButtonModule,\n    MatCardModule,\n    MatDialogModule,\n    MatExpansionModule,\n    MatFormFieldModule,\n    MatIconModule,\n    MatInputModule,\n    MatListModule,\n    MatProgressBarModule,\n    MatProgressSpinnerModule,\n    MatSidenavModule,\n    MatToolbarModule,\n    StoreModule.forRoot<AppState>({\n      ag: agReducer,\n      reservation: rReducer,\n      router: routerReducer,\n      wishlist: wReducer,\n    }),\n    EffectsModule.forRoot([\n      AppGlobalStateEffects,\n      ReservationEffects,\n      RouterEffects,\n      WishlistEffects,\n    ]),\n    // import HttpClientModule after BrowserModule.\n    HttpClientModule,\n    StoreDevtoolsModule.instrument({\n      maxAge: 25,\n      logOnly: environment.production,\n    }),\n    StoreRouterConnectingModule.forRoot({\n      serializer: CustomSerializer,\n    }),\n  ],\n  providers: [\n    {\n      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,\n      useValue: { appearance: 'fill' },\n    },\n  ],\n  bootstrap: [AppComponent],\n})\nexport class AppModule {}\n",
+            "sourceCode": "import { LayoutModule } from '@angular/cdk/layout';\nimport { HttpClientModule } from '@angular/common/http';\nimport { NgModule } from '@angular/core';\nimport { ReactiveFormsModule } from '@angular/forms';\nimport { MatButtonModule } from '@angular/material/button';\nimport { MatCardModule } from '@angular/material/card';\nimport { MatDialogModule } from '@angular/material/dialog';\nimport { MatExpansionModule } from '@angular/material/expansion';\nimport {\n  MatFormFieldModule,\n  MAT_FORM_FIELD_DEFAULT_OPTIONS,\n} from '@angular/material/form-field';\nimport { MatIconModule } from '@angular/material/icon';\nimport { MatInputModule } from '@angular/material/input';\nimport { MatListModule } from '@angular/material/list';\nimport { MatProgressBarModule } from '@angular/material/progress-bar';\nimport { MatProgressSpinnerModule } from '@angular/material/progress-spinner';\nimport { MatSidenavModule } from '@angular/material/sidenav';\nimport { MatToolbarModule } from '@angular/material/toolbar';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\nimport { EffectsModule } from '@ngrx/effects';\nimport { routerReducer, StoreRouterConnectingModule } from '@ngrx/router-store';\nimport { StoreModule } from '@ngrx/store';\nimport { StoreDevtoolsModule } from '@ngrx/store-devtools';\nimport { environment } from '../environments/environment';\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { EmptyListComponent } from './components/empty-list/empty-list.component';\nimport { ErrorDisplayComponent } from './components/error-display/error-display.component';\nimport { ItemDisplayComponent } from './components/item-display/item-display.component';\nimport { ItemFormComponent } from './components/item-form/item-form.component';\nimport { ItemPreviewComponent } from './components/item-preview/item-preview.component';\nimport { MenuNavlistComponent } from './components/menu-navlist/menu-navlist.component';\nimport { ShowReservationStatusComponent } from './components/show-reservation-status/show-reservation-status.component';\nimport { UpdateReservationDialogComponent } from './components/update-reservation-dialog/update-reservation-dialog.component';\nimport { ConnectFormDirective } from './directives/connect-form.directive';\nimport { FormEnabledDirective } from './directives/form-enabled.directive';\nimport { FrameComponent } from './frame/frame.component';\nimport { AboutComponent } from './pages/about/about.component';\nimport { AddPageComponent } from './pages/add-page/add-page.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { CategoryPageComponent } from './pages/category-page/category-page.component';\nimport { ItemViewComponent } from './pages/item-view/item-view.component';\nimport { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';\nimport { WithCategoryPipe } from './pipes/with-category.pipe';\nimport { AppGlobalStateEffects } from './store/a.effects';\nimport { agReducer } from './store/a.reducer';\nimport { AppState } from './store/app.state';\nimport { DialogEffects } from './store/dialog/effects';\nimport { ReservationEffects } from './store/r.effects';\nimport { rReducer } from './store/r.reducer';\nimport { CustomSerializer } from './store/router/custom-route-serializer';\nimport { RouterEffects } from './store/router/effects';\nimport { WishlistEffects } from './store/w.effects';\nimport { wReducer } from './store/w.reducer';\n\n@NgModule({\n  declarations: [\n    AboutComponent,\n    AddPageComponent,\n    AppComponent,\n    CategoriesPageComponent,\n    CategoryPageComponent,\n    ConnectFormDirective,\n    EmptyListComponent,\n    ErrorDisplayComponent,\n    FormEnabledDirective,\n    FrameComponent,\n    ItemDisplayComponent,\n    ItemFormComponent,\n    ItemPreviewComponent,\n    ItemViewComponent,\n    MenuNavlistComponent,\n    PageNotFoundComponent,\n    ShowReservationStatusComponent,\n    UpdateReservationDialogComponent,\n    WithCategoryPipe,\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    BrowserAnimationsModule,\n    LayoutModule,\n    ReactiveFormsModule,\n    MatButtonModule,\n    MatCardModule,\n    MatDialogModule,\n    MatExpansionModule,\n    MatFormFieldModule,\n    MatIconModule,\n    MatInputModule,\n    MatListModule,\n    MatProgressBarModule,\n    MatProgressSpinnerModule,\n    MatSidenavModule,\n    MatToolbarModule,\n    StoreModule.forRoot<AppState>({\n      ag: agReducer,\n      reservation: rReducer,\n      router: routerReducer,\n      wishlist: wReducer,\n    }),\n    EffectsModule.forRoot([\n      AppGlobalStateEffects,\n      DialogEffects,\n      ReservationEffects,\n      RouterEffects,\n      WishlistEffects,\n    ]),\n    // import HttpClientModule after BrowserModule.\n    HttpClientModule,\n    StoreDevtoolsModule.instrument({\n      maxAge: 25,\n      logOnly: environment.production,\n    }),\n    StoreRouterConnectingModule.forRoot({\n      serializer: CustomSerializer,\n    }),\n  ],\n  providers: [\n    {\n      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,\n      useValue: { appearance: 'fill' },\n    },\n  ],\n  bootstrap: [AppComponent],\n})\nexport class AppModule {}\n",
             "children": [
                 {
                     "type": "providers",
@@ -4573,16 +4700,6 @@
                 "deprecationMessage": "",
                 "type": "",
                 "defaultValue": "createAction(\n  '[R] Confirm edit reservation status',\n  props<{\n    targetState: 'reserve' | 'clear';\n  }>()\n)"
-            },
-            {
-                "name": "context",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/test.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "",
-                "defaultValue": "require.context('./', true, /\\.spec\\.ts$/)"
             },
             {
                 "name": "customDefaultProviders",
@@ -4942,7 +5059,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "WishlistState",
-                "defaultValue": "{\n  categories: [],\n  items: [],\n  activeItem: null,\n}"
+                "defaultValue": "{\n  categories: [],\n  items: [],\n  activeItem: null,\n  reservationDialogVisible: false,\n}"
             },
             {
                 "name": "IsFree",
@@ -5155,15 +5272,6 @@
                 "defaultValue": "createAction(\n  '[A] Request requestFailure',\n  props<{\n    errorText: string;\n    errorDetails?: string;\n    retryAction?: Action;\n  }>()\n)"
             },
             {
-                "name": "require",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/test.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "literal type"
-            },
-            {
                 "name": "reservationStatusResponse",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -5364,6 +5472,16 @@
                 "defaultValue": "createSelector(\n  selectFeature,\n  (state: AppGlobalState) => state.requestErrorText\n)"
             },
             {
+                "name": "selectReservationDialogIsVisible",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/w.selectors.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createSelector(\n  selectFeature,\n  (state: WishlistState) => state.reservationDialogVisible\n)"
+            },
+            {
                 "name": "selectReservationErrorText",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -5392,6 +5510,16 @@
                 "deprecationMessage": "",
                 "type": "",
                 "defaultValue": "createAction(\n  '[W] Set active item',\n  props<{\n    item?: WishlistItem;\n  }>()\n)"
+            },
+            {
+                "name": "showReservationDialog",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/dialog/actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction(\n  '[D] Show reservation dialog',\n  props<{\n    itemId: number;\n  }>()\n)"
             },
             {
                 "name": "slideInAnimation",
@@ -5531,7 +5659,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
-                "defaultValue": "createReducer<WishlistState>(\n  initialState,\n  on(\n    itemsLoaded,\n    (state, p): WishlistState => ({\n      ...state,\n      categories: p.items\n        .map((i) => i.Category)\n        .reduce((a, c) => {\n          if (a.indexOf(c) === -1) {\n            a.push(c);\n          }\n          return a;\n        }, [] as string[])\n        .sort(),\n      items: p.items,\n    })\n  ),\n  on(\n    setActiveItem,\n    (state, p): WishlistState => ({\n      ...state,\n      activeItem: p.item ?? null,\n    })\n  )\n)"
+                "defaultValue": "createReducer<WishlistState>(\n  initialState,\n  on(\n    itemsLoaded,\n    (state, p): WishlistState => ({\n      ...state,\n      categories: p.items\n        .map((i) => i.Category)\n        .reduce((a, c) => {\n          if (a.indexOf(c) === -1) {\n            a.push(c);\n          }\n          return a;\n        }, [] as string[])\n        .sort(),\n      items: p.items,\n    })\n  ),\n  on(\n    setActiveItem,\n    (state, p): WishlistState => ({\n      ...state,\n      activeItem: p.item ?? null,\n      reservationDialogVisible: false,\n    })\n  )\n)"
             }
         ],
         "functions": [
@@ -5862,27 +5990,6 @@
                     "deprecationMessage": "",
                     "type": "",
                     "defaultValue": "createAction(\n  '[R] Retrieve reservation status',\n  props<{\n    itemId: number;\n  }>()\n)"
-                }
-            ],
-            "src/test.ts": [
-                {
-                    "name": "context",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/test.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "require.context('./', true, /\\.spec\\.ts$/)"
-                },
-                {
-                    "name": "require",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/test.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "literal type"
                 }
             ],
             "src/stories/UpdateReservationDialog.stories.ts": [
@@ -6454,7 +6561,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "WishlistState",
-                    "defaultValue": "{\n  categories: [],\n  items: [],\n  activeItem: null,\n}"
+                    "defaultValue": "{\n  categories: [],\n  items: [],\n  activeItem: null,\n  reservationDialogVisible: false,\n}"
                 },
                 {
                     "name": "wReducer",
@@ -6464,7 +6571,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
-                    "defaultValue": "createReducer<WishlistState>(\n  initialState,\n  on(\n    itemsLoaded,\n    (state, p): WishlistState => ({\n      ...state,\n      categories: p.items\n        .map((i) => i.Category)\n        .reduce((a, c) => {\n          if (a.indexOf(c) === -1) {\n            a.push(c);\n          }\n          return a;\n        }, [] as string[])\n        .sort(),\n      items: p.items,\n    })\n  ),\n  on(\n    setActiveItem,\n    (state, p): WishlistState => ({\n      ...state,\n      activeItem: p.item ?? null,\n    })\n  )\n)"
+                    "defaultValue": "createReducer<WishlistState>(\n  initialState,\n  on(\n    itemsLoaded,\n    (state, p): WishlistState => ({\n      ...state,\n      categories: p.items\n        .map((i) => i.Category)\n        .reduce((a, c) => {\n          if (a.indexOf(c) === -1) {\n            a.push(c);\n          }\n          return a;\n        }, [] as string[])\n        .sort(),\n      items: p.items,\n    })\n  ),\n  on(\n    setActiveItem,\n    (state, p): WishlistState => ({\n      ...state,\n      activeItem: p.item ?? null,\n      reservationDialogVisible: false,\n    })\n  )\n)"
                 }
             ],
             "src/stories/Button.stories.ts": [
@@ -6645,6 +6752,16 @@
                     "deprecationMessage": "",
                     "type": "",
                     "defaultValue": "createSelector(\n  selectFeature,\n  (state: WishlistState) => state.items\n)"
+                },
+                {
+                    "name": "selectReservationDialogIsVisible",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/w.selectors.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createSelector(\n  selectFeature,\n  (state: WishlistState) => state.reservationDialogVisible\n)"
                 }
             ],
             "src/app/store/a.selectors.ts": [
@@ -6739,6 +6856,18 @@
                     "deprecationMessage": "",
                     "type": "",
                     "defaultValue": "createSelector(\n  selectFeature,\n  (state: ReservationState) => state.status\n)"
+                }
+            ],
+            "src/app/store/dialog/actions.ts": [
+                {
+                    "name": "showReservationDialog",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/dialog/actions.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createAction(\n  '[D] Show reservation dialog',\n  props<{\n    itemId: number;\n  }>()\n)"
                 }
             ],
             "src/app/animations.ts": [
@@ -7321,6 +7450,25 @@
                 "status": "low"
             },
             {
+                "filePath": "src/app/store/dialog/actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "showReservationDialog",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/dialog/effects.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "DialogEffects",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
                 "filePath": "src/app/store/r.actions.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
@@ -7614,12 +7762,22 @@
                 "status": "low"
             },
             {
+                "filePath": "src/app/store/w.selectors.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "selectReservationDialogIsVisible",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
                 "filePath": "src/app/store/w.state.ts",
                 "type": "interface",
                 "linktype": "interface",
                 "name": "WishlistState",
-                "coveragePercent": 50,
-                "coverageCount": "2/4",
+                "coveragePercent": 40,
+                "coverageCount": "2/5",
                 "status": "medium"
             },
             {
@@ -8309,26 +8467,6 @@
                 "status": "low"
             },
             {
-                "filePath": "src/test.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "context",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/test.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "require",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
                 "filePath": "testing/activated-route-stub.ts",
                 "type": "class",
                 "linktype": "classe",
@@ -8343,7 +8481,7 @@
                 "linktype": "classe",
                 "name": "AppStateBuilder",
                 "coveragePercent": 0,
-                "coverageCount": "0/17",
+                "coverageCount": "0/19",
                 "status": "low"
             },
             {
