@@ -225,6 +225,29 @@
             "methods": []
         },
         {
+            "name": "GetCaptchaChallengeResponse",
+            "id": "interface-GetCaptchaChallengeResponse-c9ae588121b792c764ca051c33f50fc1dde15869f78a7eb000a6b65806d93ab5d53d41c85c064c6b0cc71d3560ea2b8486f926f9ac24e009c6a520d4a231a374",
+            "file": "src/app/services/items.service.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "import { HttpClient } from '@angular/common/http';\nimport { Injectable } from '@angular/core';\nimport { catchError, EMPTY, map, Observable, of, shareReplay } from 'rxjs';\nimport { AddItemResponse } from '../business/add-item-response';\nimport { WishlistItem } from '../business/item';\nimport { Result } from '../business/result';\n\ninterface GetCaptchaChallengeResponse {\n  data: {\n    captchatext: string;\n  };\n}\n\n@Injectable({\n  providedIn: 'root',\n})\nexport class ItemsService {\n  private cachedItems$: Observable<WishlistItem[]> | null = null;\n\n  constructor(private http: HttpClient) {}\n\n  public getItems(): Observable<WishlistItem[]> {\n    if (!this.cachedItems$) {\n      this.cachedItems$ = this.http\n        .get<{ data: WishlistItem[] }>('service.php?action=list')\n        .pipe(\n          map((d) => d.data),\n          shareReplay(1)\n        );\n    }\n    return this.cachedItems$;\n  }\n\n  public getReservationFlag(id: number): Observable<boolean> {\n    return this.http\n      .get<{ data: { status: boolean } }>(`service.php?action=status&id=${id}`)\n      .pipe(map((d) => d.data.status));\n  }\n\n  public setReservationFlag(\n    id: number,\n    flag: boolean,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public setItem(\n    item: WishlistItem,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public addItem(\n    item: WishlistItem,\n    captchaAnswer: string\n  ): Observable<Result<AddItemResponse>> {\n    return EMPTY;\n  }\n\n  public deleteItem(\n    id: number,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public getCaptchaChallenge(): Observable<Result<string>> {\n    return this.http\n      .get<GetCaptchaChallengeResponse>('service.php?action=captcha')\n      .pipe(\n        map((r) => new Result(r.data.captchatext)),\n        catchError(() => of(new Result('', false)))\n      );\n  }\n}\n",
+            "properties": [
+                {
+                    "name": "data",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "literal type",
+                    "optional": false,
+                    "description": "",
+                    "line": 9
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 165,
+            "methods": []
+        },
+        {
             "name": "ReservationState",
             "id": "interface-ReservationState-9f9f1cb10005b9c8353b75f71e441a2ff4ec73710792a55c09dc7ef7cae89ddae2312216928dedd3bbd868bdca89b36d37b2eaf03f4fdf28ff278157cffc9592",
             "file": "src/app/store/r.state.ts",
@@ -604,7 +627,7 @@
         },
         {
             "name": "ItemsService",
-            "id": "injectable-ItemsService-45c51e338b9a94aae2e13a707f4db6027441c494f573ad807402ac3ce388dd23c0ef23e640c2535302635749137ae027c0ddb77edad99d218a2d3f973a9eb58d",
+            "id": "injectable-ItemsService-c9ae588121b792c764ca051c33f50fc1dde15869f78a7eb000a6b65806d93ab5d53d41c85c064c6b0cc71d3560ea2b8486f926f9ac24e009c6a520d4a231a374",
             "file": "src/app/services/items.service.ts",
             "properties": [
                 {
@@ -615,7 +638,7 @@
                     "type": "Observable<WishlistItem[]> | null",
                     "optional": false,
                     "description": "",
-                    "line": 12,
+                    "line": 18,
                     "modifierKind": [
                         121
                     ]
@@ -641,7 +664,7 @@
                     "optional": false,
                     "returnType": "Observable<Result<AddItemResponse>>",
                     "typeParameters": [],
-                    "line": 49,
+                    "line": 55,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -687,7 +710,7 @@
                     "optional": false,
                     "returnType": "Observable<Result<string>>",
                     "typeParameters": [],
-                    "line": 56,
+                    "line": 62,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -720,7 +743,7 @@
                     "optional": false,
                     "returnType": "Observable<Result<string>>",
                     "typeParameters": [],
-                    "line": 63,
+                    "line": 69,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -733,7 +756,7 @@
                     "optional": false,
                     "returnType": "Observable<WishlistItem[]>",
                     "typeParameters": [],
-                    "line": 16,
+                    "line": 22,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -753,7 +776,7 @@
                     "optional": false,
                     "returnType": "Observable<boolean>",
                     "typeParameters": [],
-                    "line": 28,
+                    "line": 34,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -790,7 +813,7 @@
                     "optional": false,
                     "returnType": "Observable<Result<string>>",
                     "typeParameters": [],
-                    "line": 42,
+                    "line": 48,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -842,7 +865,7 @@
                     "optional": false,
                     "returnType": "Observable<Result<string>>",
                     "typeParameters": [],
-                    "line": 34,
+                    "line": 40,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -883,7 +906,7 @@
             "deprecationMessage": "",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import { HttpClient } from '@angular/common/http';\nimport { Injectable } from '@angular/core';\nimport { EMPTY, map, Observable, shareReplay } from 'rxjs';\nimport { AddItemResponse } from '../business/add-item-response';\nimport { WishlistItem } from '../business/item';\nimport { Result } from '../business/result';\n\n@Injectable({\n  providedIn: 'root',\n})\nexport class ItemsService {\n  private cachedItems$: Observable<WishlistItem[]> | null = null;\n\n  constructor(private http: HttpClient) {}\n\n  public getItems(): Observable<WishlistItem[]> {\n    if (!this.cachedItems$) {\n      this.cachedItems$ = this.http\n        .get<{ data: WishlistItem[] }>('service.php?action=list')\n        .pipe(\n          map((d) => d.data),\n          shareReplay(1)\n        );\n    }\n    return this.cachedItems$;\n  }\n\n  public getReservationFlag(id: number): Observable<boolean> {\n    return this.http\n      .get<{ data: { status: boolean } }>(`service.php?action=status&id=${id}`)\n      .pipe(map((d) => d.data.status));\n  }\n\n  public setReservationFlag(\n    id: number,\n    flag: boolean,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public setItem(\n    item: WishlistItem,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public addItem(\n    item: WishlistItem,\n    captchaAnswer: string\n  ): Observable<Result<AddItemResponse>> {\n    return EMPTY;\n  }\n\n  public deleteItem(\n    id: number,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public getCaptchaChallenge(): Observable<Result<string>> {\n    throw new Error('Not implemented');\n  }\n}\n",
+            "sourceCode": "import { HttpClient } from '@angular/common/http';\nimport { Injectable } from '@angular/core';\nimport { catchError, EMPTY, map, Observable, of, shareReplay } from 'rxjs';\nimport { AddItemResponse } from '../business/add-item-response';\nimport { WishlistItem } from '../business/item';\nimport { Result } from '../business/result';\n\ninterface GetCaptchaChallengeResponse {\n  data: {\n    captchatext: string;\n  };\n}\n\n@Injectable({\n  providedIn: 'root',\n})\nexport class ItemsService {\n  private cachedItems$: Observable<WishlistItem[]> | null = null;\n\n  constructor(private http: HttpClient) {}\n\n  public getItems(): Observable<WishlistItem[]> {\n    if (!this.cachedItems$) {\n      this.cachedItems$ = this.http\n        .get<{ data: WishlistItem[] }>('service.php?action=list')\n        .pipe(\n          map((d) => d.data),\n          shareReplay(1)\n        );\n    }\n    return this.cachedItems$;\n  }\n\n  public getReservationFlag(id: number): Observable<boolean> {\n    return this.http\n      .get<{ data: { status: boolean } }>(`service.php?action=status&id=${id}`)\n      .pipe(map((d) => d.data.status));\n  }\n\n  public setReservationFlag(\n    id: number,\n    flag: boolean,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public setItem(\n    item: WishlistItem,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public addItem(\n    item: WishlistItem,\n    captchaAnswer: string\n  ): Observable<Result<AddItemResponse>> {\n    return EMPTY;\n  }\n\n  public deleteItem(\n    id: number,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public getCaptchaChallenge(): Observable<Result<string>> {\n    return this.http\n      .get<GetCaptchaChallengeResponse>('service.php?action=captcha')\n      .pipe(\n        map((r) => new Result(r.data.captchatext)),\n        catchError(() => of(new Result('', false)))\n      );\n  }\n}\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -897,7 +920,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 12,
+                "line": 18,
                 "jsdoctags": [
                     {
                         "name": "http",
@@ -4447,7 +4470,7 @@
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": "",
+                    "data": ".mat-mdc-dialog-content>* {\n  padding: 20px;\n}",
                     "styleUrl": "./update-reservation-dialog.component.scss"
                 }
             ],
@@ -4496,7 +4519,7 @@
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<h2 mat-dialog-title>{{ title }}</h2>\n\n<mat-dialog-content class=\"mat-typography\">\n  <ng-container *ngIf=\"challenge$ | async as challenge\">\n    <ng-container *ngIf=\"challenge.success\">\n      <mat-form-field appearance=\"fill\">\n        <mat-label>{{ challenge.data }}</mat-label>\n        <input matInput placeholder=\"Zahl\" />\n        <mat-hint>Bitte als Zahl eingeben</mat-hint>\n      </mat-form-field>\n    </ng-container>\n  </ng-container>\n  <button mat-flat-button (click)=\"challengeRequest()\">Neue Aufgabe</button>\n</mat-dialog-content>\n<mat-dialog-actions align=\"end\">\n  <button mat-flat-button mat-dialog-close>Abbruch</button>\n  <button mat-flat-button [mat-dialog-close]=\"true\" color=\"primary\">{{ data.targetState === 'clear' ? 'Löschen' : 'Reservieren' }}</button>\n</mat-dialog-actions>\n"
+            "templateData": "<h1 mat-dialog-title>{{ title }}</h1>\n\n<div mat-dialog-content class=\"mat-typography f\">\n  <ng-container *ngIf=\"challenge$ | async as challenge\">\n    <ng-container *ngIf=\"challenge.success\">\n      <mat-form-field appearance=\"fill\">\n        <mat-label>{{ challenge.data }}</mat-label>\n        <input matInput placeholder=\"Zahl\" />\n        <mat-hint>Bitte als Zahl eingeben</mat-hint>\n      </mat-form-field>\n    </ng-container>\n  </ng-container>\n  <button mat-flat-button (click)=\"challengeRequest()\">Neue Aufgabe</button>\n</div>\n<div mat-dialog-actions align=\"end\">\n  <button mat-flat-button mat-dialog-close>Abbruch</button>\n  <button mat-flat-button [mat-dialog-close]=\"true\" color=\"primary\">{{ data.targetState === 'clear' ? 'Löschen' : 'Reservieren' }}</button>\n</div>\n"
         }
     ],
     "modules": [
@@ -7320,6 +7343,15 @@
                 "name": "ItemsService",
                 "coveragePercent": 0,
                 "coverageCount": "0/10",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/services/items.service.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "GetCaptchaChallengeResponse",
+                "coveragePercent": 0,
+                "coverageCount": "0/2",
                 "status": "low"
             },
             {
