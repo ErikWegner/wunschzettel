@@ -4360,7 +4360,7 @@
         },
         {
             "name": "UpdateReservationDialogComponent",
-            "id": "component-UpdateReservationDialogComponent-a4cc35a564e1d216b59b537cf0a5c2db827f3f183d9e1a7883aa2c358a0aea78c84a81089ec5fc08bdf2b72054a24f30a655542cd9fb9f473b9e563725f2322a",
+            "id": "component-UpdateReservationDialogComponent-df6cc7e094f120ef07d6bdf29e40f183500a7c84c41f5dd3d08edaa9024f2f681596da0d6be345052d3ebd41e09622ccbe9237115cff981ca6a076c1a1e3b7e9",
             "file": "src/app/components/update-reservation-dialog/update-reservation-dialog.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -4381,7 +4381,7 @@
             "propertiesClass": [
                 {
                     "name": "challenge$",
-                    "defaultValue": "this.challengeRequest$.pipe(\n    mergeMap((_) => this.itemsService.getCaptchaChallenge()),\n    shareReplay(1)\n  )",
+                    "defaultValue": "this.challengeRequest$.pipe(\n    tap((_) => {\n      this.requestPending = true;\n    }),\n    mergeMap((_) => this.itemsService.getCaptchaChallenge()),\n    tap((_) => {\n      this.requestPending = false;\n    }),\n    shareReplay(1)\n  )",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
@@ -4412,13 +4412,26 @@
                     "type": "DialogData",
                     "optional": false,
                     "description": "",
-                    "line": 22,
+                    "line": 29,
                     "decorators": [
                         {
                             "name": "Inject",
                             "stringifiedArguments": "MAT_DIALOG_DATA"
                         }
                     ],
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "requestPending",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 26,
                     "modifierKind": [
                         123
                     ]
@@ -4444,7 +4457,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 33,
+                    "line": 40,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -4454,7 +4467,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 26,
+                    "line": 33,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -4466,7 +4479,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, Inject, OnInit } from '@angular/core';\nimport { MAT_DIALOG_DATA } from '@angular/material/dialog';\nimport { BehaviorSubject, mergeMap, shareReplay } from 'rxjs';\nimport { ItemsService } from 'src/app/services/items.service';\nimport { DialogData } from './dialog-data';\n\n@Component({\n  selector: 'app-update-reservation-dialog',\n  templateUrl: './update-reservation-dialog.component.html',\n  styleUrls: ['./update-reservation-dialog.component.scss'],\n})\nexport class UpdateReservationDialogComponent implements OnInit {\n  private challengeRequest$ = new BehaviorSubject(null);\n\n  public title = '';\n  public challenge$ = this.challengeRequest$.pipe(\n    mergeMap((_) => this.itemsService.getCaptchaChallenge()),\n    shareReplay(1)\n  );\n\n  constructor(\n    @Inject(MAT_DIALOG_DATA) public data: DialogData,\n    private itemsService: ItemsService\n  ) {}\n\n  ngOnInit(): void {\n    this.title =\n      this.data.targetState === 'reserve'\n        ? 'Reservieren'\n        : 'Reservierung löschen';\n  }\n\n  challengeRequest(): void {\n    this.challengeRequest$.next(null);\n  }\n}\n",
+            "sourceCode": "import { Component, Inject, OnInit } from '@angular/core';\nimport { MAT_DIALOG_DATA } from '@angular/material/dialog';\nimport { BehaviorSubject, mergeMap, shareReplay, tap } from 'rxjs';\nimport { ItemsService } from 'src/app/services/items.service';\nimport { DialogData } from './dialog-data';\n\n@Component({\n  selector: 'app-update-reservation-dialog',\n  templateUrl: './update-reservation-dialog.component.html',\n  styleUrls: ['./update-reservation-dialog.component.scss'],\n})\nexport class UpdateReservationDialogComponent implements OnInit {\n  private challengeRequest$ = new BehaviorSubject(null);\n\n  public title = '';\n  public challenge$ = this.challengeRequest$.pipe(\n    tap((_) => {\n      this.requestPending = true;\n    }),\n    mergeMap((_) => this.itemsService.getCaptchaChallenge()),\n    tap((_) => {\n      this.requestPending = false;\n    }),\n    shareReplay(1)\n  );\n  public requestPending = false;\n\n  constructor(\n    @Inject(MAT_DIALOG_DATA) public data: DialogData,\n    private itemsService: ItemsService\n  ) {}\n\n  ngOnInit(): void {\n    this.title =\n      this.data.targetState === 'reserve'\n        ? 'Reservieren'\n        : 'Reservierung löschen';\n  }\n\n  challengeRequest(): void {\n    this.challengeRequest$.next(null);\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -4494,7 +4507,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 19,
+                "line": 26,
                 "jsdoctags": [
                     {
                         "name": "data",
@@ -4519,7 +4532,7 @@
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<h1 mat-dialog-title>{{ title }}</h1>\n\n<div mat-dialog-content class=\"mat-typography f\">\n  <ng-container *ngIf=\"challenge$ | async as challenge\">\n    <ng-container *ngIf=\"challenge.success\">\n      <mat-form-field appearance=\"fill\">\n        <mat-label>{{ challenge.data }}</mat-label>\n        <input matInput placeholder=\"Zahl\" />\n        <mat-hint>Bitte als Zahl eingeben</mat-hint>\n      </mat-form-field>\n    </ng-container>\n  </ng-container>\n  <button mat-flat-button (click)=\"challengeRequest()\">Neue Aufgabe</button>\n</div>\n<div mat-dialog-actions align=\"end\">\n  <button mat-flat-button mat-dialog-close>Abbruch</button>\n  <button mat-flat-button [mat-dialog-close]=\"true\" color=\"primary\">{{ data.targetState === 'clear' ? 'Löschen' : 'Reservieren' }}</button>\n</div>\n"
+            "templateData": "<h1 mat-dialog-title>{{ title }}</h1>\n\n<div mat-dialog-content class=\"mat-typography f\">\n  <div *ngIf=\"challenge$ | async as challenge\">\n    <ng-container *ngIf=\"challenge.success\">\n      <mat-form-field appearance=\"fill\">\n        <mat-label>{{ challenge.data }}</mat-label>\n        <input matInput placeholder=\"Zahl\" />\n        <mat-hint>Bitte als Zahl eingeben</mat-hint>\n      </mat-form-field>\n    </ng-container>\n  </div>\n  <button mat-flat-button [color]=\"requestPending ? '' : 'accent'\" (click)=\"challengeRequest()\"\n    [disabled]=\"requestPending\">\n    <mat-spinner diameter=\"36\" *ngIf=\"requestPending; else refreshbutton\"></mat-spinner>\n    <ng-template #refreshbutton>\n      Aufgabe\n    </ng-template>\n  </button>\n</div>\n<div mat-dialog-actions align=\"end\">\n  <button mat-flat-button mat-dialog-close>Abbruch</button>\n  <button mat-flat-button [mat-dialog-close]=\"true\" color=\"primary\">{{ data.targetState === 'clear' ? 'Löschen' : 'Reservieren' }}</button>\n</div>\n"
         }
     ],
     "modules": [
@@ -7243,7 +7256,7 @@
                 "linktype": "component",
                 "name": "UpdateReservationDialogComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/8",
+                "coverageCount": "0/9",
                 "status": "low"
             },
             {

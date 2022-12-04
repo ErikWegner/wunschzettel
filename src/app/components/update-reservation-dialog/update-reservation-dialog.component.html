@@ -1,7 +1,7 @@
 <h1 mat-dialog-title>{{ title }}</h1>
 
 <div mat-dialog-content class="mat-typography f">
-  <ng-container *ngIf="challenge$ | async as challenge">
+  <div *ngIf="challenge$ | async as challenge">
     <ng-container *ngIf="challenge.success">
       <mat-form-field appearance="fill">
         <mat-label>{{ challenge.data }}</mat-label>
@@ -9,8 +9,14 @@
         <mat-hint>Bitte als Zahl eingeben</mat-hint>
       </mat-form-field>
     </ng-container>
-  </ng-container>
-  <button mat-flat-button (click)="challengeRequest()">Neue Aufgabe</button>
+  </div>
+  <button mat-flat-button [color]="requestPending ? '' : 'accent'" (click)="challengeRequest()"
+    [disabled]="requestPending">
+    <mat-spinner diameter="36" *ngIf="requestPending; else refreshbutton"></mat-spinner>
+    <ng-template #refreshbutton>
+      Aufgabe
+    </ng-template>
+  </button>
 </div>
 <div mat-dialog-actions align="end">
   <button mat-flat-button mat-dialog-close>Abbruch</button>

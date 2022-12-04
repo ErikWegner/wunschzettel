@@ -7,7 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatFormFieldHarness } from '@angular/material/form-field/testing';
 import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { Observable, of } from 'rxjs';
+import { NEVER, Observable, of } from 'rxjs';
 import { ItemsService } from 'src/app/services/items.service';
 import { randomNumber, randomString } from 'testing/utils';
 import { Result } from '../../business/result';
@@ -64,7 +64,11 @@ describe('UpdateReservationDialogComponent', () => {
       title: 'Reservierung löschen',
       buttonText: 'Löschen',
     },
-    { targetState: 'reserve', title: 'Reservieren', buttonText: 'Reservieren' },
+    {
+      targetState: 'reserve',
+      title: 'Reservieren',
+      buttonText: 'Reservieren',
+    },
   ].forEach((testsetup) => {
     it(`should set title on init for ${testsetup.targetState}`, async () => {
       // Arrange
@@ -98,29 +102,92 @@ describe('UpdateReservationDialogComponent', () => {
       const label = await control.getLabel();
       expect(label).toBe(challenge);
     });
+
+    it('should set pending request indicator in OnInit', () => {
+      // Arrange
+      itemsService.getCaptchaChallenge.calls.reset();
+      itemsService.getCaptchaChallenge.and.returnValue(NEVER);
+
+      // Act
+      fixture.detectChanges();
+
+      // Assert
+      expect(fixture.componentInstance.requestPending).toBeTrue();
+    });
+
+    it('should hide requestPending on init', async () => {
+      // Arrange
+      itemsService.getCaptchaChallenge.calls.reset();
+      itemsService.getCaptchaChallenge.and.returnValue(of(new Result('0')));
+
+      // Act
+      fixture.detectChanges();
+
+      // Assert
+      expect(fixture.componentInstance.requestPending).toBeFalse();
+    });
   });
 
-  it('should refresh captcha', async () => {
-    // Arrange
-    const challenge1 = randomString(8, 'captcha 1:');
-    const challenge2 = randomString(8, 'captcha 2:');
-    itemsService.getCaptchaChallenge.calls.reset();
-    itemsService.getCaptchaChallenge.and.returnValues(
-      of(new Result(challenge1)),
-      of(new Result(challenge2))
-    );
+  describe('refresh', () => {
+    const clickNeueAufgabe = async () => {
+      const button = await loader.getHarness(
+        MatButtonHarness.with({ text: 'Neue Aufgabe' })
+      );
+      fixture.detectChanges();
 
-    const button = await loader.getHarness(
-      MatButtonHarness.with({ text: 'Neue Aufgabe' })
-    );
-    fixture.detectChanges();
+      await button.click();
+    };
 
-    // Act
-    await button.click();
+    it('should refresh captcha', async () => {
+      // Arrange
+      const challenge1 = randomString(8, 'captcha 1:');
+      const challenge2 = randomString(8, 'captcha 2:');
+      itemsService.getCaptchaChallenge.calls.reset();
+      itemsService.getCaptchaChallenge.and.returnValues(
+        of(new Result(challenge1)),
+        of(new Result(challenge2))
+      );
 
-    // Assert
-    const control = (await loader.getAllHarnesses(MatFormFieldHarness))[0];
-    const label = await control.getLabel();
-    expect(label).toBe(challenge2);
+      // Act
+      await clickNeueAufgabe();
+
+      // Assert
+      const control = (await loader.getAllHarnesses(MatFormFieldHarness))[0];
+      const label = await control.getLabel();
+      expect(label).toBe(challenge2);
+    });
+
+    it('should set pending request indicator on refresh action', async () => {
+      // Arrange
+      const challenge1 = randomString(8, 'captcha 1:');
+      itemsService.getCaptchaChallenge.calls.reset();
+      itemsService.getCaptchaChallenge.and.returnValues(
+        of(new Result(challenge1)),
+        NEVER
+      );
+
+      // Act
+      await clickNeueAufgabe();
+
+      // Assert
+      expect(fixture.componentInstance.requestPending).toBeTrue();
+    });
+
+    it('should refresh captcha', async () => {
+      // Arrange
+      const challenge1 = randomString(8, 'captcha 1:');
+      const challenge2 = randomString(8, 'captcha 2:');
+      itemsService.getCaptchaChallenge.calls.reset();
+      itemsService.getCaptchaChallenge.and.returnValues(
+        of(new Result(challenge1)),
+        of(new Result(challenge2))
+      );
+
+      // Act
+      await clickNeueAufgabe();
+
+      // Assert
+      expect(fixture.componentInstance.requestPending).toBeFalse();
+    });
   });
 });
