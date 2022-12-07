@@ -1,11 +1,13 @@
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatButtonModule } from '@angular/material/button';
 import { MatButtonHarness } from '@angular/material/button/testing';
 import { MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatFormFieldHarness } from '@angular/material/form-field/testing';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NEVER, Observable, of } from 'rxjs';
 import { ItemsService } from 'src/app/services/items.service';
@@ -35,9 +37,11 @@ describe('UpdateReservationDialogComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [UpdateReservationDialogComponent],
       imports: [
+        MatButtonModule,
         MatDialogModule,
         MatFormFieldModule,
         MatInputModule,
+        MatProgressSpinnerModule,
         NoopAnimationsModule,
       ],
       providers: [
@@ -130,12 +134,16 @@ describe('UpdateReservationDialogComponent', () => {
 
   describe('refresh', () => {
     const clickNeueAufgabe = async () => {
-      const button = await loader.getHarness(
-        MatButtonHarness.with({ text: 'Neue Aufgabe' })
-      );
-      fixture.detectChanges();
+      const buttons = await loader.getAllHarnesses(MatButtonHarness);
+      for (let index = 0; index < buttons.length; index++) {
+        const button = buttons[index];
+        const label = await button.getText();
+        if (label.includes('Neue Aufgabe')) {
+          await button.click();
+        }
+      }
 
-      await button.click();
+      fixture.detectChanges();
     };
 
     it('should refresh captcha', async () => {
@@ -147,6 +155,7 @@ describe('UpdateReservationDialogComponent', () => {
         of(new Result(challenge1)),
         of(new Result(challenge2))
       );
+      fixture.detectChanges();
 
       // Act
       await clickNeueAufgabe();
@@ -165,6 +174,7 @@ describe('UpdateReservationDialogComponent', () => {
         of(new Result(challenge1)),
         NEVER
       );
+      fixture.detectChanges();
 
       // Act
       await clickNeueAufgabe();
@@ -173,7 +183,7 @@ describe('UpdateReservationDialogComponent', () => {
       expect(fixture.componentInstance.requestPending).toBeTrue();
     });
 
-    it('should refresh captcha', async () => {
+    it('should clear pending request indicator after refresh action', async () => {
       // Arrange
       const challenge1 = randomString(8, 'captcha 1:');
       const challenge2 = randomString(8, 'captcha 2:');
@@ -182,6 +192,7 @@ describe('UpdateReservationDialogComponent', () => {
         of(new Result(challenge1)),
         of(new Result(challenge2))
       );
+      fixture.detectChanges();
 
       // Act
       await clickNeueAufgabe();
