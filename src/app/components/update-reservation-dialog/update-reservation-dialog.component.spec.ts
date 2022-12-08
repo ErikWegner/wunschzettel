@@ -1,15 +1,17 @@
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonHarness } from '@angular/material/button/testing';
 import { MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatFormFieldHarness } from '@angular/material/form-field/testing';
 import { MatInputModule } from '@angular/material/input';
+import { MatInputHarness } from '@angular/material/input/testing';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { NEVER, Observable, of } from 'rxjs';
+import { NEVER, of } from 'rxjs';
 import { ItemsService } from 'src/app/services/items.service';
 import { randomNumber, randomString } from 'testing/utils';
 import { Result } from '../../business/result';
@@ -32,6 +34,7 @@ describe('UpdateReservationDialogComponent', () => {
 
     const serviceMock = jasmine.createSpyObj('ItemsService', [
       'getCaptchaChallenge',
+      'setReservationFlag',
     ]);
 
     await TestBed.configureTestingModule({
@@ -43,6 +46,7 @@ describe('UpdateReservationDialogComponent', () => {
         MatInputModule,
         MatProgressSpinnerModule,
         NoopAnimationsModule,
+        ReactiveFormsModule,
       ],
       providers: [
         { provide: ItemsService, useValue: serviceMock },
@@ -54,7 +58,7 @@ describe('UpdateReservationDialogComponent', () => {
     component = fixture.componentInstance;
     loader = TestbedHarnessEnvironment.loader(fixture);
     itemsService = TestBed.inject(ItemsService) as jasmine.SpyObj<ItemsService>;
-    itemsService.getCaptchaChallenge.and.returnValue(new Observable());
+    itemsService.getCaptchaChallenge.and.returnValue(NEVER);
   });
 
   it('should create', () => {
@@ -199,6 +203,43 @@ describe('UpdateReservationDialogComponent', () => {
 
       // Assert
       expect(fixture.componentInstance.requestPending).toBeFalse();
+    });
+  });
+
+  describe('action', () => {
+    const fillCaptcha = async (text: string) => {
+      const field = await loader.getHarness(
+        MatInputHarness.with({ placeholder: 'Zahl' })
+      );
+      await field.setValue(text);
+    };
+    const clickSubmit = async (text: 'Reservieren' | 'Löschen') => {
+      const button = await loader.getHarness(MatButtonHarness.with({ text }));
+      await button.click();
+    };
+
+    it('should update reservation through service', async () => {
+      // Arrange
+      itemsService.getCaptchaChallenge.calls.reset();
+      itemsService.getCaptchaChallenge.and.returnValues(
+        of(new Result(randomString(2)))
+      );
+      const itemId = randomNumber(1000, 200);
+      const captchaText = randomString(2);
+      dialogData.targetState = 'reserve';
+      dialogData.itemId = itemId;
+      fixture.detectChanges();
+      await fillCaptcha(captchaText);
+
+      // Act
+      await clickSubmit('Reservieren');
+
+      // Assert
+      expect(itemsService.setReservationFlag).toHaveBeenCalledOnceWith(
+        itemId,
+        true,
+        captchaText
+      );
     });
   });
 });

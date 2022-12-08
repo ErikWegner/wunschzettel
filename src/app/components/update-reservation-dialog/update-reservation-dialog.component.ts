@@ -1,4 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BehaviorSubject, mergeMap, shareReplay, tap } from 'rxjs';
 import { ItemsService } from 'src/app/services/items.service';
@@ -24,6 +25,7 @@ export class UpdateReservationDialogComponent implements OnInit {
     shareReplay(1)
   );
   public requestPending = false;
+  public captchaInputValue = new FormControl('');
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
@@ -39,5 +41,16 @@ export class UpdateReservationDialogComponent implements OnInit {
 
   challengeRequest(): void {
     this.challengeRequest$.next(null);
+  }
+
+  updateRequest(): void {
+    const captcha = this.captchaInputValue.value;
+    if (captcha && captcha.length > 0) {
+      this.itemsService.setReservationFlag(
+        this.data.itemId,
+        this.data.targetState === 'reserve',
+        captcha
+      );
+    }
   }
 }

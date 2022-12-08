@@ -6,7 +6,7 @@
       <ng-container *ngIf="challenge.success">
         <mat-form-field appearance="fill">
           <mat-label>{{ challenge.data }}</mat-label>
-          <input matInput placeholder="Zahl" />
+          <input matInput placeholder="Zahl" [formControl]="captchaInputValue" />
           <mat-hint>Bitte als Zahl eingeben</mat-hint>
         </mat-form-field>
       </ng-container>
@@ -24,5 +24,6 @@
 </div>
 <div mat-dialog-actions align="end">
   <button mat-flat-button mat-dialog-close>Abbruch</button>
-  <button mat-flat-button [mat-dialog-close]="true" color="primary">{{ data.targetState === 'clear' ? 'Löschen' : 'Reservieren' }}</button>
+  <button mat-flat-button color="primary" (click)="updateRequest()">{{ data.targetState === 'clear' ? 'Löschen' :
+    'Reservieren' }}</button>
 </div>
