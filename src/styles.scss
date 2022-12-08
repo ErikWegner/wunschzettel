@@ -33,11 +33,18 @@ mat-card,
   display: flexbox;
 }
 
+.fdc {
+  display: flex;
+  flex-direction: column;
+}
 .fc {
   display: flex;
   align-items: center;
 }
 
+.jcc {
+  justify-content: center;
+}
 .error {
   color: rgb(185, 1, 1);
 }
