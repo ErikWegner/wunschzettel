@@ -1,5 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 import { provideMockStore } from '@ngrx/store/testing';
 import { Meta, moduleMetadata, Story } from '@storybook/angular';
 import { NEVER, of } from 'rxjs';
@@ -10,19 +14,41 @@ import { ItemsService } from 'src/app/services/items.service';
 import { AppStateBuilder } from 'testing/app.state.builder';
 import { decorators, defaultProviders, moduleImports } from './matmetadata';
 
+interface ChildData {
+  updateResultMessage?: string;
+}
+
 @Component({
   template: '',
 })
-class LaunchComponent implements OnInit {
-  constructor(private dialog: MatDialog) {}
+class LaunchComponent implements OnInit, OnDestroy {
+  private dlgRef: MatDialogRef<UpdateReservationDialogComponent> | null = null;
+
+  public set update(v: string) {
+    if (this.dlgRef) {
+    }
+  }
+
+  constructor(
+    private dialog: MatDialog,
+    @Inject('child data') private childData: ChildData
+  ) {}
 
   public ngOnInit(): void {
-    this.dialog.open(UpdateReservationDialogComponent, {
+    this.dlgRef = this.dialog.open(UpdateReservationDialogComponent, {
       data: <DialogData>{
         itemId: 1,
         targetState: 'reserve',
       },
     });
+    if (this.childData.updateResultMessage) {
+      this.dlgRef.componentInstance.updateResultMessage =
+        this.childData.updateResultMessage;
+    }
+  }
+
+  public ngOnDestroy(): void {
+    this.dlgRef?.close();
   }
 }
 
@@ -39,6 +65,10 @@ const customDefaultProviders = [
     useValue: {
       getCaptchaChallenge: () => of(new Result('acht')),
     },
+  },
+  {
+    provide: 'child data',
+    useValue: <ChildData>{},
   },
 ];
 
@@ -157,16 +187,20 @@ export const UpdateFailed: Story = () => ({
 UpdateFailed.storyName = 'Update failed';
 UpdateFailed.decorators = [
   moduleMetadata({
-    declarations: [],
+    declarations: [UpdateReservationDialogComponent],
     imports: moduleImports,
     providers: [
       ...customDefaultProviders,
       { provide: MAT_DIALOG_DATA, useValue: dialogData },
       provideMockStore({
-        initialState: AppStateBuilder.reservationStatus('updateFailed', {
-          errorText: 'Captcha-Fehler',
-        }),
+        initialState: AppStateBuilder.reservationStatus('reserved'),
       }),
+      {
+        provide: 'child data',
+        useValue: <ChildData>{
+          updateResultMessage: 'Der Eintrag wurde gelöscht',
+        },
+      },
     ],
   }),
 ];

@@ -20,7 +20,10 @@
         </ng-template>
       </button>
     </div>
+    <div *ngIf="updateResultMessage" class="error">
+      {{ updateResultMessage }}
     </div>
+  </div>
 </div>
 <div mat-dialog-actions align="end">
   <button mat-flat-button mat-dialog-close>Abbruch</button>

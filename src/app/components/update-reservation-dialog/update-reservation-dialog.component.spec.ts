@@ -59,6 +59,7 @@ describe('UpdateReservationDialogComponent', () => {
     loader = TestbedHarnessEnvironment.loader(fixture);
     itemsService = TestBed.inject(ItemsService) as jasmine.SpyObj<ItemsService>;
     itemsService.getCaptchaChallenge.and.returnValue(NEVER);
+    itemsService.setReservationFlag.and.returnValue(NEVER);
   });
 
   it('should create', () => {
@@ -213,33 +214,74 @@ describe('UpdateReservationDialogComponent', () => {
       );
       await field.setValue(text);
     };
+
     const clickSubmit = async (text: 'Reservieren' | 'Löschen') => {
       const button = await loader.getHarness(MatButtonHarness.with({ text }));
       await button.click();
     };
 
-    it('should update reservation through service', async () => {
-      // Arrange
+    const prepareSubmit = async (
+      targetState: 'reserve' | 'clear'
+    ): Promise<{ itemId: number; captchaText: string }> => {
+      const itemId = randomNumber(1000, 200);
       itemsService.getCaptchaChallenge.calls.reset();
       itemsService.getCaptchaChallenge.and.returnValues(
         of(new Result(randomString(2)))
       );
-      const itemId = randomNumber(1000, 200);
+
       const captchaText = randomString(2);
-      dialogData.targetState = 'reserve';
+      dialogData.targetState = targetState;
       dialogData.itemId = itemId;
       fixture.detectChanges();
       await fillCaptcha(captchaText);
 
-      // Act
-      await clickSubmit('Reservieren');
+      return { itemId, captchaText };
+    };
 
-      // Assert
-      expect(itemsService.setReservationFlag).toHaveBeenCalledOnceWith(
-        itemId,
-        true,
-        captchaText
-      );
+    [
+      {
+        targetState: 'clear',
+        flag: false,
+        buttonText: 'Löschen',
+      },
+      {
+        targetState: 'reserve',
+        flag: true,
+        buttonText: 'Reservieren',
+      },
+    ].forEach((testsetup) => {
+      it(`should ${testsetup.targetState} reservation through service`, async () => {
+        // Arrange
+        const { itemId, captchaText } = await prepareSubmit(
+          testsetup.targetState as any
+        );
+
+        // Act
+        await clickSubmit(testsetup.buttonText as any);
+
+        // Assert
+        expect(itemsService.setReservationFlag).toHaveBeenCalledOnceWith(
+          itemId,
+          testsetup.flag,
+          captchaText
+        );
+      });
+
+      it('should show captcha error', async () => {
+        // Arrange
+        const msg = randomString(8, 'Gelöscht wegen ');
+        itemsService.setReservationFlag.and.returnValue(
+          of(new Result(msg, false))
+        );
+        await prepareSubmit(testsetup.targetState as any);
+
+        // Act
+        await clickSubmit(testsetup.buttonText as any);
+        fixture.detectChanges();
+
+        // Assert
+        expect(fixture.componentInstance.updateResultMessage).toBe(msg);
+      });
     });
   });
 });

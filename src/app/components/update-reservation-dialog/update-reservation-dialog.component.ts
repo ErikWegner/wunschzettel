@@ -26,6 +26,7 @@ export class UpdateReservationDialogComponent implements OnInit {
   );
   public requestPending = false;
   public captchaInputValue = new FormControl('');
+  public updateResultMessage = '';
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
@@ -46,11 +47,17 @@ export class UpdateReservationDialogComponent implements OnInit {
   updateRequest(): void {
     const captcha = this.captchaInputValue.value;
     if (captcha && captcha.length > 0) {
-      this.itemsService.setReservationFlag(
-        this.data.itemId,
-        this.data.targetState === 'reserve',
-        captcha
-      );
+      this.itemsService
+        .setReservationFlag(
+          this.data.itemId,
+          this.data.targetState === 'reserve',
+          captcha
+        )
+        .subscribe((result) => {
+          if (!result.success) {
+            this.updateResultMessage = result.data;
+          }
+        });
     }
   }
 }
