@@ -5,15 +5,14 @@ import {
 } from '@angular/common/http/testing';
 
 // Other imports
-import { TestBed } from '@angular/core/testing';
 import { HttpClient } from '@angular/common/http';
+import { TestBed } from '@angular/core/testing';
 
-import { ListBuilder } from 'testing/list-builder';
 import { WishlistItemBuilder } from 'testing/item.builder';
-
-import { ItemsService } from './items.service';
+import { ListBuilder } from 'testing/list-builder';
 import { randomNumber, randomString } from 'testing/utils';
 import { Result } from '../business/result';
+import { ItemsService } from './items.service';
 
 describe('ItemsService', () => {
   let service: ItemsService;

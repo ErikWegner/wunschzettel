@@ -1,6 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, EMPTY, map, Observable, of, shareReplay } from 'rxjs';
+import {
+  catchError,
+  EMPTY,
+  map,
+  Observable,
+  of,
+  shareReplay,
+  Subject,
+} from 'rxjs';
 import { AddItemResponse } from '../business/add-item-response';
 import { WishlistItem } from '../business/item';
 import { Result } from '../business/result';
@@ -71,7 +79,9 @@ export class ItemsService {
       .get<GetCaptchaChallengeResponse>('service.php?action=captcha')
       .pipe(
         map((r) => new Result(r.data.captchatext)),
-        catchError(() => of(new Result('', false)))
+        catchError(() => {
+          return of(new Result('', false));
+        })
       );
   }
 }

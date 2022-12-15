@@ -3,6 +3,7 @@ import { Action } from '@ngrx/store';
 import { WishlistItem } from 'src/app/business/item';
 import { AppGlobalState } from 'src/app/store/a.state';
 import { AppState } from 'src/app/store/app.state';
+import { CaptchaState, initialCaptchaState } from 'src/app/store/captcha';
 import { ReservationState, ReservationStatus } from 'src/app/store/r.state';
 import { RouterStateUrl } from 'src/app/store/router/custom-route-serializer';
 import { WishlistState } from 'src/app/store/w.state';
@@ -33,6 +34,7 @@ export class AppStateBuilder implements AppState {
     navigationId: 0,
     state: { url: '', params: {}, queryParams: {}, data: {} },
   };
+  captcha: CaptchaState = initialCaptchaState;
 
   public static hasError(errorText: string): AppStateBuilder {
     const b = new AppStateBuilder();
