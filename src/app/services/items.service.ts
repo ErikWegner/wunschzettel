@@ -50,7 +50,16 @@ export class ItemsService {
     flag: boolean,
     captchaAnswer: string
   ): Observable<Result<string>> {
-    return EMPTY;
+    return this.http
+      .get<{
+        data: {
+          success: boolean;
+          message: string;
+        };
+      }>('service.php?action=' + (flag ? 'reserve' : 'clear'), {
+        params: { id, captcha: captchaAnswer },
+      })
+      .pipe(map((r) => new Result(r.data.message, r.data.success)));
   }
 
   public setItem(

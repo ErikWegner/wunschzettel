@@ -142,4 +142,57 @@ describe('ItemsService', () => {
       new Result('', false)
     );
   });
+
+  [
+    {
+      flag: true,
+      response: true,
+      action: 'reserve',
+      message: 'Eintrag wurde reserviert',
+    },
+    {
+      flag: true,
+      response: false,
+      action: 'reserve',
+      message: 'Eintrag bereits reserviert',
+    },
+    {
+      flag: false,
+      response: true,
+      action: 'clear',
+      message: 'Reservierung wurde gelöscht',
+    },
+    {
+      flag: false,
+      response: false,
+      action: 'clear',
+      message: 'Eintrag war nicht mehr reserviert.',
+    },
+  ].forEach((testsetup) => {
+    it(`should set setReservationFlag to ${testsetup.flag}`, () => {
+      // Arrange
+      const id = randomNumber(900, 200);
+      const captchaAnswer = randomString(4);
+
+      // Act
+      service
+        .setReservationFlag(id, testsetup.flag, captchaAnswer)
+        .subscribe(subscribeCallbacks);
+
+      // Assert
+      const req = httpTestingController.expectOne(
+        apiUrl(`?action=${testsetup.action}&id=${id}&captcha=${captchaAnswer}`)
+      );
+      req.flush({
+        data: { success: testsetup.response, message: testsetup.message },
+      });
+
+      expect(subscribeCallbacks.next).toHaveBeenCalledTimes(1);
+      expect(subscribeCallbacks.error).toHaveBeenCalledTimes(0);
+      expect(subscribeCallbacks.complete).toHaveBeenCalledTimes(1);
+      expect(subscribeCallbacks.next.calls.first().args[0]).toEqual(
+        new Result(testsetup.message, testsetup.response)
+      );
+    });
+  });
 });
