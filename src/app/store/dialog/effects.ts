@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { map, tap } from 'rxjs';
 import { DialogData } from 'src/app/components/update-reservation-dialog/dialog-data';
 import { UpdateReservationDialogComponent } from 'src/app/components/update-reservation-dialog/update-reservation-dialog.component';
-import { modifyReservation, modifyReservationDialogOpened } from '../r.actions';
+import { modifyReservation, modifyReservationDialogOpened } from '../reservation/r.actions';
 import { selectActiveItem } from '../w.selectors';
 
 @Injectable()

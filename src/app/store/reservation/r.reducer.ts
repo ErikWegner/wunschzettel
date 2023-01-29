@@ -1,10 +1,10 @@
 import { createReducer, on } from '@ngrx/store';
+import { setActiveItem } from '../w.actions';
 import {
   reservationStatusResponse,
   retrieveReservationStatus,
 } from './r.actions';
 import { ReservationState } from './r.state';
-import { setActiveItem } from './w.actions';
 
 export const initialState: ReservationState = {
   itemid: null,

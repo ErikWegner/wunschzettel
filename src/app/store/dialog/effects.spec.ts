@@ -7,7 +7,7 @@ import { Observable, of } from 'rxjs';
 import { DialogData } from 'src/app/components/update-reservation-dialog/dialog-data';
 import { UpdateReservationDialogComponent } from 'src/app/components/update-reservation-dialog/update-reservation-dialog.component';
 import { appStateStub } from 'testing/app.state.builder';
-import { modifyReservation } from '../r.actions';
+import { modifyReservation } from '../reservation/r.actions';
 
 import { DialogEffects } from './effects';
 

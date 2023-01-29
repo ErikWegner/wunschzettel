@@ -1,7 +1,7 @@
 import { RouterReducerState } from '@ngrx/router-store';
 import { AppGlobalState } from './a.state';
 import { CaptchaState } from './captcha';
-import { ReservationState } from './r.state';
+import { ReservationState } from './reservation/r.state';
 import { RouterStateUrl } from './router/custom-route-serializer';
 import { WishlistState } from './w.state';
 

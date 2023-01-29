@@ -1,14 +1,14 @@
+import { WishlistItem } from 'src/app/business/item';
 import { appStateStub } from 'testing/app.state.builder';
 import { WishlistItemBuilder } from 'testing/item.builder';
 import { randomNumber, randomString } from 'testing/utils';
-import { WishlistItem } from '../business/item';
+import { setActiveItem } from '../w.actions';
 import {
   reservationStatusResponse,
   retrieveReservationStatus,
 } from './r.actions';
 import { rReducer } from './r.reducer';
 import { ReservationState, ReservationStatus } from './r.state';
-import { setActiveItem } from './w.actions';
 
 describe('Reservation reducer', () => {
   describe('setActiveItem', () => {

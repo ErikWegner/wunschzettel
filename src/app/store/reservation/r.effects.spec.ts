@@ -5,9 +5,9 @@ import { Action } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { cold } from 'jasmine-marbles';
 import { Observable, of } from 'rxjs';
+import { ItemsService } from 'src/app/services/items.service';
 import { appStateStub } from 'testing/app.state.builder';
 import { randomNumber } from 'testing/utils';
-import { ItemsService } from '../services/items.service';
 import {
   reservationStatusResponse,
   retrieveReservationStatus,

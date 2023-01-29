@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, switchMap } from 'rxjs';
-import { ItemsService } from '../services/items.service';
+import { ItemsService } from 'src/app/services/items.service';
 import {
   reservationStatusResponse,
   retrieveReservationStatus,
@@ -26,5 +26,5 @@ export class ReservationEffects {
     );
   });
 
-  constructor(private actions$: Actions, private itemsService: ItemsService) {}
+  constructor(private actions$: Actions, private itemsService: ItemsService) { }
 }

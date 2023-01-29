@@ -8,7 +8,7 @@ import {
 import { MatExpansionPanel } from '@angular/material/expansion';
 import { Store } from '@ngrx/store';
 import { WishlistItem } from 'src/app/business/item';
-import { retrieveReservationStatus } from 'src/app/store/r.actions';
+import { retrieveReservationStatus } from 'src/app/store/reservation/r.actions';
 import { goToCategory } from 'src/app/store/w.actions';
 
 @Component({

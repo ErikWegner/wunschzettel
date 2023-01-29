@@ -1,5 +1,5 @@
 import { createSelector } from '@ngrx/store';
-import { AppState } from './app.state';
+import { AppState } from '../app.state';
 import { ReservationState } from './r.state';
 
 export const selectFeature = (state: any) => (state as AppState).reservation;

@@ -1,6 +1,6 @@
 import { MatDialogRef } from '@angular/material/dialog';
 import { createAction, props } from '@ngrx/store';
-import { UpdateReservationDialogComponent } from '../components/update-reservation-dialog/update-reservation-dialog.component';
+import { UpdateReservationDialogComponent } from '../../components/update-reservation-dialog/update-reservation-dialog.component';
 import { ReservationStatus } from './r.state';
 
 export const retrieveReservationStatus = createAction(

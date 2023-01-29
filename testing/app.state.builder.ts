@@ -4,7 +4,7 @@ import { WishlistItem } from 'src/app/business/item';
 import { AppGlobalState } from 'src/app/store/a.state';
 import { AppState } from 'src/app/store/app.state';
 import { CaptchaState, initialCaptchaState } from 'src/app/store/captcha';
-import { ReservationState, ReservationStatus } from 'src/app/store/r.state';
+import { ReservationState, ReservationStatus } from 'src/app/store/reservation/r.state';
 import { RouterStateUrl } from 'src/app/store/router/custom-route-serializer';
 import { WishlistState } from 'src/app/store/w.state';
 import { ListBuilder } from './list-builder';

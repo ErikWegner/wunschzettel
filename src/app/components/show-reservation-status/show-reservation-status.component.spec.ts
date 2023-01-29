@@ -7,7 +7,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressSpinnerHarness } from '@angular/material/progress-spinner/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { AppState } from 'src/app/store/app.state';
-import { modifyReservation } from 'src/app/store/r.actions';
+import { modifyReservation } from 'src/app/store/reservation/r.actions';
 import { AppStateBuilder, appStateStub } from 'testing/app.state.builder';
 
 import { ShowReservationStatusComponent } from './show-reservation-status.component';

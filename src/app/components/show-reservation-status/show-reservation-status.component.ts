@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { modifyReservation } from 'src/app/store/r.actions';
+import { modifyReservation } from 'src/app/store/reservation/r.actions';
 import {
   selectReservationErrorText,
   selectReservationState,
-} from 'src/app/store/r.selectors';
+} from 'src/app/store/reservation/r.selectors';
 
 @Component({
   selector: 'app-show-reservation-status',

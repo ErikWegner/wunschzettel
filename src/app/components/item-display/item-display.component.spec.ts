@@ -12,7 +12,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { cold } from 'jasmine-marbles';
 import { WishlistItem } from 'src/app/business/item';
 import { AppState } from 'src/app/store/app.state';
-import { retrieveReservationStatus } from 'src/app/store/r.actions';
+import { retrieveReservationStatus } from 'src/app/store/reservation/r.actions';
 import { goToCategory } from 'src/app/store/w.actions';
 import { appStateStub } from 'testing/app.state.builder';
 import { WishlistItemBuilder } from 'testing/item.builder';
