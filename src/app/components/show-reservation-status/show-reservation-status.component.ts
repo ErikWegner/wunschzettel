@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { confirmEditReservation } from 'src/app/store/r.actions';
+import { modifyReservation } from 'src/app/store/r.actions';
 import {
   selectReservationErrorText,
   selectReservationState,
@@ -18,10 +18,10 @@ export class ShowReservationStatusComponent {
   constructor(private store: Store) {}
 
   onClickClearReservation(): void {
-    this.store.dispatch(confirmEditReservation({ targetState: 'clear' }));
+    this.store.dispatch(modifyReservation({ targetState: 'clear' }));
   }
 
   onClickReservation(): void {
-    this.store.dispatch(confirmEditReservation({ targetState: 'reserve' }));
+    this.store.dispatch(modifyReservation({ targetState: 'reserve' }));
   }
 }

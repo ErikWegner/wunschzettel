@@ -70,6 +70,9 @@ const customDefaultProviders = [
     provide: 'child data',
     useValue: <ChildData>{},
   },
+  provideMockStore({
+    initialState: AppStateBuilder.reservationStatus('requestPending'),
+  }),
 ];
 
 const dialogData: DialogData = {

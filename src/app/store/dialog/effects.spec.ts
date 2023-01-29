@@ -7,8 +7,7 @@ import { Observable, of } from 'rxjs';
 import { DialogData } from 'src/app/components/update-reservation-dialog/dialog-data';
 import { UpdateReservationDialogComponent } from 'src/app/components/update-reservation-dialog/update-reservation-dialog.component';
 import { appStateStub } from 'testing/app.state.builder';
-import { confirmEditReservation } from '../r.actions';
-import { selectActiveItem } from '../w.selectors';
+import { modifyReservation } from '../r.actions';
 
 import { DialogEffects } from './effects';
 
@@ -47,7 +46,7 @@ describe('DialogEffects', () => {
     it('should open dialog for ' + testsetup.name, () => {
       // Arrange
       actions$ = of(
-        confirmEditReservation({ targetState: testsetup.targetState as any })
+        modifyReservation({ targetState: testsetup.targetState as any })
       );
 
       // Act
@@ -64,5 +63,21 @@ describe('DialogEffects', () => {
         }
       );
     });
+  });
+
+  it('should provide dialog reference ', () => {
+    // Arrange
+    actions$ = of(
+      modifyReservation({ targetState: 'clear' })
+    );
+    const next = jasmine.createSpy('next');
+    const r = Symbol('MatDialogRef');
+    matDialogMock.open.and.returnValue(r as any)
+
+    // Act
+    effects.openDialog$.subscribe(next);
+
+    // Assert
+    expect(next).toHaveBeenCalledOnceWith({ dialog: r, type: '[R] Modify reservation status dialog opened' });
   });
 });

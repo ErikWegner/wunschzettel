@@ -7,7 +7,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressSpinnerHarness } from '@angular/material/progress-spinner/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { AppState } from 'src/app/store/app.state';
-import { confirmEditReservation } from 'src/app/store/r.actions';
+import { modifyReservation } from 'src/app/store/r.actions';
 import { AppStateBuilder, appStateStub } from 'testing/app.state.builder';
 
 import { ShowReservationStatusComponent } from './show-reservation-status.component';
@@ -126,7 +126,7 @@ describe('EditReservationComponent', () => {
 
     // Assert
     expect(dispatchSpy).toHaveBeenCalledOnceWith(
-      confirmEditReservation({
+      modifyReservation({
         targetState: 'reserve',
       })
     );
@@ -144,7 +144,7 @@ describe('EditReservationComponent', () => {
 
     // Assert
     expect(dispatchSpy).toHaveBeenCalledOnceWith(
-      confirmEditReservation({
+      modifyReservation({
         targetState: 'clear',
       })
     );

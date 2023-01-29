@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { tap } from 'rxjs';
+import { map, tap } from 'rxjs';
 import { DialogData } from 'src/app/components/update-reservation-dialog/dialog-data';
 import { UpdateReservationDialogComponent } from 'src/app/components/update-reservation-dialog/update-reservation-dialog.component';
-import { confirmEditReservation } from '../r.actions';
+import { modifyReservation, modifyReservationDialogOpened } from '../r.actions';
 import { selectActiveItem } from '../w.selectors';
 
 @Injectable()
@@ -26,19 +26,17 @@ export class DialogEffects {
   openDialog$ = createEffect(
     () => {
       return this.actions$.pipe(
-        ofType(confirmEditReservation),
+        ofType(modifyReservation),
         concatLatestFrom((_action) => this.store.select(selectActiveItem)),
-        tap(([action, activeItem]) => {
-          this.dialog.open(UpdateReservationDialogComponent, {
-            data: <DialogData>{
-              itemId: activeItem?.id || 0,
-              targetState: action.targetState,
-            },
-          });
-        })
+        map(([action, activeItem]) => this.dialog.open(UpdateReservationDialogComponent, {
+          data: <DialogData>{
+            itemId: activeItem?.id || 0,
+            targetState: action.targetState,
+          },
+        })),
+        map(dialogRef => modifyReservationDialogOpened({ dialog: dialogRef }))
       );
-    },
-    { dispatch: false }
+    }
   );
 
   // dialogSaved$ = createEffect(() =>

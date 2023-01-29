@@ -144,12 +144,12 @@
         },
         {
             "name": "AppState",
-            "id": "interface-AppState-b5a53e58b3ba974b484576a7268a0d73c0c78949e40118bc818f13b47ed1adf105e8aeacffd8c698122e754748757fb43568b6426cb308441ce61b6dc37467e9",
+            "id": "interface-AppState-258f9205160d8baca6f35e242239981ff3e3112354f4a66724801c3d83cb71f82dee63ad016a72f7e50df0ca8b459c444dd90feba3e8f2ff3b5201f5976969bf",
             "file": "src/app/store/app.state.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import { RouterReducerState } from '@ngrx/router-store';\nimport { AppGlobalState } from './a.state';\nimport { ReservationState } from './r.state';\nimport { RouterStateUrl } from './router/custom-route-serializer';\nimport { WishlistState } from './w.state';\n\nexport interface AppState {\n  ag: AppGlobalState;\n  wishlist: WishlistState;\n  reservation: ReservationState;\n  router: RouterReducerState<RouterStateUrl>;\n}\n",
+            "sourceCode": "import { RouterReducerState } from '@ngrx/router-store';\nimport { AppGlobalState } from './a.state';\nimport { CaptchaState } from './captcha';\nimport { ReservationState } from './r.state';\nimport { RouterStateUrl } from './router/custom-route-serializer';\nimport { WishlistState } from './w.state';\n\nexport interface AppState {\n  ag: AppGlobalState;\n  wishlist: WishlistState;\n  reservation: ReservationState;\n  router: RouterReducerState<RouterStateUrl>;\n  captcha: CaptchaState;\n}\n",
             "properties": [
                 {
                     "name": "ag",
@@ -158,7 +158,16 @@
                     "type": "AppGlobalState",
                     "optional": false,
                     "description": "",
-                    "line": 8
+                    "line": 9
+                },
+                {
+                    "name": "captcha",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "CaptchaState",
+                    "optional": false,
+                    "description": "",
+                    "line": 13
                 },
                 {
                     "name": "reservation",
@@ -167,7 +176,7 @@
                     "type": "ReservationState",
                     "optional": false,
                     "description": "",
-                    "line": 10
+                    "line": 11
                 },
                 {
                     "name": "router",
@@ -176,7 +185,7 @@
                     "type": "RouterReducerState<RouterStateUrl>",
                     "optional": false,
                     "description": "",
-                    "line": 11
+                    "line": 12
                 },
                 {
                     "name": "wishlist",
@@ -185,7 +194,71 @@
                     "type": "WishlistState",
                     "optional": false,
                     "description": "",
-                    "line": 9
+                    "line": 10
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 165,
+            "methods": []
+        },
+        {
+            "name": "CaptchaState",
+            "id": "interface-CaptchaState-0ae73cff627540d774d1fa942b2c4b5e1ff58b5008eb872b91eb29e4741bf726a86908cc1f302f3fad6076c6ab62bff6546533704153905c6c564b30ebfa70fe",
+            "file": "src/app/store/captcha/state.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "export interface CaptchaState {\n  challenge: string;\n  loading: boolean;\n  errorText: string;\n}\n\nexport const initialCaptchaState: CaptchaState = {\n  challenge: '',\n  loading: false,\n  errorText: '',\n};\n",
+            "properties": [
+                {
+                    "name": "challenge",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 2
+                },
+                {
+                    "name": "errorText",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 4
+                },
+                {
+                    "name": "loading",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "optional": false,
+                    "description": "",
+                    "line": 3
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 165,
+            "methods": []
+        },
+        {
+            "name": "ChildData",
+            "id": "interface-ChildData-11a09647ab9dde1f8b69be875b24461860f14225928429f78db6f6d6987c0bbba24e3acadbc61bc0f953c1099977500ee678d3398bb8e28ea0486d7e50375f3e",
+            "file": "src/stories/UpdateReservationDialog.stories.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "import { Component, Inject, OnDestroy, OnInit } from '@angular/core';\nimport {\n  MatDialog,\n  MatDialogRef,\n  MAT_DIALOG_DATA,\n} from '@angular/material/dialog';\nimport { provideMockStore } from '@ngrx/store/testing';\nimport { Meta, moduleMetadata, Story } from '@storybook/angular';\nimport { NEVER, of } from 'rxjs';\nimport { Result } from 'src/app/business/result';\nimport { DialogData } from 'src/app/components/update-reservation-dialog/dialog-data';\nimport { UpdateReservationDialogComponent } from 'src/app/components/update-reservation-dialog/update-reservation-dialog.component';\nimport { ItemsService } from 'src/app/services/items.service';\nimport { AppStateBuilder } from 'testing/app.state.builder';\nimport { decorators, defaultProviders, moduleImports } from './matmetadata';\n\ninterface ChildData {\n  updateResultMessage?: string;\n}\n\n@Component({\n  template: '',\n})\nclass LaunchComponent implements OnInit, OnDestroy {\n  private dlgRef: MatDialogRef<UpdateReservationDialogComponent> | null = null;\n\n  public set update(v: string) {\n    if (this.dlgRef) {\n    }\n  }\n\n  constructor(\n    private dialog: MatDialog,\n    @Inject('child data') private childData: ChildData\n  ) {}\n\n  public ngOnInit(): void {\n    this.dlgRef = this.dialog.open(UpdateReservationDialogComponent, {\n      data: <DialogData>{\n        itemId: 1,\n        targetState: 'reserve',\n      },\n    });\n    if (this.childData.updateResultMessage) {\n      this.dlgRef.componentInstance.updateResultMessage =\n        this.childData.updateResultMessage;\n    }\n  }\n\n  public ngOnDestroy(): void {\n    this.dlgRef?.close();\n  }\n}\n\nexport default {\n  title: 'Update reservation dialog',\n  component: LaunchComponent,\n  decorators,\n} as Meta;\n\nconst customDefaultProviders = [\n  ...defaultProviders,\n  {\n    provide: ItemsService,\n    useValue: {\n      getCaptchaChallenge: () => of(new Result('acht')),\n    },\n  },\n  {\n    provide: 'child data',\n    useValue: <ChildData>{},\n  },\n];\n\nconst dialogData: DialogData = {\n  itemId: 5,\n  targetState: 'clear',\n};\n\nexport const InitLoading: Story = () => ({\n  props: {},\n});\nInitLoading.storyName = 'Initializing';\nInitLoading.decorators = [\n  moduleMetadata({\n    declarations: [UpdateReservationDialogComponent],\n    imports: moduleImports,\n    providers: [\n      ...customDefaultProviders,\n      { provide: MAT_DIALOG_DATA, useValue: dialogData },\n      provideMockStore({\n        initialState: AppStateBuilder.reservationStatus('requestPending'),\n      }),\n      {\n        provide: ItemsService,\n        useValue: {\n          getCaptchaChallenge: () => NEVER,\n        },\n      },\n    ],\n  }),\n];\n\nexport const LoadingUpdating: Story = () => ({\n  props: {},\n});\nLoadingUpdating.storyName = 'Updating';\nLoadingUpdating.decorators = [\n  moduleMetadata({\n    declarations: [],\n    imports: moduleImports,\n    providers: [\n      ...customDefaultProviders,\n      { provide: MAT_DIALOG_DATA, useValue: dialogData },\n      provideMockStore({\n        initialState: AppStateBuilder.reservationStatus('requestPending'),\n      }),\n    ],\n  }),\n];\n\nconst hasReservationDialogData: DialogData = {\n  ...dialogData,\n  targetState: 'clear',\n};\nexport const HasReservation: Story = () => ({\n  props: {},\n});\nHasReservation.storyName = 'Has reservation';\nHasReservation.decorators = [\n  moduleMetadata({\n    declarations: [],\n    imports: moduleImports,\n    providers: [\n      ...customDefaultProviders,\n      { provide: MAT_DIALOG_DATA, useValue: hasReservationDialogData },\n      provideMockStore({\n        initialState: AppStateBuilder.reservationStatus('reserved'),\n      }),\n    ],\n  }),\n];\n\nexport const IsUnkown: Story = () => ({\n  props: {},\n});\nIsUnkown.storyName = 'Is unknown';\nIsUnkown.decorators = [\n  moduleMetadata({\n    declarations: [],\n    imports: moduleImports,\n    providers: [\n      ...customDefaultProviders,\n      { provide: MAT_DIALOG_DATA, useValue: dialogData },\n      provideMockStore({\n        initialState: AppStateBuilder.reservationStatus('unknown'),\n      }),\n    ],\n  }),\n];\n\nconst isFreeDialogData: DialogData = {\n  ...dialogData,\n  targetState: 'reserve',\n};\nexport const IsFree: Story = () => ({\n  props: {},\n});\nIsFree.storyName = 'Is free';\nIsFree.decorators = [\n  moduleMetadata({\n    declarations: [],\n    imports: moduleImports,\n    providers: [\n      ...customDefaultProviders,\n      { provide: MAT_DIALOG_DATA, useValue: isFreeDialogData },\n      provideMockStore({\n        initialState: AppStateBuilder.reservationStatus('free'),\n      }),\n    ],\n  }),\n];\n\nexport const UpdateFailed: Story = () => ({\n  props: {},\n});\nUpdateFailed.storyName = 'Update failed';\nUpdateFailed.decorators = [\n  moduleMetadata({\n    declarations: [UpdateReservationDialogComponent],\n    imports: moduleImports,\n    providers: [\n      ...customDefaultProviders,\n      { provide: MAT_DIALOG_DATA, useValue: dialogData },\n      provideMockStore({\n        initialState: AppStateBuilder.reservationStatus('reserved'),\n      }),\n      {\n        provide: 'child data',\n        useValue: <ChildData>{\n          updateResultMessage: 'Der Eintrag wurde gelöscht',\n        },\n      },\n    ],\n  }),\n];\n",
+            "properties": [
+                {
+                    "name": "updateResultMessage",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": true,
+                    "description": "",
+                    "line": 18
                 }
             ],
             "indexSignatures": [],
@@ -226,12 +299,12 @@
         },
         {
             "name": "GetCaptchaChallengeResponse",
-            "id": "interface-GetCaptchaChallengeResponse-c9ae588121b792c764ca051c33f50fc1dde15869f78a7eb000a6b65806d93ab5d53d41c85c064c6b0cc71d3560ea2b8486f926f9ac24e009c6a520d4a231a374",
+            "id": "interface-GetCaptchaChallengeResponse-629e1c0760c55156e7dca97ce8e8c4d78dffa7e239a33f4b2b12c92226050b26ceeeca61b3e53953ecdd18e7eabc435fd042968c061b6acdf154ad76c9189551",
             "file": "src/app/services/items.service.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import { HttpClient } from '@angular/common/http';\nimport { Injectable } from '@angular/core';\nimport { catchError, EMPTY, map, Observable, of, shareReplay } from 'rxjs';\nimport { AddItemResponse } from '../business/add-item-response';\nimport { WishlistItem } from '../business/item';\nimport { Result } from '../business/result';\n\ninterface GetCaptchaChallengeResponse {\n  data: {\n    captchatext: string;\n  };\n}\n\n@Injectable({\n  providedIn: 'root',\n})\nexport class ItemsService {\n  private cachedItems$: Observable<WishlistItem[]> | null = null;\n\n  constructor(private http: HttpClient) {}\n\n  public getItems(): Observable<WishlistItem[]> {\n    if (!this.cachedItems$) {\n      this.cachedItems$ = this.http\n        .get<{ data: WishlistItem[] }>('service.php?action=list')\n        .pipe(\n          map((d) => d.data),\n          shareReplay(1)\n        );\n    }\n    return this.cachedItems$;\n  }\n\n  public getReservationFlag(id: number): Observable<boolean> {\n    return this.http\n      .get<{ data: { status: boolean } }>(`service.php?action=status&id=${id}`)\n      .pipe(map((d) => d.data.status));\n  }\n\n  public setReservationFlag(\n    id: number,\n    flag: boolean,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public setItem(\n    item: WishlistItem,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public addItem(\n    item: WishlistItem,\n    captchaAnswer: string\n  ): Observable<Result<AddItemResponse>> {\n    return EMPTY;\n  }\n\n  public deleteItem(\n    id: number,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public getCaptchaChallenge(): Observable<Result<string>> {\n    return this.http\n      .get<GetCaptchaChallengeResponse>('service.php?action=captcha')\n      .pipe(\n        map((r) => new Result(r.data.captchatext)),\n        catchError(() => of(new Result('', false)))\n      );\n  }\n}\n",
+            "sourceCode": "import { HttpClient } from '@angular/common/http';\nimport { Injectable } from '@angular/core';\nimport {\n  catchError,\n  EMPTY,\n  map,\n  Observable,\n  of,\n  shareReplay,\n  Subject,\n} from 'rxjs';\nimport { AddItemResponse } from '../business/add-item-response';\nimport { WishlistItem } from '../business/item';\nimport { Result } from '../business/result';\n\ninterface GetCaptchaChallengeResponse {\n  data: {\n    captchatext: string;\n  };\n}\n\n@Injectable({\n  providedIn: 'root',\n})\nexport class ItemsService {\n  private cachedItems$: Observable<WishlistItem[]> | null = null;\n\n  constructor(private http: HttpClient) {}\n\n  public getItems(): Observable<WishlistItem[]> {\n    if (!this.cachedItems$) {\n      this.cachedItems$ = this.http\n        .get<{ data: WishlistItem[] }>('service.php?action=list')\n        .pipe(\n          map((d) => d.data),\n          shareReplay(1)\n        );\n    }\n    return this.cachedItems$;\n  }\n\n  public getReservationFlag(id: number): Observable<boolean> {\n    return this.http\n      .get<{ data: { status: boolean } }>(`service.php?action=status&id=${id}`)\n      .pipe(map((d) => d.data.status));\n  }\n\n  public setReservationFlag(\n    id: number,\n    flag: boolean,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public setItem(\n    item: WishlistItem,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public addItem(\n    item: WishlistItem,\n    captchaAnswer: string\n  ): Observable<Result<AddItemResponse>> {\n    return EMPTY;\n  }\n\n  public deleteItem(\n    id: number,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public getCaptchaChallenge(): Observable<Result<string>> {\n    return this.http\n      .get<GetCaptchaChallengeResponse>('service.php?action=captcha')\n      .pipe(\n        map((r) => new Result(r.data.captchatext)),\n        catchError(() => {\n          return of(new Result('', false));\n        })\n      );\n  }\n}\n",
             "properties": [
                 {
                     "name": "data",
@@ -240,7 +313,7 @@
                     "type": "literal type",
                     "optional": false,
                     "description": "",
-                    "line": 9
+                    "line": 17
                 }
             ],
             "indexSignatures": [],
@@ -546,6 +619,71 @@
             "type": "injectable"
         },
         {
+            "name": "CaptchaEffects",
+            "id": "injectable-CaptchaEffects-b773bbaf35071bd8f5e7dbaba0ab222f52aa1cfe0d2b4348ea6d01b8a44eaabb98d65833ebec36c696a87fc0e0285d8311f60f741ed2ee90518b77c8a2900634",
+            "file": "src/app/store/captcha/effects.ts",
+            "properties": [
+                {
+                    "name": "retrieveNewCaptcha$",
+                    "defaultValue": "createEffect(() => {\n    return this.actions$.pipe(\n      ofType(getCaptchaChallenge),\n      exhaustMap((_) => this.service.getCaptchaChallenge()),\n      map((r) =>\n        r.success\n          ? captchaChallengeReceived({ captchaTask: r.data })\n          : errorFactory()\n      ),\n      catchError((e) => {\n        console.error(e);\n        return of(errorFactory());\n      })\n    );\n  })",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 16
+                }
+            ],
+            "methods": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import { Injectable } from '@angular/core';\nimport { Actions, createEffect, ofType } from '@ngrx/effects';\nimport { catchError, exhaustMap, map, of } from 'rxjs';\nimport { ItemsService } from '../../services/items.service';\nimport {\n  captchaChallengeError,\n  captchaChallengeReceived,\n  getCaptchaChallenge,\n} from './actions';\n\nconst errorFactory = () =>\n  captchaChallengeError({ errorText: 'Fehler beim Abruf' });\n\n@Injectable()\nexport class CaptchaEffects {\n  retrieveNewCaptcha$ = createEffect(() => {\n    return this.actions$.pipe(\n      ofType(getCaptchaChallenge),\n      exhaustMap((_) => this.service.getCaptchaChallenge()),\n      map((r) =>\n        r.success\n          ? captchaChallengeReceived({ captchaTask: r.data })\n          : errorFactory()\n      ),\n      catchError((e) => {\n        console.error(e);\n        return of(errorFactory());\n      })\n    );\n  });\n\n  constructor(private actions$: Actions, private service: ItemsService) {}\n}\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "actions$",
+                        "type": "Actions",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "service",
+                        "type": "ItemsService",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 30,
+                "jsdoctags": [
+                    {
+                        "name": "actions$",
+                        "type": "Actions",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "service",
+                        "type": "ItemsService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "type": "injectable"
+        },
+        {
             "name": "DialogEffects",
             "id": "injectable-DialogEffects-eb9f6c139e6baf6c0e088a62047f792737536c9d46b2a4782e5c96cde5b96d396e2256347846d0496505ae1adbc0abc62008673f17a3977bbf0ade33aef4554f",
             "file": "src/app/store/dialog/effects.ts",
@@ -627,7 +765,7 @@
         },
         {
             "name": "ItemsService",
-            "id": "injectable-ItemsService-c9ae588121b792c764ca051c33f50fc1dde15869f78a7eb000a6b65806d93ab5d53d41c85c064c6b0cc71d3560ea2b8486f926f9ac24e009c6a520d4a231a374",
+            "id": "injectable-ItemsService-629e1c0760c55156e7dca97ce8e8c4d78dffa7e239a33f4b2b12c92226050b26ceeeca61b3e53953ecdd18e7eabc435fd042968c061b6acdf154ad76c9189551",
             "file": "src/app/services/items.service.ts",
             "properties": [
                 {
@@ -638,7 +776,7 @@
                     "type": "Observable<WishlistItem[]> | null",
                     "optional": false,
                     "description": "",
-                    "line": 18,
+                    "line": 26,
                     "modifierKind": [
                         121
                     ]
@@ -664,7 +802,7 @@
                     "optional": false,
                     "returnType": "Observable<Result<AddItemResponse>>",
                     "typeParameters": [],
-                    "line": 55,
+                    "line": 63,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -710,7 +848,7 @@
                     "optional": false,
                     "returnType": "Observable<Result<string>>",
                     "typeParameters": [],
-                    "line": 62,
+                    "line": 70,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -743,7 +881,7 @@
                     "optional": false,
                     "returnType": "Observable<Result<string>>",
                     "typeParameters": [],
-                    "line": 69,
+                    "line": 77,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -756,7 +894,7 @@
                     "optional": false,
                     "returnType": "Observable<WishlistItem[]>",
                     "typeParameters": [],
-                    "line": 22,
+                    "line": 30,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -776,7 +914,7 @@
                     "optional": false,
                     "returnType": "Observable<boolean>",
                     "typeParameters": [],
-                    "line": 34,
+                    "line": 42,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -813,7 +951,7 @@
                     "optional": false,
                     "returnType": "Observable<Result<string>>",
                     "typeParameters": [],
-                    "line": 48,
+                    "line": 56,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -865,7 +1003,7 @@
                     "optional": false,
                     "returnType": "Observable<Result<string>>",
                     "typeParameters": [],
-                    "line": 40,
+                    "line": 48,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -906,7 +1044,7 @@
             "deprecationMessage": "",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import { HttpClient } from '@angular/common/http';\nimport { Injectable } from '@angular/core';\nimport { catchError, EMPTY, map, Observable, of, shareReplay } from 'rxjs';\nimport { AddItemResponse } from '../business/add-item-response';\nimport { WishlistItem } from '../business/item';\nimport { Result } from '../business/result';\n\ninterface GetCaptchaChallengeResponse {\n  data: {\n    captchatext: string;\n  };\n}\n\n@Injectable({\n  providedIn: 'root',\n})\nexport class ItemsService {\n  private cachedItems$: Observable<WishlistItem[]> | null = null;\n\n  constructor(private http: HttpClient) {}\n\n  public getItems(): Observable<WishlistItem[]> {\n    if (!this.cachedItems$) {\n      this.cachedItems$ = this.http\n        .get<{ data: WishlistItem[] }>('service.php?action=list')\n        .pipe(\n          map((d) => d.data),\n          shareReplay(1)\n        );\n    }\n    return this.cachedItems$;\n  }\n\n  public getReservationFlag(id: number): Observable<boolean> {\n    return this.http\n      .get<{ data: { status: boolean } }>(`service.php?action=status&id=${id}`)\n      .pipe(map((d) => d.data.status));\n  }\n\n  public setReservationFlag(\n    id: number,\n    flag: boolean,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public setItem(\n    item: WishlistItem,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public addItem(\n    item: WishlistItem,\n    captchaAnswer: string\n  ): Observable<Result<AddItemResponse>> {\n    return EMPTY;\n  }\n\n  public deleteItem(\n    id: number,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public getCaptchaChallenge(): Observable<Result<string>> {\n    return this.http\n      .get<GetCaptchaChallengeResponse>('service.php?action=captcha')\n      .pipe(\n        map((r) => new Result(r.data.captchatext)),\n        catchError(() => of(new Result('', false)))\n      );\n  }\n}\n",
+            "sourceCode": "import { HttpClient } from '@angular/common/http';\nimport { Injectable } from '@angular/core';\nimport {\n  catchError,\n  EMPTY,\n  map,\n  Observable,\n  of,\n  shareReplay,\n  Subject,\n} from 'rxjs';\nimport { AddItemResponse } from '../business/add-item-response';\nimport { WishlistItem } from '../business/item';\nimport { Result } from '../business/result';\n\ninterface GetCaptchaChallengeResponse {\n  data: {\n    captchatext: string;\n  };\n}\n\n@Injectable({\n  providedIn: 'root',\n})\nexport class ItemsService {\n  private cachedItems$: Observable<WishlistItem[]> | null = null;\n\n  constructor(private http: HttpClient) {}\n\n  public getItems(): Observable<WishlistItem[]> {\n    if (!this.cachedItems$) {\n      this.cachedItems$ = this.http\n        .get<{ data: WishlistItem[] }>('service.php?action=list')\n        .pipe(\n          map((d) => d.data),\n          shareReplay(1)\n        );\n    }\n    return this.cachedItems$;\n  }\n\n  public getReservationFlag(id: number): Observable<boolean> {\n    return this.http\n      .get<{ data: { status: boolean } }>(`service.php?action=status&id=${id}`)\n      .pipe(map((d) => d.data.status));\n  }\n\n  public setReservationFlag(\n    id: number,\n    flag: boolean,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public setItem(\n    item: WishlistItem,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public addItem(\n    item: WishlistItem,\n    captchaAnswer: string\n  ): Observable<Result<AddItemResponse>> {\n    return EMPTY;\n  }\n\n  public deleteItem(\n    id: number,\n    captchaAnswer: string\n  ): Observable<Result<string>> {\n    return EMPTY;\n  }\n\n  public getCaptchaChallenge(): Observable<Result<string>> {\n    return this.http\n      .get<GetCaptchaChallengeResponse>('service.php?action=captcha')\n      .pipe(\n        map((r) => new Result(r.data.captchatext)),\n        catchError(() => {\n          return of(new Result('', false));\n        })\n      );\n  }\n}\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -920,7 +1058,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 18,
+                "line": 26,
                 "jsdoctags": [
                     {
                         "name": "http",
@@ -1283,12 +1421,12 @@
         },
         {
             "name": "AppStateBuilder",
-            "id": "class-AppStateBuilder-cc6e0aba3a88171415c914b65a40e2e4bdd8856fc42fb2565e214218edea688aefc833843d54356dc897b4a4517b09bcf80cee7748f19ffa38258a57dcff5d6a",
+            "id": "class-AppStateBuilder-d9d0120fbe08aed4da2172aecd55c6bfeeb5be12bd2cb30acecd357da3d2ff770ea223e5fd1c839a6f1ecce4d54d41cfd018bf4a8c64d0c52aaa4e8d7f780bef",
             "file": "testing/app.state.builder.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "class",
-            "sourceCode": "import { RouterReducerState } from '@ngrx/router-store';\nimport { Action } from '@ngrx/store';\nimport { WishlistItem } from 'src/app/business/item';\nimport { AppGlobalState } from 'src/app/store/a.state';\nimport { AppState } from 'src/app/store/app.state';\nimport { ReservationState, ReservationStatus } from 'src/app/store/r.state';\nimport { RouterStateUrl } from 'src/app/store/router/custom-route-serializer';\nimport { WishlistState } from 'src/app/store/w.state';\nimport { ListBuilder } from './list-builder';\nimport { randomString } from './utils';\n\nexport const appStateStub = (): AppStateBuilder => new AppStateBuilder();\n\nexport class AppStateBuilder implements AppState {\n  ag: AppGlobalState = {\n    captchaRequest: 'Sieben plus zwei',\n    pendingRequest: false,\n    requestErrorText: null,\n    requestRetryAction: null,\n  };\n  wishlist: WishlistState = {\n    categories: [],\n    items: [],\n    activeItem: null,\n    reservationDialogVisible: false,\n  };\n  reservation: ReservationState = {\n    itemid: null,\n    status: 'unknown',\n    errorText: null,\n  };\n  router: RouterReducerState<RouterStateUrl> = {\n    navigationId: 0,\n    state: { url: '', params: {}, queryParams: {}, data: {} },\n  };\n\n  public static hasError(errorText: string): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.ag.requestErrorText = errorText;\n    return b;\n  }\n\n  public withRetryAction(retryAction: Action): AppStateBuilder {\n    this.ag.requestRetryAction = retryAction;\n    return this;\n  }\n\n  public static givenCategories(...categories: string[]): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.wishlist.categories = [...categories];\n    return b;\n  }\n\n  public static someCategories(): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.wishlist.categories = ListBuilder.with((i) =>\n      randomString(8, 'Category ')\n    )\n      .items(7)\n      .build();\n    return b;\n  }\n\n  public static pendingRequest(): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.ag.pendingRequest = true;\n    return b;\n  }\n\n  public static hasActiveItem(values?: Partial<WishlistItem>): AppStateBuilder {\n    const b = new AppStateBuilder();\n    return b.withActiveItem(values);\n  }\n\n  public static reservationStatus(\n    status: ReservationStatus,\n    opt?: { errorText?: string }\n  ): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.reservation.status = status;\n    b.reservation.errorText = opt?.errorText || null;\n    return b;\n  }\n\n  public static withBookCategoryAndItems(): AppStateBuilder {\n    const b = AppStateBuilder.givenCategories('Buch')\n      .withItem({\n        id: 8,\n        Title: 'Schillers Glocke',\n        Description:\n          'Das Lied von der Glocke ist ein im Jahr 1799 von Friedrich Schiller veröffentlichtes Gedicht. Es gehörte lange Zeit zum Kanon der deutschen Literatur und ist eines der bekanntesten, am meisten zitierten und parodierten deutschen Gedichte.',\n        BuyUrl: 'https://de.wikipedia.org/wiki/Das_Lied_von_der_Glocke',\n        Category: 'Buch',\n        ImgageUrl:\n          'https://upload.wikimedia.org/wikipedia/commons/6/69/Liezen_Prachteinband_Schillers_Glocke_01.jpg',\n      })\n      .withItem({\n        Title: 'Faust I + II',\n        Category: 'Buch',\n        Description: `Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des\n      Fauststoffs bezeichnet. Der Begriff kann sich auf den ersten Teil der\n      durch Goethe geschaffenen Tragödie, auf deren ersten und zweiten Teil\n      gemeinsam oder insgesamt auf die Arbeiten am Fauststoff beziehen, die\n      Goethe durch sechzig Jahre hindurch immer wieder neu aufnahm. Er umfasst\n      in diesem letzteren Sinne auch die Entwürfe, Fragmente, Kommentare und\n      Paralipomena des Dichters zu seinem Faustwerk und zum Fauststoff.`,\n        BuyUrl: 'https://de.wikipedia.org/wiki/Goethes_Faust',\n        ImgageUrl:\n          'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg',\n        id: 19,\n      })\n      .withItem({\n        id: 41,\n        Title: 'Nathan der Weise',\n        Description:\n          'Nathan der Weise ist der Titel und die Hauptfigur eines fünfaktigen Ideendramas von Gotthold Ephraim Lessing, das 1779 veröffentlicht und am 14. April 1783 in Berlin uraufgeführt wurde. Das Werk hat als Themenschwerpunkte den Humanismus und den Toleranzgedanken der Aufklärung. Besonders berühmt wurde die Ringparabel im dritten Aufzug des Dramas.',\n        BuyUrl: 'https://de.wikipedia.org/wiki/Nathan_der_Weise',\n        Category: 'Buch',\n        ImgageUrl: '',\n      });\n    return b;\n  }\n\n  withActiveItem(values?: Partial<WishlistItem>): AppStateBuilder {\n    this.wishlist.activeItem = {\n      Title: 'Faust I + II',\n      Category: 'Buch',\n      Description: `Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des\n      Fauststoffs bezeichnet. Der Begriff kann sich auf den ersten Teil der\n      durch Goethe geschaffenen Tragödie, auf deren ersten und zweiten Teil\n      gemeinsam oder insgesamt auf die Arbeiten am Fauststoff beziehen, die\n      Goethe durch sechzig Jahre hindurch immer wieder neu aufnahm. Er umfasst\n      in diesem letzteren Sinne auch die Entwürfe, Fragmente, Kommentare und\n      Paralipomena des Dichters zu seinem Faustwerk und zum Fauststoff.`,\n      BuyUrl: 'https://de.wikipedia.org/wiki/Goethes_Faust',\n      ImgageUrl:\n        'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg',\n      id: 1,\n      ...values,\n    };\n    if (\n      this.wishlist.items.every(\n        (item) => item.id != this.wishlist.activeItem?.id\n      )\n    ) {\n      this.wishlist.items.push(this.wishlist.activeItem);\n    }\n    return this;\n  }\n\n  withCaptcha(challenge: string): AppStateBuilder {\n    this.ag.captchaRequest = challenge;\n    return this;\n  }\n\n  withItem(item: WishlistItem): AppStateBuilder {\n    this.wishlist.items.push(item);\n    if (!this.wishlist.categories.includes(item.Category)) {\n      this.wishlist.categories.push(item.Category);\n    }\n    return this;\n  }\n\n  withTheseItems(items: WishlistItem[]): AppStateBuilder {\n    this.wishlist.items.length = 0;\n    this.wishlist.categories.length = 0;\n    items.forEach((item) => this.withItem(item));\n    return this;\n  }\n\n  withQueryParams(queryParams: Record<string, any>): AppStateBuilder {\n    this.router.state.queryParams = { ...queryParams };\n    return this;\n  }\n\n  withReservationDialogVisible(): AppStateBuilder {\n    this.wishlist.reservationDialogVisible = true;\n    return this;\n  }\n}\n",
+            "sourceCode": "import { RouterReducerState } from '@ngrx/router-store';\nimport { Action } from '@ngrx/store';\nimport { WishlistItem } from 'src/app/business/item';\nimport { AppGlobalState } from 'src/app/store/a.state';\nimport { AppState } from 'src/app/store/app.state';\nimport { CaptchaState, initialCaptchaState } from 'src/app/store/captcha';\nimport { ReservationState, ReservationStatus } from 'src/app/store/r.state';\nimport { RouterStateUrl } from 'src/app/store/router/custom-route-serializer';\nimport { WishlistState } from 'src/app/store/w.state';\nimport { ListBuilder } from './list-builder';\nimport { randomString } from './utils';\n\nexport const appStateStub = (): AppStateBuilder => new AppStateBuilder();\n\nexport class AppStateBuilder implements AppState {\n  ag: AppGlobalState = {\n    captchaRequest: 'Sieben plus zwei',\n    pendingRequest: false,\n    requestErrorText: null,\n    requestRetryAction: null,\n  };\n  wishlist: WishlistState = {\n    categories: [],\n    items: [],\n    activeItem: null,\n    reservationDialogVisible: false,\n  };\n  reservation: ReservationState = {\n    itemid: null,\n    status: 'unknown',\n    errorText: null,\n  };\n  router: RouterReducerState<RouterStateUrl> = {\n    navigationId: 0,\n    state: { url: '', params: {}, queryParams: {}, data: {} },\n  };\n  captcha: CaptchaState = initialCaptchaState;\n\n  public static hasError(errorText: string): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.ag.requestErrorText = errorText;\n    return b;\n  }\n\n  public withRetryAction(retryAction: Action): AppStateBuilder {\n    this.ag.requestRetryAction = retryAction;\n    return this;\n  }\n\n  public static givenCategories(...categories: string[]): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.wishlist.categories = [...categories];\n    return b;\n  }\n\n  public static someCategories(): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.wishlist.categories = ListBuilder.with((i) =>\n      randomString(8, 'Category ')\n    )\n      .items(7)\n      .build();\n    return b;\n  }\n\n  public static pendingRequest(): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.ag.pendingRequest = true;\n    return b;\n  }\n\n  public static hasActiveItem(values?: Partial<WishlistItem>): AppStateBuilder {\n    const b = new AppStateBuilder();\n    return b.withActiveItem(values);\n  }\n\n  public static reservationStatus(\n    status: ReservationStatus,\n    opt?: { errorText?: string }\n  ): AppStateBuilder {\n    const b = new AppStateBuilder();\n    b.reservation.status = status;\n    b.reservation.errorText = opt?.errorText || null;\n    return b;\n  }\n\n  public static withBookCategoryAndItems(): AppStateBuilder {\n    const b = AppStateBuilder.givenCategories('Buch')\n      .withItem({\n        id: 8,\n        Title: 'Schillers Glocke',\n        Description:\n          'Das Lied von der Glocke ist ein im Jahr 1799 von Friedrich Schiller veröffentlichtes Gedicht. Es gehörte lange Zeit zum Kanon der deutschen Literatur und ist eines der bekanntesten, am meisten zitierten und parodierten deutschen Gedichte.',\n        BuyUrl: 'https://de.wikipedia.org/wiki/Das_Lied_von_der_Glocke',\n        Category: 'Buch',\n        ImgageUrl:\n          'https://upload.wikimedia.org/wikipedia/commons/6/69/Liezen_Prachteinband_Schillers_Glocke_01.jpg',\n      })\n      .withItem({\n        Title: 'Faust I + II',\n        Category: 'Buch',\n        Description: `Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des\n      Fauststoffs bezeichnet. Der Begriff kann sich auf den ersten Teil der\n      durch Goethe geschaffenen Tragödie, auf deren ersten und zweiten Teil\n      gemeinsam oder insgesamt auf die Arbeiten am Fauststoff beziehen, die\n      Goethe durch sechzig Jahre hindurch immer wieder neu aufnahm. Er umfasst\n      in diesem letzteren Sinne auch die Entwürfe, Fragmente, Kommentare und\n      Paralipomena des Dichters zu seinem Faustwerk und zum Fauststoff.`,\n        BuyUrl: 'https://de.wikipedia.org/wiki/Goethes_Faust',\n        ImgageUrl:\n          'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg',\n        id: 19,\n      })\n      .withItem({\n        id: 41,\n        Title: 'Nathan der Weise',\n        Description:\n          'Nathan der Weise ist der Titel und die Hauptfigur eines fünfaktigen Ideendramas von Gotthold Ephraim Lessing, das 1779 veröffentlicht und am 14. April 1783 in Berlin uraufgeführt wurde. Das Werk hat als Themenschwerpunkte den Humanismus und den Toleranzgedanken der Aufklärung. Besonders berühmt wurde die Ringparabel im dritten Aufzug des Dramas.',\n        BuyUrl: 'https://de.wikipedia.org/wiki/Nathan_der_Weise',\n        Category: 'Buch',\n        ImgageUrl: '',\n      });\n    return b;\n  }\n\n  withActiveItem(values?: Partial<WishlistItem>): AppStateBuilder {\n    this.wishlist.activeItem = {\n      Title: 'Faust I + II',\n      Category: 'Buch',\n      Description: `Mit Goethes Faust wird Johann Wolfgang von Goethes Bearbeitung des\n      Fauststoffs bezeichnet. Der Begriff kann sich auf den ersten Teil der\n      durch Goethe geschaffenen Tragödie, auf deren ersten und zweiten Teil\n      gemeinsam oder insgesamt auf die Arbeiten am Fauststoff beziehen, die\n      Goethe durch sechzig Jahre hindurch immer wieder neu aufnahm. Er umfasst\n      in diesem letzteren Sinne auch die Entwürfe, Fragmente, Kommentare und\n      Paralipomena des Dichters zu seinem Faustwerk und zum Fauststoff.`,\n      BuyUrl: 'https://de.wikipedia.org/wiki/Goethes_Faust',\n      ImgageUrl:\n        'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kersting_-_Faust_im_Studierzimmer.jpg/220px-Kersting_-_Faust_im_Studierzimmer.jpg',\n      id: 1,\n      ...values,\n    };\n    if (\n      this.wishlist.items.every(\n        (item) => item.id != this.wishlist.activeItem?.id\n      )\n    ) {\n      this.wishlist.items.push(this.wishlist.activeItem);\n    }\n    return this;\n  }\n\n  withCaptcha(challenge: string): AppStateBuilder {\n    this.ag.captchaRequest = challenge;\n    return this;\n  }\n\n  withItem(item: WishlistItem): AppStateBuilder {\n    this.wishlist.items.push(item);\n    if (!this.wishlist.categories.includes(item.Category)) {\n      this.wishlist.categories.push(item.Category);\n    }\n    return this;\n  }\n\n  withTheseItems(items: WishlistItem[]): AppStateBuilder {\n    this.wishlist.items.length = 0;\n    this.wishlist.categories.length = 0;\n    items.forEach((item) => this.withItem(item));\n    return this;\n  }\n\n  withQueryParams(queryParams: Record<string, any>): AppStateBuilder {\n    this.router.state.queryParams = { ...queryParams };\n    return this;\n  }\n\n  withReservationDialogVisible(): AppStateBuilder {\n    this.wishlist.reservationDialogVisible = true;\n    return this;\n  }\n}\n",
             "properties": [
                 {
                     "name": "ag",
@@ -1298,7 +1436,17 @@
                     "type": "AppGlobalState",
                     "optional": false,
                     "description": "",
-                    "line": 15
+                    "line": 16
+                },
+                {
+                    "name": "captcha",
+                    "defaultValue": "initialCaptchaState",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "CaptchaState",
+                    "optional": false,
+                    "description": "",
+                    "line": 37
                 },
                 {
                     "name": "reservation",
@@ -1308,7 +1456,7 @@
                     "type": "ReservationState",
                     "optional": false,
                     "description": "",
-                    "line": 27
+                    "line": 28
                 },
                 {
                     "name": "router",
@@ -1318,7 +1466,7 @@
                     "type": "RouterReducerState<RouterStateUrl>",
                     "optional": false,
                     "description": "",
-                    "line": 32
+                    "line": 33
                 },
                 {
                     "name": "wishlist",
@@ -1328,7 +1476,7 @@
                     "type": "WishlistState",
                     "optional": false,
                     "description": "",
-                    "line": 21
+                    "line": 22
                 }
             ],
             "methods": [
@@ -1346,7 +1494,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 48,
+                    "line": 50,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1379,7 +1527,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 70,
+                    "line": 72,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1411,7 +1559,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 37,
+                    "line": 39,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1435,7 +1583,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 64,
+                    "line": 66,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1462,7 +1610,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 75,
+                    "line": 77,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1496,7 +1644,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 54,
+                    "line": 56,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1517,7 +1665,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 124,
+                    "line": 126,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -1539,7 +1687,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 85,
+                    "line": 87,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1559,7 +1707,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 151,
+                    "line": 153,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -1587,7 +1735,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 156,
+                    "line": 158,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -1615,7 +1763,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 171,
+                    "line": 173,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -1636,7 +1784,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 176,
+                    "line": 178,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -1653,7 +1801,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 43,
+                    "line": 45,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1684,7 +1832,7 @@
                     "optional": false,
                     "returnType": "AppStateBuilder",
                     "typeParameters": [],
-                    "line": 164,
+                    "line": 166,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -3955,7 +4103,7 @@
         },
         {
             "name": "LaunchComponent",
-            "id": "component-LaunchComponent-b2e6153459d6b5beec79b5afedf9c1bbbf14cab43507f8d5479f6eec7862ff0f3406917f454f8c0a72e41791fdb96dc918c3c48ae0bab2325211d51d161fbc56",
+            "id": "component-LaunchComponent-11a09647ab9dde1f8b69be875b24461860f14225928429f78db6f6d6987c0bbba24e3acadbc61bc0f953c1099977500ee678d3398bb8e28ea0486d7e50375f3e",
             "file": "src/stories/UpdateReservationDialog.stories.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -3969,15 +4117,42 @@
             "viewProviders": [],
             "inputsClass": [],
             "outputsClass": [],
-            "propertiesClass": [],
+            "propertiesClass": [
+                {
+                    "name": "dlgRef",
+                    "defaultValue": "null",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "MatDialogRef<UpdateReservationDialogComponent> | null",
+                    "optional": false,
+                    "description": "",
+                    "line": 25,
+                    "modifierKind": [
+                        121
+                    ]
+                }
+            ],
             "methodsClass": [
+                {
+                    "name": "ngOnDestroy",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 50,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ]
+                },
                 {
                     "name": "ngOnInit",
                     "args": [],
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 19,
+                    "line": 37,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -3992,7 +4167,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, OnInit } from '@angular/core';\nimport { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';\nimport { provideMockStore } from '@ngrx/store/testing';\nimport { Meta, moduleMetadata, Story } from '@storybook/angular';\nimport { NEVER, of } from 'rxjs';\nimport { Result } from 'src/app/business/result';\nimport { DialogData } from 'src/app/components/update-reservation-dialog/dialog-data';\nimport { UpdateReservationDialogComponent } from 'src/app/components/update-reservation-dialog/update-reservation-dialog.component';\nimport { ItemsService } from 'src/app/services/items.service';\nimport { AppStateBuilder } from 'testing/app.state.builder';\nimport { decorators, defaultProviders, moduleImports } from './matmetadata';\n\n@Component({\n  template: '',\n})\nclass LaunchComponent implements OnInit {\n  constructor(private dialog: MatDialog) {}\n\n  public ngOnInit(): void {\n    this.dialog.open(UpdateReservationDialogComponent, {\n      data: <DialogData>{\n        itemId: 1,\n        targetState: 'reserve',\n      },\n    });\n  }\n}\n\nexport default {\n  title: 'Update reservation dialog',\n  component: LaunchComponent,\n  decorators,\n} as Meta;\n\nconst customDefaultProviders = [\n  ...defaultProviders,\n  {\n    provide: ItemsService,\n    useValue: {\n      getCaptchaChallenge: () => of(new Result('acht')),\n    },\n  },\n];\n\nconst dialogData: DialogData = {\n  itemId: 5,\n  targetState: 'clear',\n};\n\nexport const InitLoading: Story = () => ({\n  props: {},\n});\nInitLoading.storyName = 'Initializing';\nInitLoading.decorators = [\n  moduleMetadata({\n    declarations: [UpdateReservationDialogComponent],\n    imports: moduleImports,\n    providers: [\n      ...customDefaultProviders,\n      { provide: MAT_DIALOG_DATA, useValue: dialogData },\n      provideMockStore({\n        initialState: AppStateBuilder.reservationStatus('requestPending'),\n      }),\n      {\n        provide: ItemsService,\n        useValue: {\n          getCaptchaChallenge: () => NEVER,\n        },\n      },\n    ],\n  }),\n];\n\nexport const LoadingUpdating: Story = () => ({\n  props: {},\n});\nLoadingUpdating.storyName = 'Updating';\nLoadingUpdating.decorators = [\n  moduleMetadata({\n    declarations: [],\n    imports: moduleImports,\n    providers: [\n      ...customDefaultProviders,\n      { provide: MAT_DIALOG_DATA, useValue: dialogData },\n      provideMockStore({\n        initialState: AppStateBuilder.reservationStatus('requestPending'),\n      }),\n    ],\n  }),\n];\n\nconst hasReservationDialogData: DialogData = {\n  ...dialogData,\n  targetState: 'clear',\n};\nexport const HasReservation: Story = () => ({\n  props: {},\n});\nHasReservation.storyName = 'Has reservation';\nHasReservation.decorators = [\n  moduleMetadata({\n    declarations: [],\n    imports: moduleImports,\n    providers: [\n      ...customDefaultProviders,\n      { provide: MAT_DIALOG_DATA, useValue: hasReservationDialogData },\n      provideMockStore({\n        initialState: AppStateBuilder.reservationStatus('reserved'),\n      }),\n    ],\n  }),\n];\n\nexport const IsUnkown: Story = () => ({\n  props: {},\n});\nIsUnkown.storyName = 'Is unknown';\nIsUnkown.decorators = [\n  moduleMetadata({\n    declarations: [],\n    imports: moduleImports,\n    providers: [\n      ...customDefaultProviders,\n      { provide: MAT_DIALOG_DATA, useValue: dialogData },\n      provideMockStore({\n        initialState: AppStateBuilder.reservationStatus('unknown'),\n      }),\n    ],\n  }),\n];\n\nconst isFreeDialogData: DialogData = {\n  ...dialogData,\n  targetState: 'reserve',\n};\nexport const IsFree: Story = () => ({\n  props: {},\n});\nIsFree.storyName = 'Is free';\nIsFree.decorators = [\n  moduleMetadata({\n    declarations: [],\n    imports: moduleImports,\n    providers: [\n      ...customDefaultProviders,\n      { provide: MAT_DIALOG_DATA, useValue: isFreeDialogData },\n      provideMockStore({\n        initialState: AppStateBuilder.reservationStatus('free'),\n      }),\n    ],\n  }),\n];\n\nexport const UpdateFailed: Story = () => ({\n  props: {},\n});\nUpdateFailed.storyName = 'Update failed';\nUpdateFailed.decorators = [\n  moduleMetadata({\n    declarations: [],\n    imports: moduleImports,\n    providers: [\n      ...customDefaultProviders,\n      { provide: MAT_DIALOG_DATA, useValue: dialogData },\n      provideMockStore({\n        initialState: AppStateBuilder.reservationStatus('updateFailed', {\n          errorText: 'Captcha-Fehler',\n        }),\n      }),\n    ],\n  }),\n];\n",
+            "sourceCode": "import { Component, Inject, OnDestroy, OnInit } from '@angular/core';\nimport {\n  MatDialog,\n  MatDialogRef,\n  MAT_DIALOG_DATA,\n} from '@angular/material/dialog';\nimport { provideMockStore } from '@ngrx/store/testing';\nimport { Meta, moduleMetadata, Story } from '@storybook/angular';\nimport { NEVER, of } from 'rxjs';\nimport { Result } from 'src/app/business/result';\nimport { DialogData } from 'src/app/components/update-reservation-dialog/dialog-data';\nimport { UpdateReservationDialogComponent } from 'src/app/components/update-reservation-dialog/update-reservation-dialog.component';\nimport { ItemsService } from 'src/app/services/items.service';\nimport { AppStateBuilder } from 'testing/app.state.builder';\nimport { decorators, defaultProviders, moduleImports } from './matmetadata';\n\ninterface ChildData {\n  updateResultMessage?: string;\n}\n\n@Component({\n  template: '',\n})\nclass LaunchComponent implements OnInit, OnDestroy {\n  private dlgRef: MatDialogRef<UpdateReservationDialogComponent> | null = null;\n\n  public set update(v: string) {\n    if (this.dlgRef) {\n    }\n  }\n\n  constructor(\n    private dialog: MatDialog,\n    @Inject('child data') private childData: ChildData\n  ) {}\n\n  public ngOnInit(): void {\n    this.dlgRef = this.dialog.open(UpdateReservationDialogComponent, {\n      data: <DialogData>{\n        itemId: 1,\n        targetState: 'reserve',\n      },\n    });\n    if (this.childData.updateResultMessage) {\n      this.dlgRef.componentInstance.updateResultMessage =\n        this.childData.updateResultMessage;\n    }\n  }\n\n  public ngOnDestroy(): void {\n    this.dlgRef?.close();\n  }\n}\n\nexport default {\n  title: 'Update reservation dialog',\n  component: LaunchComponent,\n  decorators,\n} as Meta;\n\nconst customDefaultProviders = [\n  ...defaultProviders,\n  {\n    provide: ItemsService,\n    useValue: {\n      getCaptchaChallenge: () => of(new Result('acht')),\n    },\n  },\n  {\n    provide: 'child data',\n    useValue: <ChildData>{},\n  },\n];\n\nconst dialogData: DialogData = {\n  itemId: 5,\n  targetState: 'clear',\n};\n\nexport const InitLoading: Story = () => ({\n  props: {},\n});\nInitLoading.storyName = 'Initializing';\nInitLoading.decorators = [\n  moduleMetadata({\n    declarations: [UpdateReservationDialogComponent],\n    imports: moduleImports,\n    providers: [\n      ...customDefaultProviders,\n      { provide: MAT_DIALOG_DATA, useValue: dialogData },\n      provideMockStore({\n        initialState: AppStateBuilder.reservationStatus('requestPending'),\n      }),\n      {\n        provide: ItemsService,\n        useValue: {\n          getCaptchaChallenge: () => NEVER,\n        },\n      },\n    ],\n  }),\n];\n\nexport const LoadingUpdating: Story = () => ({\n  props: {},\n});\nLoadingUpdating.storyName = 'Updating';\nLoadingUpdating.decorators = [\n  moduleMetadata({\n    declarations: [],\n    imports: moduleImports,\n    providers: [\n      ...customDefaultProviders,\n      { provide: MAT_DIALOG_DATA, useValue: dialogData },\n      provideMockStore({\n        initialState: AppStateBuilder.reservationStatus('requestPending'),\n      }),\n    ],\n  }),\n];\n\nconst hasReservationDialogData: DialogData = {\n  ...dialogData,\n  targetState: 'clear',\n};\nexport const HasReservation: Story = () => ({\n  props: {},\n});\nHasReservation.storyName = 'Has reservation';\nHasReservation.decorators = [\n  moduleMetadata({\n    declarations: [],\n    imports: moduleImports,\n    providers: [\n      ...customDefaultProviders,\n      { provide: MAT_DIALOG_DATA, useValue: hasReservationDialogData },\n      provideMockStore({\n        initialState: AppStateBuilder.reservationStatus('reserved'),\n      }),\n    ],\n  }),\n];\n\nexport const IsUnkown: Story = () => ({\n  props: {},\n});\nIsUnkown.storyName = 'Is unknown';\nIsUnkown.decorators = [\n  moduleMetadata({\n    declarations: [],\n    imports: moduleImports,\n    providers: [\n      ...customDefaultProviders,\n      { provide: MAT_DIALOG_DATA, useValue: dialogData },\n      provideMockStore({\n        initialState: AppStateBuilder.reservationStatus('unknown'),\n      }),\n    ],\n  }),\n];\n\nconst isFreeDialogData: DialogData = {\n  ...dialogData,\n  targetState: 'reserve',\n};\nexport const IsFree: Story = () => ({\n  props: {},\n});\nIsFree.storyName = 'Is free';\nIsFree.decorators = [\n  moduleMetadata({\n    declarations: [],\n    imports: moduleImports,\n    providers: [\n      ...customDefaultProviders,\n      { provide: MAT_DIALOG_DATA, useValue: isFreeDialogData },\n      provideMockStore({\n        initialState: AppStateBuilder.reservationStatus('free'),\n      }),\n    ],\n  }),\n];\n\nexport const UpdateFailed: Story = () => ({\n  props: {},\n});\nUpdateFailed.storyName = 'Update failed';\nUpdateFailed.decorators = [\n  moduleMetadata({\n    declarations: [UpdateReservationDialogComponent],\n    imports: moduleImports,\n    providers: [\n      ...customDefaultProviders,\n      { provide: MAT_DIALOG_DATA, useValue: dialogData },\n      provideMockStore({\n        initialState: AppStateBuilder.reservationStatus('reserved'),\n      }),\n      {\n        provide: 'child data',\n        useValue: <ChildData>{\n          updateResultMessage: 'Der Eintrag wurde gelöscht',\n        },\n      },\n    ],\n  }),\n];\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -4007,9 +4182,15 @@
                         "type": "MatDialog",
                         "deprecated": false,
                         "deprecationMessage": ""
+                    },
+                    {
+                        "name": "childData",
+                        "type": "ChildData",
+                        "deprecated": false,
+                        "deprecationMessage": ""
                     }
                 ],
-                "line": 16,
+                "line": 30,
                 "jsdoctags": [
                     {
                         "name": "dialog",
@@ -4019,12 +4200,54 @@
                         "tagName": {
                             "text": "param"
                         }
+                    },
+                    {
+                        "name": "childData",
+                        "type": "ChildData",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
                     }
                 ]
             },
             "implements": [
-                "OnInit"
-            ]
+                "OnInit",
+                "OnDestroy"
+            ],
+            "accessors": {
+                "update": {
+                    "name": "update",
+                    "setSignature": {
+                        "name": "update",
+                        "type": "void",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "args": [
+                            {
+                                "name": "v",
+                                "type": "string",
+                                "deprecated": false,
+                                "deprecationMessage": ""
+                            }
+                        ],
+                        "returnType": "void",
+                        "line": 27,
+                        "jsdoctags": [
+                            {
+                                "name": "v",
+                                "type": "string",
+                                "deprecated": false,
+                                "deprecationMessage": "",
+                                "tagName": {
+                                    "text": "param"
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
         },
         {
             "name": "MenuNavlistComponent",
@@ -4433,7 +4656,7 @@
         },
         {
             "name": "UpdateReservationDialogComponent",
-            "id": "component-UpdateReservationDialogComponent-df6cc7e094f120ef07d6bdf29e40f183500a7c84c41f5dd3d08edaa9024f2f681596da0d6be345052d3ebd41e09622ccbe9237115cff981ca6a076c1a1e3b7e9",
+            "id": "component-UpdateReservationDialogComponent-09e931af5a84cfb89f1ba7b4cebe42b605b8c965c14d5ce9111a92891c3bbd9eef1f0d5979a23b980afe08786f84491e5d7aa08ff25f4f9a0d02ce20dcca8582",
             "file": "src/app/components/update-reservation-dialog/update-reservation-dialog.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -4453,6 +4676,19 @@
             "outputsClass": [],
             "propertiesClass": [
                 {
+                    "name": "captchaInputValue",
+                    "defaultValue": "new FormControl('')",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 28,
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
                     "name": "challenge$",
                     "defaultValue": "this.challengeRequest$.pipe(\n    tap((_) => {\n      this.requestPending = true;\n    }),\n    mergeMap((_) => this.itemsService.getCaptchaChallenge()),\n    tap((_) => {\n      this.requestPending = false;\n    }),\n    shareReplay(1)\n  )",
                     "deprecated": false,
@@ -4460,7 +4696,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 16,
+                    "line": 17,
                     "modifierKind": [
                         123
                     ]
@@ -4473,7 +4709,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 13,
+                    "line": 14,
                     "modifierKind": [
                         121
                     ]
@@ -4485,7 +4721,7 @@
                     "type": "DialogData",
                     "optional": false,
                     "description": "",
-                    "line": 29,
+                    "line": 32,
                     "decorators": [
                         {
                             "name": "Inject",
@@ -4504,7 +4740,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 26,
+                    "line": 27,
                     "modifierKind": [
                         123
                     ]
@@ -4517,7 +4753,20 @@
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 15,
+                    "line": 16,
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "updateResultMessage",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 29,
                     "modifierKind": [
                         123
                     ]
@@ -4530,7 +4779,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 40,
+                    "line": 43,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -4540,7 +4789,17 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 33,
+                    "line": 36,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "updateRequest",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 47,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -4552,7 +4811,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, Inject, OnInit } from '@angular/core';\nimport { MAT_DIALOG_DATA } from '@angular/material/dialog';\nimport { BehaviorSubject, mergeMap, shareReplay, tap } from 'rxjs';\nimport { ItemsService } from 'src/app/services/items.service';\nimport { DialogData } from './dialog-data';\n\n@Component({\n  selector: 'app-update-reservation-dialog',\n  templateUrl: './update-reservation-dialog.component.html',\n  styleUrls: ['./update-reservation-dialog.component.scss'],\n})\nexport class UpdateReservationDialogComponent implements OnInit {\n  private challengeRequest$ = new BehaviorSubject(null);\n\n  public title = '';\n  public challenge$ = this.challengeRequest$.pipe(\n    tap((_) => {\n      this.requestPending = true;\n    }),\n    mergeMap((_) => this.itemsService.getCaptchaChallenge()),\n    tap((_) => {\n      this.requestPending = false;\n    }),\n    shareReplay(1)\n  );\n  public requestPending = false;\n\n  constructor(\n    @Inject(MAT_DIALOG_DATA) public data: DialogData,\n    private itemsService: ItemsService\n  ) {}\n\n  ngOnInit(): void {\n    this.title =\n      this.data.targetState === 'reserve'\n        ? 'Reservieren'\n        : 'Reservierung löschen';\n  }\n\n  challengeRequest(): void {\n    this.challengeRequest$.next(null);\n  }\n}\n",
+            "sourceCode": "import { Component, Inject, OnInit } from '@angular/core';\nimport { FormControl, Validators } from '@angular/forms';\nimport { MAT_DIALOG_DATA } from '@angular/material/dialog';\nimport { BehaviorSubject, mergeMap, shareReplay, tap } from 'rxjs';\nimport { ItemsService } from 'src/app/services/items.service';\nimport { DialogData } from './dialog-data';\n\n@Component({\n  selector: 'app-update-reservation-dialog',\n  templateUrl: './update-reservation-dialog.component.html',\n  styleUrls: ['./update-reservation-dialog.component.scss'],\n})\nexport class UpdateReservationDialogComponent implements OnInit {\n  private challengeRequest$ = new BehaviorSubject(null);\n\n  public title = '';\n  public challenge$ = this.challengeRequest$.pipe(\n    tap((_) => {\n      this.requestPending = true;\n    }),\n    mergeMap((_) => this.itemsService.getCaptchaChallenge()),\n    tap((_) => {\n      this.requestPending = false;\n    }),\n    shareReplay(1)\n  );\n  public requestPending = false;\n  public captchaInputValue = new FormControl('');\n  public updateResultMessage = '';\n\n  constructor(\n    @Inject(MAT_DIALOG_DATA) public data: DialogData,\n    private itemsService: ItemsService\n  ) {}\n\n  ngOnInit(): void {\n    this.title =\n      this.data.targetState === 'reserve'\n        ? 'Reservieren'\n        : 'Reservierung löschen';\n  }\n\n  challengeRequest(): void {\n    this.challengeRequest$.next(null);\n  }\n\n  updateRequest(): void {\n    const captcha = this.captchaInputValue.value;\n    if (captcha && captcha.length > 0) {\n      this.itemsService\n        .setReservationFlag(\n          this.data.itemId,\n          this.data.targetState === 'reserve',\n          captcha\n        )\n        .subscribe((result) => {\n          if (!result.success) {\n            this.updateResultMessage = result.data;\n          }\n        });\n    }\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -4580,7 +4839,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 26,
+                "line": 29,
                 "jsdoctags": [
                     {
                         "name": "data",
@@ -4605,19 +4864,19 @@
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<h1 mat-dialog-title>{{ title }}</h1>\n\n<div mat-dialog-content class=\"mat-typography\">\n  <div class=\"fdc\">\n    <div *ngIf=\"challenge$ | async as challenge\">\n      <ng-container *ngIf=\"challenge.success\">\n        <mat-form-field appearance=\"fill\">\n          <mat-label>{{ challenge.data }}</mat-label>\n          <input matInput placeholder=\"Zahl\" />\n          <mat-hint>Bitte als Zahl eingeben</mat-hint>\n        </mat-form-field>\n      </ng-container>\n    </div>\n    <div class=\"f jcc\">\n      <button mat-flat-button [color]=\"requestPending ? '' : 'accent'\" (click)=\"challengeRequest()\"\n        [disabled]=\"requestPending\">\n        <mat-spinner diameter=\"36\" *ngIf=\"requestPending; else refreshbutton\"></mat-spinner>\n        <ng-template #refreshbutton>\n          Neue Aufgabe\n        </ng-template>\n      </button>\n    </div>\n    </div>\n</div>\n<div mat-dialog-actions align=\"end\">\n  <button mat-flat-button mat-dialog-close>Abbruch</button>\n  <button mat-flat-button [mat-dialog-close]=\"true\" color=\"primary\">{{ data.targetState === 'clear' ? 'Löschen' : 'Reservieren' }}</button>\n</div>\n"
+            "templateData": "<h1 mat-dialog-title>{{ title }}</h1>\n\n<div mat-dialog-content class=\"mat-typography\">\n  <div class=\"fdc\">\n    <div *ngIf=\"challenge$ | async as challenge\">\n      <ng-container *ngIf=\"challenge.success\">\n        <mat-form-field appearance=\"fill\">\n          <mat-label>{{ challenge.data }}</mat-label>\n          <input matInput placeholder=\"Zahl\" [formControl]=\"captchaInputValue\" />\n          <mat-hint>Bitte als Zahl eingeben</mat-hint>\n        </mat-form-field>\n      </ng-container>\n    </div>\n    <div class=\"f jcc\">\n      <button mat-flat-button [color]=\"requestPending ? '' : 'accent'\" (click)=\"challengeRequest()\"\n        [disabled]=\"requestPending\">\n        <mat-spinner diameter=\"36\" *ngIf=\"requestPending; else refreshbutton\"></mat-spinner>\n        <ng-template #refreshbutton>\n          Neue Aufgabe\n        </ng-template>\n      </button>\n    </div>\n    <div *ngIf=\"updateResultMessage\" class=\"error\">\n      {{ updateResultMessage }}\n    </div>\n  </div>\n</div>\n<div mat-dialog-actions align=\"end\">\n  <button mat-flat-button mat-dialog-close>Abbruch</button>\n  <button mat-flat-button color=\"primary\" (click)=\"updateRequest()\">{{ data.targetState === 'clear' ? 'Löschen' :\n    'Reservieren' }}</button>\n</div>"
         }
     ],
     "modules": [
         {
             "name": "AppModule",
-            "id": "module-AppModule-595f19a9a69ac56fa69f3dce18e80bda530e7fbc98ba3f784b9e9c59dfed58966ba74bdefde6a027f673172428411940b7bcb67e626039f1e1df9713bd745a57",
+            "id": "module-AppModule-97c850da0d985b165b2b04a5ca8b810ee5a3de3b0d1de0c6319a36ec620b98fe18173f9e9dc356e6c9ce197a0556662c28cee6851522e982ba80a3bd25a4e2aa",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/app.module.ts",
             "methods": [],
-            "sourceCode": "import { LayoutModule } from '@angular/cdk/layout';\nimport { HttpClientModule } from '@angular/common/http';\nimport { NgModule } from '@angular/core';\nimport { ReactiveFormsModule } from '@angular/forms';\nimport { MatButtonModule } from '@angular/material/button';\nimport { MatCardModule } from '@angular/material/card';\nimport { MatDialogModule } from '@angular/material/dialog';\nimport { MatExpansionModule } from '@angular/material/expansion';\nimport {\n  MatFormFieldModule,\n  MAT_FORM_FIELD_DEFAULT_OPTIONS,\n} from '@angular/material/form-field';\nimport { MatIconModule } from '@angular/material/icon';\nimport { MatInputModule } from '@angular/material/input';\nimport { MatListModule } from '@angular/material/list';\nimport { MatProgressBarModule } from '@angular/material/progress-bar';\nimport { MatProgressSpinnerModule } from '@angular/material/progress-spinner';\nimport { MatSidenavModule } from '@angular/material/sidenav';\nimport { MatToolbarModule } from '@angular/material/toolbar';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\nimport { EffectsModule } from '@ngrx/effects';\nimport { routerReducer, StoreRouterConnectingModule } from '@ngrx/router-store';\nimport { StoreModule } from '@ngrx/store';\nimport { StoreDevtoolsModule } from '@ngrx/store-devtools';\nimport { environment } from '../environments/environment';\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { EmptyListComponent } from './components/empty-list/empty-list.component';\nimport { ErrorDisplayComponent } from './components/error-display/error-display.component';\nimport { ItemDisplayComponent } from './components/item-display/item-display.component';\nimport { ItemFormComponent } from './components/item-form/item-form.component';\nimport { ItemPreviewComponent } from './components/item-preview/item-preview.component';\nimport { MenuNavlistComponent } from './components/menu-navlist/menu-navlist.component';\nimport { ShowReservationStatusComponent } from './components/show-reservation-status/show-reservation-status.component';\nimport { UpdateReservationDialogComponent } from './components/update-reservation-dialog/update-reservation-dialog.component';\nimport { ConnectFormDirective } from './directives/connect-form.directive';\nimport { FormEnabledDirective } from './directives/form-enabled.directive';\nimport { FrameComponent } from './frame/frame.component';\nimport { AboutComponent } from './pages/about/about.component';\nimport { AddPageComponent } from './pages/add-page/add-page.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { CategoryPageComponent } from './pages/category-page/category-page.component';\nimport { ItemViewComponent } from './pages/item-view/item-view.component';\nimport { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';\nimport { WithCategoryPipe } from './pipes/with-category.pipe';\nimport { AppGlobalStateEffects } from './store/a.effects';\nimport { agReducer } from './store/a.reducer';\nimport { AppState } from './store/app.state';\nimport { DialogEffects } from './store/dialog/effects';\nimport { ReservationEffects } from './store/r.effects';\nimport { rReducer } from './store/r.reducer';\nimport { CustomSerializer } from './store/router/custom-route-serializer';\nimport { RouterEffects } from './store/router/effects';\nimport { WishlistEffects } from './store/w.effects';\nimport { wReducer } from './store/w.reducer';\n\n@NgModule({\n  declarations: [\n    AboutComponent,\n    AddPageComponent,\n    AppComponent,\n    CategoriesPageComponent,\n    CategoryPageComponent,\n    ConnectFormDirective,\n    EmptyListComponent,\n    ErrorDisplayComponent,\n    FormEnabledDirective,\n    FrameComponent,\n    ItemDisplayComponent,\n    ItemFormComponent,\n    ItemPreviewComponent,\n    ItemViewComponent,\n    MenuNavlistComponent,\n    PageNotFoundComponent,\n    ShowReservationStatusComponent,\n    UpdateReservationDialogComponent,\n    WithCategoryPipe,\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    BrowserAnimationsModule,\n    LayoutModule,\n    ReactiveFormsModule,\n    MatButtonModule,\n    MatCardModule,\n    MatDialogModule,\n    MatExpansionModule,\n    MatFormFieldModule,\n    MatIconModule,\n    MatInputModule,\n    MatListModule,\n    MatProgressBarModule,\n    MatProgressSpinnerModule,\n    MatSidenavModule,\n    MatToolbarModule,\n    StoreModule.forRoot<AppState>({\n      ag: agReducer,\n      reservation: rReducer,\n      router: routerReducer,\n      wishlist: wReducer,\n    }),\n    EffectsModule.forRoot([\n      AppGlobalStateEffects,\n      DialogEffects,\n      ReservationEffects,\n      RouterEffects,\n      WishlistEffects,\n    ]),\n    // import HttpClientModule after BrowserModule.\n    HttpClientModule,\n    StoreDevtoolsModule.instrument({\n      maxAge: 25,\n      logOnly: environment.production,\n    }),\n    StoreRouterConnectingModule.forRoot({\n      serializer: CustomSerializer,\n    }),\n  ],\n  providers: [\n    {\n      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,\n      useValue: { appearance: 'fill' },\n    },\n  ],\n  bootstrap: [AppComponent],\n})\nexport class AppModule {}\n",
+            "sourceCode": "import { LayoutModule } from '@angular/cdk/layout';\nimport { HttpClientModule } from '@angular/common/http';\nimport { NgModule } from '@angular/core';\nimport { ReactiveFormsModule } from '@angular/forms';\nimport { MatButtonModule } from '@angular/material/button';\nimport { MatCardModule } from '@angular/material/card';\nimport { MatDialogModule } from '@angular/material/dialog';\nimport { MatExpansionModule } from '@angular/material/expansion';\nimport {\n  MatFormFieldModule,\n  MAT_FORM_FIELD_DEFAULT_OPTIONS,\n} from '@angular/material/form-field';\nimport { MatIconModule } from '@angular/material/icon';\nimport { MatInputModule } from '@angular/material/input';\nimport { MatListModule } from '@angular/material/list';\nimport { MatProgressBarModule } from '@angular/material/progress-bar';\nimport { MatProgressSpinnerModule } from '@angular/material/progress-spinner';\nimport { MatSidenavModule } from '@angular/material/sidenav';\nimport { MatToolbarModule } from '@angular/material/toolbar';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\nimport { EffectsModule } from '@ngrx/effects';\nimport { routerReducer, StoreRouterConnectingModule } from '@ngrx/router-store';\nimport { StoreModule } from '@ngrx/store';\nimport { StoreDevtoolsModule } from '@ngrx/store-devtools';\nimport { environment } from '../environments/environment';\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { EmptyListComponent } from './components/empty-list/empty-list.component';\nimport { ErrorDisplayComponent } from './components/error-display/error-display.component';\nimport { ItemDisplayComponent } from './components/item-display/item-display.component';\nimport { ItemFormComponent } from './components/item-form/item-form.component';\nimport { ItemPreviewComponent } from './components/item-preview/item-preview.component';\nimport { MenuNavlistComponent } from './components/menu-navlist/menu-navlist.component';\nimport { ShowReservationStatusComponent } from './components/show-reservation-status/show-reservation-status.component';\nimport { UpdateReservationDialogComponent } from './components/update-reservation-dialog/update-reservation-dialog.component';\nimport { ConnectFormDirective } from './directives/connect-form.directive';\nimport { FormEnabledDirective } from './directives/form-enabled.directive';\nimport { FrameComponent } from './frame/frame.component';\nimport { AboutComponent } from './pages/about/about.component';\nimport { AddPageComponent } from './pages/add-page/add-page.component';\nimport { CategoriesPageComponent } from './pages/categories-page/categories-page.component';\nimport { CategoryPageComponent } from './pages/category-page/category-page.component';\nimport { ItemViewComponent } from './pages/item-view/item-view.component';\nimport { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';\nimport { WithCategoryPipe } from './pipes/with-category.pipe';\nimport { AppGlobalStateEffects } from './store/a.effects';\nimport { agReducer } from './store/a.reducer';\nimport { AppState } from './store/app.state';\nimport { CaptchaEffects, captchaReducer } from './store/captcha';\nimport { DialogEffects } from './store/dialog/effects';\nimport { ReservationEffects } from './store/r.effects';\nimport { rReducer } from './store/r.reducer';\nimport { CustomSerializer } from './store/router/custom-route-serializer';\nimport { RouterEffects } from './store/router/effects';\nimport { WishlistEffects } from './store/w.effects';\nimport { wReducer } from './store/w.reducer';\n\n@NgModule({\n  declarations: [\n    AboutComponent,\n    AddPageComponent,\n    AppComponent,\n    CategoriesPageComponent,\n    CategoryPageComponent,\n    ConnectFormDirective,\n    EmptyListComponent,\n    ErrorDisplayComponent,\n    FormEnabledDirective,\n    FrameComponent,\n    ItemDisplayComponent,\n    ItemFormComponent,\n    ItemPreviewComponent,\n    ItemViewComponent,\n    MenuNavlistComponent,\n    PageNotFoundComponent,\n    ShowReservationStatusComponent,\n    UpdateReservationDialogComponent,\n    WithCategoryPipe,\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    BrowserAnimationsModule,\n    LayoutModule,\n    ReactiveFormsModule,\n    MatButtonModule,\n    MatCardModule,\n    MatDialogModule,\n    MatExpansionModule,\n    MatFormFieldModule,\n    MatIconModule,\n    MatInputModule,\n    MatListModule,\n    MatProgressBarModule,\n    MatProgressSpinnerModule,\n    MatSidenavModule,\n    MatToolbarModule,\n    StoreModule.forRoot<AppState>({\n      ag: agReducer,\n      reservation: rReducer,\n      router: routerReducer,\n      wishlist: wReducer,\n      captcha: captchaReducer,\n    }),\n    EffectsModule.forRoot([\n      AppGlobalStateEffects,\n      CaptchaEffects,\n      DialogEffects,\n      ReservationEffects,\n      RouterEffects,\n      WishlistEffects,\n    ]),\n    // import HttpClientModule after BrowserModule.\n    HttpClientModule,\n    StoreDevtoolsModule.instrument({\n      maxAge: 25,\n      logOnly: environment.production,\n    }),\n    StoreRouterConnectingModule.forRoot({\n      serializer: CustomSerializer,\n    }),\n  ],\n  providers: [\n    {\n      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,\n      useValue: { appearance: 'fill' },\n    },\n  ],\n  bootstrap: [AppComponent],\n})\nexport class AppModule {}\n",
             "children": [
                 {
                     "type": "providers",
@@ -4771,6 +5030,36 @@
                 "defaultValue": "(): AppStateBuilder => new AppStateBuilder()"
             },
             {
+                "name": "captchaChallengeError",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/captcha/actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction(\n  '[Captcha] Captcha challenge error',\n  props<{ errorText: string }>()\n)"
+            },
+            {
+                "name": "captchaChallengeReceived",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/captcha/actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction(\n  '[Captcha] Captcha challenge received',\n  props<{ captchaTask: string }>()\n)"
+            },
+            {
+                "name": "captchaReducer",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/captcha/reducers.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createReducer(\n  initialCaptchaState,\n  on(\n    getCaptchaChallenge,\n    (_state, _): CaptchaState => ({\n      challenge: '',\n      errorText: '',\n      loading: true,\n    })\n  ),\n  on(\n    captchaChallengeReceived,\n    (_state, action): CaptchaState => ({\n      challenge: action.captchaTask,\n      errorText: '',\n      loading: false,\n    })\n  ),\n  on(\n    captchaChallengeError,\n    (_stte, action): CaptchaState => ({\n      challenge: '',\n      errorText: action.errorText,\n      loading: false,\n    })\n  )\n)"
+            },
+            {
                 "name": "Categories",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -4818,7 +5107,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "[]",
-                "defaultValue": "[\n  ...defaultProviders,\n  {\n    provide: ItemsService,\n    useValue: {\n      getCaptchaChallenge: () => of(new Result('acht')),\n    },\n  },\n]"
+                "defaultValue": "[\n  ...defaultProviders,\n  {\n    provide: ItemsService,\n    useValue: {\n      getCaptchaChallenge: () => of(new Result('acht')),\n    },\n  },\n  {\n    provide: 'child data',\n    useValue: <ChildData>{},\n  },\n]"
             },
             {
                 "name": "declarations",
@@ -4971,6 +5260,16 @@
                 "defaultValue": "{\n  production: false\n}"
             },
             {
+                "name": "errorFactory",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/captcha/effects.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "() =>\n  captchaChallengeError({ errorText: 'Fehler beim Abruf' })"
+            },
+            {
                 "name": "ErrorText",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -5009,6 +5308,16 @@
                 "deprecationMessage": "",
                 "type": "Story",
                 "defaultValue": "() => ({\n  props: {\n    item: WishlistItemBuilder.faust(),\n  },\n})"
+            },
+            {
+                "name": "getCaptchaChallenge",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/captcha/actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction('[Captcha] Get challenge')"
             },
             {
                 "name": "getItems",
@@ -5079,6 +5388,16 @@
                 "deprecationMessage": "",
                 "type": "DialogData",
                 "defaultValue": "{\n  ...dialogData,\n  targetState: 'clear',\n}"
+            },
+            {
+                "name": "initialCaptchaState",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/captcha/state.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "CaptchaState",
+                "defaultValue": "{\n  challenge: '',\n  loading: false,\n  errorText: '',\n}"
             },
             {
                 "name": "initialState",
@@ -5491,6 +5810,26 @@
                 "defaultValue": "createSelector(\n  selectFeature,\n  (state: WishlistState) => ({\n    title: state.activeItem?.Title,\n    description: state.activeItem?.Description,\n    category: state.activeItem?.Category,\n    imagesrc: state.activeItem?.ImgageUrl,\n    buyurl: state.activeItem?.BuyUrl,\n    id: state.activeItem?.id,\n  })\n)"
             },
             {
+                "name": "selectCaptchaError",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/captcha/selectors.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createSelector(\n  selectFeature,\n  (state: CaptchaState) => state.errorText\n)"
+            },
+            {
+                "name": "selectCaptchaLoading",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/captcha/selectors.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createSelector(\n  selectFeature,\n  (state: CaptchaState) => state.loading\n)"
+            },
+            {
                 "name": "selectCaptchaRequestText",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -5499,6 +5838,16 @@
                 "deprecationMessage": "",
                 "type": "",
                 "defaultValue": "createSelector(\n  selectFeature,\n  (state: AppGlobalState) => state.captchaRequest\n)"
+            },
+            {
+                "name": "selectCaptchaTask",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/captcha/selectors.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createSelector(\n  selectFeature,\n  (state: CaptchaState) => state.challenge\n)"
             },
             {
                 "name": "selectCategories",
@@ -5539,6 +5888,16 @@
                 "deprecationMessage": "",
                 "type": "",
                 "defaultValue": "(state: any) => (state as AppState).wishlist"
+            },
+            {
+                "name": "selectFeature",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/captcha/selectors.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "(state: AppState) => state.captcha"
             },
             {
                 "name": "selectHasPendingRequest",
@@ -5953,6 +6312,50 @@
                     "defaultValue": "(): AppStateBuilder => new AppStateBuilder()"
                 }
             ],
+            "src/app/store/captcha/actions.ts": [
+                {
+                    "name": "captchaChallengeError",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/captcha/actions.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createAction(\n  '[Captcha] Captcha challenge error',\n  props<{ errorText: string }>()\n)"
+                },
+                {
+                    "name": "captchaChallengeReceived",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/captcha/actions.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createAction(\n  '[Captcha] Captcha challenge received',\n  props<{ captchaTask: string }>()\n)"
+                },
+                {
+                    "name": "getCaptchaChallenge",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/captcha/actions.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createAction('[Captcha] Get challenge')"
+                }
+            ],
+            "src/app/store/captcha/reducers.ts": [
+                {
+                    "name": "captchaReducer",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/captcha/reducers.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createReducer(\n  initialCaptchaState,\n  on(\n    getCaptchaChallenge,\n    (_state, _): CaptchaState => ({\n      challenge: '',\n      errorText: '',\n      loading: true,\n    })\n  ),\n  on(\n    captchaChallengeReceived,\n    (_state, action): CaptchaState => ({\n      challenge: action.captchaTask,\n      errorText: '',\n      loading: false,\n    })\n  ),\n  on(\n    captchaChallengeError,\n    (_stte, action): CaptchaState => ({\n      challenge: '',\n      errorText: action.errorText,\n      loading: false,\n    })\n  )\n)"
+                }
+            ],
             "src/stories/Categories.stories.ts": [
                 {
                     "name": "Categories",
@@ -6120,7 +6523,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "[]",
-                    "defaultValue": "[\n  ...defaultProviders,\n  {\n    provide: ItemsService,\n    useValue: {\n      getCaptchaChallenge: () => of(new Result('acht')),\n    },\n  },\n]"
+                    "defaultValue": "[\n  ...defaultProviders,\n  {\n    provide: ItemsService,\n    useValue: {\n      getCaptchaChallenge: () => of(new Result('acht')),\n    },\n  },\n  {\n    provide: 'child data',\n    useValue: <ChildData>{},\n  },\n]"
                 },
                 {
                     "name": "dialogData",
@@ -6535,6 +6938,18 @@
                     "defaultValue": "{\n  production: false\n}"
                 }
             ],
+            "src/app/store/captcha/effects.ts": [
+                {
+                    "name": "errorFactory",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/captcha/effects.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "() =>\n  captchaChallengeError({ errorText: 'Fehler beim Abruf' })"
+                }
+            ],
             "src/app/store/w.actions.ts": [
                 {
                     "name": "getItems",
@@ -6657,6 +7072,18 @@
                     "deprecationMessage": "",
                     "type": "Story",
                     "defaultValue": "() => ({\n  props: {},\n})"
+                }
+            ],
+            "src/app/store/captcha/state.ts": [
+                {
+                    "name": "initialCaptchaState",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/captcha/state.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "CaptchaState",
+                    "defaultValue": "{\n  challenge: '',\n  loading: false,\n  errorText: '',\n}"
                 }
             ],
             "src/app/store/r.reducer.ts": [
@@ -6891,6 +7318,48 @@
                     "deprecationMessage": "",
                     "type": "",
                     "defaultValue": "createSelector(\n  selectFeature,\n  (state: WishlistState) => state.reservationDialogVisible\n)"
+                }
+            ],
+            "src/app/store/captcha/selectors.ts": [
+                {
+                    "name": "selectCaptchaError",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/captcha/selectors.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createSelector(\n  selectFeature,\n  (state: CaptchaState) => state.errorText\n)"
+                },
+                {
+                    "name": "selectCaptchaLoading",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/captcha/selectors.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createSelector(\n  selectFeature,\n  (state: CaptchaState) => state.loading\n)"
+                },
+                {
+                    "name": "selectCaptchaTask",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/captcha/selectors.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createSelector(\n  selectFeature,\n  (state: CaptchaState) => state.challenge\n)"
+                },
+                {
+                    "name": "selectFeature",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/captcha/selectors.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "(state: AppState) => state.captcha"
                 }
             ],
             "src/app/store/a.selectors.ts": [
@@ -7349,7 +7818,7 @@
                 "linktype": "component",
                 "name": "UpdateReservationDialogComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/9",
+                "coverageCount": "0/12",
                 "status": "low"
             },
             {
@@ -7584,7 +8053,125 @@
                 "linktype": "interface",
                 "name": "AppState",
                 "coveragePercent": 0,
-                "coverageCount": "0/5",
+                "coverageCount": "0/6",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/captcha/actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "captchaChallengeError",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/captcha/actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "captchaChallengeReceived",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/captcha/actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "getCaptchaChallenge",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/captcha/effects.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "CaptchaEffects",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/captcha/effects.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "errorFactory",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/captcha/reducers.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "captchaReducer",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/captcha/selectors.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "selectCaptchaError",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/captcha/selectors.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "selectCaptchaLoading",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/captcha/selectors.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "selectCaptchaTask",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/captcha/selectors.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "selectFeature",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/captcha/state.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "CaptchaState",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/captcha/state.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "initialCaptchaState",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
                 "status": "low"
             },
             {
@@ -8454,7 +9041,16 @@
                 "linktype": "component",
                 "name": "LaunchComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/3",
+                "coverageCount": "0/5",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/UpdateReservationDialog.stories.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "ChildData",
+                "coveragePercent": 0,
+                "coverageCount": "0/2",
                 "status": "low"
             },
             {
@@ -8638,7 +9234,7 @@
                 "linktype": "classe",
                 "name": "AppStateBuilder",
                 "coveragePercent": 0,
-                "coverageCount": "0/19",
+                "coverageCount": "0/20",
                 "status": "low"
             },
             {
